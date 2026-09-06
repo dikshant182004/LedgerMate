@@ -1,0 +1,16 @@
+{
+  "name": "LedgerMate — Split Expenses",
+  "short_name": "LedgerMate",
+  "description": "Split bills with friends. No sign-up, share a link, settle up.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F8FA",
+  "theme_color": "#3D6EF0",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

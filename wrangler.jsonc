@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "splitmate",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-31",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "splitmate-db",
+      "database_id": "f83daacb-4ec4-4b8d-9a22-cb7fbf79f2f1"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": ["0 3 * * *"]
+  },
+  "vars": {
+    "GOOGLE_CLIENT_ID": "REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID",
+    "GOOGLE_REDIRECT_URI": "https://REPLACE_WITH_YOUR_WORKER_URL/auth/google/callback",
+    "APP_URL": "https://REPLACE_WITH_YOUR_WORKER_URL",
+    "RESEND_FROM": "LedgerMate <onboarding@resend.dev>"
+  }
+}

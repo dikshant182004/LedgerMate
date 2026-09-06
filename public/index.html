@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>LedgerMate — split expenses, free</title>
+
+<link rel="manifest" href="/manifest.json" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<meta name="theme-color" content="#6D4FEB" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="LedgerMate" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ============ SPLASH (plays once per tab session) ============ -->
+  <div id="splash" class="splash">
+    <div class="splash-icon">
+      <svg viewBox="0 0 100 100" class="splash-svg">
+        <rect x="0" y="0" width="100" height="100" rx="24" fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#6D4FEB"/>
+            <stop offset="1" stop-color="#3D6EF0"/>
+          </linearGradient>
+        </defs>
+        <path class="splash-receipt" d="M28 20 H72 V70 L64 64 L56 70 L48 64 L40 70 L32 64 L28 70 Z" fill="#fff"/>
+        <line class="splash-line l1" x1="38" y1="34" x2="62" y2="34" stroke="#B4B4C3" stroke-width="3" stroke-linecap="round"/>
+        <line class="splash-line l2" x1="38" y1="44" x2="62" y2="44" stroke="#B4B4C3" stroke-width="3" stroke-linecap="round"/>
+        <line class="splash-line l3" x1="38" y1="54" x2="52" y2="54" stroke="#B4B4C3" stroke-width="3" stroke-linecap="round"/>
+        <circle class="splash-badge" cx="76" cy="76" r="18" fill="#2FA86E" stroke="#fff" stroke-width="3"/>
+        <path class="splash-check" d="M68 76 L74 82 L85 69" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="splash-word">Ledger<span>Mate</span></div>
+  </div>
+
+  <!-- ============ HOME ============ -->
+  <section id="view-home" class="view hidden">
+    <header class="home-topbar">
+      <span class="brand">Ledger<span class="brand-accent">Mate</span></span>
+      <div id="auth-area" class="auth-area"></div>
+    </header>
+
+    <div class="home-wrap">
+      <div class="home-logo"><img src="/icons/icon-192.png" alt="" width="60" height="60" /></div>
+      <h1>Split bills.<br />Keep it simple.</h1>
+      <p class="sub">No sign-up required. Create a group, share the link, start adding expenses. Sign in with Google if you want reminder emails before anything auto-deletes.</p>
+      <form id="create-group-form" class="stack">
+        <input id="group-name" type="text" placeholder="Goa Trip, Flat 4B, Weekend Dinner… (must be unique)" required maxlength="60" />
+        <input id="owner-name" type="text" placeholder="Your name" required maxlength="40" />
+        <label class="field-label">Keep expenses in this group for</label>
+        <select id="group-retention">
+          <option value="day">1 day, then auto-delete</option>
+          <option value="week">1 week, then auto-delete</option>
+          <option value="twoweek">2 weeks, then auto-delete</option>
+          <option value="month" selected>1 month, then auto-delete</option>
+          <option value="permanent">Keep until I delete it</option>
+        </select>
+        <button type="submit" class="btn btn-primary btn-full">Create group</button>
+      </form>
+    </div>
+
+    <div id="my-groups-wrap" class="my-groups-wrap hidden">
+      <h2 class="section-title">Your groups</h2>
+      <ul id="my-groups-list" class="my-groups-list"></ul>
+    </div>
+  </section>
+
+  <!-- ============ GROUP APP SHELL ============ -->
+  <section id="view-group" class="view hidden">
+
+    <header class="topbar">
+      <span id="group-name-header" class="group-name-header"></span>
+      <div class="topbar-actions">
+        <button id="share-btn" class="icon-btn" aria-label="Share group link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/></svg>
+        </button>
+        <div id="auth-area-group" class="auth-area"></div>
+      </div>
+    </header>
+
+    <main class="tab-content">
+
+      <div id="tab-expenses" class="tab-panel">
+        <div class="tab-header-row">
+          <h2 class="section-title">Expenses</h2>
+          <button id="add-expense-btn-wide" class="btn btn-primary btn-small add-expense-wide">+ Add expense</button>
+        </div>
+        <ul id="expense-list" class="expense-list"></ul>
+      </div>
+
+      <div id="tab-balances" class="tab-panel hidden">
+        <h2 class="section-title">Balances</h2>
+        <ul id="balance-list" class="balance-list"></ul>
+        <h2 class="section-title">Settle up</h2>
+        <ul id="settle-list" class="settle-list"></ul>
+      </div>
+
+      <div id="tab-dashboard" class="tab-panel hidden">
+        <h2 class="section-title">Overview</h2>
+        <div class="stat-row">
+          <div class="stat-card"><span class="stat-label">Total spent</span><span id="stat-total" class="stat-value">—</span></div>
+          <div class="stat-card"><span class="stat-label">Expenses</span><span id="stat-count" class="stat-value">—</span></div>
+        </div>
+        <h2 class="section-title">Who paid what</h2>
+        <div class="chart-card"><canvas id="chart-spend"></canvas></div>
+        <h2 class="section-title">Net balance per person</h2>
+        <div class="chart-card"><canvas id="chart-balance"></canvas></div>
+      </div>
+
+      <div id="tab-people" class="tab-panel hidden">
+        <h2 class="section-title">People in this group</h2>
+        <ul id="member-list" class="member-list"></ul>
+        <p class="sub">New people are added automatically when they open this group's share link.</p>
+      </div>
+
+    </main>
+
+    <button id="fab-add-expense" class="fab" aria-label="Add expense">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="expenses">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+        <span>Expenses</span>
+      </button>
+      <button class="nav-btn" data-tab="balances">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 7l-3 6a3.5 3.5 0 0 0 7 0z"/><path d="M19 7l-3 6a3.5 3.5 0 0 0 7 0z"/><line x1="5" y1="7" x2="19" y2="7"/><path d="M9 21h6"/></svg>
+        <span>Balances</span>
+      </button>
+      <button class="nav-btn" data-tab="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="8" rx="1"/><rect x="10" y="7" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="17" rx="1"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn" data-tab="people">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15.5 14.3c2.9.3 5 2.4 5 5.7"/></svg>
+        <span>People</span>
+      </button>
+    </nav>
+
+  </section>
+
+  <!-- ============ SHEET: add expense ============ -->
+  <div id="sheet-overlay" class="sheet-overlay hidden">
+    <div id="expense-sheet" class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2>Add an expense</h2>
+        <button id="close-expense-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="add-expense-form" class="expense-form">
+        <div class="expense-row">
+          <input id="expense-desc" type="text" placeholder="What was it for?" required maxlength="80" />
+          <input id="expense-amount" type="number" step="0.01" min="0.01" placeholder="0.00" required />
+        </div>
+
+        <label class="field-label">Paid by</label>
+        <select id="expense-paid-by" required></select>
+
+        <label class="field-label">Split between</label>
+        <div id="split-members" class="split-members"></div>
+
+        <div class="split-type-row">
+          <label><input type="radio" name="split-type" value="equal" checked /> Split equally</label>
+          <label><input type="radio" name="split-type" value="custom" /> Custom amounts</label>
+        </div>
+
+        <div id="custom-split-rows" class="custom-split-rows hidden"></div>
+
+        <button type="submit" class="btn btn-primary btn-full">Add expense</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ SHEET: join group (shown to new visitors of a share link) ============ -->
+  <div id="join-overlay" class="sheet-overlay hidden">
+    <div class="sheet sheet-small">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2 id="join-group-title">Join this group</h2>
+      </div>
+      <p class="sub">You've been invited to split expenses here. What's your name?</p>
+      <form id="join-group-form" class="stack">
+        <input id="join-name" type="text" placeholder="Your name" required maxlength="40" />
+        <button type="submit" class="btn btn-primary btn-full">Join group</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ SHEET: share link ============ -->
+  <div id="share-overlay" class="sheet-overlay hidden">
+    <div class="sheet sheet-small">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2>Share this group</h2>
+        <button id="close-share-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="sub">Anyone with this link can view and add to this group.</p>
+      <div class="share-row">
+        <input id="share-link" type="text" readonly />
+        <button id="copy-link-btn" class="btn btn-small">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
