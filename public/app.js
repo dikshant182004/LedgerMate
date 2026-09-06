@@ -339,7 +339,17 @@ function renderGroup({ skipExpenseForm = false } = {}) {
   if (!skipExpenseForm) renderExpenseForm();
   renderExpenseList();
 
-  if (!el("tab-dashboard").classList.contains("hidden")) renderDashboard();
+  if (isDashboardVisible()) renderDashboard();
+}
+
+// The "hidden" class only gets toggled by clicking a bottom-nav button — but
+// on desktop the nav is hidden and CSS forces every tab-panel visible at
+// once (a single scrolling page), so the class never reflects what's
+// actually on screen there. offsetParent is null whenever an element (or an
+// ancestor) is display:none, so this is true "is this on screen right now"
+// regardless of which layout mode is active.
+function isDashboardVisible() {
+  return el("tab-dashboard").offsetParent !== null;
 }
 
 function avatarColor(name) {
@@ -401,7 +411,11 @@ function renderBalances() {
 }
 
 function renderDashboard() {
-  if (!window.Chart || !state) return;
+  if (!state) return;
+  if (!window.Chart) {
+    console.warn("Chart.js hasn't loaded yet — dashboard charts will stay blank until it does.");
+    return;
+  }
   const cur = state.group.currency;
 
   const totalSpent = state.expenses.reduce((a, e) => a + e.amount, 0);
