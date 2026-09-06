@@ -11,6 +11,9 @@ let state = null;
 let currentUser = null;
 let chartSpend = null;
 let chartBalance = null;
+let socket = null;
+let socketRetryTimer = null;
+let socketRetryDelayMs = 1000;
 
 const AVATAR_COLORS = ["#6D4FEB", "#3D6EF0", "#2FA86E", "#E0563F", "#E8A93D", "#17A2B8", "#D6336C", "#495057"];
 
@@ -21,6 +24,53 @@ function myMemberId(gId) {
 }
 function setMyMemberId(gId, memberId) {
   localStorage.setItem(`ledgermate_member_${gId}`, memberId);
+}
+
+/* ---------------- realtime: one WebSocket per open group ----------------
+ * Every mutation (add expense, add member, delete expense) is broadcast by
+ * the server to everyone connected to this group, so changes made on one
+ * device show up on every other open device without a manual refresh —
+ * including the Balances and Dashboard tabs, since they're rendered from
+ * the same `state` object. Reconnects automatically with backoff if the
+ * connection drops (sleeping laptop, flaky wifi, etc).
+ */
+
+function connectRealtime() {
+  if (!groupId) return;
+  if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) return;
+
+  const scheme = location.protocol === "https:" ? "wss:" : "ws:";
+  socket = new WebSocket(`${scheme}//${location.host}${API}/groups/${groupId}/socket`);
+
+  socket.addEventListener("open", () => { socketRetryDelayMs = 1000; });
+
+  socket.addEventListener("message", (event) => {
+    let msg;
+    try { msg = JSON.parse(event.data); } catch { return; }
+    if (msg.type === "state") applyIncomingState(msg.state);
+  });
+
+  socket.addEventListener("close", scheduleReconnect);
+  socket.addEventListener("error", () => socket.close());
+}
+
+function scheduleReconnect() {
+  if (!groupId) return;
+  clearTimeout(socketRetryTimer);
+  socketRetryTimer = setTimeout(connectRealtime, socketRetryDelayMs);
+  socketRetryDelayMs = Math.min(socketRetryDelayMs * 2, 15000);
+}
+
+// Applies a state push that arrived from someone *else's* action.
+// `currentUser` is per-viewer and never travels over the realtime channel,
+// so it's carried over from what we already have. If the add-expense sheet
+// is open, we skip rebuilding that form so we don't wipe out a selection
+// the person is still making.
+function applyIncomingState(incoming) {
+  if (!state) return;
+  state = { ...incoming, currentUser: state.currentUser };
+  const composing = !el("sheet-overlay").classList.contains("hidden");
+  renderGroup({ skipExpenseForm: composing });
 }
 
 init();
@@ -159,6 +209,7 @@ async function loadGroup() {
       promptToJoin();
     } else {
       renderGroup();
+      connectRealtime();
     }
   } catch (err) {
     toast("Couldn't load the group. Check your connection.");
@@ -185,8 +236,10 @@ async function onJoinGroup(e) {
   if (!res.ok) return toast("Couldn't join the group. Try again.");
   const data = await res.json();
   setMyMemberId(groupId, data.id);
+  state = data.state;
   closeSheet("join-overlay");
-  await loadGroup();
+  renderGroup();
+  connectRealtime();
 }
 
 /* ---------------- home: create group ---------------- */
@@ -197,12 +250,13 @@ function bindHomeForm() {
     const name = el("group-name").value.trim();
     const ownerName = el("owner-name").value.trim();
     const retention = el("group-retention").value;
+    const currency = el("group-currency").value;
     if (!name || !ownerName) return;
 
     const res = await fetch(`${API}/groups`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, retention }),
+      body: JSON.stringify({ name, retention, currency }),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
@@ -218,12 +272,16 @@ function bindHomeForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: ownerName }),
     });
-    if (memberRes.ok) {
-      const member = await memberRes.json();
-      setMyMemberId(groupId, member.id);
-    }
+    if (!memberRes.ok) return toast("Group created, but couldn't add you as a member. Reload to try again.");
 
-    await loadGroup();
+    const member = await memberRes.json();
+    setMyMemberId(groupId, member.id);
+    state = member.state;
+
+    viewHome.classList.add("hidden");
+    viewGroup.classList.remove("hidden");
+    renderGroup();
+    connectRealtime();
   });
 }
 
@@ -246,7 +304,6 @@ function bindTabs() {
 
 function bindSheets() {
   el("fab-add-expense").addEventListener("click", () => openSheet("sheet-overlay"));
-  el("add-expense-btn-wide").addEventListener("click", () => openSheet("sheet-overlay"));
   el("close-expense-sheet").addEventListener("click", () => closeSheet("sheet-overlay"));
   el("share-btn").addEventListener("click", () => openSheet("share-overlay"));
   el("close-share-sheet").addEventListener("click", () => closeSheet("share-overlay"));
@@ -273,13 +330,13 @@ function bindGroupForms() {
 
 /* ---------------- rendering ---------------- */
 
-function renderGroup() {
+function renderGroup({ skipExpenseForm = false } = {}) {
   el("group-name-header").textContent = state.group.name;
   el("share-link").value = `${location.origin}${location.pathname}?g=${groupId}`;
 
   renderMembers();
   renderBalances();
-  renderExpenseForm();
+  if (!skipExpenseForm) renderExpenseForm();
   renderExpenseList();
 
   if (!el("tab-dashboard").classList.contains("hidden")) renderDashboard();
@@ -501,16 +558,20 @@ async function onAddExpense(e) {
     return toast(err.error || "Couldn't add that expense.");
   }
 
+  const data = await res.json();
+  state = data.state;
   el("add-expense-form").reset();
   closeSheet("sheet-overlay");
-  await loadGroup();
+  renderGroup();
   toast("Expense added");
 }
 
 async function deleteExpense(expenseId) {
   const res = await fetch(`${API}/groups/${groupId}/expenses/${expenseId}`, { method: "DELETE" });
   if (!res.ok) return toast("Couldn't delete that expense.");
-  await loadGroup();
+  const data = await res.json();
+  state = data.state;
+  renderGroup();
   toast("Expense deleted");
 }
 

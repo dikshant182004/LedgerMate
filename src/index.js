@@ -1,38 +1,25 @@
 import { Hono } from "hono";
+import { json } from "./lib/http.js";
+import { now, newId, randomToken, signExpenseId } from "./lib/crypto.js";
+import { parseCookies, cookieHeader } from "./lib/cookies.js";
+import {
+  DAY_MS,
+  RETENTION_DAYS,
+  buildGroupState,
+  computeExpiryForNewExpense,
+} from "./services/group-state.js";
+import { broadcastGroupState, scheduleGroupAlarm, connectToGroupRoom } from "./services/realtime.js";
+import { GroupRoom } from "./durable-objects/group-room.js";
+
+export { GroupRoom };
 
 const app = new Hono();
 
-const json = (c, data, status = 200) => c.json(data, status);
-const now = () => Date.now();
-const newId = () => crypto.randomUUID();
-const randomToken = () => crypto.randomUUID() + crypto.randomUUID();
-
-const DAY_MS = 24 * 60 * 60 * 1000;
-const RETENTION_DAYS = { day: 1, week: 7, twoweek: 14, month: 30 };
 const SESSION_MAX_AGE_S = 60 * 60 * 24 * 30; // 30 days
-const REMINDER_WINDOW_MS = 2 * DAY_MS; // send reminder when <=48h from expiry
 
 /* ================================================================== *
- * Cookie + session helpers
+ * Session helper
  * ================================================================== */
-
-function parseCookies(request) {
-  const header = request.headers.get("Cookie") || "";
-  const out = {};
-  header.split(";").forEach((pair) => {
-    const idx = pair.indexOf("=");
-    if (idx === -1) return;
-    out[pair.slice(0, idx).trim()] = decodeURIComponent(pair.slice(idx + 1).trim());
-  });
-  return out;
-}
-
-function cookieHeader(name, value, { maxAge, httpOnly = true } = {}) {
-  let parts = [`${name}=${encodeURIComponent(value)}`, "Path=/", "SameSite=Lax", "Secure"];
-  if (httpOnly) parts.push("HttpOnly");
-  if (maxAge !== undefined) parts.push(`Max-Age=${maxAge}`);
-  return parts.join("; ");
-}
 
 async function getSessionUser(c) {
   const cookies = parseCookies(c.req.raw);
@@ -45,18 +32,6 @@ async function getSessionUser(c) {
   ).bind(sessionId).first();
   if (!row || row.expires_at < now()) return null;
   return { id: row.id, email: row.email, name: row.name, picture: row.picture };
-}
-
-/* ================================================================== *
- * HMAC signing for one-click "extend" email links (no login required)
- * ================================================================== */
-
-async function signExpenseId(secret, expenseId) {
-  const key = await crypto.subtle.importKey(
-    "raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(expenseId));
-  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 32);
 }
 
 /* ================================================================== *
@@ -199,37 +174,21 @@ app.get("/api/groups/:id", async (c) => {
   const groupId = c.req.param("id");
   const user = await getSessionUser(c);
 
-  const group = await c.env.DB.prepare("SELECT * FROM groups WHERE id = ?").bind(groupId).first();
-  if (!group) return json(c, { error: "Group not found." }, 404);
+  const state = await buildGroupState(c.env.DB, groupId, user);
+  if (!state) return json(c, { error: "Group not found." }, 404);
 
-  const { results: members } = await c.env.DB.prepare(
-    "SELECT id, name FROM members WHERE group_id = ? ORDER BY created_at ASC"
-  ).bind(groupId).all();
+  return json(c, state);
+});
 
-  const { results: expenses } = await c.env.DB.prepare(
-    `SELECT id, description, amount, paid_by, created_at, expires_at
-     FROM expenses
-     WHERE group_id = ? AND (expires_at IS NULL OR expires_at > ?)
-     ORDER BY created_at DESC`
-  ).bind(groupId, now()).all();
-
-  const { results: splits } = await c.env.DB.prepare(
-    `SELECT es.expense_id, es.member_id, es.share_amount
-     FROM expense_splits es
-     JOIN expenses e ON e.id = es.expense_id
-     WHERE e.group_id = ? AND (e.expires_at IS NULL OR e.expires_at > ?)`
-  ).bind(groupId, now()).all();
-
-  const { balances, settlements } = computeBalances(members, expenses, splits);
-
-  return json(c, {
-    group,
-    members,
-    expenses,
-    balances,
-    settlements,
-    currentUser: user,
-  });
+// Realtime channel for a group. No session/auth checks here on purpose — the
+// DO never receives or trusts identity, it only relays whatever state the
+// Worker's own mutation handlers hand it.
+app.get("/api/groups/:id/socket", async (c) => {
+  const groupId = c.req.param("id");
+  if (c.req.header("Upgrade") !== "websocket") {
+    return c.text("Expected a WebSocket upgrade request.", 426);
+  }
+  return connectToGroupRoom(c.env, groupId, c.req.raw);
 });
 
 app.post("/api/groups/:id/members", async (c) => {
@@ -246,7 +205,15 @@ app.post("/api/groups/:id/members", async (c) => {
     "INSERT INTO members (id, group_id, name, created_at) VALUES (?, ?, ?, ?)"
   ).bind(id, groupId, name.slice(0, 40), now()).run();
 
-  return json(c, { id, name }, 201);
+  const user = await getSessionUser(c);
+  const state = await buildGroupState(c.env.DB, groupId, user);
+
+  // The new member already has fresh state in this response; the broadcast
+  // is for everyone *else* already in the group, so they see the arrival
+  // live. Doesn't block this response.
+  c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
+
+  return json(c, { id, name, state }, 201);
 });
 
 app.post("/api/groups/:id/expenses", async (c) => {
@@ -278,9 +245,7 @@ app.post("/api/groups/:id/expenses", async (c) => {
 
   // Retention is a property of the group (chosen once at creation), so every
   // expense in the group inherits the same expiry policy. No per-expense cap.
-  const expiresAt = group.retention === "permanent"
-    ? null
-    : now() + (RETENTION_DAYS[group.retention] || RETENTION_DAYS.month) * DAY_MS;
+  const expiresAt = computeExpiryForNewExpense(group.retention);
 
   let splits;
   if (splitType === "equal") {
@@ -307,12 +272,26 @@ app.post("/api/groups/:id/expenses", async (c) => {
   ];
   await c.env.DB.batch(stmts);
 
-  return json(c, { id: expenseId, expires_at: expiresAt }, 201);
+  const state = await buildGroupState(c.env.DB, groupId, user);
+
+  // Both run in the background after the response is sent — the person who
+  // just added the expense already has `state` right here and shouldn't
+  // wait on a DO round trip (broadcast) or an alarm-scheduling call to get
+  // their own success response back.
+  c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
+  if (expiresAt !== null) {
+    c.executionCtx.waitUntil(
+      scheduleGroupAlarm(c.env, groupId, { expiresAt, reminderAt: expiresAt - 2 * DAY_MS })
+    );
+  }
+
+  return json(c, { id: expenseId, expires_at: expiresAt, state }, 201);
 });
 
 app.delete("/api/groups/:id/expenses/:expenseId", async (c) => {
   const groupId = c.req.param("id");
   const expenseId = c.req.param("expenseId");
+  const user = await getSessionUser(c);
 
   const expense = await c.env.DB.prepare(
     "SELECT id FROM expenses WHERE id = ? AND group_id = ?"
@@ -324,7 +303,10 @@ app.delete("/api/groups/:id/expenses/:expenseId", async (c) => {
     c.env.DB.prepare("DELETE FROM expenses WHERE id = ?").bind(expenseId),
   ]);
 
-  return json(c, { ok: true });
+  const state = await buildGroupState(c.env.DB, groupId, user);
+  c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
+
+  return json(c, { ok: true, state });
 });
 
 // One-click "extend 30 days" link from reminder emails — no login required,
@@ -338,9 +320,16 @@ app.get("/api/expenses/:id/extend", async (c) => {
   const expense = await c.env.DB.prepare("SELECT group_id FROM expenses WHERE id = ?").bind(expenseId).first();
   if (!expense) return c.text("That expense no longer exists.", 404);
 
+  const newExpiresAt = now() + 30 * DAY_MS;
   await c.env.DB.prepare(
     "UPDATE expenses SET expires_at = ?, reminded_at = NULL WHERE id = ?"
-  ).bind(now() + 30 * DAY_MS, expenseId).run();
+  ).bind(newExpiresAt, expenseId).run();
+
+  const state = await buildGroupState(c.env.DB, expense.group_id, null);
+  c.executionCtx.waitUntil(broadcastGroupState(c.env, expense.group_id, state));
+  c.executionCtx.waitUntil(
+    scheduleGroupAlarm(c.env, expense.group_id, { expiresAt: newExpiresAt, reminderAt: newExpiresAt - 2 * DAY_MS })
+  );
 
   return new Response(null, {
     status: 302,
@@ -349,111 +338,9 @@ app.get("/api/expenses/:id/extend", async (c) => {
 });
 
 /* ================================================================== *
- * Balance math
- * ================================================================== */
-
-function computeBalances(members, expenses, splits) {
-  const net = new Map(members.map((m) => [m.id, 0]));
-  const expenseById = new Map(expenses.map((e) => [e.id, e]));
-  for (const e of expenses) if (net.has(e.paid_by)) net.set(e.paid_by, net.get(e.paid_by) + e.amount);
-  for (const s of splits) {
-    if (!expenseById.has(s.expense_id)) continue;
-    if (net.has(s.member_id)) net.set(s.member_id, net.get(s.member_id) - s.share_amount);
-  }
-  const balances = members.map((m) => ({ id: m.id, name: m.name, net: Math.round(net.get(m.id) * 100) / 100 }));
-  return { balances, settlements: simplifyDebts(balances) };
-}
-
-function simplifyDebts(balances) {
-  const creditors = balances.filter((b) => b.net > 0.005).map((b) => ({ ...b }));
-  const debtors = balances.filter((b) => b.net < -0.005).map((b) => ({ ...b, net: -b.net }));
-  creditors.sort((a, b) => b.net - a.net);
-  debtors.sort((a, b) => b.net - a.net);
-  const settlements = [];
-  let i = 0, j = 0;
-  while (i < debtors.length && j < creditors.length) {
-    const pay = Math.min(debtors[i].net, creditors[j].net);
-    if (pay > 0.005) settlements.push({ from: debtors[i].name, to: creditors[j].name, amount: Math.round(pay * 100) / 100 });
-    debtors[i].net -= pay;
-    creditors[j].net -= pay;
-    if (debtors[i].net <= 0.005) i++;
-    if (creditors[j].net <= 0.005) j++;
-  }
-  return settlements;
-}
-
-/* ================================================================== *
  * Static assets fallback (the SPA)
  * ================================================================== */
 
 app.notFound((c) => c.env.ASSETS.fetch(c.req.raw));
 
-/* ================================================================== *
- * Scheduled: daily cleanup + expiry reminder emails
- * ================================================================== */
-
-async function sendReminderEmail(env, expense, group, toEmail) {
-  const sig = await signExpenseId(env.EXTEND_SECRET, expense.id);
-  const extendUrl = `${env.APP_URL}/api/expenses/${expense.id}/extend?sig=${sig}`;
-  const groupUrl = `${env.APP_URL}/?g=${group.id}`;
-  const daysLeft = Math.max(1, Math.ceil((expense.expires_at - Date.now()) / DAY_MS));
-
-  await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: env.RESEND_FROM,
-      to: [toEmail],
-      subject: `"${expense.description}" is expiring in ${daysLeft} day${daysLeft === 1 ? "" : "s"}`,
-      html: `
-        <p>Hey,</p>
-        <p>Your expense <strong>${escapeHtml(expense.description)}</strong> (${group.currency}${expense.amount.toFixed(2)})
-        in the group <strong>${escapeHtml(group.name)}</strong> will be automatically deleted in ${daysLeft} day${daysLeft === 1 ? "" : "s"}.</p>
-        <p>If it's already settled, you can ignore this — it'll clean itself up.
-        If you'd like to keep it a little longer, click below:</p>
-        <p><a href="${extendUrl}" style="background:#3D6EF0;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;display:inline-block">Extend by 30 days</a></p>
-        <p><a href="${groupUrl}">Open the group</a></p>
-      `,
-    }),
-  }).catch(() => {}); // best-effort; a failed email should not block the cron
-}
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-}
-
-async function scheduled(event, env, ctx) {
-  const nowTs = Date.now();
-
-  // 1) Reminder emails for expenses expiring within the window.
-  const { results: dueForReminder } = await env.DB.prepare(
-    `SELECT e.id, e.description, e.amount, e.expires_at, e.group_id, u.email as user_email
-     FROM expenses e
-     JOIN users u ON u.id = e.created_by
-     WHERE e.expires_at IS NOT NULL AND e.expires_at > ? AND e.expires_at <= ? AND e.reminded_at IS NULL`
-  ).bind(nowTs, nowTs + REMINDER_WINDOW_MS).all();
-
-  for (const exp of dueForReminder) {
-    const group = await env.DB.prepare("SELECT id, name, currency FROM groups WHERE id = ?").bind(exp.group_id).first();
-    if (group) await sendReminderEmail(env, exp, group, exp.user_email);
-    await env.DB.prepare("UPDATE expenses SET reminded_at = ? WHERE id = ?").bind(nowTs, exp.id).run();
-  }
-
-  // 2) Delete anything already expired.
-  const { results: expired } = await env.DB.prepare(
-    "SELECT id FROM expenses WHERE expires_at IS NOT NULL AND expires_at <= ?"
-  ).bind(nowTs).all();
-  if (expired.length > 0) {
-    const ids = expired.map((e) => e.id);
-    const placeholders = ids.map(() => "?").join(",");
-    await env.DB.batch([
-      env.DB.prepare(`DELETE FROM expense_splits WHERE expense_id IN (${placeholders})`).bind(...ids),
-      env.DB.prepare(`DELETE FROM expenses WHERE id IN (${placeholders})`).bind(...ids),
-    ]);
-  }
-}
-
-export default { fetch: app.fetch, scheduled };
+export default { fetch: app.fetch };

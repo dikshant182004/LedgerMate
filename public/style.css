@@ -235,12 +235,10 @@ input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1p
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
 @media (min-width: 640px) {
-  .bottom-nav, .fab { display: none; }
+  .bottom-nav { display: none; }
   .tab-content { padding-bottom: 40px; }
   .tab-panel.hidden { display: block; }
   #tab-expenses, #tab-balances, #tab-dashboard, #tab-people { display: block !important; margin-bottom: 28px; }
   .topbar { position: static; }
-  .add-expense-wide { display: inline-flex; }
+  .fab { bottom: calc(24px + var(--safe-bottom)); }
 }
-.tab-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.add-expense-wide { display: none; }

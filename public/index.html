@@ -56,6 +56,17 @@
       <form id="create-group-form" class="stack">
         <input id="group-name" type="text" placeholder="Goa Trip, Flat 4B, Weekend Dinner… (must be unique)" required maxlength="60" />
         <input id="owner-name" type="text" placeholder="Your name" required maxlength="40" />
+        <label class="field-label">Currency</label>
+        <select id="group-currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="¥">¥ — Japanese Yen</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+          <option value="د.إ">د.إ — UAE Dirham</option>
+        </select>
         <label class="field-label">Keep expenses in this group for</label>
         <select id="group-retention">
           <option value="day">1 day, then auto-delete</option>
@@ -90,10 +101,6 @@
     <main class="tab-content">
 
       <div id="tab-expenses" class="tab-panel">
-        <div class="tab-header-row">
-          <h2 class="section-title">Expenses</h2>
-          <button id="add-expense-btn-wide" class="btn btn-primary btn-small add-expense-wide">+ Add expense</button>
-        </div>
         <ul id="expense-list" class="expense-list"></ul>
       </div>
 

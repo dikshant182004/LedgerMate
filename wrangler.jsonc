@@ -14,11 +14,16 @@
       "database_id": "f83daacb-4ec4-4b8d-9a22-cb7fbf79f2f1"
     }
   ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "GROUP_ROOM", "class_name": "GroupRoom" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1-group-room", "new_classes": ["GroupRoom"] }
+  ],
   "observability": {
     "enabled": true
-  },
-  "triggers": {
-    "crons": ["0 3 * * *"]
   },
   "vars": {
     "GOOGLE_CLIENT_ID": "REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID",
