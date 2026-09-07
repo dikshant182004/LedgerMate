@@ -26,9 +26,9 @@
     "enabled": true
   },
   "vars": {
-    "GOOGLE_CLIENT_ID": "REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID",
-    "GOOGLE_REDIRECT_URI": "https://REPLACE_WITH_YOUR_WORKER_URL/auth/google/callback",
-    "APP_URL": "https://REPLACE_WITH_YOUR_WORKER_URL",
+    "GOOGLE_CLIENT_ID": "857476834665-in10d56gjokq45j9lib0lslds0b52g9n.apps.googleusercontent.com",
+    "GOOGLE_REDIRECT_URI": "https://splitwise.ledgermate.workers.dev/auth/google/callback",
+    "APP_URL": "https://splitwise.ledgermate.workers.dev",
     "RESEND_FROM": "LedgerMate <onboarding@resend.dev>"
   }
 }

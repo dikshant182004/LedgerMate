@@ -4,11 +4,15 @@ import { now, newId, randomToken, signExpenseId } from "./lib/crypto.js";
 import { parseCookies, cookieHeader } from "./lib/cookies.js";
 import {
   DAY_MS,
-  RETENTION_DAYS,
+  RETENTION_MS,
+  ALL_RETENTIONS,
+  ANONYMOUS_RETENTIONS,
+  DEFAULT_RETENTION,
+  retentionRequiresSignIn,
   buildGroupState,
   computeExpiryForNewExpense,
 } from "./services/group-state.js";
-import { broadcastGroupState, scheduleGroupAlarm, connectToGroupRoom } from "./services/realtime.js";
+import { broadcastGroupState, scheduleGroupAlarm, recomputeGroupAlarm, connectToGroupRoom } from "./services/realtime.js";
 import { GroupRoom } from "./durable-objects/group-room.js";
 
 export { GroupRoom };
@@ -48,13 +52,17 @@ app.get("/auth/google/login", async (c) => {
   url.searchParams.set("state", state);
   url.searchParams.set("prompt", "select_account");
 
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: url.toString(),
-      "Set-Cookie": cookieHeader("oauth_state", state, { maxAge: 600 }),
-    },
-  });
+  // Only ever trust a same-site relative path here (e.g. "/?g=..."), never a
+  // full URL — otherwise this would be an open redirect.
+  const returnTo = c.req.query("return_to");
+  const safeReturnTo = returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//") ? returnTo : "/";
+
+  const headers = new Headers();
+  headers.append("Set-Cookie", cookieHeader("oauth_state", state, { maxAge: 600 }));
+  headers.append("Set-Cookie", cookieHeader("oauth_return_to", safeReturnTo, { maxAge: 600 }));
+  headers.set("Location", url.toString());
+
+  return new Response(null, { status: 302, headers });
 });
 
 app.get("/auth/google/callback", async (c) => {
@@ -104,13 +112,14 @@ app.get("/auth/google/callback", async (c) => {
     "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
   ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
 
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: c.env.APP_URL || "/",
-      "Set-Cookie": cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }),
-    },
-  });
+  const returnTo = cookies["oauth_return_to"] || "/";
+
+  const headers = new Headers();
+  headers.append("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
+  headers.append("Set-Cookie", cookieHeader("oauth_return_to", "", { maxAge: 0 }));
+  headers.set("Location", returnTo);
+
+  return new Response(null, { status: 302, headers });
 });
 
 app.post("/auth/logout", async (c) => {
@@ -135,7 +144,9 @@ app.get("/api/my/groups", async (c) => {
   const user = await getSessionUser(c);
   if (!user) return json(c, { error: "Not signed in." }, 401);
   const { results } = await c.env.DB.prepare(
-    "SELECT id, name, currency, created_at FROM groups WHERE created_by = ? ORDER BY created_at DESC"
+    `SELECT g.id, g.name, g.currency, g.retention, g.created_at,
+       (SELECT COUNT(*) FROM expenses e WHERE e.group_id = g.id) as expense_count
+     FROM groups g WHERE g.created_by = ? ORDER BY g.created_at DESC`
   ).bind(user.id).all();
   return json(c, { groups: results });
 });
@@ -150,21 +161,32 @@ app.post("/api/groups", async (c) => {
   const name = (body.name || "").trim();
   if (!name) return json(c, { error: "Group name is required." }, 400);
 
-  const retentionKeys = [...Object.keys(RETENTION_DAYS), "permanent"];
-  const retention = retentionKeys.includes(body.retention) ? body.retention : "month";
+  const retention = ALL_RETENTIONS.includes(body.retention) ? body.retention : DEFAULT_RETENTION;
+  if (retentionRequiresSignIn(retention) && !user) {
+    return json(c, { error: "Sign in with Google to choose a retention period longer than 1 day." }, 401);
+  }
 
   const id = newId();
   const currency = (body.currency || "$").slice(0, 3);
+  const createdAt = now();
 
   try {
     await c.env.DB.prepare(
       "INSERT INTO groups (id, name, currency, retention, created_at, created_by) VALUES (?, ?, ?, ?, ?, ?)"
-    ).bind(id, name.slice(0, 60), currency, retention, now(), user ? user.id : null).run();
+    ).bind(id, name.slice(0, 60), currency, retention, createdAt, user ? user.id : null).run();
   } catch (err) {
     if (String(err.message || err).toLowerCase().includes("unique")) {
       return json(c, { error: "That group name is taken — try something more unique." }, 409);
     }
     throw err;
+  }
+
+  // Anonymous short-lived groups need a wake-up scheduled even before any
+  // expense is added — otherwise a group nobody ever adds an expense to
+  // would sit around forever instead of being cleaned up.
+  if (!user && ANONYMOUS_RETENTIONS.includes(retention)) {
+    const expiresAt = createdAt + RETENTION_MS[retention];
+    c.executionCtx.waitUntil(scheduleGroupAlarm(c.env, id, { expiresAt }));
   }
 
   return json(c, { id, name, currency, retention }, 201);
@@ -189,6 +211,49 @@ app.get("/api/groups/:id/socket", async (c) => {
     return c.text("Expected a WebSocket upgrade request.", 426);
   }
   return connectToGroupRoom(c.env, groupId, c.req.raw);
+});
+
+// Lets a signed-in user "adopt" a group that was created anonymously,
+// upgrading its retention to a longer, sign-in-required tier. Existing
+// active expenses get their expiry extended too, not just future ones —
+// the whole point is "I want to keep this longer than it was about to last."
+app.post("/api/groups/:id/claim", async (c) => {
+  const groupId = c.req.param("id");
+  const user = await getSessionUser(c);
+  if (!user) return json(c, { error: "Sign in with Google first." }, 401);
+
+  const body = await c.req.json().catch(() => ({}));
+  const retention = ALL_RETENTIONS.includes(body.retention) ? body.retention : "1month";
+
+  const group = await c.env.DB.prepare("SELECT id, created_by FROM groups WHERE id = ?").bind(groupId).first();
+  if (!group) return json(c, { error: "Group not found." }, 404);
+  if (group.created_by && group.created_by !== user.id) {
+    return json(c, { error: "This group already belongs to someone else's account." }, 409);
+  }
+
+  const result = await c.env.DB.prepare(
+    "UPDATE groups SET retention = ?, created_by = ? WHERE id = ? AND (created_by IS NULL OR created_by = ?)"
+  ).bind(retention, user.id, groupId, user.id).run();
+  if (!result.success || result.meta?.changes === 0) {
+    return json(c, { error: "Couldn't update this group. It may already belong to someone else." }, 409);
+  }
+
+  // Extend every currently-active expense to the new retention, starting
+  // from now (not re-derived from each expense's original creation time —
+  // "extend" should mean "give it this much longer from this moment").
+  const newExpiresAt = retention === "permanent" ? null : now() + RETENTION_MS[retention];
+  await c.env.DB.prepare(
+    `UPDATE expenses SET expires_at = ?, reminded_at = NULL
+     WHERE group_id = ? AND (expires_at IS NULL OR expires_at > ?)`
+  ).bind(newExpiresAt, groupId, now()).run();
+
+  const state = await buildGroupState(c.env.DB, groupId, user);
+  c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
+  // Recompute (not just "schedule earlier") since the new expiry is later
+  // than whatever the anonymous group's alarm was previously set to.
+  c.executionCtx.waitUntil(recomputeGroupAlarm(c.env, groupId));
+
+  return json(c, { ok: true, state });
 });
 
 app.post("/api/groups/:id/members", async (c) => {

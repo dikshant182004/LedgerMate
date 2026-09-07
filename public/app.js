@@ -16,6 +16,13 @@ let socketRetryTimer = null;
 let socketRetryDelayMs = 1000;
 
 const AVATAR_COLORS = ["#6D4FEB", "#3D6EF0", "#2FA86E", "#E0563F", "#E8A93D", "#17A2B8", "#D6336C", "#495057"];
+const ANONYMOUS_RETENTIONS = ["10min", "1hour", "1day"];
+const SIGNIN_RETENTIONS = ["1week", "1month", "6month", "1year", "permanent"];
+const RETENTION_LABELS = {
+  "10min": "10 min", "1hour": "1 hour", "1day": "1 day",
+  "1week": "1 week", "1month": "1 month", "6month": "6 months", "1year": "1 year",
+  permanent: "Forever",
+};
 
 /* ---------------- "which member am I in this group" (per-browser, no login needed) ---------------- */
 
@@ -48,6 +55,7 @@ function connectRealtime() {
     let msg;
     try { msg = JSON.parse(event.data); } catch { return; }
     if (msg.type === "state") applyIncomingState(msg.state);
+    else if (msg.type === "group_deleted") handleGroupDeleted();
   });
 
   socket.addEventListener("close", scheduleReconnect);
@@ -73,11 +81,28 @@ function applyIncomingState(incoming) {
   renderGroup({ skipExpenseForm: composing });
 }
 
+// The group's own retention window ran out with nothing left in it, so the
+// server deleted it entirely (see the Durable Object's alarm handler). Any
+// tab that still has it open needs to bail out to the home screen instead
+// of showing stale data or erroring on the next action.
+function handleGroupDeleted() {
+  if (socket) socket.close();
+  toast("This group's time limit was reached, so it was cleaned up.");
+  try { localStorage.removeItem(`ledgermate_member_${groupId}`); } catch {}
+  groupId = null;
+  state = null;
+  history.replaceState({}, "", location.pathname);
+  el("view-group").classList.add("hidden");
+  viewHome.classList.remove("hidden");
+  if (currentUser) loadMyGroups();
+}
+
 init();
 
 async function init() {
   registerServiceWorker();
   setupSplash();
+  initTheme();
 
   if (params.get("extended") === "1") {
     setTimeout(() => toast("Expense extended by 30 days"), 1600);
@@ -85,6 +110,7 @@ async function init() {
   }
 
   await fetchMe();
+  updateRetentionGateUI();
 
   if (groupId) {
     await loadGroup();
@@ -106,6 +132,39 @@ function setupSplash() {
 
 function registerServiceWorker() {
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+}
+
+/* ---------------- theme ---------------- */
+
+function initTheme() {
+  [el("theme-toggle-home"), el("theme-toggle-group")].forEach((btn) => {
+    if (btn) btn.addEventListener("click", toggleTheme);
+  });
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  setTheme(!isDark);
+}
+
+function setTheme(dark) {
+  if (dark) document.documentElement.setAttribute("data-theme", "dark");
+  else document.documentElement.removeAttribute("data-theme");
+  try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch {}
+}
+
+/* ---------------- retention gating (which tiers need sign-in) ---------------- */
+
+function updateRetentionGateUI() {
+  const sel = el("group-retention");
+  const note = el("retention-signin-note");
+  if (!sel || !note) return;
+  const needsSignIn = SIGNIN_RETENTIONS.includes(sel.value) && !currentUser;
+  note.classList.toggle("hidden", !needsSignIn);
+}
+
+function retentionLabel(retention) {
+  return RETENTION_LABELS[retention] || retention;
 }
 
 /* ---------------- auth ---------------- */
@@ -144,32 +203,50 @@ function renderAuthArea(container) {
     : `<span class="avatar" style="background:${avatarColor(currentUser.name)}">${initials(currentUser.name)}</span>`;
   chip.addEventListener("click", (e) => {
     e.stopPropagation();
-    toggleAuthMenu(container);
+    renderAccountSheet();
+    openSheet("account-overlay");
   });
   container.appendChild(chip);
 }
 
-function toggleAuthMenu(container) {
-  const existing = document.querySelector(".auth-menu");
-  if (existing) { existing.remove(); return; }
+function renderAccountSheet() {
+  if (!currentUser) return;
+  const profile = el("account-profile");
+  profile.innerHTML = `
+    ${currentUser.picture
+      ? `<img src="${currentUser.picture}" alt="" />`
+      : `<span class="avatar" style="background:${avatarColor(currentUser.name)}">${initials(currentUser.name)}</span>`}
+    <div>
+      <div class="account-profile-name">${escapeHtml(currentUser.name)}</div>
+      <div class="account-profile-email">${escapeHtml(currentUser.email)}</div>
+    </div>`;
+  loadAccountGroups();
+}
 
-  const menu = document.createElement("div");
-  menu.className = "auth-menu";
-  menu.innerHTML = `
-    <div style="padding:8px 10px 4px;font-size:12.5px;color:var(--text-muted)">${escapeHtml(currentUser.email)}</div>
-    <button id="menu-signout">Sign out</button>`;
-  container.style.position = "relative";
-  container.appendChild(menu);
-
-  menu.querySelector("#menu-signout").addEventListener("click", async () => {
-    await fetch("/auth/logout", { method: "POST" });
-    location.href = location.pathname;
-  });
-
-  setTimeout(() => document.addEventListener("click", function closeMenu() {
-    menu.remove();
-    document.removeEventListener("click", closeMenu);
-  }), 0);
+async function loadAccountGroups() {
+  const list = el("account-groups-list");
+  list.innerHTML = `<li class="empty-note">Loading…</li>`;
+  try {
+    const res = await fetch(`${API}/my/groups`);
+    if (!res.ok) { list.innerHTML = `<li class="empty-note">Couldn't load your groups.</li>`; return; }
+    const data = await res.json();
+    if (data.groups.length === 0) {
+      list.innerHTML = `<li class="empty-note">You haven't created any groups yet.</li>`;
+      return;
+    }
+    list.innerHTML = data.groups
+      .map((g) => `
+        <li><a href="${location.pathname}?g=${g.id}">
+          <div>
+            <div class="group-name">${escapeHtml(g.name)}</div>
+            <div class="group-meta">${g.expense_count} expense${g.expense_count === 1 ? "" : "s"}</div>
+          </div>
+          <span class="retention-badge">${retentionLabel(g.retention)}</span>
+        </a></li>`)
+      .join("");
+  } catch {
+    list.innerHTML = `<li class="empty-note">Couldn't load your groups.</li>`;
+  }
 }
 
 async function loadMyGroups() {
@@ -210,6 +287,13 @@ async function loadGroup() {
     } else {
       renderGroup();
       connectRealtime();
+
+      let pendingExtend = false;
+      try { pendingExtend = sessionStorage.getItem(`ledgermate_pending_extend_${groupId}`) === "1"; } catch {}
+      if (pendingExtend && currentUser) {
+        try { sessionStorage.removeItem(`ledgermate_pending_extend_${groupId}`); } catch {}
+        openSheet("claim-overlay");
+      }
     }
   } catch (err) {
     toast("Couldn't load the group. Check your connection.");
@@ -245,6 +329,9 @@ async function onJoinGroup(e) {
 /* ---------------- home: create group ---------------- */
 
 function bindHomeForm() {
+  const retentionSelect = el("group-retention");
+  if (retentionSelect) retentionSelect.addEventListener("change", updateRetentionGateUI);
+
   el("create-group-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = el("group-name").value.trim();
@@ -307,14 +394,37 @@ function bindSheets() {
   el("close-expense-sheet").addEventListener("click", () => closeSheet("sheet-overlay"));
   el("share-btn").addEventListener("click", () => openSheet("share-overlay"));
   el("close-share-sheet").addEventListener("click", () => closeSheet("share-overlay"));
+  el("close-account-sheet").addEventListener("click", () => closeSheet("account-overlay"));
+  el("close-claim-sheet").addEventListener("click", () => closeSheet("claim-overlay"));
 
-  [el("sheet-overlay"), el("share-overlay")].forEach((overlay) => {
+  [el("sheet-overlay"), el("share-overlay"), el("account-overlay"), el("claim-overlay")].forEach((overlay) => {
     overlay.addEventListener("click", (e) => { if (e.target === overlay) closeSheet(overlay.id); });
   });
 
   el("copy-link-btn").addEventListener("click", () => {
     navigator.clipboard.writeText(el("share-link").value).then(() => toast("Link copied"));
   });
+
+  el("account-signout").addEventListener("click", async () => {
+    await fetch("/auth/logout", { method: "POST" });
+    location.href = location.pathname + location.search;
+  });
+
+  el("extend-banner-dismiss").addEventListener("click", () => {
+    try { sessionStorage.setItem(`ledgermate_dismiss_extend_${groupId}`, "1"); } catch {}
+    el("extend-banner").classList.add("hidden");
+  });
+
+  el("extend-banner-signin").addEventListener("click", () => {
+    if (currentUser) {
+      openSheet("claim-overlay");
+    } else {
+      try { sessionStorage.setItem(`ledgermate_pending_extend_${groupId}`, "1"); } catch {}
+      location.href = `/auth/google/login?return_to=${encodeURIComponent(location.pathname + location.search)}`;
+    }
+  });
+
+  el("claim-form").addEventListener("submit", onClaimGroup);
 }
 
 function openSheet(id) { el(id).classList.remove("hidden"); document.body.style.overflow = "hidden"; }
@@ -338,8 +448,48 @@ function renderGroup({ skipExpenseForm = false } = {}) {
   renderBalances();
   if (!skipExpenseForm) renderExpenseForm();
   renderExpenseList();
+  renderExtendBanner();
 
   if (isDashboardVisible()) renderDashboard();
+}
+
+// Anonymous groups on a short (no-signin) retention tier get a banner
+// offering to sign in and extend — the only way to keep them longer, since
+// there's no account to email a reminder to in the first place.
+function renderExtendBanner() {
+  const banner = el("extend-banner");
+  if (!state || !state.group) { banner.classList.add("hidden"); return; }
+
+  const eligible = !state.group.created_by && ANONYMOUS_RETENTIONS.includes(state.group.retention);
+  let dismissed = false;
+  try { dismissed = sessionStorage.getItem(`ledgermate_dismiss_extend_${groupId}`) === "1"; } catch {}
+
+  if (!eligible || dismissed) { banner.classList.add("hidden"); return; }
+
+  banner.classList.remove("hidden");
+  el("extend-banner-text").textContent = currentUser
+    ? `This group auto-deletes soon (${retentionLabel(state.group.retention)} limit) — extend it to your account?`
+    : `This group auto-deletes soon (${retentionLabel(state.group.retention)} limit) — sign in to keep it longer.`;
+  el("extend-banner-signin").textContent = currentUser ? "Extend now" : "Sign in & extend";
+}
+
+async function onClaimGroup(e) {
+  e.preventDefault();
+  const retention = el("claim-retention").value;
+  const res = await fetch(`${API}/groups/${groupId}/claim`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ retention }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    return toast(err.error || "Couldn't extend this group.");
+  }
+  const data = await res.json();
+  state = { ...data.state, currentUser };
+  closeSheet("claim-overlay");
+  renderGroup();
+  toast("Extended — this group is now saved to your account.");
 }
 
 // The "hidden" class only gets toggled by clicking a bottom-nav button — but

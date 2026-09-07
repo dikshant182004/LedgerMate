@@ -1,4 +1,11 @@
-import { buildGroupState, findNextAlarmTime, stripForBroadcast, REMINDER_WINDOW_MS } from "../services/group-state.js";
+import {
+  buildGroupState,
+  findNextAlarmTime,
+  stripForBroadcast,
+  REMINDER_WINDOW_MS,
+  ANONYMOUS_RETENTIONS,
+  RETENTION_MS,
+} from "../services/group-state.js";
 import { sendReminderEmail } from "../lib/email.js";
 
 /**
@@ -50,6 +57,9 @@ export class GroupRoom {
     }
     if (url.pathname === "/schedule" && request.method === "POST") {
       return this.#handleSchedule(request, url);
+    }
+    if (url.pathname === "/recompute" && request.method === "POST") {
+      return this.#handleRecompute(request, url);
     }
     return new Response("Not found", { status: 404 });
   }
@@ -112,6 +122,37 @@ export class GroupRoom {
       if (freshState) this.#broadcast(freshState);
     }
 
+    // Anonymous, short-lived groups (10min/1hour/1day, never claimed by a
+    // signed-in account) get fully deleted once they're empty and their own
+    // window has elapsed — not just their expenses. This is what actually
+    // bounds cost: no account, no email, no reason to keep the group (or
+    // this Durable Object) around. Signed-in-owned groups are never touched
+    // here regardless of retention.
+    const group = await db.prepare(
+      "SELECT id, created_by, retention, created_at FROM groups WHERE id = ?"
+    ).bind(this.groupId).first();
+
+    if (group && !group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
+      const { count } = await db.prepare(
+        "SELECT COUNT(*) as count FROM expenses WHERE group_id = ?"
+      ).bind(this.groupId).first();
+      const windowMs = RETENTION_MS[group.retention] || 0;
+      const windowElapsed = nowTs >= group.created_at + windowMs;
+
+      if (count === 0 && windowElapsed) {
+        await db.batch([
+          db.prepare("DELETE FROM members WHERE group_id = ?").bind(this.groupId),
+          db.prepare("DELETE FROM groups WHERE id = ?").bind(this.groupId),
+        ]);
+        this.#broadcastRaw({ type: "group_deleted" });
+        for (const ws of this.state.getWebSockets()) {
+          try { ws.close(1000, "Group expired"); } catch { /* already closed */ }
+        }
+        await this.state.storage.deleteAll(); // drop this DO's own storage too — nothing left to schedule
+        return; // skip the normal recompute below; there's nothing left to schedule
+      }
+    }
+
     await this.#recomputeAndSetAlarm();
   }
 
@@ -155,12 +196,26 @@ export class GroupRoom {
     return new Response(null, { status: 204 });
   }
 
+  async #handleRecompute(request, url) {
+    await this.#rememberGroupId(url.searchParams.get("groupId"));
+    // Unlike /schedule (which only ever moves the alarm earlier, for the
+    // common case of a new expense), this fully recalculates and overwrites
+    // the alarm — needed when retention was just extended and the next
+    // event moved LATER, e.g. a group just got claimed by a signed-in user.
+    await this.#recomputeAndSetAlarm();
+    return new Response(null, { status: 204 });
+  }
+
   // --- Small internals -------------------------------------------------------
 
   #broadcast(state) {
-    const payload = JSON.stringify({ type: "state", state: stripForBroadcast(state) });
+    this.#broadcastRaw({ type: "state", state: stripForBroadcast(state) });
+  }
+
+  #broadcastRaw(payload) {
+    const json = JSON.stringify(payload);
     for (const ws of this.state.getWebSockets()) {
-      try { ws.send(payload); } catch { /* socket closed between listing and send; hibernation API reaps it */ }
+      try { ws.send(json); } catch { /* socket closed between listing and send; hibernation API reaps it */ }
     }
   }
 

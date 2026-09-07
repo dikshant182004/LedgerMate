@@ -1,6 +1,35 @@
-export const DAY_MS = 24 * 60 * 60 * 1000;
-export const RETENTION_DAYS = { day: 1, week: 7, twoweek: 14, month: 30 };
+export const MINUTE_MS = 60 * 1000;
+export const HOUR_MS = 60 * MINUTE_MS;
+export const DAY_MS = 24 * HOUR_MS;
+
+// Retention tiers. Anyone can use ANONYMOUS_RETENTIONS without signing in —
+// meant for "split it, settle up, done" quick sessions. Anything longer
+// requires a signed-in account (Google sign-in itself provides the email —
+// no separate field needed), because it ties the group to that account
+// instead of leaving it to expire on its own.
+export const RETENTION_MS = {
+  "10min": 10 * MINUTE_MS,
+  "1hour": 1 * HOUR_MS,
+  "1day": 1 * DAY_MS,
+  "1week": 7 * DAY_MS,
+  "1month": 30 * DAY_MS,
+  "6month": 182 * DAY_MS,
+  "1year": 365 * DAY_MS,
+};
+export const ANONYMOUS_RETENTIONS = ["10min", "1hour", "1day"];
+export const SIGNIN_RETENTIONS = ["1week", "1month", "6month", "1year", "permanent"];
+export const ALL_RETENTIONS = [...ANONYMOUS_RETENTIONS, ...SIGNIN_RETENTIONS];
+export const DEFAULT_RETENTION = "1day";
+
+export function retentionRequiresSignIn(retention) {
+  return SIGNIN_RETENTIONS.includes(retention);
+}
+
 export const REMINDER_WINDOW_MS = 2 * DAY_MS; // send reminder when <=48h from expiry
+// Below this, a 48h-ahead reminder wouldn't make sense (it'd fire after the
+// thing already expired) — reminders are skipped for these regardless of
+// sign-in state, since they're meant to be quick, ephemeral sessions anyway.
+export const REMINDER_ELIGIBLE_RETENTIONS = ["1week", "1month", "6month", "1year"];
 
 /**
  * Builds the full { group, members, expenses, balances, settlements } payload
@@ -82,20 +111,26 @@ export function simplifyDebts(balances) {
  */
 export function computeExpiryForNewExpense(retention) {
   if (retention === "permanent") return null;
-  return Date.now() + (RETENTION_DAYS[retention] || RETENTION_DAYS.month) * DAY_MS;
+  return Date.now() + (RETENTION_MS[retention] || RETENTION_MS[DEFAULT_RETENTION]);
 }
 
 /**
  * Given a group's id, finds the earliest upcoming "event" that its DO alarm
  * should wake up for: either a not-yet-sent 48h expiry reminder, or an
- * expense's actual deletion time. Returns null if the group has nothing
- * pending (e.g. no expenses, or all expenses are permanent).
+ * expense's actual deletion time, or (for anonymous short-lived groups) the
+ * group's own cleanup check. Returns null if nothing is pending.
  */
 export async function findNextAlarmTime(DB, groupId) {
-  const reminderRow = await DB.prepare(
-    `SELECT MIN(expires_at) as t FROM expenses
-     WHERE group_id = ? AND expires_at IS NOT NULL AND reminded_at IS NULL`
-  ).bind(groupId).first();
+  const group = await DB.prepare("SELECT retention, created_by, created_at FROM groups WHERE id = ?").bind(groupId).first();
+  if (!group) return null;
+
+  const reminderEligible = REMINDER_ELIGIBLE_RETENTIONS.includes(group.retention);
+  const reminderRow = reminderEligible
+    ? await DB.prepare(
+        `SELECT MIN(expires_at) as t FROM expenses
+         WHERE group_id = ? AND expires_at IS NOT NULL AND reminded_at IS NULL AND created_by IS NOT NULL`
+      ).bind(groupId).first()
+    : null;
   const expiryRow = await DB.prepare(
     `SELECT MIN(expires_at) as t FROM expenses WHERE group_id = ? AND expires_at IS NOT NULL`
   ).bind(groupId).first();
@@ -103,10 +138,19 @@ export async function findNextAlarmTime(DB, groupId) {
   const candidates = [];
   if (reminderRow?.t) candidates.push(reminderRow.t - REMINDER_WINDOW_MS);
   if (expiryRow?.t) candidates.push(expiryRow.t);
+
+  // Anonymous, short-lived groups get a fallback wake-up at the end of their
+  // own window even if no expense was ever added — otherwise an abandoned
+  // empty group with no expenses would never get an alarm scheduled at all,
+  // and would sit around forever instead of being cleaned up.
+  if (!group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
+    candidates.push(group.created_at + RETENTION_MS[group.retention]);
+  }
+
   if (candidates.length === 0) return null;
 
-  // Never schedule into the past — a reminder time that's already gone by
-  // (e.g. an expense created with < 48h left on its retention) should fire
-  // almost immediately, not be skipped.
+  // Never schedule into the past — a time that's already gone by (e.g. an
+  // expense created with < 48h left on its retention) should fire almost
+  // immediately, not be skipped.
   return Math.max(Date.now() + 1000, Math.min(...candidates));
 }

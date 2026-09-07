@@ -12,6 +12,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="LedgerMate" />
+<script>
+  // Runs before first paint, before style.css even finishes loading, so
+  // there's no flash of the light theme before switching to dark.
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  } catch (e) {}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -46,7 +56,13 @@
   <!-- ============ HOME ============ -->
   <section id="view-home" class="view hidden">
     <header class="home-topbar">
-      <span class="brand">Ledger<span class="brand-accent">Mate</span></span>
+      <div class="topbar-left">
+        <button id="theme-toggle-home" class="icon-btn theme-toggle" aria-label="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        </button>
+        <span class="brand">Ledger<span class="brand-accent">Mate</span></span>
+      </div>
       <div id="auth-area" class="auth-area"></div>
     </header>
 
@@ -70,12 +86,20 @@
         </select>
         <label class="field-label">Keep expenses in this group for</label>
         <select id="group-retention">
-          <option value="day">1 day, then auto-delete</option>
-          <option value="week">1 week, then auto-delete</option>
-          <option value="twoweek">2 weeks, then auto-delete</option>
-          <option value="month" selected>1 month, then auto-delete</option>
-          <option value="permanent">Keep until I delete it</option>
+          <optgroup label="No sign-in needed — quick split &amp; settle">
+            <option value="10min">10 minutes, then auto-delete</option>
+            <option value="1hour">1 hour, then auto-delete</option>
+            <option value="1day" selected>1 day, then auto-delete</option>
+          </optgroup>
+          <optgroup label="Sign in with Google to unlock">
+            <option value="1week">1 week, then auto-delete</option>
+            <option value="1month">1 month, then auto-delete</option>
+            <option value="6month">6 months, then auto-delete</option>
+            <option value="1year">1 year, then auto-delete</option>
+            <option value="permanent">Keep until I delete it</option>
+          </optgroup>
         </select>
+        <p id="retention-signin-note" class="permanent-note hidden">Sign in with Google to use this retention period — it'll open the sign-in flow when you submit.</p>
         <button type="submit" class="btn btn-primary btn-full">Create group</button>
       </form>
     </div>
@@ -90,7 +114,13 @@
   <section id="view-group" class="view hidden">
 
     <header class="topbar">
-      <span id="group-name-header" class="group-name-header"></span>
+      <div class="topbar-left">
+        <button id="theme-toggle-group" class="icon-btn theme-toggle" aria-label="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        </button>
+        <span id="group-name-header" class="group-name-header"></span>
+      </div>
       <div class="topbar-actions">
         <button id="share-btn" class="icon-btn" aria-label="Share group link">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/></svg>
@@ -98,6 +128,16 @@
         <div id="auth-area-group" class="auth-area"></div>
       </div>
     </header>
+
+    <div id="extend-banner" class="extend-banner hidden">
+      <span id="extend-banner-text"></span>
+      <div class="extend-banner-actions">
+        <button id="extend-banner-signin" class="btn btn-small btn-inverse">Sign in &amp; extend</button>
+        <button id="extend-banner-dismiss" class="icon-btn" aria-label="Dismiss">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
 
     <main class="tab-content">
 
@@ -222,6 +262,50 @@
         <input id="share-link" type="text" readonly />
         <button id="copy-link-btn" class="btn btn-small">Copy</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ============ SHEET: account ============ -->
+  <div id="account-overlay" class="sheet-overlay hidden">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2>Account</h2>
+        <button id="close-account-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div id="account-profile" class="account-profile"></div>
+
+      <h2 class="section-title">Your groups</h2>
+      <ul id="account-groups-list" class="account-groups-list"></ul>
+
+      <button id="account-signout" class="btn btn-small btn-full account-signout">Sign out</button>
+    </div>
+  </div>
+
+  <!-- ============ SHEET: extend / claim retention ============ -->
+  <div id="claim-overlay" class="sheet-overlay hidden">
+    <div class="sheet sheet-small">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2>Extend this group</h2>
+        <button id="close-claim-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="sub">You're signed in — pick how long to keep this group. This saves it to your account and extends everything already in it.</p>
+      <form id="claim-form" class="stack">
+        <select id="claim-retention">
+          <option value="1week">1 week</option>
+          <option value="1month" selected>1 month</option>
+          <option value="6month">6 months</option>
+          <option value="1year">1 year</option>
+          <option value="permanent">Keep until I delete it</option>
+        </select>
+        <button type="submit" class="btn btn-primary btn-full">Extend group</button>
+      </form>
     </div>
   </div>
 

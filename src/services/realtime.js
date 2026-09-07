@@ -39,6 +39,15 @@ export async function scheduleGroupAlarm(env, groupId, { reminderAt, expiresAt }
   }).catch(() => {});
 }
 
+// Tells the group's DO to fully recalculate its alarm from scratch, rather
+// than only moving it earlier (which is all scheduleGroupAlarm does). Needed
+// when retention was just extended — e.g. an anonymous group got claimed by
+// a signed-in account and its expiry moved LATER, not sooner.
+export async function recomputeGroupAlarm(env, groupId) {
+  const stub = getGroupRoomStub(env, groupId);
+  await stub.fetch(`https://group-room/recompute?groupId=${groupId}`, { method: "POST" }).catch(() => {});
+}
+
 // Forwards a WebSocket upgrade request straight through to the group's DO.
 // This is the only realtime.js function that returns a Response directly to
 // the client rather than firing-and-forgetting.
