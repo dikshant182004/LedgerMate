@@ -20,15 +20,15 @@
     ]
   },
   "migrations": [
-    { "tag": "v1-group-room", "new_classes": ["GroupRoom"] }
+    { "tag": "v1-group-room", "new_sqlite_classes": ["GroupRoom"] }
   ],
   "observability": {
     "enabled": true
   },
   "vars": {
     "GOOGLE_CLIENT_ID": "857476834665-in10d56gjokq45j9lib0lslds0b52g9n.apps.googleusercontent.com",
-    "GOOGLE_REDIRECT_URI": "https://splitwise.ledgermate.workers.dev/auth/google/callback",
-    "APP_URL": "https://splitwise.ledgermate.workers.dev",
+    "GOOGLE_REDIRECT_URI": "https://splitmate.ledgermate.workers.dev/auth/google/callback",
+    "APP_URL": "https://splitmate.ledgermate.workers.dev",
     "RESEND_FROM": "LedgerMate <onboarding@resend.dev>"
   }
 }

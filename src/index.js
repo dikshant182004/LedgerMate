@@ -55,7 +55,7 @@ app.get("/auth/google/login", async (c) => {
   // Only ever trust a same-site relative path here (e.g. "/?g=..."), never a
   // full URL — otherwise this would be an open redirect.
   const returnTo = c.req.query("return_to");
-  const safeReturnTo = returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//") ? returnTo : "/";
+  const safeReturnTo = returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//") ? returnTo : "/app/";
 
   const headers = new Headers();
   headers.append("Set-Cookie", cookieHeader("oauth_state", state, { maxAge: 600 }));
@@ -112,7 +112,7 @@ app.get("/auth/google/callback", async (c) => {
     "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
   ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
 
-  const returnTo = cookies["oauth_return_to"] || "/";
+  const returnTo = cookies["oauth_return_to"] || "/app/";
 
   const headers = new Headers();
   headers.append("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));

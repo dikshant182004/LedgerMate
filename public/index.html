@@ -2,315 +2,274 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>LedgerMate — split expenses, free</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LedgerMate — Free, Real-Time Expense Splitting (Splitwise Alternative)</title>
+<meta name="description" content="Split bills with friends and roommates for free — no sign-up to start, no daily limits, no ads. Balances update live for everyone in the group, and quick splits clean themselves up automatically." />
+<link rel="canonical" href="https://tryledgermate.in/" />
+<link rel="alternate" hreflang="en" href="https://tryledgermate.in/" />
+<link rel="alternate" hreflang="x-default" href="https://tryledgermate.in/" />
+<meta name="robots" content="index, follow" />
 
-<link rel="manifest" href="/manifest.json" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="LedgerMate — Free, Real-Time Expense Splitting" />
+<meta property="og:description" content="No sign-up to start. No daily limits. No ads. Balances update live for your whole group, and quick splits clean themselves up automatically." />
+<meta property="og:url" content="https://tryledgermate.in/" />
+<meta property="og:image" content="https://tryledgermate.in/icons/icon-512.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="LedgerMate — Free, Real-Time Expense Splitting" />
+<meta name="twitter:description" content="No sign-up to start. No daily limits. No ads. Splits update live for everyone." />
+<meta name="twitter:image" content="https://tryledgermate.in/icons/icon-512.png" />
+
 <link rel="icon" href="/icons/favicon-32.png" />
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-<meta name="theme-color" content="#6D4FEB" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="LedgerMate" />
-<script>
-  // Runs before first paint, before style.css even finishes loading, so
-  // there's no flash of the light theme before switching to dark.
-  try {
-    var t = localStorage.getItem("theme");
-    if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
-      document.documentElement.setAttribute("data-theme", "dark");
-    }
-  } catch (e) {}
-</script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/style.css" />
-<script src="/vendor/chart.umd.min.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/landing.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "url": "https://tryledgermate.in/",
+  "description": "Free, real-time expense-splitting app for friends, roommates, and trips. No sign-up required to start, no daily expense limits, no ads.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is LedgerMate really free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. LedgerMate has no paid tier, no ads, and no daily limit on how many expenses you can add. There's no catch — quick groups auto-expire instead of being kept forever, which is what keeps the app free to run." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to create an account to use LedgerMate?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. You can create a group and start splitting expenses immediately with no sign-up. Signing in with Google is optional and only needed if you want a group's data kept for longer than a day, or want to see all your groups in one place." }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to my expense data over time?",
+      "acceptedAnswer": { "@type": "Answer", "text": "You choose how long a group's data is kept when you create it, from 10 minutes up to a year, or kept permanently on a signed-in account. Anonymous quick groups (no sign-in) automatically clean themselves up after their chosen window, so nothing sits around in a database indefinitely." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is LedgerMate different from Splitwise?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Splitwise's free tier limits you to a few expenses per day, shows ads, and puts features like currency conversion behind a paid Pro plan. LedgerMate has none of those limits, and balances update live across every device in the group instead of requiring a manual refresh." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does everyone in my group need to download an app?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Share the group link and anyone can join from a browser on any device, no app store install required. LedgerMate can optionally be added to a phone's home screen for an app-like experience, but that's never required." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use LedgerMate on iPhone and Android?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, LedgerMate works in any modern mobile or desktop browser and can be added to your home screen on both iPhone and Android for a native-app-like experience, without needing an app store." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I keep a group's expenses permanently?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, if you sign in with Google you can choose to keep a group's expenses permanently instead of on a timer, up to two permanent groups per account." }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
-  <!-- ============ SPLASH (plays once per tab session) ============ -->
-  <div id="splash" class="splash">
-    <div class="splash-icon">
-      <svg viewBox="0 0 100 100" class="splash-svg">
-        <rect x="0" y="0" width="100" height="100" rx="24" fill="url(#g)"/>
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#6D4FEB"/>
-            <stop offset="1" stop-color="#3D6EF0"/>
-          </linearGradient>
-        </defs>
-        <path class="splash-receipt" d="M28 20 H72 V70 L64 64 L56 70 L48 64 L40 70 L32 64 L28 70 Z" fill="#fff"/>
-        <line class="splash-line l1" x1="38" y1="34" x2="62" y2="34" stroke="#B4B4C3" stroke-width="3" stroke-linecap="round"/>
-        <line class="splash-line l2" x1="38" y1="44" x2="62" y2="44" stroke="#B4B4C3" stroke-width="3" stroke-linecap="round"/>
-        <line class="splash-line l3" x1="38" y1="54" x2="52" y2="54" stroke="#B4B4C3" stroke-width="3" stroke-linecap="round"/>
-        <circle class="splash-badge" cx="76" cy="76" r="18" fill="#2FA86E" stroke="#fff" stroke-width="3"/>
-        <path class="splash-check" d="M68 76 L74 82 L85 69" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <div class="splash-word">Ledger<span>Mate</span></div>
-  </div>
-
-  <!-- ============ HOME ============ -->
-  <section id="view-home" class="view hidden">
-    <header class="home-topbar">
-      <div class="topbar-left">
-        <button id="theme-toggle-home" class="icon-btn theme-toggle" aria-label="Toggle dark mode">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
-        </button>
-        <span class="brand">Ledger<span class="brand-accent">Mate</span></span>
-      </div>
-      <div id="auth-area" class="auth-area"></div>
-    </header>
-
-    <div class="home-wrap">
-      <div class="home-logo"><img src="/icons/icon-192.png" alt="" width="60" height="60" /></div>
-      <h1>Split bills.<br />Keep it simple.</h1>
-      <p class="sub">No sign-up required. Create a group, share the link, start adding expenses. Sign in with Google if you want reminder emails before anything auto-deletes.</p>
-      <form id="create-group-form" class="stack">
-        <input id="group-name" type="text" placeholder="Goa Trip, Flat 4B, Weekend Dinner… (must be unique)" required maxlength="60" />
-        <input id="owner-name" type="text" placeholder="Your name" required maxlength="40" />
-        <label class="field-label">Currency</label>
-        <select id="group-currency">
-          <option value="$" selected>$ — US Dollar</option>
-          <option value="₹">₹ — Indian Rupee</option>
-          <option value="€">€ — Euro</option>
-          <option value="£">£ — British Pound</option>
-          <option value="¥">¥ — Japanese Yen</option>
-          <option value="A$">A$ — Australian Dollar</option>
-          <option value="C$">C$ — Canadian Dollar</option>
-          <option value="د.إ">د.إ — UAE Dirham</option>
-        </select>
-        <label class="field-label">Keep expenses in this group for</label>
-        <select id="group-retention">
-          <optgroup label="No sign-in needed — quick split &amp; settle">
-            <option value="10min">10 minutes, then auto-delete</option>
-            <option value="1hour">1 hour, then auto-delete</option>
-            <option value="1day" selected>1 day, then auto-delete</option>
-          </optgroup>
-          <optgroup label="Sign in with Google to unlock">
-            <option value="1week">1 week, then auto-delete</option>
-            <option value="1month">1 month, then auto-delete</option>
-            <option value="6month">6 months, then auto-delete</option>
-            <option value="1year">1 year, then auto-delete</option>
-            <option value="permanent">Keep until I delete it</option>
-          </optgroup>
-        </select>
-        <p id="retention-signin-note" class="permanent-note hidden">Sign in with Google to use this retention period — it'll open the sign-in flow when you submit.</p>
-        <button type="submit" class="btn btn-primary btn-full">Create group</button>
-      </form>
-    </div>
-
-    <div id="my-groups-wrap" class="my-groups-wrap hidden">
-      <h2 class="section-title">Your groups</h2>
-      <ul id="my-groups-list" class="my-groups-list"></ul>
-    </div>
-  </section>
-
-  <!-- ============ GROUP APP SHELL ============ -->
-  <section id="view-group" class="view hidden">
-
-    <header class="topbar">
-      <div class="topbar-left">
-        <button id="theme-toggle-group" class="icon-btn theme-toggle" aria-label="Toggle dark mode">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
-        </button>
-        <span id="group-name-header" class="group-name-header"></span>
-      </div>
-      <div class="topbar-actions">
-        <button id="share-btn" class="icon-btn" aria-label="Share group link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/></svg>
-        </button>
-        <div id="auth-area-group" class="auth-area"></div>
-      </div>
-    </header>
-
-    <div id="extend-banner" class="extend-banner hidden">
-      <span id="extend-banner-text"></span>
-      <div class="extend-banner-actions">
-        <button id="extend-banner-signin" class="btn btn-small btn-inverse">Sign in &amp; extend</button>
-        <button id="extend-banner-dismiss" class="icon-btn" aria-label="Dismiss">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <main class="tab-content">
-
-      <div id="tab-expenses" class="tab-panel">
-        <ul id="expense-list" class="expense-list"></ul>
-      </div>
-
-      <div id="tab-balances" class="tab-panel hidden">
-        <h2 class="section-title">Balances</h2>
-        <ul id="balance-list" class="balance-list"></ul>
-        <h2 class="section-title">Settle up</h2>
-        <ul id="settle-list" class="settle-list"></ul>
-      </div>
-
-      <div id="tab-dashboard" class="tab-panel hidden">
-        <h2 class="section-title">Overview</h2>
-        <div class="stat-row">
-          <div class="stat-card"><span class="stat-label">Total spent</span><span id="stat-total" class="stat-value">—</span></div>
-          <div class="stat-card"><span class="stat-label">Expenses</span><span id="stat-count" class="stat-value">—</span></div>
-        </div>
-        <h2 class="section-title">Who paid what</h2>
-        <div class="chart-card"><canvas id="chart-spend"></canvas></div>
-        <h2 class="section-title">Net balance per person</h2>
-        <div class="chart-card"><canvas id="chart-balance"></canvas></div>
-      </div>
-
-      <div id="tab-people" class="tab-panel hidden">
-        <h2 class="section-title">People in this group</h2>
-        <ul id="member-list" class="member-list"></ul>
-        <p class="sub">New people are added automatically when they open this group's share link.</p>
-      </div>
-
-    </main>
-
-    <button id="fab-add-expense" class="fab" aria-label="Add expense">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
-
-    <nav class="bottom-nav">
-      <button class="nav-btn active" data-tab="expenses">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-        <span>Expenses</span>
-      </button>
-      <button class="nav-btn" data-tab="balances">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M5 7l-3 6a3.5 3.5 0 0 0 7 0z"/><path d="M19 7l-3 6a3.5 3.5 0 0 0 7 0z"/><line x1="5" y1="7" x2="19" y2="7"/><path d="M9 21h6"/></svg>
-        <span>Balances</span>
-      </button>
-      <button class="nav-btn" data-tab="dashboard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="8" rx="1"/><rect x="10" y="7" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="17" rx="1"/></svg>
-        <span>Dashboard</span>
-      </button>
-      <button class="nav-btn" data-tab="people">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15.5 14.3c2.9.3 5 2.4 5 5.7"/></svg>
-        <span>People</span>
-      </button>
-    </nav>
-
-  </section>
-
-  <!-- ============ SHEET: add expense ============ -->
-  <div id="sheet-overlay" class="sheet-overlay hidden">
-    <div id="expense-sheet" class="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <h2>Add an expense</h2>
-        <button id="close-expense-sheet" class="icon-btn" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
-      </div>
-
-      <form id="add-expense-form" class="expense-form">
-        <div class="expense-row">
-          <input id="expense-desc" type="text" placeholder="What was it for?" required maxlength="80" />
-          <input id="expense-amount" type="number" step="0.01" min="0.01" placeholder="0.00" required />
-        </div>
-
-        <label class="field-label">Paid by</label>
-        <select id="expense-paid-by" required></select>
-
-        <label class="field-label">Split between</label>
-        <div id="split-members" class="split-members"></div>
-
-        <div class="split-type-row">
-          <label><input type="radio" name="split-type" value="equal" checked /> Split equally</label>
-          <label><input type="radio" name="split-type" value="custom" /> Custom amounts</label>
-        </div>
-
-        <div id="custom-split-rows" class="custom-split-rows hidden"></div>
-
-        <button type="submit" class="btn btn-primary btn-full">Add expense</button>
-      </form>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#compare">Vs. Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Free Tools</a>
+      <a href="#faq">FAQ</a>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
     </div>
   </div>
+</nav>
 
-  <!-- ============ SHEET: join group (shown to new visitors of a share link) ============ -->
-  <div id="join-overlay" class="sheet-overlay hidden">
-    <div class="sheet sheet-small">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <h2 id="join-group-title">Join this group</h2>
-      </div>
-      <p class="sub">You've been invited to split expenses here. What's your name?</p>
-      <form id="join-group-form" class="stack">
-        <input id="join-name" type="text" placeholder="Your name" required maxlength="40" />
-        <button type="submit" class="btn btn-primary btn-full">Join group</button>
-      </form>
-    </div>
+<header class="hero wrap">
+  <span class="hero-badge">● 100% free — no ads, no Pro tier</span>
+  <h1>Split expenses <span class="accent">live</span>,<br />for everyone in the group.</h1>
+  <p class="sub">No sign-up to start. No daily expense limits. Add a bill and everyone's balance updates instantly — and quick trip splits clean themselves up automatically instead of sitting in a database forever.</p>
+  <div class="hero-ctas">
+    <a href="/app/" class="btn btn-primary">Try LedgerMate free →</a>
+    <a href="#how-it-works" class="btn btn-ghost">See how it works</a>
   </div>
+  <p class="hero-note">No credit card. No account required. Works in your browser right now.</p>
+</header>
 
-  <!-- ============ SHEET: share link ============ -->
-  <div id="share-overlay" class="sheet-overlay hidden">
-    <div class="sheet sheet-small">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <h2>Share this group</h2>
-        <button id="close-share-sheet" class="icon-btn" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
+<section class="section" id="features">
+  <div class="wrap">
+    <p class="section-eyebrow">Why LedgerMate</p>
+    <h2>Built for the moment you're actually splitting a bill</h2>
+    <p class="lead">Not another app everyone has to install — and not another tracker that hoards your group's data forever.</p>
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3>Real-time sync</h3>
+        <p>Add an expense on your phone and it appears instantly on everyone else's screen — no refreshing, no "did that save?" moments.</p>
       </div>
-      <p class="sub">Anyone with this link can view and add to this group.</p>
-      <div class="share-row">
-        <input id="share-link" type="text" readonly />
-        <button id="copy-link-btn" class="btn btn-small">Copy</button>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+        <h3>No sign-up needed</h3>
+        <p>Create a group, share the link, and your friends are splitting bills in seconds — nobody has to make an account or install anything.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>No daily limits</h3>
+        <p>Log ten expenses in one day if that's what your trip needs. There's no cap, no "upgrade to add more" wall.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6z"/></svg></div>
+        <h3>Privacy by design</h3>
+        <p>Quick, no-sign-in groups auto-delete on a timer you choose — from 10 minutes to a day. Nothing lingers unless you decide to keep it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="8" rx="1"/><rect x="10" y="7" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="17" rx="1"/></svg></div>
+        <h3>Simplified settle-up</h3>
+        <p>LedgerMate collapses a tangle of IOUs into the fewest payments needed, with live charts showing who paid what.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <h3>Works on any device</h3>
+        <p>No App Store, no Play Store. Open the link in any browser, and optionally add it to your home screen like an app.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- ============ SHEET: account ============ -->
-  <div id="account-overlay" class="sheet-overlay hidden">
-    <div class="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <h2>Account</h2>
-        <button id="close-account-sheet" class="icon-btn" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
-      </div>
-
-      <div id="account-profile" class="account-profile"></div>
-
-      <h2 class="section-title">Your groups</h2>
-      <ul id="account-groups-list" class="account-groups-list"></ul>
-
-      <button id="account-signout" class="btn btn-small btn-full account-signout">Sign out</button>
+<section class="section" id="how-it-works">
+  <div class="wrap">
+    <p class="section-eyebrow">How it works</p>
+    <h2>Three steps, no download</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num"></div><h3>Create a group</h3><p>Name it and pick how long to keep it — no account required.</p></div>
+      <div class="step"><div class="step-num"></div><h3>Share the link</h3><p>Anyone with the link joins instantly and picks their name.</p></div>
+      <div class="step"><div class="step-num"></div><h3>Add expenses</h3><p>Balances update live for everyone, with a simplified settle-up.</p></div>
     </div>
   </div>
+</section>
 
-  <!-- ============ SHEET: extend / claim retention ============ -->
-  <div id="claim-overlay" class="sheet-overlay hidden">
-    <div class="sheet sheet-small">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <h2>Extend this group</h2>
-        <button id="close-claim-sheet" class="icon-btn" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
-      </div>
-      <p class="sub">You're signed in — pick how long to keep this group. This saves it to your account and extends everything already in it.</p>
-      <form id="claim-form" class="stack">
-        <select id="claim-retention">
-          <option value="1week">1 week</option>
-          <option value="1month" selected>1 month</option>
-          <option value="6month">6 months</option>
-          <option value="1year">1 year</option>
-          <option value="permanent">Keep until I delete it</option>
-        </select>
-        <button type="submit" class="btn btn-primary btn-full">Extend group</button>
-      </form>
+<section class="section" id="compare">
+  <div class="wrap">
+    <p class="section-eyebrow">The honest comparison</p>
+    <h2>How LedgerMate stacks up</h2>
+    <p class="lead">Most "free" splitters quietly cap you somewhere. Here's what actually differs.</p>
+    <table class="compare-table">
+      <thead>
+        <tr><th>&nbsp;</th><th>Splitwise (Free)</th><th class="ledgermate-col">LedgerMate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Daily expense limit</td><td class="no">3–5 per day</td><td class="ledgermate-col yes">None</td></tr>
+        <tr><td>Ads</td><td class="no">Yes</td><td class="ledgermate-col yes">None</td></tr>
+        <tr><td>Sign-up required to start</td><td class="no">Yes</td><td class="ledgermate-col yes">No</td></tr>
+        <tr><td>Live sync across devices</td><td class="no">Manual refresh</td><td class="ledgermate-col yes">Real-time</td></tr>
+        <tr><td>Data kept forever by default</td><td class="no">Yes, always</td><td class="ledgermate-col yes">Your choice</td></tr>
+        <tr><td>Price</td><td class="no">Free / $4.99 Pro</td><td class="ledgermate-col yes">Free</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="narrow" style="text-align:center;">
+    <p class="section-eyebrow">Free tools</p>
+    <h2>Calculate a split before you even create a group</h2>
+    <p class="lead">Quick, no-signup calculators for common situations — jump straight into LedgerMate to save and track the result.</p>
+    <div class="tool-links">
+      <a href="/tools/trip-expense-calculator/">Trip Expense Calculator</a>
+      <a href="/tools/rent-split-calculator/">Rent Split Calculator</a>
     </div>
   </div>
+</section>
 
-  <div id="toast" class="toast hidden"></div>
+<section class="section" id="faq">
+  <div class="narrow">
+    <p class="section-eyebrow">FAQ</p>
+    <h2 style="margin-bottom:32px;">Common questions</h2>
 
-  <script src="/app.js" defer></script>
+    <details class="faq-item" open>
+      <summary>Is LedgerMate really free?</summary>
+      <p>Yes. There's no paid tier, no ads, and no daily limit on expenses. Quick anonymous groups auto-expire on a timer instead of being stored forever — that's what keeps the app sustainable to run for free.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do I need to create an account?</summary>
+      <p>No. Create a group and start splitting immediately. Signing in with Google is optional, and only needed for longer retention or to see all your groups in one place.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What happens to my expense data over time?</summary>
+      <p>You choose the retention when you create a group — from 10 minutes up to a year, or permanent if you're signed in. Anonymous groups clean themselves up automatically once their window passes.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How is LedgerMate different from Splitwise?</summary>
+      <p>Splitwise's free tier caps you at a few expenses a day, shows ads, and paywalls things like currency conversion behind Pro. LedgerMate has no daily limit, no ads, and syncs live across every device in the group.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Does everyone in my group need to download an app?</summary>
+      <p>No. Share the link and anyone joins from a browser on any device — no app store, no install. It can optionally be added to a phone's home screen for an app-like feel.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I use LedgerMate on iPhone and Android?</summary>
+      <p>Yes — it works in any modern mobile or desktop browser, and installs to your home screen on both iPhone and Android without an app store.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I keep a group's expenses permanently?</summary>
+      <p>Yes — sign in with Google and choose "keep until I delete it" for up to two permanent groups per account.</p>
+    </details>
+  </div>
+</section>
+
+<section class="section">
+  <div class="cta-band">
+    <h2>Split your next bill in under a minute</h2>
+    <p>No account, no install, no daily limit.</p>
+    <a href="/app/" class="btn btn-ghost">Try LedgerMate free →</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free, real-time expense splitting for friends, roommates, and trips.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="/app/">Open the app</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#compare">Vs. Splitwise</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Free tools</h4>
+        <ul>
+          <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Split Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/how-to-split-trip-expenses/">Splitting Trip Expenses</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free, always.</p>
+  </div>
+</footer>
+
 </body>
 </html>
