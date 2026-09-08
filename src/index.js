@@ -21,6 +21,17 @@ export { GroupRoom };
 
 const app = new Hono();
 
+// Redirect any plain HTTP requests to secure HTTPS
+app.use("*", async (c, next) => {
+  const proto = c.req.header("x-forwarded-proto");
+  if (proto && proto === "http") {
+    const url = new URL(c.req.url);
+    url.protocol = "https:";
+    return c.redirect(url.toString(), 301);
+  }
+  await next();
+});
+
 const SESSION_MAX_AGE_S = 60 * 60 * 24 * 30; // 30 days
 
 /* ================================================================== *
