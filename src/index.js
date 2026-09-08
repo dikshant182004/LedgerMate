@@ -21,12 +21,21 @@ export { GroupRoom };
 
 const app = new Hono();
 
-// Redirect any plain HTTP requests to secure HTTPS
+// Redirect any plain HTTP requests to secure HTTPS and canonicalize www to root domain
 app.use("*", async (c, next) => {
+  const url = new URL(c.req.url);
   const proto = c.req.header("x-forwarded-proto");
+  let shouldRedirect = false;
+
   if (proto && proto === "http") {
-    const url = new URL(c.req.url);
     url.protocol = "https:";
+    shouldRedirect = true;
+  }
+  if (url.hostname.startsWith("www.")) {
+    url.hostname = url.hostname.slice(4);
+    shouldRedirect = true;
+  }
+  if (shouldRedirect) {
     return c.redirect(url.toString(), 301);
   }
   await next();
