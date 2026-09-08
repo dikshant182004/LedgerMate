@@ -1,5 +1,15 @@
-const CACHE = "ledgermate-shell-v1";
-const SHELL_FILES = ["/", "/style.css", "/app.js", "/manifest.json", "/icons/icon-192.png"];
+const CACHE = "ledgermate-shell-v2";
+const SHELL_FILES = [
+  "/",
+  "/app/",
+  "/style.css",
+  "/app.js",
+  "/manifest.json",
+  "/vendor/chart.umd.min.js",
+  "/vendor/qrcode.min.js",
+  "/icons/icon-192.png",
+  "/icons/favicon-32.png"
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL_FILES)));

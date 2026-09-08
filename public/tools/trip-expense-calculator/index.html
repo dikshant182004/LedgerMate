@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://tryledgermate.in/tools/trip-expense-calculator/" />
 <meta name="robots" content="index, follow" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Free Trip Expense Calculator" />
+<meta property="og:title" content="Free Trip Expense Calculator | LedgerMate" />
 <meta property="og:description" content="Add everyone's trip costs, see who owes who, and the simplest way to settle up. Free, no sign-up." />
 <meta property="og:url" content="https://tryledgermate.in/tools/trip-expense-calculator/" />
 <link rel="icon" href="/icons/favicon-32.png" />
@@ -19,10 +19,35 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Trip Expense Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate group trip costs, simplified debt settlements, and member balances instantly without sign-up."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "How do I calculate a trip expense split?", "acceptedAnswer": { "@type": "Answer", "text": "Add each person on the trip, then log every expense with who paid for it. The calculator totals what everyone paid versus what they owe, then works out the smallest number of payments needed to settle up." } },
-    { "@type": "Question", "name": "Is this trip expense calculator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free with no sign-up required. For a version that saves your trip and updates live as your group adds more expenses, try LedgerMate." } }
+    {
+      "@type": "Question",
+      "name": "How do I calculate a trip expense split?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Add each person on the trip, then log every expense with who paid for it. The calculator totals what everyone paid versus what they owe, then works out the smallest number of payments needed to settle up."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this trip expense calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free with no sign-up required. For a version that saves your trip and updates live as your group adds more expenses, try LedgerMate."
+      }
+    }
   ]
 }
 </script>
@@ -34,100 +59,205 @@
     <a href="/" class="logo">Ledger<span>Mate</span></a>
     <div class="nav-links">
       <a href="/#features">Features</a>
-      <a href="/tools/rent-split-calculator/">Rent Calculator</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/bill-split-calculator/">Bill Splitter</a>
+      <a href="/tools/rent-split-calculator/">Rent Calc</a>
       <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
     </div>
   </div>
 </nav>
 
-<header class="hero wrap" style="padding-top:48px;padding-bottom:24px;">
-  <h1 style="font-size:34px;">Free Trip Expense Calculator</h1>
-  <p class="sub" style="font-size:16px;">Add who paid for what, and instantly see who owes who — and the fewest payments to settle it all.</p>
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Trip Expense Calculator
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Free Trip Expense Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:620px;">Add who paid for what, see exact net balances, and get the minimum number of payments to settle up.</p>
 </header>
 
 <div class="narrow" style="padding-bottom:56px;">
   <div class="calc-card">
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="¥">¥ — Japanese Yen</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+          <option value="د.إ">د.إ — UAE Dirham</option>
+        </select>
+      </div>
+      <div style="flex:1;display:flex;align-items:flex-end;">
+        <button type="button" id="btn-sample" class="btn btn-ghost" style="width:100%;">Load Sample Trip</button>
+      </div>
+    </div>
+
     <label>Who's on this trip?</label>
     <div id="people-list" class="people-list"></div>
     <div class="calc-row">
-      <input id="new-person" type="text" placeholder="Add a name and press Enter" />
+      <input id="new-person" type="text" placeholder="Add a friend's name and press Enter" />
+      <button class="btn btn-ghost" id="add-person-btn" type="button" style="white-space:nowrap;">+ Add</button>
     </div>
 
     <label>Expenses</label>
     <div id="expense-list" class="people-list"></div>
     <div class="calc-row">
-      <input id="exp-desc" type="text" placeholder="What was it for?" />
-      <input id="exp-amount" type="number" step="0.01" min="0" placeholder="Amount" />
+      <input id="exp-desc" type="text" placeholder="What was it for? (e.g. Airbnb, Dinner)" style="flex:1.5;" />
+      <input id="exp-amount" type="number" step="0.01" min="0" placeholder="Amount" style="flex:1;" />
     </div>
     <div class="calc-row">
-      <select id="exp-paidby"></select>
-      <button class="btn btn-primary" id="add-expense-btn" type="button">Add expense</button>
+      <select id="exp-paidby" style="flex:1.5;"></select>
+      <button class="btn btn-primary" id="add-expense-btn" type="button" style="flex:1;">Add expense</button>
     </div>
 
     <div class="calc-result" id="result" style="display:none;">
-      <h3 style="margin:0 0 4px;">Balances</h3>
+      <h3 style="margin:0 0 10px;font-size:16px;">Net Balances</h3>
       <div id="balances"></div>
-      <h3 style="margin:20px 0 4px;">Settle up</h3>
+      <h3 style="margin:24px 0 10px;font-size:16px;">Simplest Settlement (Who Pays Who)</h3>
       <div id="settlements"></div>
     </div>
 
     <div class="calc-cta">
-      <p>Want this saved and updating live as your group adds more? </p>
-      <a href="/app/" class="btn btn-primary">Create a free LedgerMate group →</a>
+      <div>
+        <p>Want this saved and updating live across everyone's phones?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Open a free LedgerMate group. Balances update in real time without login.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Weekend+Trip&currency=$" class="btn btn-primary">Open Live Group →</a>
     </div>
   </div>
 
   <article style="margin-top:48px;">
-    <h2 style="font-size:22px;">How to split trip expenses fairly</h2>
-    <p style="color:var(--text-muted);">The easiest way to split a group trip is to log every expense as it happens, along with who actually paid for it, rather than trying to remember and divide everything at the end. Once every cost is logged, the fair split isn't "divide the total by the number of people" — it's each person's <em>share</em> of the total, compared against what they already paid. This calculator does that math for you, and then simplifies the result into the smallest number of payments needed so nobody has to send five different small transfers to five different people.</p>
-    <h2 style="font-size:22px;">FAQ</h2>
-    <details class="faq-item" open><summary>How do I calculate a trip expense split?</summary><p>Add each person on the trip, then log every expense with who paid for it. The calculator totals what everyone paid versus what they owe, then works out the smallest number of payments needed to settle up.</p></details>
-    <details class="faq-item"><summary>Is this trip expense calculator free?</summary><p>Yes, completely free with no sign-up required. For a version that saves your trip and updates live as your group adds more expenses, <a href="/app/">try LedgerMate</a>.</p></details>
+    <h2>How to Split Trip Expenses Fairly</h2>
+    <p>The easiest way to split a group trip is to log every expense as it happens, along with who actually paid for it, rather than trying to remember and divide everything at the end. Once every cost is logged, the fair split isn't "divide the total by the number of people" — it's each person's <em>share</em> of the total, compared against what they already paid.</p>
+
+    <div class="callout-box">
+      <p><strong>Debt Simplification:</strong> Instead of settling every individual purchase with 15 confusing bank transfers, debt simplification balances out mutual debts so 4 people can settle up in just 2 quick payments.</p>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>How do I calculate a trip expense split?</summary>
+      <p>Add each person on the trip, then log every expense with who paid for it. The calculator totals what everyone paid versus what they owe, then works out the smallest number of payments needed to settle up.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is this trip expense calculator free?</summary>
+      <p>Yes, completely free with no sign-up required. For a version that saves your trip and updates live as your group adds more expenses, <a href="/app/">try LedgerMate</a>.</p>
+    </details>
   </article>
 </div>
 
 <footer class="footer">
-  <div class="wrap footer-bottom">© 2026 LedgerMate — <a href="/">Home</a></div>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No sign-up required.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
+        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
 </footer>
 
 <script>
   let people = [];
   let expenses = [];
 
+  const curEl = document.getElementById("currency");
   const peopleListEl = document.getElementById("people-list");
   const newPersonEl = document.getElementById("new-person");
   const expenseListEl = document.getElementById("expense-list");
   const paidByEl = document.getElementById("exp-paidby");
+  const addPersonBtn = document.getElementById("add-person-btn");
+  const addExpenseBtn = document.getElementById("add-expense-btn");
+  const exportBtn = document.getElementById("btn-export-group");
 
+  document.getElementById("btn-sample").addEventListener("click", loadSample);
+
+  function loadSample() {
+    people = [
+      { id: "1", name: "Sarah" },
+      { id: "2", name: "David" },
+      { id: "3", name: "Elena" },
+      { id: "4", name: "Michael" }
+    ];
+    expenses = [
+      { id: "e1", desc: "Cabin Airbnb", amount: 480, paidBy: "1" },
+      { id: "e2", desc: "Groceries & Snacks", amount: 160, paidBy: "2" },
+      { id: "e3", desc: "Rental Car Gas", amount: 80, paidBy: "3" }
+    ];
+    renderPeople();
+    renderExpenses();
+    calculate();
+  }
+
+  addPersonBtn.addEventListener("click", addPerson);
   newPersonEl.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter") return;
+    if (e.key === "Enter") addPerson();
+  });
+
+  function addPerson() {
     const name = newPersonEl.value.trim();
     if (!name) return;
     people.push({ id: crypto.randomUUID(), name });
     newPersonEl.value = "";
     renderPeople();
-  });
+    calculate();
+  }
 
   function renderPeople() {
     peopleListEl.innerHTML = people.map(p => `
-      <div class="people-row"><span style="flex:1">${escapeHtml(p.name)}</span>
-      <button type="button" data-id="${p.id}" class="remove-person">×</button></div>
+      <div class="people-row">
+        <span style="flex:1;font-weight:600;">${escapeHtml(p.name)}</span>
+        <button type="button" data-id="${p.id}" class="remove-person">×</button>
+      </div>
     `).join("");
+
     peopleListEl.querySelectorAll(".remove-person").forEach(btn => {
       btn.addEventListener("click", () => {
         people = people.filter(p => p.id !== btn.dataset.id);
         expenses = expenses.filter(e => e.paidBy !== btn.dataset.id);
-        renderPeople(); renderExpenses(); calculate();
+        renderPeople();
+        renderExpenses();
+        calculate();
       });
     });
-    paidByEl.innerHTML = people.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join("");
+
+    paidByEl.innerHTML = people.map(p => `<option value="${p.id}">Paid by ${escapeHtml(p.name)}</option>`).join("");
   }
 
-  document.getElementById("add-expense-btn").addEventListener("click", () => {
+  addExpenseBtn.addEventListener("click", () => {
     const desc = document.getElementById("exp-desc").value.trim();
     const amount = parseFloat(document.getElementById("exp-amount").value);
     const paidBy = paidByEl.value;
-    if (!desc || !amount || amount <= 0 || !paidBy || people.length === 0) return;
+    if (!desc || isNaN(amount) || amount <= 0 || !paidBy) return;
     expenses.push({ id: crypto.randomUUID(), desc, amount, paidBy });
     document.getElementById("exp-desc").value = "";
     document.getElementById("exp-amount").value = "";
@@ -136,42 +266,80 @@
   });
 
   function renderExpenses() {
+    const cur = curEl.value;
     expenseListEl.innerHTML = expenses.map(e => {
-      const payer = people.find(p => p.id === e.paidBy);
-      return `<div class="people-row"><span style="flex:1">${escapeHtml(e.desc)} — $${e.amount.toFixed(2)} (${payer ? escapeHtml(payer.name) : "?"})</span>
-      <button type="button" data-id="${e.id}" class="remove-expense">×</button></div>`;
+      const p = people.find(x => x.id === e.paidBy);
+      return `
+        <div class="people-row">
+          <span style="flex:1;"><strong>${escapeHtml(e.desc)}</strong> <span style="font-size:12.5px;color:var(--text-muted);">(paid by ${p ? escapeHtml(p.name) : "unknown"})</span></span>
+          <span class="amt" style="font-weight:700;">${cur}${e.amount.toFixed(2)}</span>
+          <button type="button" data-id="${e.id}" class="remove-expense">×</button>
+        </div>
+      `;
     }).join("");
+
     expenseListEl.querySelectorAll(".remove-expense").forEach(btn => {
       btn.addEventListener("click", () => {
         expenses = expenses.filter(e => e.id !== btn.dataset.id);
-        renderExpenses(); calculate();
+        renderExpenses();
+        calculate();
       });
     });
   }
 
+  curEl.addEventListener("change", () => {
+    renderExpenses();
+    calculate();
+  });
+
   function calculate() {
-    const result = document.getElementById("result");
-    if (people.length === 0 || expenses.length === 0) { result.style.display = "none"; return; }
-    result.style.display = "block";
+    const cur = curEl.value;
+    const resultEl = document.getElementById("result");
+    if (people.length === 0 || expenses.length === 0) {
+      resultEl.style.display = "none";
+      return;
+    }
+    resultEl.style.display = "block";
 
     const total = expenses.reduce((a, e) => a + e.amount, 0);
     const share = total / people.length;
-    const net = new Map(people.map(p => [p.id, -share]));
-    expenses.forEach(e => net.set(e.paidBy, net.get(e.paidBy) + e.amount));
 
-    const balancesEl = document.getElementById("balances");
-    balancesEl.innerHTML = people.map(p => {
-      const n = Math.round(net.get(p.id) * 100) / 100;
-      const label = Math.abs(n) < 0.01 ? "settled up" : n > 0 ? "is owed" : "owes";
-      const color = n > 0.01 ? "#2FA86E" : n < -0.01 ? "#E0563F" : "var(--text-muted)";
-      return `<div class="calc-result-row"><span>${escapeHtml(p.name)} ${label}</span><span class="amt" style="color:${color}">$${Math.abs(n).toFixed(2)}</span></div>`;
+    const paid = new Map(people.map(p => [p.id, 0]));
+    expenses.forEach(e => {
+      if (paid.has(e.paidBy)) paid.set(e.paidBy, paid.get(e.paidBy) + e.amount);
+    });
+
+    const balances = people.map(p => ({
+      id: p.id,
+      name: p.name,
+      net: (paid.get(p.id) || 0) - share
+    }));
+
+    document.getElementById("balances").innerHTML = balances.map(b => {
+      const isOwed = b.net >= 0.005;
+      const cls = isOwed ? "color:var(--green);" : "color:#e0563f;";
+      const sign = isOwed ? "+" : "-";
+      return `
+        <div class="calc-result-row">
+          <span>${escapeHtml(b.name)}</span>
+          <span class="amt" style="${cls}">${sign}${cur}${Math.abs(b.net).toFixed(2)}</span>
+        </div>
+      `;
     }).join("");
 
-    const settlements = simplifyDebts(people.map(p => ({ name: p.name, net: Math.round(net.get(p.id) * 100) / 100 })));
-    const settlementsEl = document.getElementById("settlements");
-    settlementsEl.innerHTML = settlements.length === 0
-      ? `<p style="color:var(--text-muted)">Everyone's settled up.</p>`
-      : settlements.map(s => `<div class="calc-result-row">${escapeHtml(s.from)} → ${escapeHtml(s.to)} <span class="amt">$${s.amount.toFixed(2)}</span></div>`).join("");
+    const settlements = simplifyDebts(balances);
+    if (settlements.length === 0) {
+      document.getElementById("settlements").innerHTML = `<div class="calc-result-row"><span>Everyone is even!</span></div>`;
+    } else {
+      document.getElementById("settlements").innerHTML = settlements.map(s => `
+        <div class="calc-result-row">
+          <span><strong>${escapeHtml(s.from)}</strong> pays <strong>${escapeHtml(s.to)}</strong></span>
+          <span class="amt">${cur}${s.amount.toFixed(2)}</span>
+        </div>
+      `).join("");
+    }
+
+    exportBtn.href = `/app/?name=Trip+Split&currency=${encodeURIComponent(cur)}`;
   }
 
   function simplifyDebts(balances) {
@@ -183,8 +351,11 @@
     let i = 0, j = 0;
     while (i < debtors.length && j < creditors.length) {
       const pay = Math.min(debtors[i].net, creditors[j].net);
-      if (pay > 0.005) out.push({ from: debtors[i].name, to: creditors[j].name, amount: Math.round(pay * 100) / 100 });
-      debtors[i].net -= pay; creditors[j].net -= pay;
+      if (pay > 0.005) {
+        out.push({ from: debtors[i].name, to: creditors[j].name, amount: Math.round(pay * 100) / 100 });
+      }
+      debtors[i].net -= pay;
+      creditors[j].net -= pay;
       if (debtors[i].net <= 0.005) i++;
       if (creditors[j].net <= 0.005) j++;
     }
@@ -194,6 +365,8 @@
   function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
+
+  loadSample();
 </script>
 </body>
 </html>

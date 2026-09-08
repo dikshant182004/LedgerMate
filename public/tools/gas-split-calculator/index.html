@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free Road Trip Gas Split Calculator — Fuel &amp; Toll Cost Per Person | LedgerMate</title>
+<meta name="description" content="Free road trip gas and fuel split calculator. Calculate fuel gallons, toll costs, and per-person shares in miles or kilometers. Instant, accurate, and free." />
+<link rel="canonical" href="https://tryledgermate.in/tools/gas-split-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Road Trip Gas &amp; Mileage Split Calculator | LedgerMate" />
+<meta property="og:description" content="Calculate fuel costs, tolls, and per-person shares for road trips. Free, no download." />
+<meta property="og:url" content="https://tryledgermate.in/tools/gas-split-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/landing.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Road Trip Gas Split Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate gas mileage, fuel costs, tolls, and split shares per traveler on road trips."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Should the car owner pay for gas on a road trip?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The customary rule of thumb is that the car owner provides the vehicle (absorbing vehicle depreciation, tires, and oil wear), so their passengers cover 100% of fuel and tolls, or at minimum, the owner's share is discounted."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is fuel cost per person calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Total Distance divided by Vehicle MPG gives total gallons consumed. Multiply gallons by fuel price per gallon, add any tolls or parking, and divide by the number of travelers."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Trip Calc</a>
+      <a href="/tools/rent-split-calculator/">Rent Calc</a>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Gas &amp; Fuel Splitter
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Road Trip Gas Split Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:580px;">Calculate exact fuel consumption, tolls, and fair cost per passenger for your next road trip.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="unit-mode">Units</label>
+        <select id="unit-mode">
+          <option value="us" selected>Miles &amp; MPG (Gallons)</option>
+          <option value="metric">Kilometers &amp; L/100km (Liters)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="trip-distance" id="lbl-distance">One-Way / Total Distance (Miles)</label>
+        <input id="trip-distance" type="number" step="1" min="1" value="450" />
+      </div>
+      <div style="flex:1;">
+        <label for="fuel-efficiency" id="lbl-efficiency">Fuel Economy (MPG)</label>
+        <input id="fuel-efficiency" type="number" step="0.5" min="1" value="28" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="fuel-price" id="lbl-price">Gas Price per Gallon</label>
+        <input id="fuel-price" type="number" step="0.05" min="0" value="3.85" />
+      </div>
+      <div style="flex:1;">
+        <label for="tolls-cost">Tolls &amp; Parking (<span id="lbl-toll-cur">$</span>)</label>
+        <input id="tolls-cost" type="number" step="1" min="0" value="24" />
+      </div>
+      <div style="flex:1;">
+        <label for="passengers">Total Passengers</label>
+        <input id="passengers" type="number" step="1" min="1" max="20" value="4" />
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-box">
+        <div class="metric-val" id="disp-cost-per-person">$21.47</div>
+        <div class="metric-lbl">Each Person's Share</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-fuel-cost">$61.88</div>
+        <div class="metric-lbl">Total Fuel Cost</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-total-trip">$85.88</div>
+        <div class="metric-lbl">Total Trip Travel Cost</div>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div class="calc-result-row">
+        <span>Fuel Consumed</span>
+        <span class="amt" id="disp-fuel-volume">16.1 Gallons</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Tolls &amp; Parking</span>
+        <span class="amt" id="disp-tolls">$24.00</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Cost Per Mile/KM</span>
+        <span class="amt" id="disp-cost-per-unit">$0.19 / mi</span>
+      </div>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Logging snacks, hotels, and fuel along the route?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Keep running balances with live sync so nobody owes money at the end.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Road+Trip&currency=$" class="btn btn-primary">Create Trip Group →</a>
+    </div>
+  </div>
+
+  <article style="margin-top:48px;">
+    <h2>Road Trip Fuel Splitting Etiquette</h2>
+    <p>Road trips are fantastic memories, but splitting fuel costs can get complicated if one person supplies the vehicle while everyone else rides along. Here are three standard ways to handle car expenses fairly:</p>
+
+    <h3>1. The Passenger-Covered Gas Rule</h3>
+    <p>When the driver uses their personal car, standard road etiquette suggests the passengers cover 100% of fuel and tolls. The car owner takes on the uncompensated cost of vehicle depreciation, mileage wear, tire tread, and cleaning.</p>
+
+    <h3>2. The True Even Split (Car Rental)</h3>
+    <p>If you rented a car via Hertz, Turo, or Enterprise, everyone (including the primary driver) splits the rental fee, fuel, insurance, and tolls equally down to the penny.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Should the car owner pay for gas?</summary>
+      <p>Customarily, passengers offer to cover gas and tolls to compensate the car owner for wear, tear, and driving effort.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can we track additional trip expenses like food and campsites?</summary>
+      <p>Yes! Start a free LedgerMate trip group to log expenses in real-time with zero sign-up or app download required.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No sign-up required.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
+        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
+</footer>
+
+<script>
+  const curEl = document.getElementById("currency");
+  const unitEl = document.getElementById("unit-mode");
+  const distEl = document.getElementById("trip-distance");
+  const effEl = document.getElementById("fuel-efficiency");
+  const priceEl = document.getElementById("fuel-price");
+  const tollsEl = document.getElementById("tolls-cost");
+  const passEl = document.getElementById("passengers");
+  const exportBtn = document.getElementById("btn-export-group");
+
+  unitEl.addEventListener("change", () => {
+    if (unitEl.value === "metric") {
+      document.getElementById("lbl-distance").textContent = "Total Distance (Kilometers)";
+      document.getElementById("lbl-efficiency").textContent = "Fuel Economy (L / 100km)";
+      document.getElementById("lbl-price").textContent = "Gas Price per Liter";
+      distEl.value = "700";
+      effEl.value = "8.2";
+      priceEl.value = "1.65";
+    } else {
+      document.getElementById("lbl-distance").textContent = "Total Distance (Miles)";
+      document.getElementById("lbl-efficiency").textContent = "Fuel Economy (MPG)";
+      document.getElementById("lbl-price").textContent = "Gas Price per Gallon";
+      distEl.value = "450";
+      effEl.value = "28";
+      priceEl.value = "3.85";
+    }
+    calculate();
+  });
+
+  [curEl, distEl, effEl, priceEl, tollsEl, passEl].forEach(input => {
+    input.addEventListener("input", calculate);
+  });
+
+  function calculate() {
+    const cur = curEl.value;
+    document.getElementById("lbl-toll-cur").textContent = cur;
+    const isMetric = unitEl.value === "metric";
+    const dist = Math.max(0, parseFloat(distEl.value) || 0);
+    const eff = Math.max(0.1, parseFloat(effEl.value) || 1);
+    const price = Math.max(0, parseFloat(priceEl.value) || 0);
+    const tolls = Math.max(0, parseFloat(tollsEl.value) || 0);
+    const passengers = Math.max(1, parseInt(passEl.value, 10) || 1);
+
+    let fuelVol = 0;
+    if (isMetric) {
+      // Liters = (dist / 100) * L_per_100km
+      fuelVol = (dist / 100) * eff;
+    } else {
+      // Gallons = dist / MPG
+      fuelVol = dist / eff;
+    }
+
+    const fuelCost = fuelVol * price;
+    const totalTrip = fuelCost + tolls;
+    const perPerson = totalTrip / passengers;
+    const costPerUnit = dist > 0 ? (totalTrip / dist) : 0;
+
+    document.getElementById("disp-cost-per-person").textContent = `${cur}${perPerson.toFixed(2)}`;
+    document.getElementById("disp-fuel-cost").textContent = `${cur}${fuelCost.toFixed(2)}`;
+    document.getElementById("disp-total-trip").textContent = `${cur}${totalTrip.toFixed(2)}`;
+
+    document.getElementById("disp-fuel-volume").textContent = `${fuelVol.toFixed(1)} ${isMetric ? "Liters" : "Gallons"}`;
+    document.getElementById("disp-tolls").textContent = `${cur}${tolls.toFixed(2)}`;
+    document.getElementById("disp-cost-per-unit").textContent = `${cur}${costPerUnit.toFixed(2)} / ${isMetric ? "km" : "mi"}`;
+
+    exportBtn.href = `/app/?name=Road+Trip+Gas&currency=${encodeURIComponent(cur)}`;
+  }
+
+  calculate();
+</script>
+</body>
+</html>

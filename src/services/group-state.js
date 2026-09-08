@@ -65,7 +65,21 @@ export async function buildGroupState(DB, groupId, user) {
 
   const { balances, settlements } = computeBalances(members, expenses, splits);
 
-  return { group, members, expenses, balances, settlements, currentUser: user };
+  const splitsByExpense = new Map();
+  for (const s of splits) {
+    if (!splitsByExpense.has(s.expense_id)) splitsByExpense.set(s.expense_id, []);
+    splitsByExpense.get(s.expense_id).push({
+      member_id: s.member_id,
+      amount: s.share_amount,
+    });
+  }
+
+  const enrichedExpenses = expenses.map((e) => ({
+    ...e,
+    splits: splitsByExpense.get(e.id) || [],
+  }));
+
+  return { group, members, expenses: enrichedExpenses, balances, settlements, currentUser: user };
 }
 
 // Realtime broadcasts go to every open tab in a group, from any viewer's

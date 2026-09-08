@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free Restaurant Bill &amp; Tip Splitter — Split Check with Tax | LedgerMate</title>
+<meta name="description" content="Free restaurant bill and tip calculator. Split dining checks evenly or unevenly with custom tips and tax. Instant calculations with no sign-up or app download." />
+<link rel="canonical" href="https://tryledgermate.in/tools/bill-split-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Free Restaurant Bill &amp; Tip Splitter | LedgerMate" />
+<meta property="og:description" content="Split restaurant bills and tips easily. Calculate fair shares with tax and tip included. Free, instant, no app required." />
+<meta property="og:url" content="https://tryledgermate.in/tools/bill-split-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/landing.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Restaurant Bill & Tip Splitter",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate restaurant check splits, tips, and taxes instantly between friends and diners."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Should tip be calculated before or after tax?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard restaurant etiquette dictates that tips should be calculated on the pre-tax subtotal of food and drinks, not on the government sales tax. This calculator lets you specify whether tip applies to subtotal or the post-tax bill."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you split a bill when someone didn't drink alcohol?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The fairest approach is to separate the alcohol total and divide it only among drinkers, while splitting the food, tax, and base tip evenly across all diners. For recurring dinners or weekend trips, LedgerMate lets you split itemized expenses in real-time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this bill split calculator free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, 100% free with no sign-up, no advertisements, and no limit on how many calculations you make."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Trip Calc</a>
+      <a href="/tools/rent-split-calculator/">Rent Calc</a>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Bill &amp; Tip Splitter
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Restaurant Bill &amp; Tip Splitter</h1>
+  <p class="sub" style="font-size:16px;max-width:580px;">Split dinner checks with tax and tip in seconds. No awkward math at the table.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="¥">¥ — Japanese Yen</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+          <option value="د.إ">د.إ — UAE Dirham</option>
+        </select>
+      </div>
+      <div style="flex:1.5;">
+        <label for="bill-subtotal">Bill Subtotal (Before Tip/Tax)</label>
+        <input id="bill-subtotal" type="number" step="0.01" min="0" placeholder="e.g. 120.00" value="84.00" />
+      </div>
+    </div>
+
+    <label>Tip Percentage</label>
+    <div class="chip-group" id="tip-chips">
+      <button type="button" class="chip-btn" data-tip="0">0%</button>
+      <button type="button" class="chip-btn" data-tip="10">10%</button>
+      <button type="button" class="chip-btn" data-tip="15">15%</button>
+      <button type="button" class="chip-btn active" data-tip="18">18%</button>
+      <button type="button" class="chip-btn" data-tip="20">20%</button>
+      <button type="button" class="chip-btn" data-tip="25">25%</button>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="custom-tip">Custom Tip %</label>
+        <input id="custom-tip" type="number" step="0.5" min="0" value="18" />
+      </div>
+      <div style="flex:1;">
+        <label for="tax-rate">Sales Tax % (Optional)</label>
+        <input id="tax-rate" type="number" step="0.1" min="0" placeholder="e.g. 8.5" value="8.5" />
+      </div>
+      <div style="flex:1;">
+        <label for="people-count">Number of Diners</label>
+        <input id="people-count" type="number" step="1" min="1" max="50" value="3" />
+      </div>
+    </div>
+
+    <div class="metric-grid" id="metrics">
+      <div class="metric-box">
+        <div class="metric-val" id="disp-per-person">$35.42</div>
+        <div class="metric-lbl">Each Person Pays</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-total-tip">$15.12</div>
+        <div class="metric-lbl">Total Tip</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-grand-total">$106.26</div>
+        <div class="metric-lbl">Grand Total</div>
+      </div>
+    </div>
+
+    <div class="calc-result" id="breakdown-details">
+      <div class="calc-result-row">
+        <span>Base Subtotal</span>
+        <span class="amt" id="row-subtotal">$84.00</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Sales Tax (<span id="lbl-tax-pct">8.5</span>%)</span>
+        <span class="amt" id="row-tax">$7.14</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Tip (<span id="lbl-tip-pct">18</span>%)</span>
+        <span class="amt" id="row-tip">$15.12</span>
+      </div>
+      <div class="calc-result-row" style="font-weight:700;font-size:16px;">
+        <span>Final Bill Total</span>
+        <span class="amt" id="row-final">$106.26</span>
+      </div>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Splitting this dinner with friends right now?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Open a live group so everyone sees balances and who already paid.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Dinner+Split&currency=$" class="btn btn-primary">Start Live Group →</a>
+    </div>
+  </div>
+
+  <article style="margin-top:48px;">
+    <h2>How to Split a Restaurant Bill Fairly</h2>
+    <p>Splitting a restaurant check should never cause friction between friends. Depending on the size of your group and what people ordered, here are the three most common ways to split a check:</p>
+
+    <h3>1. The Straight Even Split (Best for casual meals &amp; shared plates)</h3>
+    <p>Divide the final check (subtotal + tax + tip) by the number of diners. This is the fastest, least stressful method when everyone ordered roughly the same price range or shared tapas, pizzas, and family-style platters.</p>
+
+    <h3>2. The Non-Drinker / Itemized Split</h3>
+    <p>Cocktails and wine frequently double the check. If two people had multiple $18 cocktails while others only had water, subtract the alcohol subtotal and its proportionate tip/tax. The non-drinkers pay for their food plus food tax/tip, and the drinkers split the alcohol total.</p>
+
+    <h3>3. Tip on Subtotal vs. Tip on Total</h3>
+    <p>Etiquette experts universally agree: you only need to tip on the <em>pre-tax subtotal</em> of food and services. Paying tip on top of government sales tax means you are tipping on a tax, which is unnecessary though appreciated by servers.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Should tip be calculated before or after tax?</summary>
+      <p>Standard restaurant etiquette dictates that tips should be calculated on the pre-tax subtotal of food and drinks, not on the sales tax.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How do you split a bill when someone didn't drink alcohol?</summary>
+      <p>Subtract the drinks from the subtotal. Split the food evenly among all guests, and have only the drinkers cover the beverage subtotal with tip.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why use LedgerMate over manual payment transfers?</summary>
+      <p>When one person fronts the card at the restaurant, LedgerMate simplifies the settle-up so friends can see exact balances live without running into Splitwise daily limit paywalls.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No sign-up required.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
+        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
+</footer>
+
+<script>
+  const curEl = document.getElementById("currency");
+  const subtotalEl = document.getElementById("bill-subtotal");
+  const customTipEl = document.getElementById("custom-tip");
+  const taxRateEl = document.getElementById("tax-rate");
+  const peopleEl = document.getElementById("people-count");
+  const tipChips = document.querySelectorAll("#tip-chips .chip-btn");
+  const exportBtn = document.getElementById("btn-export-group");
+
+  tipChips.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tipChips.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      customTipEl.value = btn.dataset.tip;
+      calculate();
+    });
+  });
+
+  [curEl, subtotalEl, customTipEl, taxRateEl, peopleEl].forEach(input => {
+    input.addEventListener("input", calculate);
+  });
+
+  function calculate() {
+    const cur = curEl.value;
+    const subtotal = Math.max(0, parseFloat(subtotalEl.value) || 0);
+    const tipPct = Math.max(0, parseFloat(customTipEl.value) || 0);
+    const taxPct = Math.max(0, parseFloat(taxRateEl.value) || 0);
+    const people = Math.max(1, parseInt(peopleEl.value, 10) || 1);
+
+    const tipAmount = subtotal * (tipPct / 100);
+    const taxAmount = subtotal * (taxPct / 100);
+    const grandTotal = subtotal + tipAmount + taxAmount;
+    const perPerson = grandTotal / people;
+
+    document.getElementById("disp-per-person").textContent = `${cur}${perPerson.toFixed(2)}`;
+    document.getElementById("disp-total-tip").textContent = `${cur}${tipAmount.toFixed(2)}`;
+    document.getElementById("disp-grand-total").textContent = `${cur}${grandTotal.toFixed(2)}`;
+
+    document.getElementById("row-subtotal").textContent = `${cur}${subtotal.toFixed(2)}`;
+    document.getElementById("row-tax").textContent = `${cur}${taxAmount.toFixed(2)}`;
+    document.getElementById("lbl-tax-pct").textContent = taxPct.toFixed(1);
+    document.getElementById("row-tip").textContent = `${cur}${tipAmount.toFixed(2)}`;
+    document.getElementById("lbl-tip-pct").textContent = tipPct.toFixed(1);
+    document.getElementById("row-final").textContent = `${cur}${grandTotal.toFixed(2)}`;
+
+    exportBtn.href = `/app/?name=Dinner+Split&currency=${encodeURIComponent(cur)}`;
+  }
+
+  calculate();
+</script>
+</body>
+</html>

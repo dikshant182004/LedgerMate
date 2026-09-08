@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free Proportional Split Calculator — Income-Based Bill Splitting | LedgerMate</title>
+<meta name="description" content="Calculate fair, income-based bill splits for couples and roommates. Compare 50/50 vs proportional equity models with real monthly savings. Free and instant." />
+<link rel="canonical" href="https://tryledgermate.in/tools/proportional-split-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Income-Based Proportional Bill Splitter | LedgerMate" />
+<meta property="og:description" content="Split rent and household expenses fairly based on income. Compare 50/50 vs proportional splits." />
+<meta property="og:url" content="https://tryledgermate.in/tools/proportional-split-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/landing.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Proportional Income Split Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate proportional household expenses based on partner or roommate income ratios."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is 50/50 or proportional splitting better for couples?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 50/50 split works best when partners earn similar incomes. However, when one partner earns significantly more (e.g., $100k vs $50k), a 50/50 split places a disproportionate financial burden on the lower earner. Proportional splitting ensures both partners contribute the same percentage of their income toward shared living expenses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should we calculate using gross salary or take-home pay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most financial planners recommend using net (take-home) pay after taxes, health insurance, and mandatory deductions, because that represents the actual cash available each month."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Trip Calc</a>
+      <a href="/tools/rent-split-calculator/">Rent Calc</a>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Proportional Income Splitter
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Income-Based Bill Splitter</h1>
+  <p class="sub" style="font-size:16px;max-width:620px;">Split shared expenses equitably based on what each partner or roommate earns, rather than forcing an arbitrary 50/50 split.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="¥">¥ — Japanese Yen</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+          <option value="د.إ">د.إ — UAE Dirham</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="income-freq">Income Frequency</label>
+        <select id="income-freq">
+          <option value="monthly" selected>Monthly Take-Home</option>
+          <option value="annual">Annual Take-Home</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Partner Incomes</label>
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="p1-name" style="margin-top:0;">Partner 1 Name</label>
+        <input id="p1-name" type="text" value="Alex" />
+      </div>
+      <div style="flex:1;">
+        <label for="p1-income" style="margin-top:0;">Income</label>
+        <input id="p1-income" type="number" step="100" min="0" value="5500" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="p2-name" style="margin-top:0;">Partner 2 Name</label>
+        <input id="p2-name" type="text" value="Jordan" />
+      </div>
+      <div style="flex:1;">
+        <label for="p2-income" style="margin-top:0;">Income</label>
+        <input id="p2-income" type="number" step="100" min="0" value="3500" />
+      </div>
+    </div>
+
+    <label for="total-expenses">Total Monthly Shared Expenses (Rent, Utilities, Groceries)</label>
+    <input id="total-expenses" type="number" step="10" min="0" value="3200" placeholder="e.g. 3200" />
+
+    <div class="metric-grid" id="metrics">
+      <div class="metric-box">
+        <div class="metric-val" id="disp-p1-share">$1,955.56</div>
+        <div class="metric-lbl"><span id="disp-p1-lbl">Alex</span>'s Fair Share (<span id="disp-p1-pct">61.1</span>%)</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-p2-share">$1,244.44</div>
+        <div class="metric-lbl"><span id="disp-p2-lbl">Jordan</span>'s Fair Share (<span id="disp-p2-pct">38.9</span>%)</div>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <h3 style="margin:0 0 12px;font-size:16px;">Equity vs. 50/50 Comparison</h3>
+      <div class="calc-result-row">
+        <span>Under 50/50 Split</span>
+        <span class="amt" id="disp-half-share">$1,600.00 each</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Impact on Lower Earner</span>
+        <span class="amt" style="color:var(--green);" id="disp-savings">Saves $355.56 / month</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Expense Burden as % of Income</span>
+        <span class="amt" id="disp-burden">35.6% for both</span>
+      </div>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Want to track joint household bills monthly in real-time?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Set up a free joint LedgerMate group. No signup needed to start.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Home+Expenses&currency=$" class="btn btn-primary">Open Joint Group →</a>
+    </div>
+  </div>
+
+  <article style="margin-top:48px;">
+    <h2>The Math of Proportional Bill Splitting</h2>
+    <p>When two people live together with different salaries, splitting everything 50/50 might seem egalitarian on paper, but it produces drastically unequal outcomes. For example, if rent is $3,000, paying $1,500 represents <strong>30%</strong> of a $5,000 income, but <strong>60%</strong> of a $2,500 income.</p>
+
+    <div class="callout-box">
+      <p><strong>The Formula:</strong> Each Person's Share = (Individual Income ÷ Total Combined Income) × Total Shared Expenses</p>
+    </div>
+
+    <p>By contributing in proportion to what you earn, both partners spend the exact same percentage of their paychecks on living essentials, leaving both individuals with fair discretionary spending power.</p>
+
+    <h3>What Should Be Included in Joint Expenses?</h3>
+    <ul>
+      <li><strong>Include:</strong> Rent/mortgage, electricity, gas, water, internet, shared groceries, home supplies, and joint streaming services.</li>
+      <li><strong>Keep Separate:</strong> Student loans, personal credit card debt, personal car payments, individual clothing, and personal hobbies.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Is 50/50 or proportional splitting better for couples?</summary>
+      <p>Proportional splitting is widely recommended when incomes differ by more than 20%, as it avoids burnout and financial resentment.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Should we use net income or gross income?</summary>
+      <p>Net income (take-home pay) is more accurate because tax brackets and deductions alter actual cash flow.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No sign-up required.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
+        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
+</footer>
+
+<script>
+  const curEl = document.getElementById("currency");
+  const freqEl = document.getElementById("income-freq");
+  const p1NameEl = document.getElementById("p1-name");
+  const p1IncEl = document.getElementById("p1-income");
+  const p2NameEl = document.getElementById("p2-name");
+  const p2IncEl = document.getElementById("p2-income");
+  const expEl = document.getElementById("total-expenses");
+  const exportBtn = document.getElementById("btn-export-group");
+
+  [curEl, freqEl, p1NameEl, p1IncEl, p2NameEl, p2IncEl, expEl].forEach(el => {
+    el.addEventListener("input", calculate);
+  });
+
+  function calculate() {
+    const cur = curEl.value;
+    const p1Name = p1NameEl.value.trim() || "Partner 1";
+    const p2Name = p2NameEl.value.trim() || "Partner 2";
+    const p1Raw = Math.max(0, parseFloat(p1IncEl.value) || 0);
+    const p2Raw = Math.max(0, parseFloat(p2IncEl.value) || 0);
+    const expenses = Math.max(0, parseFloat(expEl.value) || 0);
+
+    const mult = freqEl.value === "annual" ? (1/12) : 1;
+    const p1 = p1Raw * mult;
+    const p2 = p2Raw * mult;
+    const totalIncome = p1 + p2;
+
+    document.getElementById("disp-p1-lbl").textContent = p1Name;
+    document.getElementById("disp-p2-lbl").textContent = p2Name;
+
+    if (totalIncome <= 0 || expenses <= 0) {
+      document.getElementById("disp-p1-share").textContent = `${cur}0.00`;
+      document.getElementById("disp-p2-share").textContent = `${cur}0.00`;
+      return;
+    }
+
+    const p1Ratio = p1 / totalIncome;
+    const p2Ratio = p2 / totalIncome;
+    const p1Share = p1Ratio * expenses;
+    const p2Share = p2Ratio * expenses;
+    const halfShare = expenses / 2;
+
+    document.getElementById("disp-p1-pct").textContent = (p1Ratio * 100).toFixed(1);
+    document.getElementById("disp-p2-pct").textContent = (p2Ratio * 100).toFixed(1);
+    document.getElementById("disp-p1-share").textContent = `${cur}${p1Share.toFixed(2)}`;
+    document.getElementById("disp-p2-share").textContent = `${cur}${p2Share.toFixed(2)}`;
+
+    document.getElementById("disp-half-share").textContent = `${cur}${halfShare.toFixed(2)} each`;
+
+    const lowerEarner = p1 < p2 ? p1Name : p2Name;
+    const savings = Math.abs(halfShare - (p1 < p2 ? p1Share : p2Share));
+    document.getElementById("disp-savings").textContent = `${lowerEarner} saves ${cur}${savings.toFixed(2)} / month`;
+
+    const burdenPct = (expenses / totalIncome) * 100;
+    document.getElementById("disp-burden").textContent = `${burdenPct.toFixed(1)}% of net monthly income`;
+
+    exportBtn.href = `/app/?name=Shared+Home+Bills&currency=${encodeURIComponent(cur)}`;
+  }
+
+  calculate();
+</script>
+</body>
+</html>

@@ -4,11 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "db:create": "wrangler d1 create splitmate-db",
-    "db:migrate:local": "wrangler d1 migrations apply splitmate-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply splitmate-db --remote"
+    "dev": "wrangler dev --port 3000 --ip 0.0.0.0 --show-interactive-dev-session=false",
+    "start": "wrangler dev --port 3000 --ip 0.0.0.0 --show-interactive-dev-session=false",
+    "build": "echo 'Build complete'",
+    "lint": "node --check src/index.js"
   },
   "dependencies": {
     "hono": "^4.6.0"

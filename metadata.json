@@ -1,0 +1,6 @@
+{
+  "name": "LedgerMate",
+  "description": "Free, real-time expense splitting and Splitwise alternative with transparent math breakdowns, item-level dinner mode, and CSV migration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

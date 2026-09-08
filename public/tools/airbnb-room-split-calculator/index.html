@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free Airbnb &amp; Vacation Rental Split Calculator — Split by Bedroom Size | LedgerMate</title>
+<meta name="description" content="Calculate fair Airbnb and cabin rental splits by bedroom size, private bathrooms, and guest count. Solve uneven vacation home costs in seconds." />
+<link rel="canonical" href="https://tryledgermate.in/tools/airbnb-room-split-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Airbnb &amp; Vacation Rental Room Split Calculator | LedgerMate" />
+<meta property="og:description" content="Split cabin and Airbnb rentals fairly based on room perks, bed types, and couples vs solo guests." />
+<meta property="og:url" content="https://tryledgermate.in/tools/airbnb-room-split-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/landing.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Airbnb & Vacation Rental Split Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate proportional vacation home pricing by bedroom size, master ensuite perks, and guest count."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How should couples pay for an Airbnb bedroom?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The fairest approach splits the rental cost between the private space (the bedroom) and the shared common spaces (kitchen, living room, pool, patio). A couple occupies one bedroom, so they pay for one room, but they represent two people using the communal spaces. This calculator automatically calculates this 50% room / 50% communal split."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Trip Calc</a>
+      <a href="/tools/rent-split-calculator/">Rent Calc</a>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Vacation Rental &amp; Airbnb Splitter
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Airbnb &amp; Vacation Rental Splitter</h1>
+  <p class="sub" style="font-size:16px;max-width:620px;">Fairly price the master suite, private baths, and bunk beds so everyone pays for what they actually get.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+        </select>
+      </div>
+      <div style="flex:1.5;">
+        <label for="total-rental-cost">Total Stay Cost (Nightly + Cleaning + Taxes)</label>
+        <input id="total-rental-cost" type="number" step="50" min="0" value="2400" />
+      </div>
+    </div>
+
+    <label>Bedrooms in Property</label>
+    <div id="room-list" class="people-list"></div>
+
+    <div class="calc-row" style="background:var(--bg);padding:12px;border-radius:12px;border:1px solid var(--border);">
+      <input id="new-room-name" type="text" placeholder="Room Name (e.g. Master Suite)" style="flex:1.4;" />
+      <select id="new-room-type" style="flex:1.2;">
+        <option value="1.4">Master (King + Ensuite Bath)</option>
+        <option value="1.1">Queen (Private Bath)</option>
+        <option value="1.0" selected>Standard (Queen, Shared Bath)</option>
+        <option value="0.75">Bunk Room / Small</option>
+      </select>
+      <input id="new-room-guests" type="number" step="1" min="1" max="4" value="1" style="max-width:80px;" title="Occupants" />
+      <button class="btn btn-primary" id="add-room-btn" type="button">Add Room</button>
+    </div>
+
+    <div class="calc-result" id="room-results">
+      <h3 style="margin:0 0 12px;font-size:16px;">Fair Cost Breakdown by Room</h3>
+      <div id="results-container"></div>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Splitting this trip's groceries, rental car, and activities?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Open a LedgerMate group to track daily spending live.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Cabin+Rental&currency=$" class="btn btn-primary">Start Trip Group →</a>
+    </div>
+  </div>
+
+  <article style="margin-top:48px;">
+    <h2>How to Split a Vacation Home Fairly</h2>
+    <p>When booking an Airbnb or cabin rental with a group of friends, rarely are all bedrooms created equal. Forcing an even per-person split often leaves guests in bunk rooms feeling ripped off while the couple in the jacuzzi suite pays the same rate.</p>
+
+    <h3>The 50/50 Rule: Private Space vs. Common Amenities</h3>
+    <p>A vacation house consists of two distinct values:</p>
+    <ul>
+      <li><strong>50% Private Bedroom Value:</strong> Allocated according to room quality (king bed, private bathroom, ocean view vs. twin bunk).</li>
+      <li><strong>50% Communal Space Value:</strong> Allocated equally per person (everyone enjoys the kitchen, living room, swimming pool, hot tub, and patio equally).</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>How should couples pay for an Airbnb bedroom?</summary>
+      <p>Couples share one bedroom, but count as two individuals using the kitchen, bathrooms, and living spaces. This calculator weights communal vs room spaces automatically.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What about cleaning and service fees?</summary>
+      <p>Include all fees and taxes in the total stay cost so the full amount paid to Airbnb is divided proportionally.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No sign-up required.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
+        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
+</footer>
+
+<script>
+  let rooms = [
+    { id: "1", name: "Master Suite (King + Bath)", weight: 1.4, guests: 2 },
+    { id: "2", name: "Upstairs Queen (Private Bath)", weight: 1.1, guests: 1 },
+    { id: "3", name: "Standard Bedroom (Queen)", weight: 1.0, guests: 1 },
+    { id: "4", name: "Bunk Room (2 Bunks)", weight: 0.75, guests: 2 }
+  ];
+
+  const curEl = document.getElementById("currency");
+  const costEl = document.getElementById("total-rental-cost");
+  const listEl = document.getElementById("room-list");
+  const exportBtn = document.getElementById("btn-export-group");
+
+  document.getElementById("add-room-btn").addEventListener("click", () => {
+    const name = document.getElementById("new-room-name").value.trim() || "Guest Room";
+    const weight = parseFloat(document.getElementById("new-room-type").value) || 1.0;
+    const guests = Math.max(1, parseInt(document.getElementById("new-room-guests").value, 10) || 1);
+    rooms.push({ id: crypto.randomUUID(), name, weight, guests });
+    document.getElementById("new-room-name").value = "";
+    render();
+    calculate();
+  });
+
+  [curEl, costEl].forEach(input => input.addEventListener("input", calculate));
+
+  function render() {
+    listEl.innerHTML = rooms.map(r => `
+      <div class="people-row">
+        <span style="flex:1.5;font-weight:600;">${escapeHtml(r.name)}</span>
+        <span style="font-size:12.5px;color:var(--text-muted);">${r.guests} guest${r.guests > 1 ? "s" : ""}</span>
+        <span style="font-size:12.5px;color:var(--accent);font-weight:700;">weight ${r.weight}</span>
+        <button type="button" class="remove-room" data-id="${r.id}">×</button>
+      </div>
+    `).join("");
+
+    listEl.querySelectorAll(".remove-room").forEach(btn => {
+      btn.addEventListener("click", () => {
+        rooms = rooms.filter(r => r.id !== btn.dataset.id);
+        render();
+        calculate();
+      });
+    });
+  }
+
+  function calculate() {
+    const cur = curEl.value;
+    const total = Math.max(0, parseFloat(costEl.value) || 0);
+    const totalGuests = rooms.reduce((acc, r) => acc + r.guests, 0);
+    const totalWeight = rooms.reduce((acc, r) => acc + r.weight, 0);
+
+    if (rooms.length === 0 || total <= 0 || totalGuests <= 0) {
+      document.getElementById("results-container").innerHTML = `<p style="color:var(--text-muted);">Add rooms and enter total cost to calculate.</p>`;
+      return;
+    }
+
+    // 50% allocated by bedroom weight, 50% allocated equally per person for common areas
+    const bedroomHalf = total * 0.50;
+    const commonHalf = total * 0.50;
+    const commonPerPerson = commonHalf / totalGuests;
+
+    document.getElementById("results-container").innerHTML = rooms.map(r => {
+      const roomPortion = (r.weight / totalWeight) * bedroomHalf;
+      const commonPortion = r.guests * commonPerPerson;
+      const roomTotal = roomPortion + commonPortion;
+      const perGuest = roomTotal / r.guests;
+
+      return `
+        <div class="calc-result-row">
+          <div>
+            <div style="font-weight:700;">${escapeHtml(r.name)}</div>
+            <div style="font-size:12.5px;color:var(--text-muted);">${r.guests} guest${r.guests > 1 ? "s" : ""} (${cur}${perGuest.toFixed(2)} / person)</div>
+          </div>
+          <span class="amt">${cur}${roomTotal.toFixed(2)}</span>
+        </div>
+      `;
+    }).join("");
+
+    exportBtn.href = `/app/?name=Vacation+Rental&currency=${encodeURIComponent(cur)}`;
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  render();
+  calculate();
+</script>
+</body>
+</html>

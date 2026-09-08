@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Multi-Currency Travel Expense Splitter — Foreign Exchange Calculator | LedgerMate</title>
+<meta name="description" content="Free multi-currency expense splitter with real-time conversion rates. Split group travel bills across USD, EUR, GBP, INR, JPY, and more without paywalls." />
+<link rel="canonical" href="https://tryledgermate.in/tools/multi-currency-split-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Multi-Currency Travel Expense Splitter | LedgerMate" />
+<meta property="og:description" content="Split foreign currency travel bills easily. Converts USD, EUR, GBP, INR, and 30+ currencies with zero subscription fees." />
+<meta property="og:url" content="https://tryledgermate.in/tools/multi-currency-split-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/landing.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Multi-Currency Travel Splitter",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Convert and split multi-currency group expenses across world currencies into a single settlement currency."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does Splitwise charge to convert multi-currency expenses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, Splitwise restricts multi-currency auto-conversion behind Splitwise Pro ($39.99/year). LedgerMate provides free multi-currency conversion tools and open settlement calculators without subscriptions or watermarks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are multi-currency travel expenses split fairly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The simplest method is for the group to agree on one 'Base Settlement Currency' (e.g. USD, EUR, or INR). Each expense paid in foreign currency is converted to the base currency at the rate on the day it was paid, and final debts are settled in that single currency."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  .mc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 13.5px;
+  }
+  .mc-table th, .mc-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .mc-table th {
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .btn-remove-row {
+    background: transparent;
+    border: none;
+    color: #E25C5C;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+  .settlement-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+  }
+  .settlement-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Trip Calc</a>
+      <a href="/tools/bachelorette-expense-calculator/">Bachelorette</a>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Multi-Currency Splitter
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Multi-Currency Travel Expense Splitter</h1>
+  <p class="sub" style="font-size:16px;max-width:620px;">Log expenses in EUR, USD, GBP, JPY, or INR and settle up in a single base currency. Completely free — no Splitwise Pro required.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="base-currency">Base Settle-Up Currency</label>
+        <select id="base-currency">
+          <option value="USD" selected>USD ($) — US Dollar</option>
+          <option value="EUR">EUR (€) — Euro</option>
+          <option value="GBP">GBP (£) — British Pound</option>
+          <option value="INR">INR (₹) — Indian Rupee</option>
+          <option value="CAD">CAD (C$) — Canadian Dollar</option>
+          <option value="AUD">AUD (A$) — Australian Dollar</option>
+          <option value="JPY">JPY (¥) — Japanese Yen</option>
+          <option value="THB">THB (฿) — Thai Baht</option>
+          <option value="AED">AED (د.إ) — UAE Dirham</option>
+          <option value="CHF">CHF (Fr) — Swiss Franc</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="group-members">Travelers (Comma-separated)</label>
+        <input id="group-members" type="text" value="Alex, Jordan, Sam, Taylor" />
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
+      <label style="margin:0;">Group Expenses</label>
+      <button type="button" id="btn-add-expense" class="btn btn-small" style="font-size:12px;padding:4px 10px;">+ Add Expense</button>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="mc-table" id="expenses-table">
+        <thead>
+          <tr>
+            <th>Item Description</th>
+            <th>Paid By</th>
+            <th>Amount &amp; Currency</th>
+            <th>Converted (<span class="base-cur-label">USD</span>)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="expenses-tbody">
+          <!-- Rows added dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="metric-grid" id="metrics" style="margin-top:20px;">
+      <div class="metric-box">
+        <div class="metric-val" id="disp-total-spent">$0.00</div>
+        <div class="metric-lbl">Total Trip Cost (<span class="base-cur-label">USD</span>)</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-per-person">$0.00</div>
+        <div class="metric-lbl">Fair Share Per Person</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-total-items">0</div>
+        <div class="metric-lbl">Expenses Logged</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <label>Individual Balances</label>
+      <div class="calc-result" id="balances-container" style="margin-top:8px;"></div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <label>Minimum Transfers to Settle Up</label>
+      <ul class="settlement-list" id="settlements-container"></ul>
+    </div>
+
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p>Traveling with this group right now?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Create a live LedgerMate group for free real-time sync, QR code join, and CSV export.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=International+Trip&currency=$" class="btn btn-primary">Open Live Group →</a>
+    </div>
+  </div>
+
+  <article style="margin-top:48px;">
+    <h2>How to Split Multi-Currency Travel Expenses</h2>
+    <p>International backpacking, study-abroad excursions, and global vacations almost always involve multiple currencies. One friend pays for train tickets in Euros, another fronts the rental van in British Pounds, and another buys dinners in Thai Baht.</p>
+
+    <h3>1. The "Base Currency" Rule</h3>
+    <p>Never try to settle cross-currency debts one by one. Instead, convert all expenses into a single base currency (like USD, EUR, or INR) that everyone is comfortable transacting in. This eliminates circular exchange calculations.</p>
+
+    <h3>2. Use Fair Mid-Market Rates</h3>
+    <p>Rather than using airport kiosk markups (which can be 10-15% inflated), use mid-market rates or the exact conversion shown on the cardholder’s bank notification.</p>
+
+    <h3>3. Why LedgerMate Replaces Splitwise Pro</h3>
+    <p>Splitwise locks multi-currency auto-conversion behind its $39.99/year subscription. LedgerMate believes friends traveling together should never have to pay a subscription fee just to divide hotel bills fairly.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>How does this calculator convert foreign currencies?</summary>
+      <p>This tool utilizes standard international foreign exchange reference rates across USD, EUR, GBP, INR, CAD, AUD, JPY, THB, AED, and CHF to convert every receipt into your selected settlement currency.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I export these calculations?</summary>
+      <p>Yes! You can jump directly into LedgerMate with one click to create a live shareable room, or copy/paste your balance summary directly to WhatsApp.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No paywalls, no limits.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/multi-currency-split-calculator/">Multi-Currency Splitter</a></li>
+        <li><a href="/tools/bachelorette-expense-calculator/">Bachelor(ette) Splitter</a></li>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
+</footer>
+
+<script>
+  // Reference rates against USD
+  const RATES_TO_USD = {
+    USD: 1.0,
+    EUR: 1.08,
+    GBP: 1.28,
+    INR: 0.012,
+    CAD: 0.74,
+    AUD: 0.66,
+    JPY: 0.0067,
+    THB: 0.028,
+    AED: 0.272,
+    CHF: 1.13
+  };
+
+  const CURRENCY_SYMBOLS = {
+    USD: "$", EUR: "€", GBP: "£", INR: "₹", CAD: "C$", AUD: "A$", JPY: "¥", THB: "฿", AED: "د.إ", CHF: "Fr"
+  };
+
+  let sampleExpenses = [
+    { desc: "Eurostar Train", payer: "Alex", amt: 180, cur: "EUR" },
+    { desc: "London Hotel", payer: "Jordan", amt: 320, cur: "GBP" },
+    { desc: "Tapas Dinner", payer: "Sam", amt: 110, cur: "EUR" },
+    { desc: "Tokyo Souvenirs", payer: "Taylor", amt: 12000, cur: "JPY" }
+  ];
+
+  const baseCurEl = document.getElementById("base-currency");
+  const membersEl = document.getElementById("group-members");
+  const tbody = document.getElementById("expenses-tbody");
+  const addBtn = document.getElementById("btn-add-expense");
+  const exportBtn = document.getElementById("btn-export-group");
+
+  baseCurEl.addEventListener("change", () => {
+    document.querySelectorAll(".base-cur-label").forEach(l => l.textContent = baseCurEl.value);
+    calculate();
+  });
+
+  membersEl.addEventListener("input", calculate);
+
+  addBtn.addEventListener("click", () => {
+    sampleExpenses.push({ desc: "Group Activity", payer: getMembers()[0] || "Alex", amt: 50, cur: baseCurEl.value });
+    renderTable();
+    calculate();
+  });
+
+  function getMembers() {
+    return membersEl.value.split(",").map(m => m.trim()).filter(Boolean);
+  }
+
+  function renderTable() {
+    tbody.innerHTML = "";
+    const members = getMembers();
+
+    sampleExpenses.forEach((exp, idx) => {
+      const tr = document.createElement("tr");
+
+      // Payer dropdown options
+      const payerOpts = members.map(m => `<option value="${m}" ${m === exp.payer ? "selected" : ""}>${m}</option>`).join("");
+
+      // Currency dropdown options
+      const curOpts = Object.keys(RATES_TO_USD).map(c => `<option value="${c}" ${c === exp.cur ? "selected" : ""}>${c} (${CURRENCY_SYMBOLS[c]})</option>`).join("");
+
+      tr.innerHTML = `
+        <td><input type="text" value="${exp.desc}" class="row-desc" style="width:100%;font-size:12.5px;padding:4px 6px;" /></td>
+        <td><select class="row-payer" style="font-size:12px;padding:4px 6px;">${payerOpts}</select></td>
+        <td style="white-space:nowrap;">
+          <input type="number" step="1" min="0" value="${exp.amt}" class="row-amt" style="width:75px;font-size:12px;padding:4px 6px;" />
+          <select class="row-cur" style="font-size:12px;padding:4px 6px;">${curOpts}</select>
+        </td>
+        <td class="row-converted" style="font-weight:600;font-size:12.5px;">-</td>
+        <td><button type="button" class="btn-remove-row" title="Delete">✕</button></td>
+      `;
+
+      tr.querySelector(".row-desc").addEventListener("input", (e) => { exp.desc = e.target.value; });
+      tr.querySelector(".row-payer").addEventListener("change", (e) => { exp.payer = e.target.value; calculate(); });
+      tr.querySelector(".row-amt").addEventListener("input", (e) => { exp.amt = parseFloat(e.target.value) || 0; calculate(); });
+      tr.querySelector(".row-cur").addEventListener("change", (e) => { exp.cur = e.target.value; calculate(); });
+      tr.querySelector(".btn-remove-row").addEventListener("click", () => {
+        sampleExpenses.splice(idx, 1);
+        renderTable();
+        calculate();
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  function convertCurrency(amt, fromCur, toCur) {
+    if (fromCur === toCur) return amt;
+    const inUSD = amt * (RATES_TO_USD[fromCur] || 1);
+    const toRate = RATES_TO_USD[toCur] || 1;
+    return inUSD / toRate;
+  }
+
+  function calculate() {
+    const baseCur = baseCurEl.value;
+    const baseSymbol = CURRENCY_SYMBOLS[baseCur] || baseCur;
+    const members = getMembers();
+    if (members.length === 0) return;
+
+    let totalBase = 0;
+    const paidByMap = {};
+    members.forEach(m => paidByMap[m] = 0);
+
+    const rows = tbody.querySelectorAll("tr");
+    sampleExpenses.forEach((exp, idx) => {
+      const converted = convertCurrency(exp.amt, exp.cur, baseCur);
+      totalBase += converted;
+      if (paidByMap[exp.payer] !== undefined) {
+        paidByMap[exp.payer] += converted;
+      } else {
+        paidByMap[members[0]] = (paidByMap[members[0]] || 0) + converted;
+      }
+
+      if (rows[idx]) {
+        rows[idx].querySelector(".row-converted").textContent = `${baseSymbol}${converted.toFixed(2)}`;
+      }
+    });
+
+    const perPerson = totalBase / members.length;
+
+    document.getElementById("disp-total-spent").textContent = `${baseSymbol}${totalBase.toFixed(2)}`;
+    document.getElementById("disp-per-person").textContent = `${baseSymbol}${perPerson.toFixed(2)}`;
+    document.getElementById("disp-total-items").textContent = sampleExpenses.length;
+
+    // Balances
+    const balContainer = document.getElementById("balances-container");
+    balContainer.innerHTML = "";
+    const balances = members.map(m => {
+      const paid = paidByMap[m] || 0;
+      const net = paid - perPerson;
+      return { member: m, paid, net };
+    });
+
+    balances.forEach(b => {
+      const row = document.createElement("div");
+      row.className = "calc-result-row";
+      const status = Math.abs(b.net) < 0.01 ? "Settled" : (b.net > 0 ? `Gets back ${baseSymbol}${b.net.toFixed(2)}` : `Owes ${baseSymbol}${Math.abs(b.net).toFixed(2)}`);
+      row.innerHTML = `<span><strong>${b.member}</strong> (paid ${baseSymbol}${b.paid.toFixed(2)})</span><span class="amt" style="color:${b.net > 0 ? '#10B981' : (b.net < -0.01 ? '#EF4444' : 'inherit')}">${status}</span>`;
+      balContainer.appendChild(row);
+    });
+
+    // Settlement algorithm
+    const debtors = balances.filter(b => b.net < -0.01).map(b => ({ ...b, net: -b.net })).sort((a, b) => b.net - a.net);
+    const creditors = balances.filter(b => b.net > 0.01).map(b => ({ ...b })).sort((a, b) => b.net - a.net);
+    const settlements = [];
+
+    let d = 0; let c = 0;
+    while (d < debtors.length && c < creditors.length) {
+      const debtor = debtors[d];
+      const creditor = creditors[c];
+      const amount = Math.min(debtor.net, creditor.net);
+      settlements.push({ from: debtor.member, to: creditor.member, amount });
+      debtor.net -= amount;
+      creditor.net -= amount;
+      if (debtor.net < 0.01) d++;
+      if (creditor.net < 0.01) c++;
+    }
+
+    const settleUl = document.getElementById("settlements-container");
+    settleUl.innerHTML = "";
+    if (settlements.length === 0) {
+      settleUl.innerHTML = `<li style="justify-content:center;color:var(--text-muted);">Everyone is completely settled up! 🎉</li>`;
+    } else {
+      settlements.forEach(s => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span><strong>${s.from}</strong> pays <strong>${s.to}</strong></span><strong>${baseSymbol}${s.amount.toFixed(2)}</strong>`;
+        settleUl.appendChild(li);
+      });
+    }
+
+    exportBtn.href = `/app/?name=Multi-Currency+Trip&currency=${encodeURIComponent(baseSymbol)}`;
+  }
+
+  renderTable();
+  calculate();
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://tryledgermate.in/tools/rent-split-calculator/" />
 <meta name="robots" content="index, follow" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Free Rent Split Calculator" />
+<meta property="og:title" content="Free Rent Split Calculator | LedgerMate" />
 <meta property="og:description" content="Split rent evenly or by room size/quality, so bigger rooms pay a fair share. Free, no sign-up." />
 <meta property="og:url" content="https://tryledgermate.in/tools/rent-split-calculator/" />
 <link rel="icon" href="/icons/favicon-32.png" />
@@ -19,10 +19,35 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Rent Split Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate fair rent splits among roommates based on relative room size, square footage, and private amenities."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "How do you split rent fairly when rooms are different sizes?", "acceptedAnswer": { "@type": "Answer", "text": "Give each room a weight based on size, private bathroom, or closet space, then split rent proportionally to those weights instead of splitting it evenly. A room worth 30% more space should generally pay a proportionally larger share." } },
-    { "@type": "Question", "name": "Is this rent split calculator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, free with no sign-up. To track rent every month automatically with reminders, try LedgerMate." } }
+    {
+      "@type": "Question",
+      "name": "How do you split rent fairly when rooms are different sizes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Give each room a weight based on size, private bathroom, or closet space, then split rent proportionally to those weights instead of splitting it evenly. A room worth 30% more space should generally pay a proportionally larger share."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this rent split calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, free with no sign-up. To track rent every month automatically with reminders, try LedgerMate."
+      }
+    }
   ]
 }
 </script>
@@ -34,73 +59,153 @@
     <a href="/" class="logo">Ledger<span>Mate</span></a>
     <div class="nav-links">
       <a href="/#features">Features</a>
-      <a href="/tools/trip-expense-calculator/">Trip Calculator</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Trip Calc</a>
+      <a href="/tools/bill-split-calculator/">Bill Splitter</a>
       <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
     </div>
   </div>
 </nav>
 
-<header class="hero wrap" style="padding-top:48px;padding-bottom:24px;">
-  <h1 style="font-size:34px;">Free Rent Split Calculator</h1>
-  <p class="sub" style="font-size:16px;">Split rent evenly, or weight it by room size so the bigger room pays a fair share.</p>
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Rent Split Calculator
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Free Rent Split Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:580px;">Split apartment rent evenly, or weight it by room size and private bathrooms so everyone pays a fair share.</p>
 </header>
 
 <div class="narrow" style="padding-bottom:56px;">
   <div class="calc-card">
-    <label>Total monthly rent</label>
-    <input id="total-rent" type="number" step="0.01" min="0" placeholder="e.g. 2400" />
-
-    <label>Roommates &amp; room weight</label>
-    <p style="font-size:13px;color:var(--text-muted);margin:-6px 0 10px;">Weight = relative room size/quality. Leave all at 1 for an even split, or bump up a bigger room to 1.3, a small one to 0.8, etc.</p>
-    <div id="people-list" class="people-list"></div>
     <div class="calc-row">
-      <input id="new-person" type="text" placeholder="Roommate name" />
-      <input id="new-weight" type="number" step="0.1" min="0.1" value="1" style="max-width:90px;" />
-      <button class="btn btn-primary" id="add-person-btn" type="button">Add</button>
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="¥">¥ — Japanese Yen</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+          <option value="د.إ">د.إ — UAE Dirham</option>
+        </select>
+      </div>
+      <div style="flex:1.5;">
+        <label for="total-rent">Total Monthly Rent</label>
+        <input id="total-rent" type="number" step="10" min="0" value="2800" placeholder="e.g. 2800" />
+      </div>
     </div>
 
-    <div class="calc-result" id="result" style="display:none;">
-      <h3 style="margin:0 0 4px;">Each person's rent</h3>
+    <label>Roommates &amp; Room Weights</label>
+    <p style="font-size:13px;color:var(--text-muted);margin:-6px 0 12px;">Weight 1.0 = standard room. Increase to 1.3 for master suite / private bath, or 0.85 for a smaller room.</p>
+    
+    <div id="people-list" class="people-list"></div>
+
+    <div class="calc-row">
+      <input id="new-person" type="text" placeholder="Roommate name" style="flex:2;" />
+      <input id="new-weight" type="number" step="0.05" min="0.1" value="1.0" style="flex:1;" title="Room weight" />
+      <button class="btn btn-primary" id="add-person-btn" type="button">+ Add</button>
+    </div>
+
+    <div class="calc-result" id="result">
+      <h3 style="margin:0 0 12px;font-size:16px;">Each Roommate's Monthly Rent</h3>
       <div id="rent-breakdown"></div>
     </div>
 
     <div class="calc-cta">
-      <p>Want rent tracked every month with reminders?</p>
-      <a href="/app/" class="btn btn-primary">Create a free LedgerMate group →</a>
+      <div>
+        <p>Want rent and utilities tracked every month with zero hassle?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Create a free LedgerMate flatmates group. Balances update in real time.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Apartment+Rent&currency=$" class="btn btn-primary">Create Flat Group →</a>
     </div>
   </div>
 
   <article style="margin-top:48px;">
-    <h2 style="font-size:22px;">How to split rent fairly between roommates</h2>
-    <p style="color:var(--text-muted);">An even split works fine when every room is roughly the same — but it stops feeling fair the moment one room is noticeably bigger, has its own bathroom, or gets better light. The common fix is a <strong>weighted split</strong>: assign each room a relative weight (its share of the total desirability, however your household defines that), and split the rent proportionally to those weights instead of dividing by headcount. A room weighted 1.3 against three rooms weighted 1.0 will pay a larger, but proportionate, share — everyone else's rent actually goes down slightly to compensate, rather than the smaller rooms subsidizing the big one.</p>
-    <h2 style="font-size:22px;">FAQ</h2>
-    <details class="faq-item" open><summary>How do you split rent fairly when rooms are different sizes?</summary><p>Give each room a weight based on size, private bathroom, or closet space, then split rent proportionally to those weights instead of splitting it evenly.</p></details>
-    <details class="faq-item"><summary>Is this rent split calculator free?</summary><p>Yes, free with no sign-up. To track rent every month automatically with reminders, <a href="/app/">try LedgerMate</a>.</p></details>
+    <h2>How to Split Rent Fairly Between Roommates</h2>
+    <p>An even split works fine when every room is identical — but it stops feeling fair the moment one room is noticeably bigger, has its own bathroom, or gets better natural light.</p>
+    
+    <div class="callout-box">
+      <p><strong>Weighted Rent Formula:</strong> Each Roommate's Rent = (Their Room Weight ÷ Sum of All Room Weights) × Total Rent</p>
+    </div>
+
+    <p>A room weighted 1.3 against two rooms weighted 1.0 will pay an appropriately higher share, while the smaller rooms save money. Everyone agrees on the multipliers before signing the lease, preventing friction later.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>How do you split rent fairly when rooms are different sizes?</summary>
+      <p>Give each room a weight based on size, private bathroom, or closet space, then split rent proportionally to those weights instead of splitting it evenly.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How do you split shared utilities like Wi-Fi and electricity?</summary>
+      <p>Unless one roommate runs an energy-intensive server or space heater 24/7, utilities should almost always be split completely evenly among all roommates, regardless of room size.</p>
+    </details>
   </article>
 </div>
 
 <footer class="footer">
-  <div class="wrap footer-bottom">© 2026 LedgerMate — <a href="/">Home</a></div>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No sign-up required.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
+        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
 </footer>
 
 <script>
-  let people = [];
+  let people = [
+    { id: "1", name: "Alex (Master + Ensuite Bath)", weight: 1.35 },
+    { id: "2", name: "Sam (Standard Queen)", weight: 1.0 },
+    { id: "3", name: "Taylor (Smaller Bedroom)", weight: 0.85 }
+  ];
+
+  const curEl = document.getElementById("currency");
   const peopleListEl = document.getElementById("people-list");
   const totalRentEl = document.getElementById("total-rent");
+  const newPersonEl = document.getElementById("new-person");
+  const newWeightEl = document.getElementById("new-weight");
+  const exportBtn = document.getElementById("btn-export-group");
 
   document.getElementById("add-person-btn").addEventListener("click", addPerson);
-  document.getElementById("new-person").addEventListener("keydown", (e) => { if (e.key === "Enter") addPerson(); });
+  newPersonEl.addEventListener("keydown", (e) => { if (e.key === "Enter") addPerson(); });
   totalRentEl.addEventListener("input", calculate);
+  curEl.addEventListener("change", calculate);
 
   function addPerson() {
-    const nameEl = document.getElementById("new-person");
-    const weightEl = document.getElementById("new-weight");
-    const name = nameEl.value.trim();
-    const weight = parseFloat(weightEl.value) || 1;
+    const name = newPersonEl.value.trim();
+    const weight = parseFloat(newWeightEl.value) || 1.0;
     if (!name) return;
     people.push({ id: crypto.randomUUID(), name, weight });
-    nameEl.value = "";
-    weightEl.value = "1";
+    newPersonEl.value = "";
+    newWeightEl.value = "1.0";
     render();
     calculate();
   }
@@ -108,30 +213,52 @@
   function render() {
     peopleListEl.innerHTML = people.map(p => `
       <div class="people-row">
-        <span style="flex:1">${escapeHtml(p.name)}</span>
-        <span style="color:var(--text-muted);font-size:13px;">weight ${p.weight}</span>
+        <span style="flex:1;font-weight:600;">${escapeHtml(p.name)}</span>
+        <span style="color:var(--accent);font-weight:700;font-size:13px;">weight ${p.weight.toFixed(2)}</span>
         <button type="button" data-id="${p.id}" class="remove-person">×</button>
-      </div>`).join("");
+      </div>
+    `).join("");
+
     peopleListEl.querySelectorAll(".remove-person").forEach(btn => {
-      btn.addEventListener("click", () => { people = people.filter(p => p.id !== btn.dataset.id); render(); calculate(); });
+      btn.addEventListener("click", () => {
+        people = people.filter(p => p.id !== btn.dataset.id);
+        render();
+        calculate();
+      });
     });
   }
 
   function calculate() {
+    const cur = curEl.value;
     const result = document.getElementById("result");
-    const total = parseFloat(totalRentEl.value);
-    if (people.length === 0 || !total || total <= 0) { result.style.display = "none"; return; }
+    const total = parseFloat(totalRentEl.value) || 0;
+    if (people.length === 0 || total <= 0) {
+      result.style.display = "none";
+      return;
+    }
     result.style.display = "block";
     const totalWeight = people.reduce((a, p) => a + p.weight, 0);
+
     document.getElementById("rent-breakdown").innerHTML = people.map(p => {
       const share = (p.weight / totalWeight) * total;
-      return `<div class="calc-result-row"><span>${escapeHtml(p.name)}</span><span class="amt">$${share.toFixed(2)}</span></div>`;
+      const pct = (p.weight / totalWeight) * 100;
+      return `
+        <div class="calc-result-row">
+          <span>${escapeHtml(p.name)} <span style="font-size:12.5px;color:var(--text-muted);">(${pct.toFixed(1)}%)</span></span>
+          <span class="amt">${cur}${share.toFixed(2)}</span>
+        </div>
+      `;
     }).join("");
+
+    exportBtn.href = `/app/?name=Apartment+Rent&currency=${encodeURIComponent(cur)}`;
   }
 
   function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
+
+  render();
+  calculate();
 </script>
 </body>
 </html>

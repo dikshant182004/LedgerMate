@@ -84,13 +84,19 @@
 </head>
 <body>
 
+<div style="background: #6D4FEB; color: #ffffff; padding: 10px 16px; text-align: center; font-size: 13.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 12px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(109,79,235,0.25);">
+  <span>⚡ Ready to split bills, calculate dinner tabs, or migrate from Splitwise?</span>
+  <a href="/app/" style="background: #ffffff; color: #6D4FEB; padding: 5px 14px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 12.5px; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.12);">Launch Web App →</a>
+</div>
+
 <nav class="nav">
   <div class="nav-inner">
     <a href="/" class="logo">Ledger<span>Mate</span></a>
     <div class="nav-links">
       <a href="#features">Features</a>
-      <a href="#compare">Vs. Splitwise</a>
-      <a href="/tools/trip-expense-calculator/">Free Tools</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="#tools">Free Tools</a>
+      <a href="#guides">Guides</a>
       <a href="#faq">FAQ</a>
       <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
     </div>
@@ -165,30 +171,119 @@
     <p class="section-eyebrow">The honest comparison</p>
     <h2>How LedgerMate stacks up</h2>
     <p class="lead">Most "free" splitters quietly cap you somewhere. Here's what actually differs.</p>
-    <table class="compare-table">
-      <thead>
-        <tr><th>&nbsp;</th><th>Splitwise (Free)</th><th class="ledgermate-col">LedgerMate</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Daily expense limit</td><td class="no">3–5 per day</td><td class="ledgermate-col yes">None</td></tr>
-        <tr><td>Ads</td><td class="no">Yes</td><td class="ledgermate-col yes">None</td></tr>
-        <tr><td>Sign-up required to start</td><td class="no">Yes</td><td class="ledgermate-col yes">No</td></tr>
-        <tr><td>Live sync across devices</td><td class="no">Manual refresh</td><td class="ledgermate-col yes">Real-time</td></tr>
-        <tr><td>Data kept forever by default</td><td class="no">Yes, always</td><td class="ledgermate-col yes">Your choice</td></tr>
-        <tr><td>Price</td><td class="no">Free / $4.99 Pro</td><td class="ledgermate-col yes">Free</td></tr>
-      </tbody>
-    </table>
+    <div style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead>
+          <tr><th>Feature</th><th class="ledgermate-col">LedgerMate</th><th>Splitwise (Free Tier)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Daily expense limit</strong></td><td class="ledgermate-col yes">None (Unlimited)</td><td class="no">Max 3 per day</td></tr>
+          <tr><td><strong>Advertisements</strong></td><td class="ledgermate-col yes">Zero ads</td><td class="no">10-sec countdown ads</td></tr>
+          <tr><td><strong>Sign-up required to start</strong></td><td class="ledgermate-col yes">No (Instant web join)</td><td class="no">Yes (Mandatory)</td></tr>
+          <tr><td><strong>Live sync across devices</strong></td><td class="ledgermate-col yes">Real-time WebSockets</td><td class="no">Manual pull-to-refresh</td></tr>
+          <tr><td><strong>Interactive Spending Charts</strong></td><td class="ledgermate-col yes">Included free</td><td class="no">Locked behind Pro ($39.99/yr)</td></tr>
+          <tr><td><strong>Data kept forever by default</strong></td><td class="ledgermate-col yes">Your choice (Auto-expiring)</td><td class="no">Yes, retained indefinitely</td></tr>
+          <tr><td><strong>Price</strong></td><td class="ledgermate-col yes">100% Free</td><td class="no">Free / $39.99/yr Pro</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="text-align:center;margin-top:24px;">
+      <a href="/compare/splitwise-alternative/" class="btn btn-ghost">Read in-depth Splitwise vs LedgerMate analysis →</a>
+    </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="narrow" style="text-align:center;">
-    <p class="section-eyebrow">Free tools</p>
+<section class="section" id="tools">
+  <div class="wrap">
+    <p class="section-eyebrow">Free calculators</p>
     <h2>Calculate a split before you even create a group</h2>
-    <p class="lead">Quick, no-signup calculators for common situations — jump straight into LedgerMate to save and track the result.</p>
-    <div class="tool-links">
-      <a href="/tools/trip-expense-calculator/">Trip Expense Calculator</a>
-      <a href="/tools/rent-split-calculator/">Rent Split Calculator</a>
+    <p class="lead">Free, instant, no-signup calculators for every shared expense scenario — with one-click export to LedgerMate.</p>
+    <div class="grid-3" style="margin-top:32px;">
+      <a href="/tools/bill-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <h3>Bill &amp; Tip Splitter</h3>
+        <p>Split dinner checks with tax and tip. Toggle 10%, 15%, 18%, 20% or custom tips and divide evenly across diners.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/trip-expense-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+        <h3>Trip Expense Calculator</h3>
+        <p>Log what everyone paid on vacation, see net balances, and get the minimum number of payments to settle up.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/rent-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <h3>Rent Split Calculator</h3>
+        <p>Weight apartment rent by bedroom size and private bathrooms so the master suite pays a fair, proportional share.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/proportional-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Income-Based Splitter</h3>
+        <p>Equitable bill splitting for couples and partners based on salary ratios. Compare 50/50 vs proportional equity.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/gas-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <h3>Gas &amp; Mileage Splitter</h3>
+        <p>Calculate road trip fuel consumption, toll fees, and passenger cost in miles (MPG) or kilometers (L/100km).</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/airbnb-room-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg></div>
+        <h3>Vacation Rental Splitter</h3>
+        <p>Fairly price Airbnb and cabin rental bedrooms by king beds, ensuites, and couples vs single guests.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/bachelorette-expense-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3>Bachelor(ette) Party Splitter</h3>
+        <p>Split weekend party villas, brunches, and decor with the bride or groom covered for $0.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/multi-currency-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>Multi-Currency Travel Splitter</h3>
+        <p>Log expenses in EUR, USD, GBP, or JPY and convert to a single base currency with zero fees.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="guides" style="background:var(--bg-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <p class="section-eyebrow">Practical Guides</p>
+    <h2>Master shared finances &amp; group trips</h2>
+    <p class="lead">In-depth guides on etiquette, mathematical formulas, and the best tools for modern expense sharing.</p>
+    <div class="grid-3" style="margin-top:32px;">
+      <div class="feature-card">
+        <span class="badge-pill badge-free">Comparison · 2026</span>
+        <h3 style="margin-top:8px;"><a href="/blog/best-splitwise-alternatives/" style="color:inherit;text-decoration:none;">5 Best Free Splitwise Alternatives (No Daily Limits)</a></h3>
+        <p>Hit Splitwise's 3-expense cap? Here are the top 5 free apps tested for zero ads and real-time group sync.</p>
+        <a href="/blog/best-splitwise-alternatives/" style="color:var(--accent);font-weight:600;font-size:13.5px;display:inline-block;margin-top:8px;">Read Guide →</a>
+      </div>
+
+      <div class="feature-card">
+        <span class="badge-pill badge-free">Roommates</span>
+        <h3 style="margin-top:8px;"><a href="/blog/fair-rent-split-unequal-rooms/" style="color:inherit;text-decoration:none;">How to Split Rent Fairly When Room Sizes Are Unequal</a></h3>
+        <p>The 50/50 common space rule and amenity weights to divide apartment rent peacefully without resentment.</p>
+        <a href="/blog/fair-rent-split-unequal-rooms/" style="color:var(--accent);font-weight:600;font-size:13.5px;display:inline-block;margin-top:8px;">Read Guide →</a>
+      </div>
+
+      <div class="feature-card">
+        <span class="badge-pill badge-free">Couples</span>
+        <h3 style="margin-top:8px;"><a href="/blog/how-couples-split-expenses/" style="color:inherit;text-decoration:none;">How Couples Split Expenses: 50/50 vs. Proportional</a></h3>
+        <p>Compare relationship financial models, psychological pitfalls of equal splits, and fair salary ratios.</p>
+        <a href="/blog/how-couples-split-expenses/" style="color:var(--accent);font-weight:600;font-size:13.5px;display:inline-block;margin-top:8px;">Read Guide →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -242,32 +337,42 @@
     <div class="footer-grid">
       <div>
         <a href="/" class="logo">Ledger<span>Mate</span></a>
-        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free, real-time expense splitting for friends, roommates, and trips.</p>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free, real-time expense splitting for friends, roommates, and trips. No sign-up required.</p>
       </div>
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="/app/">Open the app</a></li>
+          <li><a href="/app/">Open the App</a></li>
           <li><a href="#features">Features</a></li>
-          <li><a href="#compare">Vs. Splitwise</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Free tools</h4>
-        <ul>
-          <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
-          <li><a href="/tools/rent-split-calculator/">Rent Split Calculator</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Learn</h4>
-        <ul>
-          <li><a href="/blog/how-to-split-trip-expenses/">Splitting Trip Expenses</a></li>
+          <li><a href="/compare/splitwise-alternative/">Vs Splitwise</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
+      <div>
+        <h4>Free Tools</h4>
+        <ul>
+          <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+          <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+          <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+          <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
+          <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+          <li><a href="/tools/bachelorette-expense-calculator/">Bachelor(ette) Splitter</a></li>
+          <li><a href="/tools/multi-currency-split-calculator/">Multi-Currency Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guides &amp; Comparisons</h4>
+        <ul>
+          <li><a href="/blog/best-splitwise-alternatives/">Best Splitwise Alternatives</a></li>
+          <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+          <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+          <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+          <li><a href="/sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
     </div>
-    <p class="footer-bottom">© 2026 LedgerMate — Free, always.</p>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
   </div>
 </footer>
 

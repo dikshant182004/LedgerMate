@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bachelor &amp; Bachelorette Party Budget Splitter — VIP Goes Free | LedgerMate</title>
+<meta name="description" content="Free bachelor and bachelorette party cost calculator. Easily split Airbnb, dinners, decor, and activities while covering the bride or groom's share fairly." />
+<link rel="canonical" href="https://tryledgermate.in/tools/bachelorette-expense-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Bachelor &amp; Bachelorette Party Budget Splitter | LedgerMate" />
+<meta property="og:description" content="Split bachelor/bachelorette weekend costs fairly. Automatically calculates guest shares while covering the honoree. 100% free with no sign-up." />
+<meta property="og:url" content="https://tryledgermate.in/tools/bachelorette-expense-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/landing.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Bachelor & Bachelorette Party Expense Splitter",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate bachelor and bachelorette party expenses, Airbnb lodgings, activities, and drinks with the bride or groom covered for free."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does the bride or groom pay for their bachelorette/bachelor party?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Traditional etiquette is that the honoree (bride or groom) does not pay for lodging, dinners, drinks, or group activities during the party. Those costs are divided evenly among the attendees. However, the honoree usually covers their own personal travel (flights/trains) unless the bridal party decides to gift it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you calculate each guest's share when the honoree goes free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Add up all shared group expenses (villa rental, decorations, meals, VIP tables) and divide that total strictly by the number of paying guests (Total attendees minus 1 for the honoree)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if someone can only come for one day of the weekend?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For guests attending part-time, calculate their per-night lodging rate and only bill them for meals and activities they actually attended, rather than an even full-weekend split."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  .cat-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .toggle-btn {
+    font-size: 11.5px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .toggle-btn.active {
+    background: rgba(109, 79, 235, 0.12);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/tools/trip-expense-calculator/">Trip Calc</a>
+      <a href="/tools/bill-split-calculator/">Bill Split</a>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Bachelor(ette) Splitter
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;">Bachelor &amp; Bachelorette Party Splitter</h1>
+  <p class="sub" style="font-size:16px;max-width:620px;">Calculate the exact cost per guest for the big weekend. Automatically covers the bride or groom so the VIP pays $0.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>$ — US Dollar</option>
+          <option value="₹">₹ — Indian Rupee</option>
+          <option value="€">€ — Euro</option>
+          <option value="£">£ — British Pound</option>
+          <option value="A$">A$ — Australian Dollar</option>
+          <option value="C$">C$ — Canadian Dollar</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="paying-guests">Paying Guests (Excluding VIP)</label>
+        <input id="paying-guests" type="number" min="1" max="50" value="7" />
+      </div>
+      <div style="flex:1;">
+        <label for="vip-status">Honoree Pays</label>
+        <select id="vip-status">
+          <option value="free" selected>VIP Goes Free ($0)</option>
+          <option value="even">VIP Pays Equal Share</option>
+          <option value="half">VIP Pays 50% Off</option>
+        </select>
+      </div>
+    </div>
+
+    <label style="margin-top:14px;display:block;">Weekend Expense Categories</label>
+
+    <div class="cat-card">
+      <div class="cat-header">
+        <span>🏡 Villa / Airbnb / Hotel</span>
+        <button type="button" class="toggle-btn active" data-target="cat-lodging">Include</button>
+      </div>
+      <div class="calc-row" style="margin:0;">
+        <input id="cat-lodging" type="number" step="1" min="0" value="1800" placeholder="Total rental cost" />
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header">
+        <span>🥂 Group Dinners, Brunches &amp; Drinks</span>
+        <button type="button" class="toggle-btn active" data-target="cat-dinners">Include</button>
+      </div>
+      <div class="calc-row" style="margin:0;">
+        <input id="cat-dinners" type="number" step="1" min="0" value="950" placeholder="Food &amp; bar tabs" />
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header">
+        <span>🎈 Favors, Outfits, Themes &amp; Decor</span>
+        <button type="button" class="toggle-btn active" data-target="cat-decor">Include</button>
+      </div>
+      <div class="calc-row" style="margin:0;">
+        <input id="cat-decor" type="number" step="1" min="0" value="280" placeholder="Decor &amp; swag bags" />
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header">
+        <span>🛥️ Activities, Boat Rental or VIP Club</span>
+        <button type="button" class="toggle-btn active" data-target="cat-activities">Include</button>
+      </div>
+      <div class="calc-row" style="margin:0;">
+        <input id="cat-activities" type="number" step="1" min="0" value="700" placeholder="Boat charter, spa, VIP" />
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header">
+        <span>🎁 Group Gift / Honoree Travel Fund</span>
+        <button type="button" class="toggle-btn active" data-target="cat-gift">Include</button>
+      </div>
+      <div class="calc-row" style="margin:0;">
+        <input id="cat-gift" type="number" step="1" min="0" value="350" placeholder="Shared gift or flight cover" />
+      </div>
+    </div>
+
+    <div class="metric-grid" id="metrics">
+      <div class="metric-box">
+        <div class="metric-val" id="disp-per-guest">$582.86</div>
+        <div class="metric-lbl">Each Guest Pays</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-vip-pays">$0.00</div>
+        <div class="metric-lbl">Honoree Pays</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="disp-party-total">$4,080.00</div>
+        <div class="metric-lbl">Weekend Grand Total</div>
+      </div>
+    </div>
+
+    <div class="calc-result" id="party-breakdown">
+      <div class="calc-result-row">
+        <span>Total Weekend Expenses</span>
+        <span class="amt" id="row-grand-total">$4,080.00</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Paying Party Size</span>
+        <span class="amt" id="row-party-size">7 guests (+ 1 honoree)</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Honoree Subsidy (Covered by guests)</span>
+        <span class="amt" id="row-vip-gift">$510.00</span>
+      </div>
+      <div class="calc-result-row" style="font-weight:700;font-size:16px;">
+        <span>Cost Per Paying Guest</span>
+        <span class="amt" id="row-final-guest">$582.86</span>
+      </div>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Planning the party with maid of honor / best man?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Create a live LedgerMate group so everyone can log expenses, track who paid what, and settle up with Venmo or UPI in 1 click.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Bachelorette+Party&currency=$" class="btn btn-primary">Start Live Party Group →</a>
+    </div>
+  </div>
+
+  <article style="margin-top:48px;">
+    <h2>Bachelor &amp; Bachelorette Party Etiquette Guide</h2>
+    <p>Organizing a bachelor or bachelorette party is one of the most rewarding parts of wedding season, but cost friction between attendees can strain friendships if not addressed upfront.</p>
+
+    <h3>1. Who Pays for What?</h3>
+    <p>By modern etiquette, the guests jointly cover the bride or groom’s lodging, dinners, drinks, and celebratory activities. The honoree should not have to reach into their wallet during the weekend. However, the honoree usually books and pays for their own plane ticket unless the bridal party collectively decides to gift the airfare.</p>
+
+    <h3>2. Set the Budget Before Booking Non-Refundable Items</h3>
+    <p>Always send an anonymous survey or group chat poll asking for maximum comfortable budgets <em>before</em> putting down a deposit on a multi-thousand-dollar luxury rental. Be transparent about estimated cost-per-person ranges.</p>
+
+    <h3>3. Use LedgerMate for Settle-Ups (Avoid Venmo Spreadsheet Chaos)</h3>
+    <p>Multiple bridesmaids or groomsmen will purchase different items: one puts down the Airbnb deposit, another buys the alcohol, someone else orders custom t-shirts. LedgerMate automatically calculates the minimum number of direct transfers so nobody overpays.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Does the bride or groom pay for their bachelorette party?</summary>
+      <p>Traditional etiquette is that the honoree (bride or groom) does not pay for lodging, dinners, drinks, or group activities during the party. Those costs are divided evenly among the attendees.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What if someone can only come for one day of the weekend?</summary>
+      <p>Calculate their per-night lodging rate and only bill them for meals and activities they actually attended, rather than an even full-weekend split.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can LedgerMate handle offline expense logging during the trip?</summary>
+      <p>Yes! LedgerMate functions as a full PWA with offline caching. You can log expenses while on a boat or in remote areas with zero cell service, and it syncs the instant you reconnect to Wi-Fi.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">Ledger<span>Mate</span></div>
+      <p style="font-size:14px;color:var(--text-muted);margin:8px 0 0;">Free real-time expense splitting for dinners, roommates, and trips. No paywalls, no limits.</p>
+    </div>
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="/tools/bachelorette-expense-calculator/">Bachelor(ette) Splitter</a></li>
+        <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+        <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compare</h4>
+      <ul>
+        <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
+        <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></div>
+</footer>
+
+<script>
+  const curEl = document.getElementById("currency");
+  const guestsEl = document.getElementById("paying-guests");
+  const vipStatusEl = document.getElementById("vip-status");
+  const exportBtn = document.getElementById("btn-export-group");
+
+  const catInputs = [
+    document.getElementById("cat-lodging"),
+    document.getElementById("cat-dinners"),
+    document.getElementById("cat-decor"),
+    document.getElementById("cat-activities"),
+    document.getElementById("cat-gift")
+  ];
+
+  document.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = document.getElementById(btn.dataset.target);
+      const isActive = btn.classList.toggle("active");
+      btn.textContent = isActive ? "Include" : "Excluded";
+      target.disabled = !isActive;
+      target.style.opacity = isActive ? "1" : "0.4";
+      calculate();
+    });
+  });
+
+  [curEl, guestsEl, vipStatusEl, ...catInputs].forEach(input => {
+    input.addEventListener("input", calculate);
+  });
+
+  function calculate() {
+    const cur = curEl.value;
+    const payingGuests = Math.max(1, parseInt(guestsEl.value, 10) || 1);
+    const vipMode = vipStatusEl.value;
+
+    let total = 0;
+    catInputs.forEach(input => {
+      if (!input.disabled) {
+        total += Math.max(0, parseFloat(input.value) || 0);
+      }
+    });
+
+    let guestCost = 0;
+    let vipCost = 0;
+    let vipSubsidy = 0;
+
+    if (vipMode === "free") {
+      guestCost = total / payingGuests;
+      vipCost = 0;
+      vipSubsidy = total / (payingGuests + 1); // what VIP would have paid
+    } else if (vipMode === "even") {
+      const perHead = total / (payingGuests + 1);
+      guestCost = perHead;
+      vipCost = perHead;
+      vipSubsidy = 0;
+    } else if (vipMode === "half") {
+      // VIP pays 0.5 share, guests pay (total - 0.5*share) / payingGuests
+      const baseShare = total / (payingGuests + 0.5);
+      vipCost = baseShare * 0.5;
+      guestCost = baseShare;
+      vipSubsidy = baseShare * 0.5;
+    }
+
+    document.getElementById("disp-per-guest").textContent = `${cur}${guestCost.toFixed(2)}`;
+    document.getElementById("disp-vip-pays").textContent = `${cur}${vipCost.toFixed(2)}`;
+    document.getElementById("disp-party-total").textContent = `${cur}${total.toFixed(2)}`;
+
+    document.getElementById("row-grand-total").textContent = `${cur}${total.toFixed(2)}`;
+    document.getElementById("row-party-size").textContent = `${payingGuests} guests (+ 1 honoree)`;
+    document.getElementById("row-vip-gift").textContent = vipSubsidy > 0 ? `${cur}${vipSubsidy.toFixed(2)} gifted` : "None";
+    document.getElementById("row-final-guest").textContent = `${cur}${guestCost.toFixed(2)}`;
+
+    exportBtn.href = `/app/?name=Bachelorette+Party&currency=${encodeURIComponent(cur)}`;
+  }
+
+  calculate();
+</script>
+</body>
+</html>

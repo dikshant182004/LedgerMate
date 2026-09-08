@@ -30,6 +30,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/style.css" />
 <script src="/vendor/chart.umd.min.js" defer></script>
+<script src="/vendor/qrcode.min.js" defer></script>
 </head>
 <body>
 
@@ -104,6 +105,21 @@
         <p id="retention-signin-note" class="permanent-note hidden">Sign in with Google to use this retention period — it'll open the sign-in flow when you submit.</p>
         <button type="submit" class="btn btn-primary btn-full">Create group</button>
       </form>
+
+      <div class="home-divider"><span>OR MIGRATE</span></div>
+
+      <div class="splitwise-import-card">
+        <div class="import-card-header">
+          <div class="import-icon">📥</div>
+          <div>
+            <strong class="import-title">Switching from Splitwise?</strong>
+            <p class="import-sub">Import your exported group CSV in 1 click. Zero cooldowns, unlimited expenses, completely free.</p>
+          </div>
+        </div>
+        <button type="button" id="open-import-btn" class="btn btn-inverse btn-full btn-small">
+          Upload Splitwise CSV
+        </button>
+      </div>
     </div>
 
     <div id="my-groups-wrap" class="my-groups-wrap hidden">
@@ -124,12 +140,20 @@
         <span id="group-name-header" class="group-name-header"></span>
       </div>
       <div class="topbar-actions">
-        <button id="share-btn" class="icon-btn" aria-label="Share group link">
+        <button id="export-btn" class="icon-btn" aria-label="Export expenses" title="Export CSV, PDF & Summary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+        <button id="share-btn" class="icon-btn" aria-label="Share group link & QR" title="Share group & QR code">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/></svg>
         </button>
         <div id="auth-area-group" class="auth-area"></div>
       </div>
     </header>
+
+    <div id="offline-banner" class="offline-banner hidden">
+      <span class="offline-dot"></span>
+      <span id="offline-banner-text">Offline mode — showing saved expenses. Live sync resumes when connected.</span>
+    </div>
 
     <div id="extend-banner" class="extend-banner hidden">
       <span id="extend-banner-text"></span>
@@ -144,6 +168,20 @@
     <main class="tab-content">
 
       <div id="tab-expenses" class="tab-panel">
+        <div class="expense-quick-bar">
+          <button type="button" id="btn-quick-dinner" class="quick-action-btn" title="Itemized restaurant bill with tax & tip">
+            <span class="quick-action-icon">🍽️</span>
+            <span>Dinner Mode</span>
+          </button>
+          <button type="button" id="btn-quick-paste" class="quick-action-btn" title="Natural text expense parser">
+            <span class="quick-action-icon">⚡</span>
+            <span>Quick Paste</span>
+          </button>
+          <button type="button" id="btn-quick-add" class="quick-action-btn primary" title="Add standard expense">
+            <span class="quick-action-icon">＋</span>
+            <span>Add Expense</span>
+          </button>
+        </div>
         <ul id="expense-list" class="expense-list"></ul>
       </div>
 
@@ -210,6 +248,14 @@
         </button>
       </div>
 
+      <!-- Mode Switcher Tabs -->
+      <div class="expense-mode-tabs" role="tablist">
+        <button type="button" class="mode-tab-btn active" id="btn-mode-standard">Equal / Custom</button>
+        <button type="button" class="mode-tab-btn" id="btn-mode-dinner">🍽️ Dinner Mode</button>
+        <button type="button" class="mode-tab-btn" id="btn-mode-quick">⚡ Quick Paste</button>
+      </div>
+
+      <!-- 1. Standard Form Panel -->
       <form id="add-expense-form" class="expense-form">
         <div class="expense-row">
           <input id="expense-desc" type="text" placeholder="What was it for?" required maxlength="80" />
@@ -231,6 +277,104 @@
 
         <button type="submit" class="btn btn-primary btn-full">Add expense</button>
       </form>
+
+      <!-- 2. Dinner / Itemized Mode Panel -->
+      <div id="dinner-mode-panel" class="dinner-panel hidden">
+        <div class="dinner-intro">
+          <p class="sub" style="margin-bottom:12px;">Add restaurant dishes or drinks. Select who shared each item, and tax/tip will be allocated proportionally.</p>
+        </div>
+
+        <div class="stack" style="gap:8px;">
+          <input id="dinner-desc" type="text" placeholder="Restaurant or Dinner Name (e.g. Olive Garden)" maxlength="80" value="Dinner" />
+          
+          <div class="dinner-payer-row">
+            <label class="field-label" style="margin:0;">Paid by</label>
+            <select id="dinner-paid-by" style="flex:1;"></select>
+          </div>
+        </div>
+
+        <div class="dinner-items-header">
+          <strong>Receipt Line Items</strong>
+          <span id="dinner-items-count" class="dinner-counter">0 items</span>
+        </div>
+
+        <div id="dinner-items-list" class="dinner-items-list">
+          <!-- Dynamically populated rows -->
+        </div>
+
+        <button type="button" id="btn-add-dinner-item" class="btn btn-small btn-full btn-outline" style="margin: 8px 0 14px;">
+          + Add Line Item
+        </button>
+
+        <!-- Tax & Tip Controls -->
+        <div class="dinner-tax-tip-card">
+          <div class="tax-tip-grid">
+            <div class="tax-tip-cell">
+              <label>Items Subtotal</label>
+              <div id="dinner-subtotal-disp" class="tax-tip-value">$0.00</div>
+            </div>
+            <div class="tax-tip-cell">
+              <label for="dinner-tax-input">Tax Amount</label>
+              <input id="dinner-tax-input" type="number" step="0.01" min="0" placeholder="0.00" />
+            </div>
+            <div class="tax-tip-cell">
+              <label for="dinner-tip-input">Tip Amount</label>
+              <input id="dinner-tip-input" type="number" step="0.01" min="0" placeholder="0.00" />
+            </div>
+          </div>
+          <div class="dinner-total-bar">
+            <span>Grand Total:</span>
+            <strong id="dinner-grand-total">$0.00</strong>
+          </div>
+        </div>
+
+        <!-- Proportional Share Preview -->
+        <div class="dinner-summary-section">
+          <label class="field-label">Each Person's Calculated Fair Share (with Tax &amp; Tip)</label>
+          <div id="dinner-shares-preview" class="dinner-shares-preview"></div>
+        </div>
+
+        <button type="button" id="btn-submit-dinner" class="btn btn-primary btn-full" style="margin-top:14px;">
+          Save Dinner Expense
+        </button>
+      </div>
+
+      <!-- 3. Quick-Paste Natural Language Panel -->
+      <div id="quick-paste-panel" class="quick-paste-panel hidden">
+        <p class="sub" style="margin-bottom:10px;">Type or paste naturally. Our parser will instantly understand who paid, the amount, and who to split with.</p>
+        
+        <textarea id="quick-paste-input" class="quick-textarea" rows="3" placeholder="e.g. Arjun paid 1200 for groceries with Priya, Rahul&#10;or: Alex paid $45 for pizza with all"></textarea>
+        
+        <div class="quick-examples">
+          <span class="quick-ex-label">Try an example:</span>
+          <button type="button" class="quick-chip-btn" data-text="paid 45 for Pizza with all">🍕 $45 Pizza with all</button>
+          <button type="button" class="quick-chip-btn" data-text="paid 85 for Groceries">🛒 $85 Groceries</button>
+          <button type="button" class="quick-chip-btn" data-text="paid 120 for Uber">🚕 $120 Uber</button>
+        </div>
+
+        <div id="quick-parse-card" class="quick-parse-card">
+          <div class="parse-row">
+            <span class="parse-label">👤 Paid by:</span>
+            <span id="qp-parsed-payer" class="parse-badge">—</span>
+          </div>
+          <div class="parse-row">
+            <span class="parse-label">💵 Amount:</span>
+            <span id="qp-parsed-amount" class="parse-badge">—</span>
+          </div>
+          <div class="parse-row">
+            <span class="parse-label">📝 Description:</span>
+            <span id="qp-parsed-desc" class="parse-badge">—</span>
+          </div>
+          <div class="parse-row">
+            <span class="parse-label">👥 Split with:</span>
+            <span id="qp-parsed-split" class="parse-badge">—</span>
+          </div>
+        </div>
+
+        <button type="button" id="btn-submit-quick-paste" class="btn btn-primary btn-full" style="margin-top:14px;">
+          Confirm &amp; Add Expense
+        </button>
+      </div>
     </div>
   </div>
 
@@ -249,7 +393,7 @@
     </div>
   </div>
 
-  <!-- ============ SHEET: share link ============ -->
+  <!-- ============ SHEET: share link & QR ============ -->
   <div id="share-overlay" class="sheet-overlay hidden">
     <div class="sheet sheet-small">
       <div class="sheet-handle"></div>
@@ -259,10 +403,83 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
         </button>
       </div>
-      <p class="sub">Anyone with this link can view and add to this group.</p>
+      <p class="sub">Anyone with this link or QR code can join, view, and add expenses instantly.</p>
+      
+      <div class="share-qr-wrapper">
+        <div id="share-qr-box" class="share-qr-box"></div>
+        <p class="share-qr-hint">Scan with any smartphone camera to join</p>
+      </div>
+
       <div class="share-row">
         <input id="share-link" type="text" readonly />
-        <button id="copy-link-btn" class="btn btn-small">Copy</button>
+        <button id="copy-link-btn" class="btn btn-small">Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SHEET: export (CSV, PDF & Text) ============ -->
+  <div id="export-overlay" class="sheet-overlay hidden">
+    <div class="sheet sheet-small">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2>Export &amp; Summary</h2>
+        <button id="close-export-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="sub">Export complete group records for bookkeeping, reimbursements, or spreadsheets. No paywalls, no limits.</p>
+      <div class="export-actions-list stack">
+        <button id="export-csv-btn" class="btn btn-primary btn-full export-action-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <div class="btn-text-group">
+            <strong>Download Spreadsheet (.CSV)</strong>
+            <span>Itemized expenses, who paid, and final settlements</span>
+          </div>
+        </button>
+
+        <button id="export-print-btn" class="btn btn-inverse btn-full export-action-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <div class="btn-text-group">
+            <strong>Print / Save as PDF Summary</strong>
+            <span>Clean, invoice-style printable expense report</span>
+          </div>
+        </button>
+
+        <button id="export-copy-btn" class="btn btn-small btn-full">
+          📋 Copy Text Summary (for WhatsApp / Telegram)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SHEET: Settle-up payment options ============ -->
+  <div id="settle-overlay" class="sheet-overlay hidden">
+    <div class="sheet sheet-small">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2>Settle Up</h2>
+        <button id="close-settle-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="settle-details" class="settle-details-box">
+        <div class="settle-names"><span id="settle-from-name"></span> owes <span id="settle-to-name"></span></div>
+        <div id="settle-amount-display" class="settle-amount-display"></div>
+      </div>
+      <p class="sub" style="margin-top:8px;">Choose how to pay or record this settlement:</p>
+      <div class="settle-action-options stack">
+        <button id="settle-upi-btn" class="btn btn-primary btn-full settle-pay-btn">
+          <span>Pay via UPI (GPay, PhonePe, Paytm)</span>
+        </button>
+        <button id="settle-venmo-btn" class="btn btn-inverse btn-full settle-pay-btn">
+          <span>Pay via Venmo</span>
+        </button>
+        <button id="settle-paypal-btn" class="btn btn-inverse btn-full settle-pay-btn">
+          <span>Pay via PayPal</span>
+        </button>
+        <button id="settle-record-btn" class="btn btn-small btn-full" style="margin-top:6px;border:1px dashed var(--border);">
+          ✓ Record as Paid in LedgerMate
+        </button>
       </div>
     </div>
   </div>
@@ -310,6 +527,156 @@
       </form>
     </div>
   </div>
+
+  <!-- ============ SHEET: "Why Do I Owe This?" Transparent Math Breakdown ============ -->
+  <div id="breakdown-overlay" class="sheet-overlay hidden">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div>
+          <h2 id="breakdown-title">Why do I owe this?</h2>
+          <span id="breakdown-subtitle" class="sub" style="margin:0;font-size:13px;">Transparent calculation breakdown</span>
+        </div>
+        <button id="close-breakdown-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- High-level 3-card math summary -->
+      <div class="breakdown-summary-cards">
+        <div class="bd-card">
+          <span class="bd-card-label">Paid Out of Pocket</span>
+          <strong id="bd-paid-amount" class="bd-card-val">$0.00</strong>
+        </div>
+        <div class="bd-card">
+          <span class="bd-card-label">Fair Share Consumed</span>
+          <strong id="bd-consumed-amount" class="bd-card-val">$0.00</strong>
+        </div>
+        <div class="bd-card" id="bd-net-card">
+          <span class="bd-card-label">Net Balance</span>
+          <strong id="bd-net-amount" class="bd-card-val">$0.00</strong>
+        </div>
+      </div>
+
+      <!-- Explicit Formula Card -->
+      <div class="breakdown-formula-box">
+        <span class="formula-title">The Math:</span>
+        <div id="bd-formula-text" class="formula-detail">
+          Paid ($0.00) − Consumed ($0.00) = Net Balance ($0.00)
+        </div>
+      </div>
+
+      <!-- Direct Settlement Recommendation -->
+      <div id="bd-settle-box" class="bd-settle-box">
+        <div id="bd-settle-text" class="bd-settle-text"></div>
+      </div>
+
+      <!-- Itemized Participation Table -->
+      <div class="bd-section-header">
+        <strong>Itemized Expense Participation</strong>
+        <span id="bd-expenses-count" class="dinner-counter">0 expenses</span>
+      </div>
+
+      <div id="bd-expenses-list" class="bd-expenses-list">
+        <!-- Dynamically rendered expense cards -->
+      </div>
+
+      <div class="bd-action-row stack" style="margin-top:16px;">
+        <button type="button" id="bd-copy-text-btn" class="btn btn-small btn-full">
+          📋 Copy Math Breakdown to Share (WhatsApp / Messages)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SHEET: Splitwise CSV Migration Modal ============ -->
+  <div id="import-overlay" class="sheet-overlay hidden">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div>
+          <h2>Import from Splitwise</h2>
+          <span class="sub" style="margin:0;font-size:13px;">Migrate your group in seconds</span>
+        </div>
+        <button id="close-import-sheet" class="icon-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Instructions & File Dropzone -->
+      <div id="import-step-upload" class="import-step">
+        <div class="import-help-box">
+          <strong>How to get your CSV from Splitwise:</strong>
+          <ol>
+            <li>Open your group in Splitwise (Web or Mobile)</li>
+            <li>Tap <strong>Settings ⚙️</strong> → Select <strong>Export as spreadsheet (.CSV)</strong></li>
+            <li>Drag &amp; drop the file below or tap to upload</li>
+          </ol>
+        </div>
+
+        <div id="csv-dropzone" class="csv-dropzone">
+          <input type="file" id="csv-file-input" accept=".csv,text/csv" style="display:none;" />
+          <div class="dropzone-icon">📄</div>
+          <strong>Drag &amp; drop Splitwise .CSV here</strong>
+          <span class="dropzone-hint">or click to browse files</span>
+        </div>
+      </div>
+
+      <!-- Parsed Preview & Verification Step -->
+      <div id="import-step-preview" class="import-step hidden">
+        <div class="import-preview-meta">
+          <div class="preview-metric">
+            <span class="meta-label">Group Name</span>
+            <strong id="import-preview-name">—</strong>
+          </div>
+          <div class="preview-metric">
+            <span class="meta-label">Currency</span>
+            <strong id="import-preview-currency">$</strong>
+          </div>
+          <div class="preview-metric">
+            <span class="meta-label">People Found</span>
+            <strong id="import-preview-members">0</strong>
+          </div>
+          <div class="preview-metric">
+            <span class="meta-label">Total Expenses</span>
+            <strong id="import-preview-count">0</strong>
+          </div>
+        </div>
+
+        <div class="members-chips-preview">
+          <label class="field-label">Members to be added:</label>
+          <div id="import-members-list" class="import-members-tags"></div>
+        </div>
+
+        <div class="import-table-wrapper">
+          <label class="field-label">Sample Expenses Detected:</label>
+          <table class="import-preview-table">
+            <thead>
+              <tr><th>Date</th><th>Description</th><th>Cost</th><th>Paid By</th></tr>
+            </thead>
+            <tbody id="import-preview-rows"></tbody>
+          </table>
+        </div>
+
+        <div id="import-progress-status" class="import-progress-status hidden">
+          <div class="spinner-small"></div>
+          <span id="import-progress-text">Creating group and importing expenses...</span>
+        </div>
+
+        <div class="stack" style="margin-top:16px;">
+          <button type="button" id="btn-confirm-import" class="btn btn-primary btn-full">
+            Create LedgerMate Group &amp; Import All
+          </button>
+          <button type="button" id="btn-cancel-import" class="btn btn-small btn-full">
+            Choose a different file
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PRINTABLE AUDIT REPORT (visible only in print mode) ============ -->
+  <div id="printable-audit-report" class="print-only"></div>
 
   <div id="toast" class="toast hidden"></div>
 
