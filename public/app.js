@@ -153,12 +153,28 @@ function bindNetworkEvents() {
 function setupSplash() {
   const splash = el("splash");
   if (!splash) return;
+
+  // If splash was already played in this tab session, remove immediately without flashing
+  if (sessionStorage.getItem("ledgermate_splash_seen")) {
+    splash.remove();
+    return;
+  }
+  sessionStorage.setItem("ledgermate_splash_seen", "1");
+
+  let dismissed = false;
   const dismiss = () => {
-    if (splash && splash.parentNode) splash.remove();
+    if (dismissed) return;
+    dismissed = true;
+    splash.classList.add("splash-fade-out");
+    setTimeout(() => {
+      if (splash && splash.parentNode) splash.remove();
+    }, 400);
   };
+
   splash.addEventListener("click", dismiss);
   document.addEventListener("keydown", dismiss, { once: true });
-  setTimeout(dismiss, 750);
+  // The badge checkmark completes at ~1.3s; allow full graceful completion before fade out
+  setTimeout(dismiss, 1400);
 }
 
 function registerServiceWorker() {

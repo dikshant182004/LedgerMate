@@ -2,6 +2,7 @@ import {
   buildGroupState,
   findNextAlarmTime,
   stripForBroadcast,
+  purgeExpiredGroup,
   REMINDER_WINDOW_MS,
   ANONYMOUS_RETENTIONS,
   RETENTION_MS,
@@ -133,17 +134,11 @@ export class GroupRoom {
     ).bind(this.groupId).first();
 
     if (group && !group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
-      const { count } = await db.prepare(
-        "SELECT COUNT(*) as count FROM expenses WHERE group_id = ?"
-      ).bind(this.groupId).first();
       const windowMs = RETENTION_MS[group.retention] || 0;
       const windowElapsed = nowTs >= group.created_at + windowMs;
 
-      if (count === 0 && windowElapsed) {
-        await db.batch([
-          db.prepare("DELETE FROM members WHERE group_id = ?").bind(this.groupId),
-          db.prepare("DELETE FROM groups WHERE id = ?").bind(this.groupId),
-        ]);
+      if (windowElapsed) {
+        await purgeExpiredGroup(db, this.groupId);
         this.#broadcastRaw({ type: "group_deleted" });
         for (const ws of this.state.getWebSockets()) {
           try { ws.close(1000, "Group expired"); } catch { /* already closed */ }

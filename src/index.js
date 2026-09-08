@@ -11,6 +11,8 @@ import {
   retentionRequiresSignIn,
   buildGroupState,
   computeExpiryForNewExpense,
+  purgeExpiredGroup,
+  cleanupExpiredData,
 } from "./services/group-state.js";
 import { broadcastGroupState, scheduleGroupAlarm, recomputeGroupAlarm, connectToGroupRoom } from "./services/realtime.js";
 import { GroupRoom } from "./durable-objects/group-room.js";
@@ -258,8 +260,17 @@ app.post("/api/groups/:id/claim", async (c) => {
 
 app.post("/api/groups/:id/members", async (c) => {
   const groupId = c.req.param("id");
-  const group = await c.env.DB.prepare("SELECT id FROM groups WHERE id = ?").bind(groupId).first();
+  const group = await c.env.DB.prepare("SELECT id, retention, created_by, created_at FROM groups WHERE id = ?").bind(groupId).first();
   if (!group) return json(c, { error: "Group not found." }, 404);
+
+  // Expired anonymous groups reject new members and trigger cleanup
+  if (!group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
+    const windowMs = RETENTION_MS[group.retention] || 0;
+    if (now() >= group.created_at + windowMs) {
+      c.executionCtx.waitUntil(purgeExpiredGroup(c.env.DB, groupId));
+      return json(c, { error: "This group has reached its retention limit and expired." }, 410);
+    }
+  }
 
   const body = await c.req.json().catch(() => ({}));
   const name = (body.name || "").trim();
@@ -284,8 +295,17 @@ app.post("/api/groups/:id/members", async (c) => {
 app.post("/api/groups/:id/expenses", async (c) => {
   const groupId = c.req.param("id");
   const user = await getSessionUser(c);
-  const group = await c.env.DB.prepare("SELECT id, retention FROM groups WHERE id = ?").bind(groupId).first();
+  const group = await c.env.DB.prepare("SELECT id, retention, created_by, created_at FROM groups WHERE id = ?").bind(groupId).first();
   if (!group) return json(c, { error: "Group not found." }, 404);
+
+  // Expired anonymous groups reject new expenses and trigger cleanup
+  if (!group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
+    const windowMs = RETENTION_MS[group.retention] || 0;
+    if (now() >= group.created_at + windowMs) {
+      c.executionCtx.waitUntil(purgeExpiredGroup(c.env.DB, groupId));
+      return json(c, { error: "This group has reached its retention limit and expired." }, 410);
+    }
+  }
 
   const body = await c.req.json().catch(() => ({}));
   const description = (body.description || "").trim();
@@ -308,9 +328,8 @@ app.post("/api/groups/:id/expenses", async (c) => {
     return json(c, { error: "One of the selected people isn't in this group." }, 400);
   }
 
-  // Retention is a property of the group (chosen once at creation), so every
-  // expense in the group inherits the same expiry policy. No per-expense cap.
-  const expiresAt = computeExpiryForNewExpense(group.retention);
+  // Retention is a property of the group; for anonymous sessions expenses are capped to the group's lifespan
+  const expiresAt = computeExpiryForNewExpense(group.retention, group.created_at, !group.created_by);
 
   let splits;
   if (splitType === "equal") {
@@ -398,8 +417,17 @@ app.get("/api/expenses/:id/extend", async (c) => {
 
   return new Response(null, {
     status: 302,
-    headers: { Location: `${c.env.APP_URL}/?g=${expense.group_id}&extended=1` },
+    headers: { Location: `${c.env.APP_URL || ""}/app/?g=${expense.group_id}&extended=1` },
   });
+});
+
+/* ================================================================== *
+ * Background sweeper / Cron cleanup endpoint
+ * ================================================================== */
+
+app.all("/api/cron/cleanup", async (c) => {
+  const result = await cleanupExpiredData(c.env.DB);
+  return json(c, { ok: true, timestamp: now(), ...result });
 });
 
 /* ================================================================== *
@@ -408,4 +436,9 @@ app.get("/api/expenses/:id/extend", async (c) => {
 
 app.notFound((c) => c.env.ASSETS.fetch(c.req.raw));
 
-export default { fetch: app.fetch };
+export default {
+  fetch: app.fetch,
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(cleanupExpiredData(env.DB));
+  },
+};

@@ -25,6 +25,9 @@
   "observability": {
     "enabled": true
   },
+  "triggers": {
+    "crons": ["*/10 * * * *"]
+  },
   "vars": {
     "GOOGLE_CLIENT_ID": "857476834665-in10d56gjokq45j9lib0lslds0b52g9n.apps.googleusercontent.com",
     "GOOGLE_REDIRECT_URI": "https://splitmate.ledgermate.workers.dev/auth/google/callback",

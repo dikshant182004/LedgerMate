@@ -45,6 +45,15 @@ export async function buildGroupState(DB, groupId, user) {
   const group = await DB.prepare("SELECT * FROM groups WHERE id = ?").bind(groupId).first();
   if (!group) return null;
 
+  // Immediate on-demand cleanup for expired anonymous groups (e.g. 10min, 1hour, 1day)
+  if (!group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
+    const windowMs = RETENTION_MS[group.retention] || 0;
+    if (Date.now() >= group.created_at + windowMs) {
+      await purgeExpiredGroup(DB, groupId);
+      return null;
+    }
+  }
+
   const { results: members } = await DB.prepare(
     "SELECT id, name FROM members WHERE group_id = ? ORDER BY created_at ASC"
   ).bind(groupId).all();
@@ -122,10 +131,73 @@ export function simplifyDebts(balances) {
 /**
  * Given a group's chosen retention policy, computes when a *newly created*
  * expense should expire. 'permanent' groups never expire their expenses.
+ * For anonymous groups, the expense expiry is aligned with the group's retention window.
  */
-export function computeExpiryForNewExpense(retention) {
+export function computeExpiryForNewExpense(retention, groupCreatedAt = null, isAnonymous = false) {
   if (retention === "permanent") return null;
-  return Date.now() + (RETENTION_MS[retention] || RETENTION_MS[DEFAULT_RETENTION]);
+  const windowMs = RETENTION_MS[retention] || RETENTION_MS[DEFAULT_RETENTION];
+  if (isAnonymous && groupCreatedAt) {
+    return groupCreatedAt + windowMs;
+  }
+  return Date.now() + windowMs;
+}
+
+/**
+ * Completely purges a group, its expenses, its splits, and its members from the database.
+ */
+export async function purgeExpiredGroup(DB, groupId) {
+  const { results: groupExpenses } = await DB.prepare("SELECT id FROM expenses WHERE group_id = ?").bind(groupId).all();
+  const expIds = (groupExpenses || []).map((e) => e.id);
+  const batches = [];
+  if (expIds.length > 0) {
+    const placeholders = expIds.map(() => "?").join(",");
+    batches.push(DB.prepare(`DELETE FROM expense_splits WHERE expense_id IN (${placeholders})`).bind(...expIds));
+  }
+  batches.push(
+    DB.prepare("DELETE FROM expenses WHERE group_id = ?").bind(groupId),
+    DB.prepare("DELETE FROM members WHERE group_id = ?").bind(groupId),
+    DB.prepare("DELETE FROM groups WHERE id = ?").bind(groupId)
+  );
+  await DB.batch(batches);
+}
+
+/**
+ * Sweeps the database to remove all expired anonymous groups (e.g. 10min, 1hour, 1day)
+ * and all individual expired expenses. Used by the background cron / scheduler.
+ */
+export async function cleanupExpiredData(DB) {
+  const nowTs = Date.now();
+
+  // 1. Purge anonymous groups whose retention window has passed
+  const { results: expiredGroups } = await DB.prepare(
+    `SELECT id, retention, created_at FROM groups
+     WHERE created_by IS NULL AND retention IN ('10min', '1hour', '1day')`
+  ).all();
+
+  const groupsToPurge = (expiredGroups || []).filter((g) => {
+    const windowMs = RETENTION_MS[g.retention] || 0;
+    return nowTs >= g.created_at + windowMs;
+  });
+
+  for (const g of groupsToPurge) {
+    await purgeExpiredGroup(DB, g.id);
+  }
+
+  // 2. Delete any individual expired expenses
+  const { results: expiredExpenses } = await DB.prepare(
+    "SELECT id FROM expenses WHERE expires_at IS NOT NULL AND expires_at <= ?"
+  ).bind(nowTs).all();
+
+  if (expiredExpenses && expiredExpenses.length > 0) {
+    const ids = expiredExpenses.map((e) => e.id);
+    const placeholders = ids.map(() => "?").join(",");
+    await DB.batch([
+      DB.prepare(`DELETE FROM expense_splits WHERE expense_id IN (${placeholders})`).bind(...ids),
+      DB.prepare(`DELETE FROM expenses WHERE id IN (${placeholders})`).bind(...ids),
+    ]);
+  }
+
+  return { purgedGroups: groupsToPurge.length, purgedExpenses: (expiredExpenses || []).length };
 }
 
 /**
