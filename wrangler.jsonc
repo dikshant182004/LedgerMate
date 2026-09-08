@@ -30,8 +30,8 @@
   },
   "vars": {
     "GOOGLE_CLIENT_ID": "857476834665-in10d56gjokq45j9lib0lslds0b52g9n.apps.googleusercontent.com",
-    "GOOGLE_REDIRECT_URI": "https://splitmate.ledgermate.workers.dev/auth/google/callback",
-    "APP_URL": "https://splitmate.ledgermate.workers.dev",
+    "GOOGLE_REDIRECT_URI": "https://tryledgermate.in/auth/google/callback",
+    "APP_URL": "https://tryledgermate.in",
     "RESEND_FROM": "LedgerMate <onboarding@resend.dev>"
   }
 }

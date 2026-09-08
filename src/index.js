@@ -55,11 +55,21 @@ async function getSessionUser(c) {
  * Auth routes
  * ================================================================== */
 
+function getOAuthRedirectUri(c) {
+  const host = c.req.header("x-forwarded-host") || c.req.header("host");
+  const proto = c.req.header("x-forwarded-proto") || "https";
+  if (host && !host.includes("localhost") && !host.includes("127.0.0.1")) {
+    return `${proto}://${host}/auth/google/callback`;
+  }
+  return c.env.GOOGLE_REDIRECT_URI || "https://tryledgermate.in/auth/google/callback";
+}
+
 app.get("/auth/google/login", async (c) => {
   const state = randomToken();
+  const redirectUri = getOAuthRedirectUri(c);
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   url.searchParams.set("client_id", c.env.GOOGLE_CLIENT_ID);
-  url.searchParams.set("redirect_uri", c.env.GOOGLE_REDIRECT_URI);
+  url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("response_type", "code");
   url.searchParams.set("scope", "openid email profile");
   url.searchParams.set("state", state);
@@ -73,6 +83,7 @@ app.get("/auth/google/login", async (c) => {
   const headers = new Headers();
   headers.append("Set-Cookie", cookieHeader("oauth_state", state, { maxAge: 600 }));
   headers.append("Set-Cookie", cookieHeader("oauth_return_to", safeReturnTo, { maxAge: 600 }));
+  headers.append("Set-Cookie", cookieHeader("oauth_redirect_uri", redirectUri, { maxAge: 600 }));
   headers.set("Location", url.toString());
 
   return new Response(null, { status: 302, headers });
@@ -84,8 +95,10 @@ app.get("/auth/google/callback", async (c) => {
   const cookies = parseCookies(c.req.raw);
 
   if (!code || !state || state !== cookies["oauth_state"]) {
-    return c.text("Login failed: invalid state. Please try again.", 400);
+    return c.text("Login failed: invalid state or session expired. Please return to /app/ and try again.", 400);
   }
+
+  const redirectUri = cookies["oauth_redirect_uri"] || getOAuthRedirectUri(c);
 
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
@@ -94,17 +107,21 @@ app.get("/auth/google/callback", async (c) => {
       code,
       client_id: c.env.GOOGLE_CLIENT_ID,
       client_secret: c.env.GOOGLE_CLIENT_SECRET,
-      redirect_uri: c.env.GOOGLE_REDIRECT_URI,
+      redirect_uri: redirectUri,
       grant_type: "authorization_code",
     }),
   });
-  if (!tokenRes.ok) return c.text("Login failed while exchanging code.", 400);
+  if (!tokenRes.ok) {
+    const errorText = await tokenRes.text();
+    console.error("Google token exchange error:", errorText);
+    return c.text(`Login failed while exchanging code with Google (${tokenRes.status}). Ensure GOOGLE_CLIENT_SECRET is set on Cloudflare.`, 400);
+  }
   const tokenData = await tokenRes.json();
 
   const profileRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
     headers: { Authorization: `Bearer ${tokenData.access_token}` },
   });
-  if (!profileRes.ok) return c.text("Login failed while fetching profile.", 400);
+  if (!profileRes.ok) return c.text("Login failed while fetching Google user profile.", 400);
   const profile = await profileRes.json();
 
   let user = await c.env.DB.prepare("SELECT id FROM users WHERE google_sub = ?").bind(profile.sub).first();
