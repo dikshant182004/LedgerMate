@@ -105,26 +105,30 @@ async function init() {
   setupSplash();
   initTheme();
 
-  if (params.get("extended") === "1") {
-    setTimeout(() => toast("Expense extended by 30 days"), 1600);
-    params.delete("extended");
-  }
-
-  await fetchMe();
-  updateRetentionGateUI();
-
-  if (groupId) {
-    await loadGroup();
-  } else {
-    viewHome.classList.remove("hidden");
-    if (currentUser) await loadMyGroups();
-  }
-
   bindHomeForm();
   bindGroupForms();
   bindTabs();
   bindSheets();
   bindNetworkEvents();
+
+  if (params.get("extended") === "1") {
+    setTimeout(() => toast("Expense extended by 30 days"), 1600);
+    params.delete("extended");
+  }
+
+  // Handle routing immediately so view-home renders without waiting for network
+  if (groupId) {
+    viewHome.classList.add("hidden");
+    await loadGroup();
+  } else {
+    viewHome.classList.remove("hidden");
+  }
+
+  // Non-blocking fetch for session status — updates auth chip and groups when ready
+  fetchMe().then(() => {
+    updateRetentionGateUI();
+    if (!groupId && currentUser) loadMyGroups();
+  });
 }
 
 function bindNetworkEvents() {
@@ -154,13 +158,6 @@ function setupSplash() {
   const splash = el("splash");
   if (!splash) return;
 
-  // If splash was already played in this tab session, remove immediately without flashing
-  if (sessionStorage.getItem("ledgermate_splash_seen")) {
-    splash.remove();
-    return;
-  }
-  sessionStorage.setItem("ledgermate_splash_seen", "1");
-
   let dismissed = false;
   const dismiss = () => {
     if (dismissed) return;
@@ -168,13 +165,29 @@ function setupSplash() {
     splash.classList.add("splash-fade-out");
     setTimeout(() => {
       if (splash && splash.parentNode) splash.remove();
-    }, 400);
+    }, 320);
   };
 
+  // Allow instant dismissal if the user taps or presses a key
   splash.addEventListener("click", dismiss);
+  splash.addEventListener("touchstart", dismiss, { passive: true });
   document.addEventListener("keydown", dismiss, { once: true });
-  // The badge checkmark completes at ~1.3s; allow full graceful completion before fade out
-  setTimeout(dismiss, 1400);
+
+  // Listen for the final checkmark drawing animation to complete
+  const check = splash.querySelector(".splash-check");
+  if (check) {
+    check.addEventListener(
+      "animationend",
+      () => {
+        // Hold for 280ms after the checkmark completes so the full logo is enjoyed
+        setTimeout(dismiss, 280);
+      },
+      { once: true }
+    );
+  }
+
+  // Safety timer to guarantee smooth dismissal even if animationend event doesn't fire
+  setTimeout(dismiss, 1450);
 }
 
 function registerServiceWorker() {
@@ -248,7 +261,7 @@ function renderAuthArea(container) {
   const chip = document.createElement("button");
   chip.className = "user-chip";
   chip.innerHTML = currentUser.picture
-    ? `<img src="${currentUser.picture}" alt="" />`
+    ? `<img src="${currentUser.picture}" alt="" width="32" height="32" />`
     : `<span class="avatar" style="background:${avatarColor(currentUser.name)}">${initials(currentUser.name)}</span>`;
   chip.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -263,7 +276,7 @@ function renderAccountSheet() {
   const profile = el("account-profile");
   profile.innerHTML = `
     ${currentUser.picture
-      ? `<img src="${currentUser.picture}" alt="" />`
+      ? `<img src="${currentUser.picture}" alt="" width="44" height="44" />`
       : `<span class="avatar" style="background:${avatarColor(currentUser.name)}">${initials(currentUser.name)}</span>`}
     <div>
       <div class="account-profile-name">${escapeHtml(currentUser.name)}</div>

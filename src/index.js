@@ -471,7 +471,34 @@ app.all("/api/cron/cleanup", async (c) => {
  * Static assets fallback (the SPA)
  * ================================================================== */
 
-app.notFound((c) => c.env.ASSETS.fetch(c.req.raw));
+app.notFound(async (c) => {
+  const res = await c.env.ASSETS.fetch(c.req.raw);
+  const pathname = new URL(c.req.url).pathname;
+
+  // Static assets: cache CSS, JS, fonts, images, icons, manifest for 1 day with 7-day stale-while-revalidate
+  if (/\.(?:css|js|woff2?|png|jpe?g|gif|svg|ico|webp|webmanifest|json)$/i.test(pathname)) {
+    const headers = new Headers(res.headers);
+    headers.set("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+    return new Response(res.body, {
+      status: res.status,
+      statusText: res.statusText,
+      headers,
+    });
+  }
+
+  // HTML pages: serve fresh HTML with must-revalidate
+  if (pathname === "/" || pathname.endsWith(".html") || pathname.endsWith("/")) {
+    const headers = new Headers(res.headers);
+    headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+    return new Response(res.body, {
+      status: res.status,
+      statusText: res.statusText,
+      headers,
+    });
+  }
+
+  return res;
+});
 
 export default {
   fetch: app.fetch,

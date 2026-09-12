@@ -1,0 +1,10 @@
+node_modules/
+.wrangler/
+metadata.json
+public/screenshots/
+src/assets/images/*screenshot*
+scripts/capture*
+.dev.*
+*.log
+bun.lock
+bun.lockb

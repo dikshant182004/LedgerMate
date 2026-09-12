@@ -1,0 +1,23 @@
+/*
+  X-Content-Type-Options: nosniff
+
+/landing.css
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/style.css
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/app.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/vendor/*
+  Cache-Control: public, max-age=604800, immutable
+
+/icons/*
+  Cache-Control: public, max-age=604800, immutable
+
+/manifest.json
+  Cache-Control: public, max-age=86400
+
+/sw.js
+  Cache-Control: public, max-age=0, no-cache

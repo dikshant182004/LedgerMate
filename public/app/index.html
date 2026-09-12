@@ -25,10 +25,14 @@
   } catch (e) {}
 </script>
 
-<link rel="stylesheet" href="/style.css?v=2" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/style.css?v=5" />
 <script src="/vendor/chart.umd.min.js" defer></script>
 <script src="/vendor/qrcode.min.js" defer></script>
 </head>
@@ -57,7 +61,14 @@
   </div>
 
   <!-- ============ HOME ============ -->
-  <section id="view-home" class="view hidden">
+  <section id="view-home" class="view">
+    <script>
+      // If navigating directly to a group via link (?g=...), hide home view immediately
+      // before paint to prevent flashing home while the group loads.
+      if (new URLSearchParams(location.search).has("g")) {
+        document.getElementById("view-home").classList.add("hidden");
+      }
+    </script>
     <header class="home-topbar">
       <div class="topbar-left">
         <button id="theme-toggle-home" class="icon-btn theme-toggle" aria-label="Toggle dark mode">
@@ -680,6 +691,6 @@
 
   <div id="toast" class="toast hidden"></div>
 
-  <script src="/app.js" defer></script>
+  <script src="/app.js?v=5" defer></script>
 </body>
 </html>

@@ -60,37 +60,82 @@ html, body {
 
 .hidden { display: none !important; }
 svg { width: 22px; height: 22px; display: block; }
-h1, h2, .brand, .logo, .stat-value, .expense-amount, .balance-amt { font-family: "Manrope", "Inter", sans-serif; }
+h1, h2, .brand, .logo, .stat-value, .expense-amount, .balance-amt { font-family: "Manrope", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
 /* ================= Splash ================= */
 .splash {
   position: fixed; inset: 0; z-index: 100;
   background: var(--gradient);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+  transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+  backface-visibility: hidden;
 }
 .splash.splash-fade-out {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
-.splash-icon { width: 110px; height: 110px; filter: drop-shadow(0 12px 24px rgba(0,0,0,0.25)); }
-.splash-svg { width: 100%; height: 100%; }
-.splash-receipt { animation: splash-pop 0.5s cubic-bezier(.2,1.4,.4,1) 0.15s both; transform-origin: 50px 45px; }
-.splash-line { stroke-dasharray: 30; stroke-dashoffset: 30; animation: splash-draw 0.4s ease-out forwards; }
-.splash-line.l1 { animation-delay: 0.55s; }
-.splash-line.l2 { animation-delay: 0.68s; }
-.splash-line.l3 { animation-delay: 0.81s; }
-.splash-badge, .splash-check { opacity: 0; animation: splash-fade 0.35s ease-out 0.95s forwards; }
+
+.splash-icon {
+  width: 110px; height: 110px;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.25));
+}
+.splash-svg { width: 100%; height: 100%; overflow: visible; }
+.splash-receipt {
+  opacity: 0;
+  transform-origin: 50px 45px;
+  animation: splash-pop 0.42s cubic-bezier(0.2, 1.35, 0.4, 1) 0.05s forwards;
+}
+.splash-line {
+  opacity: 0;
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: splash-line-draw 0.24s ease-out forwards;
+}
+.splash-line.l1 { animation-delay: 0.32s; }
+.splash-line.l2 { animation-delay: 0.45s; }
+.splash-line.l3 { animation-delay: 0.58s; }
+
+.splash-badge {
+  opacity: 0;
+  transform-origin: 76px 76px;
+  animation: splash-badge-pop 0.32s cubic-bezier(0.2, 1.4, 0.4, 1) 0.70s forwards;
+}
+.splash-check {
+  opacity: 0;
+  stroke-dasharray: 28;
+  stroke-dashoffset: 28;
+  animation: splash-check-draw 0.26s cubic-bezier(0.2, 0.8, 0.4, 1) 0.86s forwards;
+}
 .splash-word {
   color: #fff; font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
-  opacity: 0; animation: splash-fade 0.4s ease-out 0.55s forwards;
+  opacity: 0; transform: translateY(8px);
+  animation: splash-word-in 0.36s ease-out 0.22s forwards;
 }
 .splash-word span { font-weight: 500; opacity: 0.85; }
-@keyframes splash-pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes splash-draw { to { stroke-dashoffset: 0; } }
-@keyframes splash-fade { to { opacity: 1; } }
-@keyframes splash-out { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+
+@keyframes splash-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes splash-line-draw {
+  0% { opacity: 1; stroke-dashoffset: 26; }
+  100% { opacity: 1; stroke-dashoffset: 0; }
+}
+@keyframes splash-badge-pop {
+  0% { transform: scale(0); opacity: 0; }
+  65% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes splash-check-draw {
+  0% { opacity: 1; stroke-dashoffset: 28; }
+  100% { opacity: 1; stroke-dashoffset: 0; }
+}
+@keyframes splash-word-in {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 
 /* ================= Home ================= */
 .home-topbar {
