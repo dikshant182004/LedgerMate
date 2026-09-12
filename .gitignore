@@ -8,3 +8,4 @@ scripts/capture*
 *.log
 bun.lock
 bun.lockb
+package-lock.json
