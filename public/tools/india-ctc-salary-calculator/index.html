@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>In-Hand Salary Calculator from CTC (Old vs New Regime 2026) | LedgerMate</title>
+<meta name="description" content="Calculate your exact monthly in-hand take-home salary from annual CTC in India. Side-by-side comparison of Old vs New Tax Regime (Budget 2024-2026), state-specific professional tax, EPF (12%), HRA exemption, and gratuity." />
+<link rel="canonical" href="https://tryledgermate.in/tools/india-ctc-salary-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="In-Hand Salary Calculator from CTC (Old vs New Regime) | LedgerMate" />
+<meta property="og:description" content="Accurate take-home salary from CTC in India. Side-by-side Old vs New tax regime comparison, EPF, HRA, and state professional tax." />
+<meta property="og:url" content="https://tryledgermate.in/tools/india-ctc-salary-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate In-Hand Salary Calculator from CTC",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "description": "Calculate exact monthly take-home in-hand salary from CTC with side-by-side Old vs New tax regime comparison, state professional tax, and EPF.",
+  "featureList": [
+    "Old vs New Tax Regime side-by-side comparison",
+    "Configurable Basic Salary % (40% or 50% of CTC)",
+    "Employee & Employer EPF (12%) calculation",
+    "State-wise Professional Tax (Karnataka, Maharashtra, Telangana, Delhi)",
+    "HRA and Section 80C deductions",
+    "Annual CTC slabs from 6 LPA to 50 LPA"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between CTC and In-Hand Salary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CTC (Cost to Company) includes both your direct salary and employer contributions like Employer PF (12%), Gratuity (4.81%), health insurance, and variable bonuses. Your monthly in-hand salary is what hits your bank account after deducting Employee PF, income tax TDS, and professional tax."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which is better in 2026: Old or New Tax Regime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The New Tax Regime provides lower tax slab rates, a ₹75,000 standard deduction, and zero tax liability up to ₹7.75 Lakhs under Section 87A rebate. The Old Regime is only beneficial if your total exemptions (HRA, Section 80C, 80D, home loan interest) exceed ₹3.75 Lakhs to ₹4 Lakhs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much in-hand salary will I get for 12 LPA CTC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For a 12 LPA CTC under the New Regime with 50% Basic and standard PF, the monthly in-hand salary is approximately ₹82,200 (₹9,86,600 annually) after deducting PF, ₹200 Professional Tax, and ₹6,583 monthly TDS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I opt for the statutory EPF cap of ₹1,800/month?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, under EPFO regulations, employees whose Basic exceeds ₹15,000/month can agree with their employer to contribute 12% of ₹15,000 (₹1,800/month) rather than 12% of full basic, noticeably boosting immediate monthly in-hand salary."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When am I eligible to receive Gratuity in India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under the Payment of Gratuity Act 1972, you are eligible for gratuity only after completing 5 continuous years of full-time service with the same employer, calculated as (15 * Last Drawn Basic * Years of Service) / 26."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does India's in-hand salary compare to the US, Germany, and Japan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "While India quotes CTC inclusive of employer retirement benefits (yielding 75%-88% take-home), the US quotes Gross Salary excluding employer payroll taxes (yielding 68%-80%), and Germany and Japan deduct extensive social security insurance (yielding 58%-68% and 75%-82% net take-home respectively)."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/guides/ctc-vs-in-hand-salary-structure/">CTC Guide</a>
+      <a href="/tools/us-paycheck-calculator/">US Paycheck</a>
+      <a href="/tools/germany-salary-calculator/">Germany Brutto-Netto</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> India In-Hand Salary from CTC
+  </div>
+
+  <h1 id="title-text" style="font-size:clamp(28px, 4vw, 40px);margin-bottom:12px;text-align:center;">In-Hand Salary Calculator from CTC (2026)</h1>
+  <p class="sub" id="sub-text" style="font-size:16px;max-width:680px;margin:0 auto;text-align:center;">Calculate your exact monthly take-home salary from your annual CTC. Compare Old vs New Tax Regime side-by-side with state professional tax and EPF breakdown.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <!-- Annual CTC Input Row -->
+    <div class="calc-row">
+      <div style="flex:1.5;">
+        <label for="ctc-input">Annual CTC (₹ or Lakhs)</label>
+        <div style="display:flex;gap:8px;">
+          <input id="ctc-input" type="number" step="50000" min="100000" max="20000000" value="1200000" style="flex:2;" />
+          <select id="ctc-unit" style="flex:1;">
+            <option value="raw" selected>₹ Rupees</option>
+            <option value="lpa">LPA (Lakhs)</option>
+          </select>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <label for="state-pt">State (Professional Tax)</label>
+        <select id="state-pt">
+          <option value="karnataka" selected>Karnataka (₹200/mo)</option>
+          <option value="maharashtra">Maharashtra (₹200/mo, ₹300 Feb)</option>
+          <option value="telangana">Telangana (₹200/mo)</option>
+          <option value="delhi">Delhi (₹0 PT)</option>
+          <option value="tamilnadu">Tamil Nadu (₹208/mo)</option>
+          <option value="westbengal">West Bengal (₹200/mo)</option>
+          <option value="none">Other / Zero PT</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Structuring Configuration -->
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="basic-pct">Basic Salary (% of CTC)</label>
+        <select id="basic-pct">
+          <option value="0.40">40% of CTC (Higher Take-Home, Lower PF)</option>
+          <option value="0.50" selected>50% of CTC (Standard Industry Benchmark)</option>
+          <option value="0.30">30% of CTC</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="epf-cap">EPF Contribution Basis</label>
+        <select id="epf-cap">
+          <option value="actual" selected>Actual Basic (12% of full Basic)</option>
+          <option value="statutory">Statutory Cap (12% of ₹15,000 = ₹1,800/mo)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Deductions for Old Regime (Accordion or Toggle) -->
+    <div style="background:#F6F5FB;border-radius:10px;padding:14px;margin:14px 0;border:1px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="toggleOldRegimeInputs()">
+        <label style="margin:0;cursor:pointer;">⚙️ Deductions for Old Regime (80C, HRA, Medical)</label>
+        <span id="old-deduct-toggle-icon" style="font-weight:700;color:var(--accent);">+ Expand</span>
+      </div>
+      <div id="old-deduct-fields" style="display:none;margin-top:12px;">
+        <div class="calc-row">
+          <div style="flex:1;">
+            <label for="sec-80c">Section 80C Investments (Max ₹1.5L)</label>
+            <input id="sec-80c" type="number" min="0" max="150000" value="150000" placeholder="e.g. 150000" />
+          </div>
+          <div style="flex:1;">
+            <label for="annual-hra">HRA Exemption Claimed (₹/year)</label>
+            <input id="annual-hra" type="number" min="0" value="120000" placeholder="e.g. 120000" />
+          </div>
+        </div>
+        <div class="calc-row">
+          <div style="flex:1;">
+            <label for="sec-80d">80D Health Insurance (₹/year)</label>
+            <input id="sec-80d" type="number" min="0" value="25000" placeholder="e.g. 25000" />
+          </div>
+          <div style="flex:1;">
+            <label for="nps-80ccd">NPS 80CCD(1B) (Max ₹50k)</label>
+            <input id="nps-80ccd" type="number" min="0" max="50000" value="0" placeholder="e.g. 50000" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick LPA Chips -->
+    <label style="margin-top:14px;">Popular CTC Benchmarks</label>
+    <div class="chip-group">
+      <button type="button" class="chip-btn" onclick="setCTC(600000)">6 LPA</button>
+      <button type="button" class="chip-btn" onclick="setCTC(1000000)">10 LPA</button>
+      <button type="button" class="chip-btn active" onclick="setCTC(1200000)">12 LPA</button>
+      <button type="button" class="chip-btn" onclick="setCTC(1500000)">15 LPA</button>
+      <button type="button" class="chip-btn" onclick="setCTC(2000000)">20 LPA</button>
+      <button type="button" class="chip-btn" onclick="setCTC(3000000)">30 LPA</button>
+    </div>
+
+    <!-- Side-by-Side Regime Comparison Cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;" id="regime-grid">
+      <!-- New Regime Card -->
+      <div style="background:#F4F3FF;border:2px solid var(--accent);border-radius:14px;padding:20px;text-align:center;position:relative;">
+        <span class="badge-pill badge-free" style="position:absolute;top:-10px;right:16px;">Recommended Default</span>
+        <span style="font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">New Tax Regime (2026)</span>
+        <div style="font-size:32px;font-weight:800;color:var(--text);margin:6px 0;" id="res-new-monthly">₹82,410</div>
+        <span style="font-size:12.5px;color:var(--text-muted);" id="res-new-annual">₹9,88,920 / year</span>
+        <div style="margin-top:12px;font-size:13px;border-top:1px solid #E3DFF2;padding-top:10px;">
+          <div>Monthly TDS: <strong id="res-new-tax">₹4,890</strong></div>
+          <div style="color:var(--text-muted);font-size:11.5px;margin-top:2px;">₹75k Standard Deduction included</div>
+        </div>
+      </div>
+
+      <!-- Old Regime Card -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;">
+        <span style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Old Tax Regime (With Deductions)</span>
+        <div style="font-size:32px;font-weight:800;color:var(--text);margin:6px 0;" id="res-old-monthly">₹79,150</div>
+        <span style="font-size:12.5px;color:var(--text-muted);" id="res-old-annual">₹9,49,800 / year</span>
+        <div style="margin-top:12px;font-size:13px;border-top:1px solid var(--border);padding-top:10px;">
+          <div>Monthly TDS: <strong id="res-old-tax">₹8,150</strong></div>
+          <div style="color:var(--text-muted);font-size:11.5px;margin-top:2px;" id="res-old-verdict">New Regime saves ₹3,260/mo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Itemized Monthly Breakdown -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:20px;">
+      <h4 style="margin:0 0 12px;font-size:14px;color:var(--text);">Monthly Salary Slip Breakdown (New Regime)</h4>
+      <div class="calc-result-row">
+        <span>Monthly Gross Salary (Before Deductions)</span>
+        <span class="amt" id="res-gross-monthly">₹95,000</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Employee EPF (12% of Basic) <span class="concept-inline-link" onclick="switchCtcConcept('epf')" style="cursor:pointer;">Rules<span class="arrow">&rarr;</span></span></span>
+        <span class="amt" style="color:#E0563F;" id="res-epf-monthly">-₹6,000</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Employer EPF (Retirement Benefit in CTC) <a href="/guides/ctc-vs-in-hand-salary-structure/" class="concept-inline-link">CTC Guide<span class="arrow">&rarr;</span></a></span>
+        <span class="amt" style="color:#6C6B80;" id="res-employer-epf">₹6,000 (Non-cash CTC)</span>
+      </div>
+      <div class="calc-result-row">
+        <span>State Professional Tax (PT)</span>
+        <span class="amt" style="color:#E0563F;" id="res-pt-monthly">-₹200</span>
+      </div>
+      <div class="calc-result-row">
+        <span>Income Tax TDS (New Regime) <span class="concept-inline-link" onclick="switchCtcConcept('regimes')" style="cursor:pointer;">2026 Slabs<span class="arrow">&rarr;</span></span></span>
+        <span class="amt" style="color:#E0563F;" id="res-tds-monthly">-₹6,390</span>
+      </div>
+      <div class="calc-result-row" style="background:#F6F5FB;padding:10px;border-radius:8px;font-weight:700;">
+        <span>Net In-Hand Bank Deposit</span>
+        <span class="amt" style="color:var(--accent);font-size:17px;" id="res-in-hand-highlight">₹82,410</span>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router -->
+    <div class="concept-router" style="margin-top:24px;">
+      <div class="concept-nav" id="ctc-concept-nav">
+        <button type="button" class="concept-tab-btn active" onclick="switchCtcConcept('basics')">CTC vs In-Hand</button>
+        <button type="button" class="concept-tab-btn" onclick="switchCtcConcept('regimes')">New vs Old Regime</button>
+        <button type="button" class="concept-tab-btn" onclick="switchCtcConcept('epf')">EPF &amp; Gratuity Math</button>
+        <button type="button" class="concept-tab-btn" onclick="switchCtcConcept('hra')">HRA &amp; Section 80C</button>
+        <button type="button" class="concept-tab-btn" onclick="switchCtcConcept('global')">Global In-Hand Comparison</button>
+      </div>
+
+      <div class="concept-pane active" id="pane-ctc-basics">
+        <h4>Cost to Company (CTC) vs In-Hand Take-Home</h4>
+        <p>CTC represents the total financial cost your employer spends to employ you annually. It includes components you never see in your monthly bank statement: Employer PF contribution (12%), Gratuity provision (4.81%), group medical insurance premiums, and variable annual bonuses. Your actual in-hand take-home salary is what remains after subtracting both employer overheads and statutory employee deductions (Employee EPF, state professional tax, and monthly TDS).</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/ctc-vs-in-hand-salary-structure/" class="concept-full-guide-link">Read Deep-Dive CTC Structure Guide &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-ctc-regimes">
+        <h4>New vs Old Tax Regime Slabs (Budget 2024–2026)</h4>
+        <p>The New Tax Regime is the default regime for salaried individuals. It features streamlined tax brackets (0 to ₹3L: 0%, ₹3L–₹7L: 5%, ₹7L–₹10L: 10%, ₹10L–₹12L: 15%, ₹12L–₹15L: 20%, Above ₹15L: 30%) with an increased standard deduction of ₹75,000 and Section 87A rebate making income up to ₹7.75 Lakhs completely tax-free. The Old Regime is only superior if you have eligible deductions exceeding ₹3.75 Lakhs to ₹4.0 Lakhs (combining Section 80C, 80D, HRA, and home loan interest under Section 24b).</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">Read Marginal vs Effective Tax Guide &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-ctc-epf">
+        <h4>EPF (12%) &amp; Gratuity Mechanics</h4>
+        <p>The Employee Provident Fund (EPF) mandates that 12% of your Basic Salary is deducted from your gross pay, while the employer contributes another 12% (3.67% to EPF + 8.33% to EPS pension scheme). Employees whose Basic exceeds ₹15,000/month may mutually opt with their employer to cap contributions at ₹1,800/month. Gratuity is budgeted at 4.81% of your Basic salary, but is legally claimable only after completing 5 full years of continuous service under the Payment of Gratuity Act.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ctc-hra">
+        <h4>HRA Exemption Formula (Old Tax Regime)</h4>
+        <p>Under the Old Tax Regime, House Rent Allowance (HRA) is exempt from income tax under Section 10(13A) up to the minimum of three values: 1) Actual HRA received from employer, 2) Actual rent paid minus 10% of Basic salary, or 3) 50% of Basic salary (for metro cities: Mumbai, Delhi, Kolkata, Chennai) or 40% of Basic (non-metros). Note: HRA exemption cannot be claimed under the New Tax Regime.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ctc-global">
+        <h4>International In-Hand Salary Comparison</h4>
+        <p>How does taking a salary in India compare to other major economies? Different nations structure payroll with vastly different employer-cost vs take-home paradigms:</p>
+        <div class="table-responsive" style="margin-top:10px;">
+          <table class="calc-table">
+            <thead>
+              <tr><th>Country</th><th>Salary Term</th><th>Average Net In-Hand %</th><th>Primary Deductions</th><th>Explore Tool</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>India</strong></td><td>Annual CTC</td><td><strong>75% – 88%</strong></td><td>EPF (12%), TDS (0%-30%), PT (₹200)</td><td><a href="/tools/india-ctc-salary-calculator/">CTC Calculator</a></td></tr>
+              <tr><td><strong>United States</strong></td><td>Annual Gross</td><td><strong>68% – 82%</strong></td><td>Federal Tax (10%-37%), FICA (7.65%), State Tax</td><td><a href="/tools/us-paycheck-calculator/">US Paycheck Tool</a></td></tr>
+              <tr><td><strong>Germany</strong></td><td>Bruttogehalt</td><td><strong>58% – 66%</strong></td><td>Lohnsteuer (14%-45%), Social Security (~20%)</td><td><a href="/tools/germany-salary-calculator/">Germany Brutto-Netto</a></td></tr>
+              <tr><td><strong>Japan</strong></td><td>額面年収 (Gross)</td><td><strong>75% – 82%</strong></td><td>Health + Pension (15%), Income &amp; Resident Tax</td><td><a href="/tools/japan-salary-calculator/">Japan 手取り計算</a></td></tr>
+              <tr><td><strong>South Korea</strong></td><td>연봉 (Annual Pay)</td><td><strong>78% – 86%</strong></td><td>National Pension, Health, Employment, Income Tax</td><td><a href="/tools/korea-salary-calculator/">Korea 연봉 실수령액</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mindmap Box -->
+    <div class="mindmap-box">
+      <h4>💡 In-Hand Salary &amp; CTC Structuring Mindmap</h4>
+      <ul class="mindmap-list">
+        <li><strong>Basic Salary Trade-Off:</strong> Setting Basic at 50% increases your PF retirement corpus and gratuity eligibility, but slightly reduces your immediate monthly take-home. Setting Basic at 40% maximizes current in-hand cash.</li>
+        <li><strong>Gratuity Eligibility:</strong> Employers include 4.81% gratuity in your annual CTC, but you are only legally entitled to receive it after completing 5 continuous years with the organization.</li>
+        <li><strong>Tax Threshold:</strong> Under the New Tax Regime, if your taxable income is up to ₹7,00,000 (plus ₹75,000 standard deduction = ₹7.75 Lakhs), your net income tax liability is ₹0 under Section 87A rebate.</li>
+      </ul>
+    </div>
+
+    <!-- App CTA -->
+    <div class="calc-cta">
+      <div>
+        <p>Splitting rent or flat expenses with roommates in Bangalore or Mumbai?</p>
+        <span style="font-size:12px;color:var(--text-muted);">No 3-expense daily limits, zero ads, and instant UPI settlement tracking.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Open Free Splitter</a>
+    </div>
+  </div>
+
+  <!-- SEO Table Section -->
+  <div style="margin-top:48px;">
+    <h2>2026 CTC to In-Hand Salary Reference Table (New Tax Regime)</h2>
+    <p style="color:var(--text-muted);font-size:14.5px;">Estimated monthly bank credit assuming standard 50% Basic salary, 12% PF contribution, and ₹200/month Professional Tax.</p>
+
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Annual CTC</th>
+            <th class="num">Monthly Gross</th>
+            <th class="num">EPF (Employee)</th>
+            <th class="num">Monthly TDS</th>
+            <th class="num" style="color:var(--accent);">Monthly In-Hand</th>
+            <th class="num">Effective Take-Home %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>6 LPA (₹6,00,000)</strong></td>
+            <td class="num">₹47,500</td>
+            <td class="num">₹3,000</td>
+            <td class="num">₹0 (87A Rebate)</td>
+            <td class="num" style="color:var(--accent);font-weight:700;">₹44,300</td>
+            <td class="num">88.6%</td>
+          </tr>
+          <tr>
+            <td><strong>8 LPA (₹8,00,000)</strong></td>
+            <td class="num">₹63,333</td>
+            <td class="num">₹4,000</td>
+            <td class="num">₹1,250</td>
+            <td class="num" style="color:var(--accent);font-weight:700;">₹57,883</td>
+            <td class="num">86.8%</td>
+          </tr>
+          <tr>
+            <td><strong>10 LPA (₹10,00,000)</strong></td>
+            <td class="num">₹79,166</td>
+            <td class="num">₹5,000</td>
+            <td class="num">₹3,750</td>
+            <td class="num" style="color:var(--accent);font-weight:700;">₹70,216</td>
+            <td class="num">84.2%</td>
+          </tr>
+          <tr>
+            <td><strong>12 LPA (₹12,00,000)</strong></td>
+            <td class="num">₹95,000</td>
+            <td class="num">₹6,000</td>
+            <td class="num">₹6,583</td>
+            <td class="num" style="color:var(--accent);font-weight:700;">₹82,217</td>
+            <td class="num">82.2%</td>
+          </tr>
+          <tr>
+            <td><strong>15 LPA (₹15,00,000)</strong></td>
+            <td class="num">₹1,18,750</td>
+            <td class="num">₹7,500</td>
+            <td class="num">₹11,625</td>
+            <td class="num" style="color:var(--accent);font-weight:700;">₹99,425</td>
+            <td class="num">79.5%</td>
+          </tr>
+          <tr>
+            <td><strong>20 LPA (₹20,00,000)</strong></td>
+            <td class="num">₹1,58,333</td>
+            <td class="num">₹10,000</td>
+            <td class="num">₹22,458</td>
+            <td class="num" style="color:var(--accent);font-weight:700;">₹1,25,675</td>
+            <td class="num">75.4%</td>
+          </tr>
+          <tr>
+            <td><strong>30 LPA (₹30,00,000)</strong></td>
+            <td class="num">₹2,37,500</td>
+            <td class="num">₹15,000</td>
+            <td class="num">₹47,458</td>
+            <td class="num" style="color:var(--accent);font-weight:700;">₹1,74,842</td>
+            <td class="num">69.9%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>Understanding Why CTC Differs From In-Hand Take-Home Pay in India</h2>
+    <p>Cost to Company (CTC) is the total annual financial package an employer spends to maintain an employee. A ubiquitous shock for fresh graduates and experienced professionals across Bangalore, Mumbai, Hyderabad, and Gurgaon is finding that their monthly bank deposit is 15% to 25% lower than their CTC offer letter divided by 12. Understanding how Indian payroll is structured enables you to negotiate salary packages effectively and structure allowances to optimize cash flow.</p>
+
+    <h2>1. The Core Components of an Indian Salary Slip</h2>
+    <p>A typical Indian salary structure consists of four major categories:</p>
+    <ul>
+      <li><strong>Basic Salary:</strong> The core foundation of your compensation, usually set at 40% to 50% of total CTC. Your Employee Provident Fund (EPF), Gratuity, and HRA are legally indexed directly to Basic Salary. A higher Basic increases your long-term retirement savings and tax deductions, but reduces your immediate liquidity.</li>
+      <li><strong>House Rent Allowance (HRA):</strong> Designed to cover residential rental expenses. Typically set at 40% (non-metro) or 50% (metro) of Basic Salary. Under the Old Tax Regime, HRA is partially or fully exempt from income tax under Section 10(13A).</li>
+      <li><strong>Special Allowance:</strong> A flexible balancing allowance used by HR departments to match the negotiated CTC figure. Unlike Basic Salary, Special Allowance does not attract additional EPF or gratuity contributions and is fully taxable as income.</li>
+      <li><strong>Employer Retirement Contributions:</strong> Both the Employer's share of EPF (12% of Basic) and Gratuity provisioning (4.81% of Basic) are bundled inside your annual CTC quote, even though they represent deferred or contingent benefits that are never paid out as monthly cash.</li>
+    </ul>
+
+    <h2>2. New vs Old Tax Regime: Which Should You Choose in 2026?</h2>
+    <p>Since Budget 2023 and the 2024 revisions, the New Tax Regime is the default regime in India. It replaces the complex web of exemptions with significantly reduced slab rates and a higher Standard Deduction:</p>
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Taxable Income Slab</th>
+            <th>New Tax Regime Rate</th>
+            <th>Old Tax Regime Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Up to ₹3,00,000</td>
+            <td><strong>Nil (0%)</strong></td>
+            <td>Nil (Up to ₹2,50,000)</td>
+          </tr>
+          <tr>
+            <td>₹3,00,001 to ₹5,00,000</td>
+            <td><strong>5%</strong></td>
+            <td>5% (₹2.5L to ₹5.0L)</td>
+          </tr>
+          <tr>
+            <td>₹5,00,001 to ₹7,00,000</td>
+            <td><strong>5%</strong></td>
+            <td>20% (₹5.0L to ₹10.0L)</td>
+          </tr>
+          <tr>
+            <td>₹7,00,001 to ₹10,00,000</td>
+            <td><strong>10%</strong></td>
+            <td>20% (₹5.0L to ₹10.0L)</td>
+          </tr>
+          <tr>
+            <td>₹10,00,001 to ₹12,00,000</td>
+            <td><strong>15%</strong></td>
+            <td>30% (Above ₹10.0L)</td>
+          </tr>
+          <tr>
+            <td>₹12,00,001 to ₹15,00,000</td>
+            <td><strong>20%</strong></td>
+            <td>30% (Above ₹10.0L)</td>
+          </tr>
+          <tr>
+            <td>Above ₹15,00,000</td>
+            <td><strong>30%</strong></td>
+            <td>30% (Above ₹10.0L)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Under the New Regime, salaried individuals receive an automatic ₹75,000 Standard Deduction. Combined with the Section 87A rebate (up to ₹25,000), individuals earning up to ₹7,75,000 incur <strong>zero income tax</strong>. The Old Regime is only superior if your eligible deductions (₹1.5L under 80C, ₹50k under 80D health insurance, ₹50k standard deduction, HRA exemption, and ₹2L home loan interest under Section 24b) exceed ₹3,75,000 to ₹4,00,000.</p>
+
+    <h2>3. The Exact Math: From 12 LPA CTC to Monthly Bank Deposit</h2>
+    <p>Let us walk through a real-world example of a ₹12,00,000 CTC offer in Karnataka with 50% Basic:</p>
+    <ul>
+      <li><strong>Annual CTC:</strong> ₹12,00,000</li>
+      <li><strong>Basic Salary (50%):</strong> ₹6,00,000 (₹50,000 / month)</li>
+      <li><strong>Employer EPF (12% of Basic):</strong> ₹72,000 deducted from CTC</li>
+      <li><strong>Gratuity Provision (4.81% of Basic):</strong> ₹28,860 retained by employer</li>
+      <li><strong>Gross Cash Salary:</strong> ₹12,00,000 − ₹72,000 − ₹28,860 = ₹10,99,140 (₹91,595 / month)</li>
+      <li><strong>Employee EPF Deduction (12%):</strong> ₹6,000 / month</li>
+      <li><strong>Karnataka Professional Tax:</strong> ₹200 / month</li>
+      <li><strong>Monthly Income Tax (New Regime TDS):</strong> ₹5,170 / month</li>
+      <li><strong>Net In-Hand Bank Deposit:</strong> ₹91,595 − ₹6,000 − ₹200 − ₹5,170 = <strong>₹80,225 / month</strong></li>
+    </ul>
+
+    <h2>4. How India's In-Hand Salary Compares Internationally</h2>
+    <p>Indian employees often ask how their net take-home percentage compares to tech hubs like Silicon Valley, Berlin, or Tokyo:</p>
+    <ul>
+      <li><strong>United States:</strong> The US uses "Gross Annual Salary" rather than CTC. While the employer pays an additional 7.65% FICA tax behind the scenes, the employee pays federal income tax (10% to 37%), state tax (0% in Texas/Washington up to 13.3% in California), and employee FICA (7.65%), yielding an effective take-home of 68% to 80%. Check our <a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a>.</li>
+      <li><strong>Germany:</strong> In Germany, social insurance contributions (health, pension, nursing care, unemployment) total approximately 20% for the employee alone, plus progressive income tax up to 45%. Take-home is typically 58% to 66% of gross pay. Check our <a href="/tools/germany-salary-calculator/">Germany Brutto-Netto Rechner</a>.</li>
+      <li><strong>Japan:</strong> Japan deducts employee pension (9.15%), health insurance (5%), employment insurance (0.6%), national income tax, and a flat 10% local resident tax, retaining 75% to 82% net take-home. Explore our <a href="/tools/japan-salary-calculator/">Japan 手取り計算ツール</a>.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Can I opt for the statutory PF cap of ₹1,800/month?</summary>
+      <p>Under EPFO regulations, if your Basic Salary exceeds ₹15,000 per month, you and your employer can mutually agree to restrict provident fund contributions to 12% of the statutory wage limit of ₹15,000 (which equals ₹1,800 per month). This reduces your retirement accumulation but immediately boosts your monthly cash take-home by several thousand rupees.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is variable pay or annual performance bonus included in monthly in-hand?</summary>
+      <p>No. If your CTC package includes a 10% or 15% annual performance bonus or variable component, it is withheld by the employer and disbursed only once per year (or quarterly) subject to individual performance ratings and company profitability. It is taxed as bonus income in the month of disbursement.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What happens to Gratuity if I resign before 5 years?</summary>
+      <p>Under the Payment of Gratuity Act 1972, gratuity is payable only upon completing at least 5 years of continuous service with the same organization. If you resign after 3 years, the 4.81% gratuity accrued in your CTC is forfeited and retained by the employer; it is not returned as cash.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is Professional Tax and why is it ₹0 in Delhi?</summary>
+      <p>Professional Tax (PT) is a state-level direct tax levied on salaried employees under Article 276(2) of the Indian Constitution, capped at ₹2,500 per financial year. States like Karnataka, Maharashtra, Telangana, and West Bengal deduct approximately ₹200 per month. Delhi, Haryana, and Uttar Pradesh do not levy any Professional Tax.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Which is better for a 15 LPA salary: Old or New Tax Regime?</summary>
+      <p>For a 15 LPA CTC, the New Tax Regime yields approximately ₹99,400 monthly in-hand with ₹11,625 monthly TDS. To match this take-home under the Old Regime, you would need more than ₹3,85,000 in total deductions (combining 80C, 80D, and substantial HRA rent receipts). For most professionals without high rent in metro cities, the New Regime provides a higher in-hand salary.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How does the ₹75,000 Standard Deduction work under the New Tax Regime?</summary>
+      <p>Budget 2024 increased the Standard Deduction under the New Tax Regime from ₹50,000 to ₹75,000 for salaried employees and pensioners. This deduction is applied automatically before calculating taxable income slabs, requiring no investment proofs, bills, or insurance receipts.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Fast, zero-ad financial calculators and group expense sharing for India and worldwide.</p>
+      </div>
+      <div>
+        <h4>Salary &amp; Tax</h4>
+        <ul>
+          <li><a href="/tools/india-ctc-salary-calculator/">In-Hand CTC Calculator (India)</a></li>
+          <li><a href="/tools/korea-salary-calculator/">Korea 연봉 실수령액</a></li>
+          <li><a href="/tools/japan-salary-calculator/">Japan 手取り計算 (2026)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter (Sq Ft)</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calorie Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/blog/how-to-calculate-prorated-rent/">Prorated Rent Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — India Salary &amp; Expense Splitting Tools.</p>
+  </div>
+</footer>
+
+<script>
+function fmtINR(n) {
+  return '₹' + Math.round(n || 0).toLocaleString('en-IN');
+}
+
+function toggleOldRegimeInputs() {
+  const fields = document.getElementById('old-deduct-fields');
+  const icon = document.getElementById('old-deduct-toggle-icon');
+  const isOpen = fields.style.display === 'block';
+  fields.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '+ Expand' : '− Collapse';
+}
+
+function setCTC(val) {
+  document.getElementById('ctc-unit').value = 'raw';
+  document.getElementById('ctc-input').value = val;
+  calc();
+}
+
+function getAnnualCTC() {
+  let val = parseFloat(document.getElementById('ctc-input').value) || 0;
+  const unit = document.getElementById('ctc-unit').value;
+  if (unit === 'lpa') {
+    val = val * 100000;
+  }
+  return val;
+}
+
+function getMonthlyPT(state) {
+  if (state === 'delhi' || state === 'none') return 0;
+  if (state === 'tamilnadu') return 208;
+  return 200; // Karnataka, Maharashtra, Telangana, West Bengal
+}
+
+function calcNewRegimeTax(taxableIncome) {
+  // New Regime Slabs 2024-2026:
+  // 0 to 3L: Nil
+  // 3L to 7L: 5%
+  // 7L to 10L: 10%
+  // 10L to 12L: 15%
+  // 12L to 15L: 20%
+  // Above 15L: 30%
+  // Standard Deduction: 75,000
+  const netTaxable = Math.max(0, taxableIncome - 75000);
+
+  if (netTaxable <= 700000) {
+    // 87A rebate makes tax 0 up to 7L (effectively 7.75L with std deduction)
+    return 0;
+  }
+
+  let tax = 0;
+  if (netTaxable > 1500000) {
+    tax += (netTaxable - 1500000) * 0.30;
+    tax += 300000 * 0.20; // 12L-15L = 60,000
+    tax += 200000 * 0.15; // 10L-12L = 30,000
+    tax += 300000 * 0.10; // 7L-10L = 30,000
+    tax += 400000 * 0.05; // 3L-7L = 20,000
+  } else if (netTaxable > 1200000) {
+    tax += (netTaxable - 1200000) * 0.20;
+    tax += 200000 * 0.15;
+    tax += 300000 * 0.10;
+    tax += 400000 * 0.05;
+  } else if (netTaxable > 1000000) {
+    tax += (netTaxable - 1000000) * 0.15;
+    tax += 300000 * 0.10;
+    tax += 400000 * 0.05;
+  } else if (netTaxable > 700000) {
+    tax += (netTaxable - 700000) * 0.10;
+    tax += 400000 * 0.05;
+  } else if (netTaxable > 300000) {
+    tax += (netTaxable - 300000) * 0.05;
+  }
+
+  // 4% Health and Education Cess
+  tax = tax * 1.04;
+  return Math.round(tax);
+}
+
+function calcOldRegimeTax(taxableIncome, sec80c, hra, sec80d, nps) {
+  // Standard deduction in Old Regime: 50,000
+  const stdDeduct = 50000;
+  const totalDeduct = stdDeduct + sec80c + hra + sec80d + nps;
+  const netTaxable = Math.max(0, taxableIncome - totalDeduct);
+
+  if (netTaxable <= 500000) {
+    // 87A rebate up to 5L in old regime
+    return 0;
+  }
+
+  let tax = 0;
+  if (netTaxable > 1000000) {
+    tax += (netTaxable - 1000000) * 0.30;
+    tax += 500000 * 0.20; // 5L-10L = 100,000
+    tax += 250000 * 0.05; // 2.5L-5L = 12,500
+  } else if (netTaxable > 500000) {
+    tax += (netTaxable - 500000) * 0.20;
+    tax += 250000 * 0.05;
+  } else if (netTaxable > 250000) {
+    tax += (netTaxable - 250000) * 0.05;
+  }
+
+  tax = tax * 1.04;
+  return Math.round(tax);
+}
+
+function calc() {
+  const ctc = getAnnualCTC();
+  const basicRatio = parseFloat(document.getElementById('basic-pct').value) || 0.50;
+  const epfCap = document.getElementById('epf-cap').value;
+  const state = document.getElementById('state-pt').value;
+
+  const sec80c = Math.min(150000, parseFloat(document.getElementById('sec-80c').value) || 0);
+  const hra = parseFloat(document.getElementById('annual-hra').value) || 0;
+  const sec80d = Math.min(75000, parseFloat(document.getElementById('sec-80d').value) || 0);
+  const nps = Math.min(50000, parseFloat(document.getElementById('nps-80ccd').value) || 0);
+
+  const annualBasic = ctc * basicRatio;
+  const monthlyBasic = annualBasic / 12;
+
+  // EPF Employee & Employer
+  let monthlyEPF = 0;
+  if (epfCap === 'statutory') {
+    monthlyEPF = 1800; // 12% of 15,000
+  } else {
+    monthlyEPF = Math.round(monthlyBasic * 0.12);
+  }
+  const annualEmployeeEPF = monthlyEPF * 12;
+  const annualEmployerEPF = monthlyEPF * 12;
+
+  // Gratuity ~ 4.81% of basic
+  const annualGratuity = annualBasic * 0.0481;
+
+  // Monthly Gross Cash (CTC minus employer non-cash components)
+  const annualGrossCash = Math.max(0, ctc - annualEmployerEPF - annualGratuity);
+  const monthlyGross = Math.round(annualGrossCash / 12);
+
+  const monthlyPT = getMonthlyPT(state);
+  const annualPT = monthlyPT * 12;
+
+  // Taxable income (Gross Cash minus PT)
+  const taxableIncome = Math.max(0, annualGrossCash - annualPT);
+
+  const newAnnualTax = calcNewRegimeTax(taxableIncome);
+  const newMonthlyTax = Math.round(newAnnualTax / 12);
+
+  const oldAnnualTax = calcOldRegimeTax(taxableIncome, sec80c + annualEmployeeEPF, hra, sec80d, nps);
+  const oldMonthlyTax = Math.round(oldAnnualTax / 12);
+
+  const newMonthlyNet = monthlyGross - monthlyEPF - monthlyPT - newMonthlyTax;
+  const oldMonthlyNet = monthlyGross - monthlyEPF - monthlyPT - oldMonthlyTax;
+
+  document.getElementById('res-new-monthly').textContent = fmtINR(newMonthlyNet);
+  document.getElementById('res-new-annual').textContent = `${fmtINR(newMonthlyNet * 12)} / year`;
+  document.getElementById('res-new-tax').textContent = fmtINR(newMonthlyTax);
+
+  document.getElementById('res-old-monthly').textContent = fmtINR(oldMonthlyNet);
+  document.getElementById('res-old-annual').textContent = `${fmtINR(oldMonthlyNet * 12)} / year`;
+  document.getElementById('res-old-tax').textContent = fmtINR(oldMonthlyTax);
+
+  const diff = newMonthlyNet - oldMonthlyNet;
+  const verdictEl = document.getElementById('res-old-verdict');
+  if (diff > 0) {
+    verdictEl.textContent = `New Regime saves ${fmtINR(diff)}/mo`;
+    verdictEl.style.color = 'var(--green)';
+  } else if (diff < 0) {
+    verdictEl.textContent = `Old Regime saves ${fmtINR(-diff)}/mo`;
+    verdictEl.style.color = 'var(--accent)';
+  } else {
+    verdictEl.textContent = `Both regimes result in equal tax`;
+    verdictEl.style.color = 'var(--text-muted)';
+  }
+
+  // Monthly breakdown for new regime
+  document.getElementById('res-gross-monthly').textContent = fmtINR(monthlyGross);
+  document.getElementById('res-epf-monthly').textContent = `-${fmtINR(monthlyEPF)}`;
+  document.getElementById('res-employer-epf').textContent = `${fmtINR(monthlyEPF)} (Retained in CTC)`;
+  document.getElementById('res-pt-monthly').textContent = `-${fmtINR(monthlyPT)}`;
+  document.getElementById('res-tds-monthly').textContent = `-${fmtINR(newMonthlyTax)}`;
+  document.getElementById('res-in-hand-highlight').textContent = fmtINR(newMonthlyNet);
+}
+
+function switchCtcConcept(tabId) {
+  const tabs = ['basics', 'regimes', 'epf', 'hra', 'global'];
+  const navBtns = document.querySelectorAll('#ctc-concept-nav .concept-tab-btn');
+
+  tabs.forEach((t, i) => {
+    const pane = document.getElementById(`pane-ctc-${t}`);
+    if (pane) {
+      if (t === tabId) {
+        pane.classList.add('active');
+      } else {
+        pane.classList.remove('active');
+      }
+    }
+    if (navBtns[i]) {
+      if (t === tabId) {
+        navBtns[i].classList.add('active');
+      } else {
+        navBtns[i].classList.remove('active');
+      }
+    }
+  });
+
+  const router = document.getElementById('ctc-concept-nav');
+  if (router) {
+    router.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+['ctc-input', 'ctc-unit', 'state-pt', 'basic-pct', 'epf-cap', 'sec-80c', 'annual-hra', 'sec-80d', 'nps-80ccd'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

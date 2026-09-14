@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Macro Calculator for Cutting, Bulking &amp; Recomp | LedgerMate</title>
+<meta name="description" content="Free scientific Macro Calculator. Calculates optimal Protein, Carb, and Fat grams using evidence-based g/kg bodyweight standards for fat loss, muscle retention, and lean bulking." />
+<link rel="canonical" href="https://tryledgermate.in/tools/macro-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Macro Calculator (Cutting, Recomp &amp; Bulking) | LedgerMate" />
+<meta property="og:description" content="Calculate your exact daily macros in grams and percentages based on scientific protein-per-kg guidelines." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Macro Calculator",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Evidence-based macronutrient calculator for bodybuilding, weight loss, and muscle preservation.",
+  "featureList": [
+    "Protein calculation based on g/kg bodyweight",
+    "Tailored targets for Cutting (-500 kcal), Maintenance, and Lean Bulk (+300 kcal)",
+    "Exact grams and caloric percentage breakdown for Protein, Carbs, and Fats",
+    "Metric (kg) and Imperial (lbs) support"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why are fixed 40/30/30 macro percentages flawed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Fixed percentage ratios scale protein with total calories rather than your actual biological body mass. When cutting calories on a 40/30/30 diet, protein intake drops right when your body needs more protein (1.8 to 2.2 g/kg) to protect against muscle loss."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/tdee-calculator/">TDEE Calculator</a>
+      <a href="/tools/bmr-calculator/">BMR Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Macro Calculator
+  </div>
+
+  <h1>Evidence-Based Macro Calculator</h1>
+  <p class="sub">Set your daily Protein, Fats, and Carbohydrates using exercise science rather than arbitrary fixed percentages. Protect lean muscle while cutting or fuel progressive overload on a bulk.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="btn-goal-cut">Fat Loss / Cutting (-500 kcal)</button>
+      <button type="button" class="chip-btn" id="btn-goal-maintain">Maintain / Recomp</button>
+      <button type="button" class="chip-btn" id="btn-goal-bulk">Lean Muscle Bulk (+300 kcal)</button>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="calories-input">Daily Target Calories (kcal)</label>
+        <input id="calories-input" type="number" step="50" min="1000" max="6000" value="2100" />
+      </div>
+      <div style="flex:1;">
+        <label for="weight-input">Current Body Weight (kg)</label>
+        <input id="weight-input" type="number" step="0.5" min="35" max="250" value="75" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="protein-target">Protein Target (g per kg bodyweight)</label>
+        <select id="protein-target">
+          <option value="1.6">1.6 g/kg (Moderate / Active Maintenance)</option>
+          <option value="2.0" selected>2.0 g/kg (Optimal for Cutting &amp; Muscle Retention)</option>
+          <option value="2.2">2.2 g/kg (Aggressive Deficit / 1g per lb)</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="fat-pct">Fat Intake Preference</label>
+        <select id="fat-pct">
+          <option value="0.25" selected>Moderate Fat (25% of calories - Balanced Hormones)</option>
+          <option value="0.20">Low Fat / High Carb (20% of calories)</option>
+          <option value="0.30">Higher Healthy Fats (30% of calories)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Target Macro Split</span>
+        <div style="font-size:40px;font-weight:800;color:var(--text);margin:6px 0;" id="res-macro-headline">150g P | 58g F | 244g C</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-macro-sub">Protein: 29% | Fat: 25% | Carbohydrates: 46% (Total: 2,100 kcal)</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-protein" style="color:#2563EB;">150g</div>
+          <div class="metric-lbl">Protein (600 kcal)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-fat" style="color:#D97706;">58g</div>
+          <div class="metric-lbl">Fats (525 kcal)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-carbs" style="color:#10B981;">244g</div>
+          <div class="metric-lbl">Carbs (975 kcal)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-protein-ratio">2.0 g/kg</div>
+          <div class="metric-lbl">Protein Density</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">Macronutrient Nutritional Breakdown</h4>
+        <div class="calc-result-row">
+          <span>Protein (4 kcal per gram)</span>
+          <span class="amt" id="d-p-amt">150 grams (600 kcal)</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Healthy Fats (9 kcal per gram)</span>
+          <span class="amt" id="d-f-amt">58 grams (525 kcal)</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Carbohydrates (4 kcal per gram)</span>
+          <span class="amt" id="d-c-amt">244 grams (975 kcal)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 Evidence-Based Macro Rules</h4>
+      <ul class="mindmap-list">
+        <li><strong>Why 1g per lb Isn't Always Necessary:</strong> A comprehensive meta-analysis (Morton et al., 2018) showed that protein intake beyond 1.62 g/kg (0.74g/lb) showed no additional benefits for muscle hypertrophy in resistance-trained athletes. During caloric deficits, 1.8 to 2.2 g/kg provides a safe buffer against catabolism.</li>
+        <li><strong>Don't Drop Fats Below 20%:</strong> Dietary fat is required for testosterone, thyroid hormone synthesis, and fat-soluble vitamin absorption (A, D, E, K).</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Sharing gym memberships, personal training, or healthy food costs?</p>
+        <span style="font-size:12px;color:var(--text-muted);">LedgerMate simplifies joint fitness expenses with zero hassle and zero ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>How to Calculate Your Macros Step-by-Step</h2>
+    <p>Rather than using arbitrary percentage templates, sports dietitians calculate macros in this precise order:</p>
+    <ol style="margin-left:20px;line-height:1.7;">
+      <li><strong>Determine Daily Calories:</strong> Set a deficit for fat loss or slight surplus for muscle gain.</li>
+      <li><strong>Anchor Protein:</strong> Set 1.6 to 2.2 g per kg of bodyweight (4 kcal/g).</li>
+      <li><strong>Anchor Fats:</strong> Allocate 20% to 30% of total calories to essential healthy fats (9 kcal/g).</li>
+      <li><strong>Fill Remaining Calories with Carbs:</strong> The leftover calories go entirely to carbohydrates to fuel gym performance and glycogen replenishment.</li>
+    </ol>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Evidence-based fitness math and smart expense sharing.</p>
+      </div>
+      <div>
+        <h4>Fitness Calculators</h4>
+        <ul>
+          <li><a href="/tools/macro-calculator/">Macro Calculator</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE Calculator</a></li>
+          <li><a href="/tools/bmr-calculator/">BMR Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Finance</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Health &amp; Financial Calculators.</p>
+  </div>
+</footer>
+
+<script>
+let goal = 'cut';
+
+document.getElementById('btn-goal-cut').addEventListener('click', () => {
+  goal = 'cut';
+  document.getElementById('btn-goal-cut').classList.add('active');
+  document.getElementById('btn-goal-maintain').classList.remove('active');
+  document.getElementById('btn-goal-bulk').classList.remove('active');
+  document.getElementById('calories-input').value = 2100;
+  document.getElementById('protein-target').value = '2.0';
+  calc();
+});
+
+document.getElementById('btn-goal-maintain').addEventListener('click', () => {
+  goal = 'maintain';
+  document.getElementById('btn-goal-maintain').classList.add('active');
+  document.getElementById('btn-goal-cut').classList.remove('active');
+  document.getElementById('btn-goal-bulk').classList.remove('active');
+  document.getElementById('calories-input').value = 2500;
+  document.getElementById('protein-target').value = '1.8';
+  calc();
+});
+
+document.getElementById('btn-goal-bulk').addEventListener('click', () => {
+  goal = 'bulk';
+  document.getElementById('btn-goal-bulk').classList.add('active');
+  document.getElementById('btn-goal-cut').classList.remove('active');
+  document.getElementById('btn-goal-maintain').classList.remove('active');
+  document.getElementById('calories-input').value = 2800;
+  document.getElementById('protein-target').value = '1.6';
+  calc();
+});
+
+function calc() {
+  const calories = parseFloat(document.getElementById('calories-input').value) || 2100;
+  const weight = parseFloat(document.getElementById('weight-input').value) || 75;
+  const proteinRate = parseFloat(document.getElementById('protein-target').value) || 2.0;
+  const fatPct = parseFloat(document.getElementById('fat-pct').value) || 0.25;
+
+  const proteinGrams = Math.round(weight * proteinRate);
+  const proteinKcal = proteinGrams * 4;
+
+  const fatKcal = calories * fatPct;
+  const fatGrams = Math.round(fatKcal / 9);
+
+  const carbKcal = Math.max(0, calories - proteinKcal - fatKcal);
+  const carbGrams = Math.round(carbKcal / 4);
+
+  const pPct = Math.round((proteinKcal / calories) * 100);
+  const fPct = Math.round((fatKcal / calories) * 100);
+  const cPct = Math.max(0, 100 - pPct - fPct);
+
+  document.getElementById('res-macro-headline').textContent = `${proteinGrams}g P | ${fatGrams}g F | ${carbGrams}g C`;
+  document.getElementById('res-macro-sub').textContent = `Protein: ${pPct}% | Fat: ${fPct}% | Carbs: ${cPct}% (Total: ${Math.round(calories)} kcal)`;
+
+  document.getElementById('m-protein').textContent = `${proteinGrams}g`;
+  document.getElementById('m-fat').textContent = `${fatGrams}g`;
+  document.getElementById('m-carbs').textContent = `${carbGrams}g`;
+  document.getElementById('m-protein-ratio').textContent = `${proteinRate} g/kg`;
+
+  document.getElementById('d-p-amt').textContent = `${proteinGrams} grams (${proteinKcal} kcal)`;
+  document.getElementById('d-f-amt').textContent = `${fatGrams} grams (${Math.round(fatKcal)} kcal)`;
+  document.getElementById('d-c-amt').textContent = `${carbGrams} grams (${Math.round(carbKcal)} kcal)`;
+}
+
+['calories-input', 'weight-input', 'protein-target', 'fat-pct'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

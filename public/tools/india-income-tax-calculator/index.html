@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Income Tax Calculator FY 2025-26 (New vs Old Regime) | LedgerMate</title>
+<meta name="description" content="Free Income Tax Calculator for FY 2025-26 (AY 2026-27). Compare New Tax Regime with ₹75,000 standard deduction vs Old Regime with 80C, 80D, and HRA exemptions. See which regime saves more money." />
+<link rel="canonical" href="https://tryledgermate.in/tools/india-income-tax-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Income Tax Calculator FY 2025-26 (New vs Old Regime) | LedgerMate" />
+<meta property="og:description" content="Calculate your tax under the latest budget slabs. ₹75,000 standard deduction, 87A rebate, and Old Regime HRA/80C comparison." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate India Income Tax Calculator FY 2025-26",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "description": "Calculates Indian income tax for FY 2025-26 comparing the New Tax Regime against the Old Regime with standard deduction of ₹75,000.",
+  "featureList": [
+    "New Tax Regime with revised ₹75,000 standard deduction",
+    "Section 87A rebate (zero tax up to ₹7.75 Lakh in New Regime)",
+    "Old Regime deductions: 80C (₹1.5L), 80D (Mediclaim), HRA, Home loan interest (24b)",
+    "Definitive regime recommendation highlighting exact rupee savings"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is income up to ₹7.75 Lakh completely tax-free in the New Tax Regime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. For salaried individuals in the New Tax Regime for FY 2025-26, the ₹75,000 standard deduction lowers taxable income to ₹7,00,000. Under Section 87A, taxable income up to ₹7 Lakh receives a full tax rebate of up to ₹25,000, resulting in zero net tax liability."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When is the Old Tax Regime better than the New Regime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Old Regime is typically better only if your total eligible tax deductions (Section 80C ₹1.5L, 80D health insurance ₹25k-₹50k, HRA rent exemption, and home loan interest under Section 24b up to ₹2L) exceed ₹3.75 Lakh to ₹4.25 Lakh per year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Standard Deduction for FY 2025-26?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Standard Deduction for salaried employees and pensioners under the New Tax Regime is ₹75,000 (increased from ₹50,000 in Budget 2024). Under the Old Tax Regime, the Standard Deduction remains ₹50,000."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I switch between New and Old Tax Regime every year?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Salaried individuals without business income can freely switch between the New and Old Tax Regimes each financial year when filing their Income Tax Return (ITR-1 or ITR-2). However, individuals with business or professional income (ITR-3 or ITR-4) can opt out of the New Regime only once in their lifetime."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is employer NPS contribution deductible under the New Tax Regime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, employer contribution to the National Pension System (NPS) under Section 80CCD(2) up to 14% of Basic for central government employees and 10% for private sector employees is deductible under both New and Old regimes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the surcharge rates for high earners in India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under the New Tax Regime, surcharge is capped at 25% for income exceeding ₹2 Crore (10% for ₹50L-₹1Cr, 15% for ₹1Cr-₹2Cr). Under the Old Regime, the surcharge previously reached up to 37% for income above ₹5 Crore."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/india-ctc-salary-calculator/">India CTC Calculator</a>
+      <a href="/guides/marginal-vs-effective-tax-rate/">Tax Guide</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Income Tax Calculator (FY 2025-26)
+  </div>
+
+  <h1 style="font-size:clamp(28px, 4vw, 40px);margin-bottom:12px;text-align:center;">India Income Tax Calculator (FY 2025-26)</h1>
+  <p class="sub" style="font-size:16px;max-width:680px;margin:0 auto;text-align:center;">Compare New vs. Old Tax Regimes under the latest Union Budget provisions. Includes the ₹75,000 salaried standard deduction, Section 87A rebate, and 80C/HRA deductions.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="annual-income">Gross Annual Salary (CTC)</label>
+        <input id="annual-income" type="number" step="25000" min="200000" max="50000000" value="1200000" />
+      </div>
+      <div style="flex:1;">
+        <label for="regime-preset">Quick Salary Presets</label>
+        <select id="regime-preset" onchange="setSalary(this.value)">
+          <option value="750000">₹7.5 Lakhs (Zero Tax Zone)</option>
+          <option value="1000000">₹10 Lakhs</option>
+          <option value="1200000" selected>₹12 Lakhs</option>
+          <option value="1500000">₹15 Lakhs</option>
+          <option value="2000000">₹20 Lakhs</option>
+          <option value="3000000">₹30 Lakhs</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;background:var(--bg);border-radius:12px;padding:14px 18px;">
+      <h4 style="margin:0 0 12px;font-size:14px;color:var(--text);">Old Regime Deductions (Optional)</h4>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="ded-80c">Section 80C (PPF, ELSS, EPF - Max ₹1.5L)</label>
+          <input id="ded-80c" type="number" step="10000" min="0" max="150000" value="150000" />
+        </div>
+        <div style="flex:1;">
+          <label for="ded-80d">Section 80D (Health Insurance)</label>
+          <input id="ded-80d" type="number" step="5000" min="0" max="100000" value="25000" />
+        </div>
+      </div>
+      <div class="calc-row" style="margin-top:10px;">
+        <div style="flex:1;">
+          <label for="ded-hra">HRA Exemption / Rent Paid</label>
+          <input id="ded-hra" type="number" step="10000" min="0" max="500000" value="120000" />
+        </div>
+        <div style="flex:1;">
+          <label for="ded-home-loan">Home Loan Interest (Sec 24b - Max ₹2L)</label>
+          <input id="ded-home-loan" type="number" step="10000" min="0" max="200000" value="0" />
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Recommended Regime</span>
+        <div style="font-size:38px;font-weight:800;color:var(--text);margin:6px 0;" id="res-regime-recommendation">New Tax Regime Saves ₹36,400</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-regime-sub">New Regime Tax: ₹78,000 | Old Regime Tax: ₹1,14,400</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-new-tax" style="color:#10B981;">₹78,000</div>
+          <div class="metric-lbl">New Regime Total Tax</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-old-tax" style="color:#E0563F;">₹1,14,400</div>
+          <div class="metric-lbl">Old Regime Total Tax</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-monthly-tds">₹6,500</div>
+          <div class="metric-lbl">Monthly TDS (New)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-effective-rate">6.5%</div>
+          <div class="metric-lbl">Effective Tax Rate</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">Side-by-Side Slabs Comparison</h4>
+        <div class="calc-result-row">
+          <span>Standard Deduction <span class="concept-inline-link" onclick="switchTaxConcept('std')">₹75k Rules<span class="arrow">&rarr;</span></span></span>
+          <span class="amt">₹75,000 (New) vs ₹50,000 (Old)</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Total Deductions Claimed <span class="concept-inline-link" onclick="switchTaxConcept('old')">80C/HRA<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-total-deductions">₹3,45,000 in Old Regime</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Health &amp; Education Cess (4%) <span class="concept-inline-link" onclick="switchTaxConcept('slabs')">Slabs<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-cess">₹3,000 in New Regime</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router -->
+    <div class="concept-router" style="margin-top:24px;">
+      <div class="concept-nav" id="tax-concept-nav">
+        <button type="button" class="concept-tab-btn active" onclick="switchTaxConcept('slabs')">New Regime 2026 Slabs</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('rebate')">Section 87A Rebate</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('std')">Standard Deduction</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('old')">Old Regime Deductions</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('breakeven')">Breakeven Formula</button>
+      </div>
+
+      <div class="concept-pane active" id="pane-tax-slabs">
+        <h4>New Tax Regime Slab Structure (FY 2025–26 / AY 2026–27)</h4>
+        <p>The revised New Tax Regime features six progressive tax brackets: 0 to ₹3,00,000 (Nil), ₹3,00,001 to ₹7,00,000 (5%), ₹7,00,001 to ₹10,00,000 (10%), ₹10,00,001 to ₹12,00,000 (15%), ₹12,00,001 to ₹15,00,000 (20%), and Above ₹15,00,000 (30%). In addition, a 4% Health &amp; Education Cess is levied on total tax payable.</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">Read Marginal vs Effective Tax Rate Guide &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-tax-rebate">
+        <h4>Section 87A Tax Rebate (Zero Tax up to ₹7.75 Lakhs)</h4>
+        <p>Under Section 87A of the Income Tax Act, resident individuals with total taxable income up to ₹7,00,000 in the New Regime receive a 100% tax rebate of up to ₹25,000. When combined with the ₹75,000 Standard Deduction for salaried personnel, any gross salary up to ₹7,75,000 incurs absolutely ₹0 tax liability.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-tax-std">
+        <h4>₹75,000 Standard Deduction for Salaried Employees</h4>
+        <p>Union Budget 2024 increased the Standard Deduction from ₹50,000 to ₹75,000 exclusively for taxpayers opting for the New Tax Regime. Pensioners also receive an increased family pension deduction of ₹25,000 (up from ₹15,000). Taxpayers under the Old Tax Regime remain restricted to the prior ₹50,000 standard deduction.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-tax-old">
+        <h4>Old Tax Regime Chapter VI-A Deductions</h4>
+        <p>The Old Regime allows taxpayers to reduce taxable income using itemized investments: Section 80C (up to ₹1,50,000 for EPF, PPF, ELSS, Life Insurance, principal repayment of home loans), Section 80D (₹25,000 for self/family health insurance, plus ₹50,000 for senior citizen parents), Section 24(b) (up to ₹2,00,000 home loan interest), and Section 10(13A) House Rent Allowance (HRA).</p>
+      </div>
+
+      <div class="concept-pane" id="pane-tax-breakeven">
+        <h4>The Mathematical Breakeven Threshold</h4>
+        <p>To determine if the Old Regime saves more money, calculate your total eligible deductions. For income between ₹10 Lakhs and ₹15 Lakhs, your total deductions must exceed ₹3,75,000 to ₹4,25,000 to overcome the lower tax slab rates of the New Regime. If your deductions are below this threshold, the New Regime is mathematically superior.</p>
+        <div style="margin-top:12px;">
+          <a href="/tools/india-ctc-salary-calculator/" class="concept-full-guide-link">Calculate Monthly Take-Home in India CTC Tool &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 FY 2025-26 New Tax Regime Slabs</h4>
+      <ul class="mindmap-list">
+        <li><strong>Up to ₹3,00,000:</strong> NIL (0%)</li>
+        <li><strong>₹3,00,001 to ₹7,00,000:</strong> 5% (Rebate under Sec 87A makes tax ₹0 up to ₹7L taxable income)</li>
+        <li><strong>₹7,00,001 to ₹10,00,000:</strong> 10%</li>
+        <li><strong>₹10,00,01 to ₹12,00,000:</strong> 15%</li>
+        <li><strong>₹12,00,001 to ₹15,00,000:</strong> 20%</li>
+        <li><strong>Above ₹15,00,000:</strong> 30%</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Sharing apartment rent or office expenses with colleagues?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to generate rent split records for HRA claims — 100% free.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>Comprehensive Analysis: New vs Old Tax Regime for FY 2025–26 (AY 2026–27)</h2>
+    <p>Navigating the Indian direct taxation landscape requires a clear understanding of the dual tax structure introduced by Section 115BAC of the Income Tax Act. For the assessment year 2026–27, the New Tax Regime continues as the default taxation scheme for all individuals, Hindu Undivided Families (HUFs), and Associations of Persons (AOPs). Taxpayers retain the freedom to opt for the Old Tax Regime if their deduction profile warrants it.</p>
+
+    <h2>1. The New Tax Regime Slabs and Relief Measures</h2>
+    <p>The revised New Tax Regime aims to simplify tax compliance by eliminating paperwork and investment proof verification while providing lower marginal rates:</p>
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Taxable Income Slab</th>
+            <th>Tax Rate</th>
+            <th>Tax on Slabs</th>
+            <th>Cumulative Tax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Up to ₹3,00,000</td>
+            <td>0%</td>
+            <td>₹0</td>
+            <td>₹0</td>
+          </tr>
+          <tr>
+            <td>₹3,00,001 to ₹7,00,000</td>
+            <td>5%</td>
+            <td>₹20,000</td>
+            <td>₹20,000 (Rebate applies if total &le; ₹7L)</td>
+          </tr>
+          <tr>
+            <td>₹7,00,001 to ₹10,00,000</td>
+            <td>10%</td>
+            <td>₹30,000</td>
+            <td>₹50,000</td>
+          </tr>
+          <tr>
+            <td>₹10,00,001 to ₹12,00,000</td>
+            <td>15%</td>
+            <td>₹30,000</td>
+            <td>₹80,000</td>
+          </tr>
+          <tr>
+            <td>₹12,00,001 to ₹15,00,000</td>
+            <td>20%</td>
+            <td>₹60,000</td>
+            <td>₹1,40,000</td>
+          </tr>
+          <tr>
+            <td>Above ₹15,00,000</td>
+            <td>30%</td>
+            <td>30% of excess</td>
+            <td>₹1,40,000 + 30% on excess</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. Detailed Tax Comparison Across Salary Brackets</h2>
+    <p>To see how the two regimes perform across standard income benchmarks, review the comparative tax liabilities below (assuming typical Old Regime deductions of ₹1,50,000 under 80C, ₹25,000 under 80D, and ₹1,20,000 HRA exemption):</p>
+    <ul>
+      <li><strong>₹7,75,000 Annual Salary:</strong> Under the New Regime, standard deduction of ₹75,000 reduces taxable income to ₹7,00,000. Full Section 87A rebate applies, resulting in <strong>₹0 tax</strong>. Under the Old Regime, tax would be approximately ₹25,480. (New Regime saves ₹25,480).</li>
+      <li><strong>₹10,00,000 Annual Salary:</strong> New Regime tax is ₹44,200 (including 4% cess). Old Regime tax with standard deductions is ₹53,560. (New Regime saves ₹9,360).</li>
+      <li><strong>₹15,00,000 Annual Salary:</strong> New Regime tax is ₹1,30,000. Old Regime tax is ₹1,57,560. (New Regime saves ₹27,560).</li>
+      <li><strong>₹20,00,000 Annual Salary:</strong> New Regime tax is ₹2,75,600. Old Regime tax is ₹3,13,560. (New Regime saves ₹37,960).</li>
+      <li><strong>₹30,00,000 Annual Salary:</strong> New Regime tax is ₹5,87,600. Old Regime tax is ₹6,25,560. (New Regime saves ₹37,960).</li>
+    </ul>
+
+    <h2>3. The Breakeven Threshold: When Does the Old Regime Win?</h2>
+    <p>The Old Tax Regime becomes advantageous only when your total aggregate deductions exceed the breakeven points tabulated below:</p>
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Annual Gross Income</th>
+            <th>Required Deductions to Break Even</th>
+            <th>Recommended Regime for Most People</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>₹8,00,000 to ₹10,00,000</td>
+            <td>₹2,50,000 to ₹3,00,000</td>
+            <td><strong>New Tax Regime</strong></td>
+          </tr>
+          <tr>
+            <td>₹10,00,000 to ₹15,00,000</td>
+            <td>₹3,75,000 to ₹4,00,000</td>
+            <td><strong>New Tax Regime</strong> (unless high rent + home loan)</td>
+          </tr>
+          <tr>
+            <td>₹15,00,000 to ₹25,00,000</td>
+            <td>₹4,25,000 to ₹4,50,000</td>
+            <td><strong>New Tax Regime</strong></td>
+          </tr>
+          <tr>
+            <td>Above ₹50,00,000</td>
+            <td>₹4,75,000+</td>
+            <td><strong>New Tax Regime</strong> (due to lower 25% surcharge cap)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>4. Surcharges for High Net-Worth Individuals (HNIs)</h2>
+    <p>For taxpayers with total annual income exceeding ₹50 Lakhs, surcharge applies on top of basic tax rates:</p>
+    <ul>
+      <li><strong>₹50 Lakhs to ₹1 Crore:</strong> 10% surcharge under both regimes.</li>
+      <li><strong>₹1 Crore to ₹2 Crores:</strong> 15% surcharge under both regimes.</li>
+      <li><strong>₹2 Crores to ₹5 Crores:</strong> 25% surcharge under both regimes.</li>
+      <li><strong>Above ₹5 Crores:</strong> Capped at 25% under the New Tax Regime, whereas the Old Tax Regime levied up to 37% surcharge (bringing the peak marginal rate above 42.7%). This makes the New Regime substantially more attractive for top-bracket earners.</li>
+    </ul>
+
+    <h2>5. Switching Regimes: Salaried vs Business Income</h2>
+    <p>If you are a salaried individual without business earnings (filing ITR-1 or ITR-2), you can elect your preferred regime every year. You can declare one regime to your employer at the beginning of the financial year for TDS deduction purposes, and choose a different regime when filing your final return with the Income Tax Department if your investment deductions change.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Is income up to ₹7.75 Lakh completely tax-free in the New Tax Regime?</summary>
+      <p>Yes. For salaried individuals in the New Tax Regime for FY 2025-26, the ₹75,000 standard deduction lowers taxable income to ₹7,00,000. Under Section 87A, taxable income up to ₹7 Lakh receives a full tax rebate of up to ₹25,000, resulting in zero net tax liability.</p>
+    </details>
+    <details class="faq-item">
+      <summary>When is the Old Tax Regime better than the New Regime?</summary>
+      <p>The Old Regime is typically better only if your total eligible tax deductions (Section 80C ₹1.5L, 80D health insurance ₹25k-₹50k, HRA rent exemption, and home loan interest under Section 24b up to ₹2L) exceed ₹3.75 Lakh to ₹4.25 Lakh per year.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the Standard Deduction for FY 2025-26?</summary>
+      <p>The Standard Deduction for salaried employees and pensioners under the New Tax Regime is ₹75,000 (increased from ₹50,000 in Budget 2024). Under the Old Tax Regime, the Standard Deduction remains ₹50,000.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I switch between New and Old Tax Regime every year?</summary>
+      <p>Salaried individuals without business income can freely switch between the New and Old Tax Regimes each financial year when filing their Income Tax Return (ITR-1 or ITR-2). However, individuals with business or professional income (ITR-3 or ITR-4) can opt out of the New Regime only once in their lifetime.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is employer NPS contribution deductible under the New Tax Regime?</summary>
+      <p>Yes, employer contribution to the National Pension System (NPS) under Section 80CCD(2) up to 14% of Basic for central government employees and 10% for private sector employees is deductible under both New and Old regimes.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What are the surcharge rates for high earners in India?</summary>
+      <p>Under the New Tax Regime, surcharge is capped at 25% for income exceeding ₹2 Crore (10% for ₹50L-₹1Cr, 15% for ₹1Cr-₹2Cr). Under the Old Regime, the surcharge previously reached up to 37% for income above ₹5 Crore.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free Indian tax and salary calculation tools.</p>
+      </div>
+      <div>
+        <h4>India Tax &amp; Salary</h4>
+        <ul>
+          <li><a href="/tools/india-income-tax-calculator/">Income Tax FY 2025-26</a></li>
+          <li><a href="/tools/india-ctc-salary-calculator/">CTC In-Hand Calculator</a></li>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/rent-affordability-calculator/">Rent Affordability</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Indian Tax &amp; Financial Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmtInr(n) {
+  return '₹' + Math.round(n || 0).toLocaleString('en-IN');
+}
+
+function setSalary(v) {
+  document.getElementById('annual-income').value = v;
+  calc();
+}
+
+function calcNewTax(income) {
+  const taxable = Math.max(0, income - 75000); // Standard deduction 75k
+  if (taxable <= 700000) {
+    return 0; // Sec 87A rebate
+  }
+
+  let tax = 0;
+  if (taxable > 300000) tax += Math.min(taxable - 300000, 400000) * 0.05;
+  if (taxable > 700000) tax += Math.min(taxable - 700000, 300000) * 0.10;
+  if (taxable > 1000000) tax += Math.min(taxable - 1000000, 200000) * 0.15;
+  if (taxable > 1200000) tax += Math.min(taxable - 1200000, 300000) * 0.20;
+  if (taxable > 1500000) tax += (taxable - 1500000) * 0.30;
+
+  return tax * 1.04; // 4% Cess
+}
+
+function calcOldTax(income, c80, d80, hra, homeLoan) {
+  const totalDeductions = 50000 + c80 + d80 + hra + homeLoan; // 50k standard deduction
+  const taxable = Math.max(0, income - totalDeductions);
+
+  if (taxable <= 500000) {
+    return 0; // Sec 87A rebate in old regime up to 5L
+  }
+
+  let tax = 0;
+  if (taxable > 250000) tax += Math.min(taxable - 250000, 250000) * 0.05;
+  if (taxable > 500000) tax += Math.min(taxable - 500000, 500000) * 0.20;
+  if (taxable > 1000000) tax += (taxable - 1000000) * 0.30;
+
+  return tax * 1.04; // 4% Cess
+}
+
+function calc() {
+  const income = parseFloat(document.getElementById('annual-income').value) || 0;
+  const c80 = Math.min(150000, parseFloat(document.getElementById('ded-80c').value) || 0);
+  const d80 = parseFloat(document.getElementById('ded-80d').value) || 0;
+  const hra = parseFloat(document.getElementById('ded-hra').value) || 0;
+  const homeLoan = Math.min(200000, parseFloat(document.getElementById('ded-home-loan').value) || 0);
+
+  const newTax = calcNewTax(income);
+  const oldTax = calcOldTax(income, c80, d80, hra, homeLoan);
+
+  const diff = Math.abs(newTax - oldTax);
+  const newWins = newTax <= oldTax;
+
+  if (newWins) {
+    document.getElementById('res-regime-recommendation').textContent = `New Tax Regime Saves ${fmtInr(diff)}`;
+    document.getElementById('res-regime-sub').textContent = `New Regime Tax: ${fmtInr(newTax)} | Old Regime Tax: ${fmtInr(oldTax)}`;
+  } else {
+    document.getElementById('res-regime-recommendation').textContent = `Old Tax Regime Saves ${fmtInr(diff)}`;
+    document.getElementById('res-regime-sub').textContent = `Old Regime Tax: ${fmtInr(oldTax)} | New Regime Tax: ${fmtInr(newTax)}`;
+  }
+
+  const chosenTax = newWins ? newTax : oldTax;
+  const monthlyTds = chosenTax / 12;
+  const effRate = income > 0 ? ((chosenTax / income) * 100).toFixed(1) + '%' : '0%';
+
+  document.getElementById('m-new-tax').textContent = fmtInr(newTax);
+  document.getElementById('m-old-tax').textContent = fmtInr(oldTax);
+  document.getElementById('m-monthly-tds').textContent = fmtInr(monthlyTds);
+  document.getElementById('m-effective-rate').textContent = effRate;
+
+  const totalOldDeductions = 50000 + c80 + d80 + hra + homeLoan;
+  document.getElementById('d-total-deductions').textContent = `${fmtInr(totalOldDeductions)} in Old Regime`;
+  document.getElementById('d-cess').textContent = `${fmtInr(newTax * 0.04 / 1.04)} in New Regime`;
+}
+
+function switchTaxConcept(tabId) {
+  const tabs = ['slabs', 'rebate', 'std', 'old', 'breakeven'];
+  const navBtns = document.querySelectorAll('#tax-concept-nav .concept-tab-btn');
+
+  tabs.forEach((t, i) => {
+    const pane = document.getElementById(`pane-tax-${t}`);
+    if (pane) {
+      if (t === tabId) {
+        pane.classList.add('active');
+      } else {
+        pane.classList.remove('active');
+      }
+    }
+    if (navBtns[i]) {
+      if (t === tabId) {
+        navBtns[i].classList.add('active');
+      } else {
+        navBtns[i].classList.remove('active');
+      }
+    }
+  });
+
+  const router = document.getElementById('tax-concept-nav');
+  if (router) {
+    router.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+['annual-income', 'ded-80c', 'ded-80d', 'ded-hra', 'ded-home-loan'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

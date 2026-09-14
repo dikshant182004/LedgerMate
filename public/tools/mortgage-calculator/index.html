@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mortgage Calculator (Full PITI + PMI &amp; Property Tax) | LedgerMate</title>
+<meta name="description" content="Free 2026 Mortgage Calculator with full PITI breakdown: Principal, Interest, Property Taxes, Home Insurance, PMI (Private Mortgage Insurance), and HOA fees. Free, instant amortization." />
+<link rel="canonical" href="https://tryledgermate.in/tools/mortgage-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Mortgage Calculator (PITI + PMI &amp; Taxes) | LedgerMate" />
+<meta property="og:description" content="Calculate your true monthly housing payment with accurate Property Taxes, Homeowners Insurance, and PMI." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Mortgage Calculator (PITI)",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates complete monthly mortgage payments including Principal, Interest, Property Taxes, Insurance, and PMI.",
+  "featureList": [
+    "Full PITI breakdown (Principal, Interest, Taxes, Insurance)",
+    "Private Mortgage Insurance (PMI) calculation if down payment < 20%",
+    "HOA dues inclusion",
+    "15-year and 30-year fixed loan terms"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does PITI stand for in a mortgage payment?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PITI stands for Principal, Interest, Taxes (property taxes), and Insurance (homeowners insurance). These four components comprise your complete escrowed monthly mortgage obligation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When is PMI required and how much does it cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Private Mortgage Insurance (PMI) is required by conventional lenders if your down payment is less than 20% of the purchase price. It typically costs between 0.5% and 1.5% of the original loan amount annually."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/rent-vs-buy-calculator/">Rent vs Buy</a>
+      <a href="/tools/loan-emi-calculator/">Loan EMI</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Mortgage Calculator (PITI)
+  </div>
+
+  <h1>Mortgage Calculator (Full PITI &amp; PMI)</h1>
+  <p class="sub">Don't get caught by surprise. Calculate your true total monthly mortgage payment including principal, interest, property taxes, home insurance, and PMI.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="home-price">Home Purchase Price ($)</label>
+        <input id="home-price" type="number" step="10000" min="50000" max="10000000" value="450000" />
+      </div>
+      <div style="flex:1;">
+        <label for="down-pct">Down Payment (%)</label>
+        <input id="down-pct" type="number" step="1" min="3" max="60" value="10" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="loan-term">Loan Term</label>
+        <select id="loan-term">
+          <option value="30" selected>30 Years Fixed</option>
+          <option value="15">15 Years Fixed</option>
+          <option value="20">20 Years Fixed</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="interest-rate">Interest Rate (%)</label>
+        <input id="interest-rate" type="number" step="0.1" min="1" max="15" value="6.75" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="prop-tax-rate">Annual Property Tax Rate (%)</label>
+        <input id="prop-tax-rate" type="number" step="0.1" min="0.2" max="3.5" value="1.2" />
+      </div>
+      <div style="flex:1;">
+        <label for="home-insurance">Annual Homeowners Insurance ($)</label>
+        <input id="home-insurance" type="number" step="100" min="300" max="10000" value="1500" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="hoa-dues">Monthly HOA Dues ($)</label>
+        <input id="hoa-dues" type="number" step="25" min="0" max="2500" value="150" />
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Total Monthly Housing Cost (PITI)</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-piti-headline">$3,568 / mo</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-piti-sub">P&amp;I: $2,627 | Taxes: $450 | Ins: $125 | PMI: $216 | HOA: $150</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-loan-amt">$405,000</div>
+          <div class="metric-lbl">Total Loan Amount</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-pi" style="color:#2563EB;">$2,627</div>
+          <div class="metric-lbl">Principal &amp; Interest</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-pmi" style="color:#E0563F;">$216 / mo</div>
+          <div class="metric-lbl">PMI (Drops at 20% Equity)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-total-interest">$540,720</div>
+          <div class="metric-lbl">Total Lifetime Interest</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">Monthly Escrow Breakdown</h4>
+        <div class="calc-result-row">
+          <span>Principal &amp; Interest</span>
+          <span class="amt" id="d-pi">$2,627</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Property Taxes (1.2% / yr)</span>
+          <span class="amt" id="d-tax">$450</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Homeowners Insurance</span>
+          <span class="amt" id="d-ins">$125</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Private Mortgage Insurance (PMI)</span>
+          <span class="amt" id="d-pmi">$216</span>
+        </div>
+        <div class="calc-result-row">
+          <span>HOA Fees</span>
+          <span class="amt" id="d-hoa">$150</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 How to Eliminate PMI Faster</h4>
+      <ul class="mindmap-list">
+        <li><strong>Automatic PMI Cancellation:</strong> Under the Homeowners Protection Act, your lender must automatically cancel PMI once your loan balance reaches 78% of the original purchase value.</li>
+        <li><strong>Early Cancellation at 80%:</strong> You can request PMI removal yourself once you pay your principal down to 80% LTV, or if market appreciation causes your home value to rise significantly (requires a new appraisal).</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Splitting home buying or mortgage costs with a co-borrower or partner?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to track household down payments and repairs — 100% free with no ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>Understanding the 4 Components of PITI</h2>
+    <p>When banks calculate your debt-to-income ratio, they look at your complete PITI payment, not just the base mortgage interest:</p>
+    <ul>
+      <li><strong>Principal:</strong> The portion that directly reduces your loan balance and builds equity.</li>
+      <li><strong>Interest:</strong> The fee charged by your mortgage lender.</li>
+      <li><strong>Taxes:</strong> County and municipal property taxes collected monthly into an escrow account.</li>
+      <li><strong>Insurance:</strong> Hazard and flood insurance policies protecting the collateral.</li>
+    </ul>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mortgage and housing financial tools.</p>
+      </div>
+      <div>
+        <h4>Housing &amp; Mortgages</h4>
+        <ul>
+          <li><a href="/tools/mortgage-calculator/">Mortgage Calculator (PITI)</a></li>
+          <li><a href="/tools/rent-vs-buy-calculator/">Rent vs Buy</a></li>
+          <li><a href="/tools/rent-affordability-calculator/">Rent Affordability</a></li>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Mortgage &amp; Loan Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmtUsd(n) {
+  return '$' + Math.round(n || 0).toLocaleString('en-US');
+}
+
+function calc() {
+  const price = parseFloat(document.getElementById('home-price').value) || 0;
+  const downPct = parseFloat(document.getElementById('down-pct').value) || 0;
+  const years = parseInt(document.getElementById('loan-term').value, 10) || 30;
+  const rateAnnual = (parseFloat(document.getElementById('interest-rate').value) || 0) / 100;
+  const taxRate = (parseFloat(document.getElementById('prop-tax-rate').value) || 0) / 100;
+  const insAnnual = parseFloat(document.getElementById('home-insurance').value) || 0;
+  const hoa = parseFloat(document.getElementById('hoa-dues').value) || 0;
+
+  const downAmt = price * (downPct / 100);
+  const loanAmt = Math.max(0, price - downAmt);
+
+  const monthlyRate = rateAnnual / 12;
+  const numPayments = years * 12;
+
+  let monthlyPI = 0;
+  if (monthlyRate > 0) {
+    monthlyPI = loanAmt * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+  } else {
+    monthlyPI = loanAmt / numPayments;
+  }
+
+  const monthlyTax = (price * taxRate) / 12;
+  const monthlyIns = insAnnual / 12;
+
+  // PMI if down payment < 20% (approx 0.65% of loan amount annually)
+  let monthlyPmi = 0;
+  if (downPct < 20 && loanAmt > 0) {
+    monthlyPmi = (loanAmt * 0.0065) / 12;
+  }
+
+  const totalMonthlyPiti = monthlyPI + monthlyTax + monthlyIns + monthlyPmi + hoa;
+  const totalInterest = (monthlyPI * numPayments) - loanAmt;
+
+  document.getElementById('res-piti-headline').textContent = `${fmtUsd(totalMonthlyPiti)} / mo`;
+  document.getElementById('res-piti-sub').textContent = `P&I: ${fmtUsd(monthlyPI)} | Tax: ${fmtUsd(monthlyTax)} | Ins: ${fmtUsd(monthlyIns)} | PMI: ${fmtUsd(monthlyPmi)} | HOA: ${fmtUsd(hoa)}`;
+
+  document.getElementById('m-loan-amt').textContent = fmtUsd(loanAmt);
+  document.getElementById('m-pi').textContent = fmtUsd(monthlyPI);
+  document.getElementById('m-pmi').textContent = downPct >= 20 ? '$0 (No PMI)' : `${fmtUsd(monthlyPmi)} / mo`;
+  document.getElementById('m-total-interest').textContent = fmtUsd(totalInterest);
+
+  document.getElementById('d-pi').textContent = fmtUsd(monthlyPI);
+  document.getElementById('d-tax').textContent = fmtUsd(monthlyTax);
+  document.getElementById('d-ins').textContent = fmtUsd(monthlyIns);
+  document.getElementById('d-pmi').textContent = fmtUsd(monthlyPmi);
+  document.getElementById('d-hoa').textContent = fmtUsd(hoa);
+}
+
+['home-price', 'down-pct', 'loan-term', 'interest-rate', 'prop-tax-rate', 'home-insurance', 'hoa-dues'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

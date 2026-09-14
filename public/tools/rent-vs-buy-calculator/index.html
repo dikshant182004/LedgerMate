@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rent vs Buy Calculator 2026 (With Breakeven Year &amp; Opportunity Cost) | LedgerMate</title>
+<meta name="description" content="Free Rent vs Buy Calculator with investment opportunity cost and clear breakeven year visualization. See whether renting and investing in index funds or buying a home builds more wealth." />
+<link rel="canonical" href="https://tryledgermate.in/tools/rent-vs-buy-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Rent vs Buy Calculator (Breakeven Year) | LedgerMate" />
+<meta property="og:description" content="Should you buy a home or rent and invest the difference? Accurate 2026 simulation with property taxes, maintenance, amortization, and opportunity costs." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=4" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Rent vs Buy Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates real financial breakeven horizon between renting and buying a home, factoring in mortgage amortization, opportunity cost of down payment, and transaction fees.",
+  "featureList": [
+    "Opportunity cost simulator for down payment invested in index funds",
+    "Breakeven year calculation with 20-year net worth trajectory",
+    "PITI (Principal, Interest, Property Tax, Insurance, Maintenance) breakdown",
+    "Educational concept router explaining mortgage interest, down payments, and P/R ratios",
+    "Multi-currency support ($, ₹, €, £, A$, C$, ₩, S$)"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the opportunity cost of a down payment in the Rent vs Buy calculation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When you buy a home, your down payment (typically 10% to 20% of purchase price) is locked in illiquid real estate equity. If you rent instead, that entire capital sum can remain invested in diversified stock market index funds, which historically earn an average of 7% to 10% annualized return. The compounded return forfeited by tying cash into home equity is your opportunity cost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many years does it take for buying a home to break even against renting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In typical macroeconomic conditions with mortgage interest rates between 5.5% and 7.0%, buying a home takes between 4 and 7 years to break even against renting. Upfront closing costs (2% to 4%) and future agent sales commissions (5% to 6%) require several years of price appreciation and principal paydown to offset."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Price-to-Rent (P/R) ratio and how is it interpreted?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Price-to-Rent ratio is calculated as Home Purchase Price divided by Annual Rent for an equivalent home. A ratio under 15 indicates buying is significantly favorable; a ratio between 16 and 20 is neutral; and a ratio above 21 indicates renting is mathematically superior from a pure wealth-building standpoint."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is early mortgage interest front-loaded in amortization schedules?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because mortgage interest is calculated each month on the remaining loan principal balance, the interest charge is highest in the earliest years when the balance is greatest. For a 30-year loan at 6.5%, approximately 70% to 80% of your initial monthly payments go toward bank interest rather than building homeowner equity."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the 1% home maintenance rule?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 1% rule states that homeowners should budget at least 1% of the property's total market value every year for maintenance and routine repairs. For a $450,000 house, this amounts to $4,500 per year ($375/month) to cover aging roofs, HVAC systems, plumbing, and structural upkeep."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the 5% Rule for comparing rent vs buy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Popularized by financial analyst Ben Felix, the 5% Rule sums the three unrecoverable costs of homeownership: property taxes (~1%), maintenance (~1%), and the cost of capital (interest plus opportunity cost ~3%). If monthly rent is lower than 5% of the purchase price divided by 12, renting is financially superior."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/rent-affordability-calculator/">Rent Affordability</a>
+      <a href="/tools/prorated-rent-calculator/">Prorated Rent</a>
+      <a href="/tools/loan-emi-calculator/">Home Loan EMI</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Rent vs Buy Calculator
+  </div>
+
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">Rent vs Buy Calculator (2026 Horizon)</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Find your exact breakeven horizon. Accurately simulates mortgage interest amortization, property taxes, and maintenance against rent inflation and the compounding opportunity cost of investing your down payment in index funds.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="home-price">Target Home Purchase Price</label>
+        <div style="display:flex;gap:8px;">
+          <input id="home-price" type="number" step="10000" min="20000" max="100000000" value="450000" style="flex:2;" />
+          <select id="currency-select" style="flex:1;">
+            <option value="$" selected>$ (USD)</option>
+            <option value="₹">₹ (INR)</option>
+            <option value="€">€ (EUR)</option>
+            <option value="£">£ (GBP)</option>
+            <option value="A$">A$ (AUD)</option>
+            <option value="C$">C$ (CAD)</option>
+            <option value="₩">₩ (KRW)</option>
+            <option value="S$">S$ (SGD)</option>
+          </select>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <label for="monthly-rent">Comparable Monthly Rent</label>
+        <input id="monthly-rent" type="number" step="50" min="100" max="5000000" value="2100" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="down-payment-pct">Down Payment (%)</label>
+        <input id="down-payment-pct" type="number" step="1" min="3" max="60" value="20" />
+      </div>
+      <div style="flex:1;">
+        <label for="mortgage-rate">Mortgage Interest Rate (%)</label>
+        <input id="mortgage-rate" type="number" step="0.1" min="1" max="18" value="6.5" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="invest-return">Investment Return on Capital / Stocks (%)</label>
+        <input id="invest-return" type="number" step="0.5" min="2" max="18" value="8.0" />
+      </div>
+      <div style="flex:1;">
+        <label for="appreciation-rate">Expected Home Price Appreciation (%)</label>
+        <input id="appreciation-rate" type="number" step="0.5" min="0" max="12" value="3.5" />
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Financial Decision Horizon</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-breakeven">Buying Breaks Even in Year 5</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-breakeven-sub">If staying less than 5 years, renting and investing the down payment yields higher net wealth.</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-buy-monthly">$2,830 / mo</div>
+          <div class="metric-lbl">Total Monthly Buy Cost (PITI)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-rent-monthly">$2,100 / mo</div>
+          <div class="metric-lbl">Initial Monthly Rent</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-networth-10-buy">$342,000</div>
+          <div class="metric-lbl">Buyer Equity (Year 10)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-networth-10-rent">$318,000</div>
+          <div class="metric-lbl">Renter Portfolio (Year 10)</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">Cost &amp; Wealth Mechanics Summary</h4>
+        <div class="calc-result-row">
+          <span>Down Payment Required</span>
+          <span class="amt" id="d-down-amt">$90,000</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Monthly Mortgage (Principal &amp; Interest)</span>
+          <span class="amt" id="d-pi">$2,275 / mo</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Taxes, Insurance &amp; Maintenance (Est. 1.5%/yr)</span>
+          <span class="amt" id="d-tax-maint">$562 / mo</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Difference Renter Can Invest Monthly</span>
+          <span class="amt" id="d-diff">$730 / mo</span>
+        </div>
+        <div class="calc-result-row" style="border-top:1px dashed var(--border);padding-top:8px;margin-top:6px;">
+          <span>Price-to-Rent (P/R) Ratio</span>
+          <span class="amt" id="d-pr-ratio">17.9 (Neutral)</span>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06);display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a href="/guides/mortgage-interest-and-amortization/#amort" class="concept-inline-link">Why Early Mortgage Interest Is Front-Loaded <span class="arrow">→</span></a>
+        <a href="/guides/mortgage-interest-and-amortization/#oppcost" class="concept-inline-link">Understanding Opportunity Cost <span class="arrow">→</span></a>
+        <a href="#concept-guide" onclick="switchConcept('c-prratio')" class="concept-inline-link">How P/R Ratios &amp; 5% Rule Work <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 Crucial Assumptions in Rent vs Buy Models</h4>
+      <ul class="mindmap-list">
+        <li><strong>Closing &amp; Selling Friction:</strong> When buying, you pay 2%–4% in closing fees (title insurance, loan origination, escrow). When selling, you pay 5%–6% in real estate broker commissions and transfer stamps.</li>
+        <li><strong>Maintenance is Not Optional:</strong> Houses require roughly 1% of property value every single year in water heater replacements, roof shingles, HVAC servicing, and plumbing repairs.</li>
+        <li><strong>The Stock Market Alternative:</strong> Renter wealth supremacy depends strictly on investing the down payment in productive equities. If the money sits in a low-interest checking account or is consumed, buying wins by default.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Splitting rent or housing costs with a partner or roommates?</p>
+        <span style="font-size:12px;color:var(--text-muted);">LedgerMate makes shared household bills seamless, instant, and 100% free.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <!-- Educational Concept Router -->
+  <section class="concept-router" id="concept-guide">
+    <div class="concept-router-head">
+      <div class="concept-router-title">
+        <span>🎓 Real Estate &amp; Wealth Concepts Explainer</span>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
+    </div>
+
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('c-amort')">1. Front-Loaded Mortgage Interest</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-oppcost')">2. Down Payment Opportunity Cost</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-prratio')">3. Price-to-Rent (P/R) Ratio &amp; 5% Rule</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-piti')">4. Property Taxes, Insurance &amp; HOA</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-friction')">5. Transaction Friction (Closing vs Selling)</button>
+    </div>
+
+    <!-- Pane 1: Amortization -->
+    <div class="concept-pane active" id="pane-c-amort">
+      <h4>The Mortgage Interest Rule: Front-Loaded Amortization Schedules</h4>
+      <p>Many prospective homebuyers mistakenly believe that every mortgage payment builds immediate equity in their home. In reality, modern standard fixed-rate mortgages follow an <strong>amortization schedule</strong> where monthly payments are heavily front-loaded with interest charges.</p>
+      <p>Because interest is assessed each month against the total outstanding loan balance, the bank receives the overwhelming majority of your cash in the first 7 to 10 years:</p>
+      <div class="concept-formula-box">
+        Monthly Interest Due = Remaining Loan Principal × (Annual Mortgage Rate ÷ 12)<br>
+        Principal Paid = Fixed Monthly Payment - Monthly Interest Due
+      </div>
+      <div class="concept-example-box">
+        <strong>Real Example on a $360,000 Loan at 6.5%:</strong><br>
+        • Total Monthly Payment: <strong>$2,275</strong><br>
+        • Month 1 Breakdown: <strong>$1,950</strong> interest paid to the bank (85.7%) vs <strong>$325</strong> principal reduction (14.3%).<br>
+        • After 5 full years (60 payments of $2,275 = $136,500 paid), you have paid <strong>$113,000</strong> in non-recoverable interest and reduced your debt by only <strong>$23,500</strong>.
+      </div>
+      <a href="/guides/mortgage-interest-and-amortization/#amort" class="concept-full-guide-link">Read Full Guide: How Mortgage Amortization Front-Loads Interest <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 2: Opportunity Cost -->
+    <div class="concept-pane" id="pane-c-oppcost">
+      <h4>Down Payment &amp; The Opportunity Cost of Capital</h4>
+      <p>The single most underestimated factor in personal finance is the <strong>opportunity cost of capital</strong>. When you purchase a $450,000 home with a 20% down payment, you write a check for $90,000. That capital is now locked inside your home's walls—earning no cash dividends and yielding zero liquidity.</p>
+      <p>If you choose to rent an identical property instead, that $90,000 remains invested in a low-cost, broadly diversified index fund (like the S&amp;P 500 or total global stock market):</p>
+      <ul>
+        <li>Over the past 50 years, global stock markets have returned a historical geometric average of <strong>8% to 10% annually</strong>.</li>
+        <li>Residential real estate has historically appreciated at roughly <strong>3.5% to 4.5% annually</strong> (tracking 1% to 1.5% above inflation).</li>
+      </ul>
+      <div class="concept-example-box">
+        <strong>The 10-Year Compounding Reality:</strong><br>
+        • A $90,000 down payment invested in index funds at 8% annual return grows to <strong>$194,300</strong> in 10 years without paying a single dollar in property taxes, boiler replacements, or lawn care.<br>
+        • This $104,300 pure capital gain is the hidden benchmark your home equity must beat to justify buying.
+      </div>
+      <a href="/guides/mortgage-interest-and-amortization/#oppcost" class="concept-full-guide-link">Read Full Guide: The Down Payment Opportunity Cost Benchmark <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 3: P/R Ratio -->
+    <div class="concept-pane" id="pane-c-prratio">
+      <h4>The Price-to-Rent (P/R) Ratio &amp; The 5% Unrecoverable Cost Rule</h4>
+      <p>Economists and institutional hedge funds evaluate residential real estate valuations using the <strong>Price-to-Rent (P/R) ratio</strong>:</p>
+      <div class="concept-formula-box">
+        Price-to-Rent Ratio = Home Purchase Price ÷ (Comparable Monthly Rent × 12)
+      </div>
+      <ul>
+        <li><strong>P/R 1 to 15 (Favorable to Buy):</strong> Buying is significantly cheaper than renting. Common in stable Midwestern US cities, parts of regional UK, and growing industrial hubs.</li>
+        <li><strong>P/R 16 to 20 (Neutral Zone):</strong> Costs are relatively balanced. The decision hinges on how long you intend to remain in the home (staying 7+ years favors buying).</li>
+        <li><strong>P/R 21 and above (Overwhelmingly Favorable to Rent):</strong> Property prices have detached from rental yields. Seen in San Francisco (P/R ~30), New York (P/R ~25), London (P/R ~28), and Mumbai (P/R ~35). Renting and investing the difference builds substantial wealth faster.</li>
+      </ul>
+      <p><strong>The 5% Rule:</strong> Popularized by portfolio manager Ben Felix, sum the three unrecoverable costs of ownership: property tax (~1%), maintenance (~1%), and cost of capital (~3% spread). Multiply home value by 5% and divide by 12. If comparable monthly rent is less than this figure, renting is the mathematically superior choice.</p>
+      <a href="/guides/mortgage-interest-and-amortization/#prratio" class="concept-full-guide-link">Read Full Guide: Price-to-Rent Ratios &amp; The 5% Rule <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 4: PITI & HOA -->
+    <div class="concept-pane" id="pane-c-piti">
+      <h4>Unmasking PITI: Property Taxes, Insurance &amp; HOA Dues</h4>
+      <p>Your mortgage payment is only one component of your monthly housing cost. Real estate lenders qualify buyers based on <strong>PITI</strong> (Principal, Interest, Taxes, and Insurance):</p>
+      <ul>
+        <li><strong>Property Taxes (0.8% to 2.5%):</strong> Municipal taxes assessed on your home's assessed value. In states like Texas or New Jersey, property taxes alone can exceed $800 to $1,200 per month on a modest home.</li>
+        <li><strong>Homeowners Insurance ($100–$250/mo):</strong> Protects against structural damage, fire, and catastrophic perils. In storm-prone or wildfire regions (Florida, California, Gulf Coast), insurance premiums have tripled in recent years.</li>
+        <li><strong>HOA / Condominium Dues ($200–$800/mo):</strong> Homeowners Association dues cover communal roofs, elevators, security, and shared amenities. Unlike fixed-rate mortgages, HOA fees increase with inflation and can levy unexpected 5-figure "special assessments" for major structural renovations.</li>
+      </ul>
+    </div>
+
+    <!-- Pane 5: Friction -->
+    <div class="concept-pane" id="pane-c-friction">
+      <h4>Transaction Friction: The 10% Closing and Selling Penalty</h4>
+      <p>Real estate is one of the most illiquid, transaction-heavy asset classes in existence. Moving between houses incurs massive frictional deadweight loss that takes years of equity to overcome:</p>
+      <ul>
+        <li><strong>Buying Closing Costs (2% to 4%):</strong> Paid upfront by the buyer for title searches, title insurance, loan origination fees, appraisal inspections, transfer recording fees, and initial escrow pre-paids. On a $450,000 home, expect $9,000 to $18,000 in sunk costs.</li>
+        <li><strong>Selling Transaction Costs (5% to 7%):</strong> Paid when you sell the property. Includes listing agent commissions (2.5% to 3%), buyer agent commissions (2.5% to 3%), staging costs, transfer stamp taxes, and mandatory municipal certs. On a $550,000 sale, you will lose roughly $33,000 straight off the top of your equity.</li>
+      </ul>
+      <p><strong>The Mobility Penalty:</strong> If you must relocate for a career promotion or personal reasons within 3 to 5 years, this 10% round-trip transaction friction almost guarantees you will lose money compared to a tenant who simply packs their bags and leaves.</p>
+    </div>
+  </section>
+
+  <!-- Deep-Dive 1000+ Word Editorial Guide -->
+  <article style="margin-top:40px;">
+    <h2>The Complete Economics of Renting vs Buying: 2026 Housing Market Analysis</h2>
+    <p>For generations, conventional wisdom has asserted that "renting is throwing money away" and "buying a home is the quintessential American and global dream." Marketing campaigns from mortgage lenders and real estate trade groups promote homeownership as an automatic ticket to financial independence.</p>
+
+    <p>However, modern financial economics paints a far more nuanced picture. Renting is not throwing money away; it is paying for a critical financial service—housing shelter and extreme geographical flexibility—without assuming six-figure debt, interest obligations, illiquid capital concentration, or structural maintenance liabilities. In high interest-rate environments, renting and methodically investing the difference into diversified global equities frequently builds greater long-term net worth than buying.</p>
+
+    <h3>1. The Myth of the "Forced Savings" Argument</h3>
+    <p>Proponents of homeownership correctly note that a mortgage serves as an automated "forced savings plan" because a portion of every monthly payment reduces principal debt. For disciplined savers, however, forced savings is an inefficient mechanism:</p>
+    <ul style="padding-left:22px;line-height:1.7;color:var(--text);">
+      <li><strong>Principal Paydown is Sluggish:</strong> During the first seven years of a 30-year mortgage, the vast majority of your monthly cash flow is consumed by non-recoverable interest payments to the lender, not principal reduction.</li>
+      <li><strong>Illiquidity Risk:</strong> Equity in a home cannot be accessed during an emergency without taking out an expensive Second Mortgage (HELOC) or selling the entire property. In contrast, index fund portfolios can be liquidated in seconds with zero transaction penalty.</li>
+    </ul>
+
+    <h3>2. Unrecoverable Costs: The True Comparison</h3>
+    <p>The fundamental mistake in rent vs buy comparisons is contrasting <em>Rent</em> with <em>Mortgage Payment</em>. This is an asymmetrical comparison. Rent is the absolute maximum you will pay for housing in a given month. A mortgage payment is the absolute <em>minimum</em> you will pay.</p>
+    <p>To evaluate the decision scientifically, you must compare <strong>Unrecoverable Costs of Renting</strong> against the <strong>Unrecoverable Costs of Owning</strong>:</p>
+
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Renter's Unrecoverable Costs</th>
+            <th>Homeowner's Unrecoverable Costs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Monthly Shelter</strong></td>
+            <td>Base monthly rent</td>
+            <td>Mortgage interest paid to the lender</td>
+          </tr>
+          <tr>
+            <td><strong>Taxes &amp; Levies</strong></td>
+            <td>None (factored into base rent)</td>
+            <td>Property taxes (0.8% to 2.5% of market value)</td>
+          </tr>
+          <tr>
+            <td><strong>Physical Upkeep</strong></td>
+            <td>Zero (landlord legally repairs all fixtures)</td>
+            <td>1% to 2% annual maintenance &amp; CapEx replacements</td>
+          </tr>
+          <tr>
+            <td><strong>Insurance &amp; Fees</strong></td>
+            <td>Renter's insurance ($15–$25/mo)</td>
+            <td>Homeowner's hazard insurance ($150–$300/mo) + HOA dues</td>
+          </tr>
+          <tr>
+            <td><strong>Capital Opportunity Cost</strong></td>
+            <td>Zero (down payment invested in compounding stocks)</td>
+            <td>Forfeited stock market returns on home equity</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3. When Does Buying Make Strategic Sense?</h3>
+    <p>Buying a home remains an excellent financial and lifestyle choice under the following conditions:</p>
+    <ol style="padding-left:22px;line-height:1.7;color:var(--text);">
+      <li><strong>Long Horizon (7+ Years):</strong> You have stable employment and an established community, and intend to live in the exact same property for at least seven to ten years to amortize initial closing costs and ride out real estate market cycles.</li>
+      <li><strong>Lifestyle Autonomy:</strong> You place immense personal value on customizing your living space (painting walls, landscaping, renovating kitchens, adopting pets without restrictions).</li>
+      <li><strong>Low Price-to-Rent Ratio (&lt;16):</strong> You live in a market where home purchase prices are reasonable relative to local rents, allowing the mortgage payment plus maintenance to closely match rental equivalents.</li>
+    </ol>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>What is the opportunity cost of a down payment in the Rent vs Buy calculation?</summary>
+      <p>When you buy a home, your down payment (typically 10% to 20% of purchase price) is locked in illiquid real estate equity. If you rent instead, that entire capital sum can remain invested in diversified stock market index funds, which historically earn an average of 7% to 10% annualized return. The compounded return forfeited by tying cash into home equity is your opportunity cost.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How many years does it take for buying a home to break even against renting?</summary>
+      <p>In typical macroeconomic conditions with mortgage interest rates between 5.5% and 7.0%, buying a home takes between 4 and 7 years to break even against renting. Upfront closing costs (2% to 4%) and future agent sales commissions (5% to 6%) require several years of price appreciation and principal paydown to offset.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the Price-to-Rent (P/R) ratio and how is it interpreted?</summary>
+      <p>The Price-to-Rent ratio is calculated as Home Purchase Price divided by Annual Rent for an equivalent home. A ratio under 15 indicates buying is significantly favorable; a ratio between 16 and 20 is neutral; and a ratio above 21 indicates renting is mathematically superior from a pure wealth-building standpoint.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why is early mortgage interest front-loaded in amortization schedules?</summary>
+      <p>Because mortgage interest is calculated each month on the remaining loan principal balance, the interest charge is highest in the earliest years when the balance is greatest. For a 30-year loan at 6.5%, approximately 70% to 80% of your initial monthly payments go toward bank interest rather than building homeowner equity.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the 1% home maintenance rule?</summary>
+      <p>The 1% rule states that homeowners should budget at least 1% of the property's total market value every year for maintenance and routine repairs. For a $450,000 house, this amounts to $4,500 per year ($375/month) to cover aging roofs, HVAC systems, plumbing, and structural upkeep.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the 5% Rule for comparing rent vs buy?</summary>
+      <p>Popularized by financial analyst Ben Felix, the 5% Rule sums the three unrecoverable costs of homeownership: property taxes (~1%), maintenance (~1%), and the cost of capital (interest plus opportunity cost ~3%). If monthly rent is lower than 5% of the purchase price divided by 12, renting is financially superior.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Smarter personal finance and shared expense management.</p>
+      </div>
+      <div>
+        <h4>Housing Tools</h4>
+        <ul>
+          <li><a href="/tools/rent-vs-buy-calculator/">Rent vs Buy Calculator</a></li>
+          <li><a href="/tools/rent-affordability-calculator/">Rent Affordability</a></li>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Split (Sq Ft)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck</a></li>
+          <li><a href="/tools/india-ctc-salary-calculator/">India CTC</a></li>
+          <li><a href="/tools/discount-calculator/">Discount Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Fast Financial Math with Zero Ads.</p>
+  </div>
+</footer>
+
+<script>
+function fmt(sym, val) {
+  return sym + Math.round(val || 0).toLocaleString('en-US');
+}
+
+function switchConcept(conceptId) {
+  const tabs = document.querySelectorAll("#concept-tabs .concept-tab-btn");
+  tabs.forEach(t => t.classList.remove("active"));
+  const panes = document.querySelectorAll(".concept-pane");
+  panes.forEach(p => p.classList.remove("active"));
+
+  if (event && event.target) {
+    event.target.classList.add("active");
+  }
+  const targetPane = document.getElementById("pane-" + conceptId);
+  if (targetPane) {
+    targetPane.classList.add("active");
+  }
+}
+
+function calc() {
+  const price = parseFloat(document.getElementById('home-price').value) || 0;
+  const rent = parseFloat(document.getElementById('monthly-rent').value) || 0;
+  const downPct = parseFloat(document.getElementById('down-payment-pct').value) / 100 || 0.2;
+  const rate = (parseFloat(document.getElementById('mortgage-rate').value) || 6.5) / 100;
+  const investReturn = (parseFloat(document.getElementById('invest-return').value) || 8.0) / 100;
+  const apprec = (parseFloat(document.getElementById('appreciation-rate').value) || 3.5) / 100;
+  const sym = document.getElementById('currency-select').value;
+
+  const downAmt = price * downPct;
+  const loanAmt = price - downAmt;
+
+  const monthlyRate = rate / 12;
+  const numPayments = 30 * 12;
+  const monthlyPI = loanAmt > 0 
+    ? loanAmt * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1)
+    : 0;
+  const monthlyTaxMaint = (price * 0.015) / 12;
+  const totalBuyMonthly = monthlyPI + monthlyTaxMaint;
+
+  const monthlyDiff = Math.max(0, totalBuyMonthly - rent);
+
+  // Price-to-Rent Ratio
+  const annualRent = rent * 12;
+  const prRatio = annualRent > 0 ? (price / annualRent).toFixed(1) : 0;
+  let prStatus = "Neutral";
+  if (prRatio < 15) prStatus = "Buy Favorable";
+  else if (prRatio > 20) prStatus = "Rent Favorable";
+
+  // Simulate 20-year wealth progression to find breakeven year
+  let buyerNetWorth = [];
+  let renterNetWorth = [];
+  let breakevenYear = -1;
+
+  let currentHomeValue = price;
+  let remainingLoan = loanAmt;
+  let renterPortfolio = downAmt; // renter invests down payment
+  let currentRent = rent;
+
+  for (let yr = 1; yr <= 20; yr++) {
+    for (let m = 1; m <= 12; m++) {
+      const interest = remainingLoan * monthlyRate;
+      const principal = monthlyPI - interest;
+      remainingLoan = Math.max(0, remainingLoan - principal);
+
+      renterPortfolio = renterPortfolio * (1 + investReturn / 12) + (monthlyDiff > 0 ? monthlyDiff : 0);
+    }
+    currentHomeValue *= (1 + apprec);
+    currentRent *= 1.03; // 3% rent inflation
+
+    const buyEquity = (currentHomeValue * 0.94) - remainingLoan; // 6% selling transaction costs
+    buyerNetWorth.push(buyEquity);
+    renterNetWorth.push(renterPortfolio);
+
+    if (buyEquity >= renterPortfolio && breakevenYear === -1) {
+      breakevenYear = yr;
+    }
+  }
+
+  const yr10Buy = buyerNetWorth[9] || 0;
+  const yr10Rent = renterNetWorth[9] || 0;
+
+  if (breakevenYear > 0 && breakevenYear <= 15) {
+    document.getElementById('res-breakeven').textContent = `Buying Breaks Even in Year ${breakevenYear}`;
+    document.getElementById('res-breakeven-sub').textContent = `If you stay for ${breakevenYear}+ years, buying builds more net wealth. Under ${breakevenYear} years, renting wins.`;
+  } else {
+    document.getElementById('res-breakeven').textContent = "Renting Wins Financially (15+ Years)";
+    document.getElementById('res-breakeven-sub').textContent = "At current mortgage rates and stock returns, investing your down payment creates more wealth over 15 years.";
+  }
+
+  document.getElementById('m-buy-monthly').textContent = fmt(sym, totalBuyMonthly) + ' / mo';
+  document.getElementById('m-rent-monthly').textContent = fmt(sym, rent) + ' / mo';
+  document.getElementById('m-networth-10-buy').textContent = fmt(sym, yr10Buy);
+  document.getElementById('m-networth-10-rent').textContent = fmt(sym, yr10Rent);
+
+  document.getElementById('d-down-amt').textContent = fmt(sym, downAmt);
+  document.getElementById('d-pi').textContent = fmt(sym, monthlyPI) + ' / mo';
+  document.getElementById('d-tax-maint').textContent = fmt(sym, monthlyTaxMaint) + ' / mo';
+  document.getElementById('d-diff').textContent = fmt(sym, monthlyDiff) + ' / mo';
+  document.getElementById('d-pr-ratio').textContent = `${prRatio} (${prStatus})`;
+}
+
+['home-price', 'monthly-rent', 'down-payment-pct', 'mortgage-rate', 'invest-return', 'appreciation-rate', 'currency-select'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

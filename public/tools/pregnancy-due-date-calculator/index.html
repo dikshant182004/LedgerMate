@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pregnancy Due Date Calculator (LMP, Conception &amp; IVF Blastocyst) | LedgerMate</title>
+<meta name="description" content="Calculate your exact Estimated Date of Delivery (EDD) using LMP (Naegele's rule), conception date, or IVF Day 3/5 transfer. Comprehensive clinical guide to trimester milestones, ultrasound CRL dating, and gestational stages." />
+<link rel="canonical" href="https://tryledgermate.in/tools/pregnancy-due-date-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Pregnancy Due Date Calculator | LedgerMate" />
+<meta property="og:description" content="Calculate your estimated due date, current gestational age, and trimester schedule with medical accuracy." />
+<meta property="og:url" content="https://tryledgermate.in/tools/pregnancy-due-date-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Pregnancy Due Date Calculator",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Medical pregnancy due date calculator supporting LMP Naegele's rule, conception date, and IVF Day 3 and Day 5 embryo transfer dating.",
+  "featureList": [
+    "Naegele's rule LMP calculation with cycle-length compensation",
+    "Known conception date calculation",
+    "IVF Day 3 embryo and Day 5 blastocyst transfer dating",
+    "Current gestational age (weeks and days)",
+    "Trimester 1, 2, and 3 milestone transition dates",
+    "Full-term arrival window (37 to 42 weeks)"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is a pregnancy due date calculated using LMP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "By clinical convention (Naegele's Rule), an estimated due date is calculated by adding 280 days (40 completed weeks) to the first day of your last menstrual period (LMP). If your average cycle is longer or shorter than the standard 28 days, one day is added or subtracted for each day of variance."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When does an ultrasound override an LMP due date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "According to the American College of Obstetricians and Gynecologists (ACOG), if an early first-trimester ultrasound (measuring fetal Crown-Rump Length / CRL up to 13 6/7 weeks) differs from the LMP due date by more than 5 to 7 days, the ultrasound date becomes the official clinical due date."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the due date calculated for an IVF pregnancy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For in vitro fertilization (IVF), conception is known to the exact hour. For a Day 5 blastocyst transfer, the due date is calculated by adding 261 days to the transfer date. For a Day 3 embryo transfer, 263 days are added to the transfer date."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Early Term and Full Term?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The American College of Obstetricians and Gynecologists defines gestational tiers as: Early Term (37 weeks 0 days through 38 weeks 6 days), Full Term (39 weeks 0 days through 40 weeks 6 days), Late Term (41 weeks 0 days through 41 weeks 6 days), and Postterm (42 weeks 0 days and beyond)."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/ovulation-calculator/">Ovulation Calculator</a>
+      <a href="/tools/tdee-calculator/">TDEE Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Pregnancy Due Date Calculator
+  </div>
+
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">Pregnancy Due Date Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Calculate your Estimated Date of Delivery (EDD) with obstetric precision. Supports Last Menstrual Period (LMP), conception date, and IVF Day 3 / Day 5 blastocyst transfer.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="btn-calc-lmp">Last Menstrual Period (LMP)</button>
+      <button type="button" class="chip-btn" id="btn-calc-conception">Known Conception Date</button>
+      <button type="button" class="chip-btn" id="btn-calc-ivf">IVF Embryo Transfer</button>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1.3;">
+        <label for="date-input" id="lbl-date">First Day of Last Period (LMP Day 1)</label>
+        <input id="date-input" type="date" />
+      </div>
+      <div style="flex:1;" id="cycle-container">
+        <label for="cycle-length">Average Cycle Length (Days)</label>
+        <select id="cycle-length">
+          <option value="21">21 Days</option>
+          <option value="24">24 Days</option>
+          <option value="26">26 Days</option>
+          <option value="28" selected>28 Days (Standard)</option>
+          <option value="30">30 Days</option>
+          <option value="32">32 Days</option>
+          <option value="35">35 Days</option>
+          <option value="38">38 Days</option>
+        </select>
+      </div>
+      <div style="flex:1;display:none;" id="ivf-type-container">
+        <label for="ivf-type">IVF Transfer Type</label>
+        <select id="ivf-type">
+          <option value="5" selected>Day 5 Blastocyst Transfer</option>
+          <option value="3">Day 3 Embryo Transfer</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-result" style="margin-top:20px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Estimated Date of Delivery (EDD)</span>
+        <div style="font-size:clamp(32px,6vw,44px);font-weight:800;color:var(--text);margin:6px 0;" id="res-due-date">October 24, 2026</div>
+        <span style="font-size:14px;color:var(--text-muted);" id="res-gestation-sub">Current Gestational Age: 12 Weeks, 3 Days (First Trimester)</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-weeks">12w 3d</div>
+          <div class="metric-lbl">Current Gestation</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-trimester" style="color:#10B981;">1st Trimester</div>
+          <div class="metric-lbl">Current Stage</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-days-left">193 Days</div>
+          <div class="metric-lbl">Days Until Due Date</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-ovulation">Jan 31, 2026</div>
+          <div class="metric-lbl">Estimated Conception</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:18px;">
+        <h4 style="margin:0 0 12px;font-size:15px;color:var(--text);font-weight:700;">Key Trimester &amp; Clinical Milestones</h4>
+        <div class="calc-result-row">
+          <span>First Trimester Ends (Week 13 + 6 Days)</span>
+          <span class="amt" id="d-tri1-end">April 18, 2026</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Second Trimester Ends (Week 27 + 6 Days)</span>
+          <span class="amt" id="d-tri2-end">July 25, 2026</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Full Term Delivery Window (Week 37 to 42)</span>
+          <span class="amt" id="d-term-window">Oct 3 – Nov 7, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box" style="margin-top:24px;">
+      <h4>💡 Obstetric Reality: The 4% Due Date Rule</h4>
+      <ul class="mindmap-list">
+        <li><strong>A Window, Not a Single Day:</strong> Only approximately 4% to 5% of babies arrive on their exact calculated due date. Over 80% of spontaneous healthy births occur within 2 weeks before or after the 40-week benchmark.</li>
+        <li><strong>First-Trimester Ultrasound Accuracy:</strong> If a dating scan performed between 8 and 13 weeks differs from your LMP calculation by more than 5 days, your OB-GYN will officially adjust your due date to match the fetal ultrasound measurement.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p>Budgeting for nursery furniture, stroller, or medical expenses?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to share and split prenatal healthcare and baby shower costs — 100% free with no ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Open LedgerMate</a>
+    </div>
+
+  </div>
+
+  <!-- Deep Clinical Reference Article -->
+  <article style="margin-top:44px;line-height:1.7;">
+    <h2>The Complete Medical Guide to Due Dates, Gestation &amp; Trimesters</h2>
+    <p>Pregnancy dating forms the foundation of all prenatal care—governing the timing of genetic screenings, ultrasound anatomy scans, glucose tolerance tests, and labor induction recommendations. Below is a comprehensive guide explaining clinical dating protocols.</p>
+
+    <h3>1. What is Naegele’s Rule?</h3>
+    <p>Formulated by German obstetrician Franz Karl Naegele in the 19th century, Naegele’s Rule is the international medical standard for estimating delivery dates:</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-family:'JetBrains Mono',monospace;margin:12px 0;">
+      Estimated Due Date = First Day of LMP + 1 Year - 3 Months + 7 Days<br />
+      (Equivalently: First Day of LMP + 280 Days / 40 Completed Weeks)
+    </div>
+    <p><strong>Cycle-Length Compensation:</strong> Naegele's rule inherently assumes a textbook 28-day cycle with ovulation occurring on Day 14. If your cycle averages 32 days, your ovulation occurred approximately 4 days later (around Day 18); our calculator accounts for this by adding 4 days to your due date, preventing premature labor induction anxiety.</p>
+
+    <h3>2. Ultrasound Dating vs. LMP Dating (ACOG Guidelines)</h3>
+    <p>The American College of Obstetricians and Gynecologists (ACOG) provides precise rules for reconciling LMP calculations with ultrasound scans:</p>
+    <ul>
+      <li><strong>Crown-Rump Length (CRL) up to 8 6/7 weeks:</strong> If ultrasound differs from LMP by more than <strong>5 days</strong>, the ultrasound date replaces the LMP date.</li>
+      <li><strong>9 0/7 weeks to 13 6/7 weeks:</strong> If ultrasound differs by more than <strong>7 days</strong>, ultrasound dating takes precedence.</li>
+      <li><strong>Second Trimester (14 to 21 6/7 weeks):</strong> Ultrasound variance threshold widens to <strong>10 to 14 days</strong>, because biological growth variations between individual fetuses begin to emerge.</li>
+    </ul>
+
+    <h3>3. Dating an IVF Pregnancy (Day 3 vs. Day 5 Transfer)</h3>
+    <p>In Assisted Reproductive Technology (ART) such as In Vitro Fertilization, the embryonic age is known with exact precision:</p>
+    <ul>
+      <li><strong>Day 5 Blastocyst:</strong> The blastocyst is already 5 days post-fertilization (gestational equivalent of Day 19). The estimated due date is calculated as <code>Transfer Date + 261 Days</code>.</li>
+      <li><strong>Day 3 Cleavage-Stage Embryo:</strong> The embryo is 3 days post-fertilization (gestational equivalent of Day 17). Due date is calculated as <code>Transfer Date + 263 Days</code>.</li>
+    </ul>
+
+    <h3>4. Comprehensive Trimester Breakdown</h3>
+    <div class="table-responsive">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Trimester</th>
+            <th>Gestation Weeks</th>
+            <th>Key Developmental Milestones</th>
+            <th>Routine Clinical Screenings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>First Trimester</strong></td>
+            <td>Weeks 1 to 13 + 6d</td>
+            <td>Organogenesis, formation of neural tube, embryonic heart chambers beating, bud development of arms and legs.</td>
+            <td>NIPT (cell-free DNA testing at 10w), Nuchal Translucency (NT scan at 11–13w), initial prenatal blood panel.</td>
+          </tr>
+          <tr>
+            <td><strong>Second Trimester</strong></td>
+            <td>Weeks 14 to 27 + 6d</td>
+            <td>Fetal skeleton hardens; quickening (mother feels initial fetal movements ~18–20w); facial features distinct.</td>
+            <td>Level II Comprehensive Anatomy Ultrasound (18–22w), Maternal Serum Quad Screen, Gestational Diabetes Glucose Screening (24–28w).</td>
+          </tr>
+          <tr>
+            <td><strong>Third Trimester</strong></td>
+            <td>Weeks 28 to 40+</td>
+            <td>Rapid fetal adipose storage, lung surfactant maturation, brain sulci development, descent into maternal pelvis (lightening).</td>
+            <td>Group B Streptococcus (GBS) swab (35–37w), Non-Stress Tests (NST) if postterm, cervical dilation checks.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5. Official Definitions of Pregnancy Term</h3>
+    <p>To avoid complications from early elective deliveries, ACOG and the Society for Maternal-Fetal Medicine (SMFM) established official terminology:</p>
+    <ul>
+      <li><strong>Preterm:</strong> Delivered before 37 weeks 0 days.</li>
+      <li><strong>Early Term:</strong> 37 weeks 0 days through 38 weeks 6 days (babies delivered early term have slightly higher respiratory morbidity than full-term babies).</li>
+      <li><strong>Full Term:</strong> 39 weeks 0 days through 40 weeks 6 days (optimal perinatal outcomes).</li>
+      <li><strong>Late Term:</strong> 41 weeks 0 days through 41 weeks 6 days.</li>
+      <li><strong>Postterm:</strong> 42 weeks 0 days and beyond (monitoring or induction required due to placental aging).</li>
+    </ul>
+
+    <h2 style="margin-top:40px;">Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Why is pregnancy considered 40 weeks if it lasts 9 months?</summary>
+      <p>A calendar month averages 30.4 days (roughly 4.34 weeks), not 4 weeks. 40 weeks equals 280 days, which is approximately 9 calendar months and 7 days. Furthermore, gestational age begins on Day 1 of your LMP—approximately two weeks before conception actually occurs—meaning you are already considered "2 weeks pregnant" at fertilization.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What if I have an irregular cycle or don't know my LMP?</summary>
+      <p>If your periods are highly irregular or your last menstrual date is uncertain, an early transvaginal obstetric ultrasound (dating scan) between 7 and 11 weeks provides the most reliable date. By measuring the fetus's crown-rump length (CRL), gestational age can be established within a margin of 3 to 5 days.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can my due date change during prenatal care?</summary>
+      <p>Once a firm clinical due date is established via early ultrasound or accurate LMP, it is rarely changed. Later ultrasounds in the second and third trimesters measure fetal growth rather than gestational age, because biological genetic differences (some babies naturally smaller or larger) make late dating unreliable.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction group expense sharing. Free, no mandatory app download, no limits.</p>
+      </div>
+      <div>
+        <h4>Health Calculators</h4>
+        <ul>
+          <li><a href="/tools/pregnancy-due-date-calculator/">Due Date Calculator</a></li>
+          <li><a href="/tools/ovulation-calculator/">Ovulation Calculator</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calories</a></li>
+          <li><a href="/tools/bmr-calculator/">BMR Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Financial Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Compound Interest</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Health &amp; Financial Calculators. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+let currentMode = 'lmp';
+
+// Default date to 84 days (12 weeks) ago
+const today = new Date();
+const defaultDate = new Date(today.getTime() - 84 * 24 * 60 * 60 * 1000);
+const yyyy = defaultDate.getFullYear();
+const mm = String(defaultDate.getMonth() + 1).padStart(2, '0');
+const dd = String(defaultDate.getDate()).padStart(2, '0');
+document.getElementById('date-input').value = `${yyyy}-${mm}-${dd}`;
+
+const btnLmp = document.getElementById('btn-calc-lmp');
+const btnConception = document.getElementById('btn-calc-conception');
+const btnIvf = document.getElementById('btn-calc-ivf');
+const lblDate = document.getElementById('lbl-date');
+const cycleContainer = document.getElementById('cycle-container');
+const ivfTypeContainer = document.getElementById('ivf-type-container');
+
+btnLmp.addEventListener('click', () => {
+  currentMode = 'lmp';
+  btnLmp.classList.add('active');
+  btnConception.classList.remove('active');
+  btnIvf.classList.remove('active');
+  lblDate.textContent = 'First Day of Last Period (LMP Day 1)';
+  cycleContainer.style.display = 'block';
+  ivfTypeContainer.style.display = 'none';
+  calculate();
+});
+
+btnConception.addEventListener('click', () => {
+  currentMode = 'conception';
+  btnConception.classList.add('active');
+  btnLmp.classList.remove('active');
+  btnIvf.classList.remove('active');
+  lblDate.textContent = 'Known Date of Conception / Ovulation';
+  cycleContainer.style.display = 'none';
+  ivfTypeContainer.style.display = 'none';
+  calculate();
+});
+
+btnIvf.addEventListener('click', () => {
+  currentMode = 'ivf';
+  btnIvf.classList.add('active');
+  btnLmp.classList.remove('active');
+  btnConception.classList.remove('active');
+  lblDate.textContent = 'Date of Embryo Transfer';
+  cycleContainer.style.display = 'none';
+  ivfTypeContainer.style.display = 'block';
+  calculate();
+});
+
+function calculate() {
+  const inputDateVal = document.getElementById('date-input').value;
+  if (!inputDateVal) return;
+
+  const enteredDate = new Date(inputDateVal + 'T00:00:00');
+  let eddDate;
+  let estimatedConceptionDate;
+
+  if (currentMode === 'lmp') {
+    const cycleLen = parseInt(document.getElementById('cycle-length').value, 10) || 28;
+    const cycleOffset = cycleLen - 28;
+    // EDD = LMP + 280 days + cycleOffset
+    const totalDays = 280 + cycleOffset;
+    eddDate = new Date(enteredDate.getTime() + totalDays * 24 * 60 * 60 * 1000);
+    estimatedConceptionDate = new Date(enteredDate.getTime() + (14 + cycleOffset) * 24 * 60 * 60 * 1000);
+  } else if (currentMode === 'conception') {
+    // EDD = Conception + 266 days
+    eddDate = new Date(enteredDate.getTime() + 266 * 24 * 60 * 60 * 1000);
+    estimatedConceptionDate = enteredDate;
+  } else if (currentMode === 'ivf') {
+    const ivfType = parseInt(document.getElementById('ivf-type').value, 10) || 5;
+    const daysToAdd = ivfType === 5 ? 261 : 263;
+    eddDate = new Date(enteredDate.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
+    estimatedConceptionDate = new Date(enteredDate.getTime() - (ivfType === 5 ? 5 : 3) * 24 * 60 * 60 * 1000);
+  }
+
+  // Calculate current gestational age (based on EDD - 280 days = gestational LMP)
+  const gestationalLmp = new Date(eddDate.getTime() - 280 * 24 * 60 * 60 * 1000);
+  const diffTime = today.getTime() - gestationalLmp.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  const weeks = Math.floor(diffDays / 7);
+  const remDays = Math.max(0, diffDays % 7);
+
+  // Trimester determination
+  let trimesterStr = '1st Trimester';
+  let stageColor = '#10B981';
+  if (weeks >= 28) {
+    trimesterStr = '3rd Trimester';
+    stageColor = '#6D4FEB';
+  } else if (weeks >= 14) {
+    trimesterStr = '2nd Trimester';
+    stageColor = '#2563EB';
+  }
+
+  // Days left
+  const daysLeft = Math.max(0, Math.ceil((eddDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
+
+  // Milestone dates
+  const tri1End = new Date(gestationalLmp.getTime() + (13 * 7 + 6) * 24 * 60 * 60 * 1000);
+  const tri2End = new Date(gestationalLmp.getTime() + (27 * 7 + 6) * 24 * 60 * 60 * 1000);
+  const fullTermStart = new Date(gestationalLmp.getTime() + 37 * 7 * 24 * 60 * 60 * 1000);
+  const fullTermEnd = new Date(gestationalLmp.getTime() + 42 * 7 * 24 * 60 * 60 * 1000);
+
+  const opts = { month: 'long', day: 'numeric', year: 'numeric' };
+  const shortOpts = { month: 'short', day: 'numeric', year: 'numeric' };
+
+  document.getElementById('res-due-date').textContent = eddDate.toLocaleDateString('en-US', opts);
+  document.getElementById('res-gestation-sub').textContent =
+    `Current Gestational Age: ${Math.max(0, weeks)} Weeks, ${remDays} Days (${trimesterStr})`;
+
+  document.getElementById('m-weeks').textContent = `${Math.max(0, weeks)}w ${remDays}d`;
+  document.getElementById('m-trimester').textContent = trimesterStr;
+  document.getElementById('m-trimester').style.color = stageColor;
+  document.getElementById('m-days-left').textContent = `${daysLeft} Days`;
+  document.getElementById('m-ovulation').textContent = estimatedConceptionDate.toLocaleDateString('en-US', shortOpts);
+
+  document.getElementById('d-tri1-end').textContent = tri1End.toLocaleDateString('en-US', shortOpts);
+  document.getElementById('d-tri2-end').textContent = tri2End.toLocaleDateString('en-US', shortOpts);
+  document.getElementById('d-term-window').textContent =
+    `${fullTermStart.toLocaleDateString('en-US', {month:'short', day:'numeric'})} – ${fullTermEnd.toLocaleDateString('en-US', shortOpts)}`;
+}
+
+['date-input', 'cycle-length', 'ivf-type'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calculate);
+    el.addEventListener('change', calculate);
+  }
+});
+
+calculate();
+</script>
+
+</body>
+</html>

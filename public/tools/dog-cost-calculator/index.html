@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dog Cost Calculator (First-Year &amp; Lifetime Ownership) | LedgerMate</title>
+<meta name="description" content="Calculate the true cost of owning a dog. Upfront puppy/adoption costs, annual food, vet exams, heartworm prevention, pet insurance, and 12-year lifetime cost by dog breed size." />
+<link rel="canonical" href="https://tryledgermate.in/tools/dog-cost-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Dog Cost Calculator (First-Year &amp; Lifetime) | LedgerMate" />
+<meta property="og:description" content="Calculate upfront puppy expenses, annual food and vet care, and 12-year lifetime dog costs." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Dog Cost Calculator",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates upfront puppy expenses, annual food & medical bills, and lifetime pet ownership costs.",
+  "featureList": [
+    "Dog breed size tiers (Small, Medium, Large/Giant)",
+    "First-year upfront costs vs annual recurring expenses",
+    "Veterinary wellness, vaccines, and heartworm prevention",
+    "12-year lifetime ownership cost projection"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does it cost to own a dog for the first year?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The first year of owning a dog typically costs between $1,800 and $3,500. This includes adoption or purchase fees, spaying/neutering, initial core vaccinations, crates, beds, training, food, and flea/tick prevention."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/trip-budget-calculator/">Trip Budget</a>
+      <a href="/tools/rent-affordability-calculator/">Rent Affordability</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Dog Cost Calculator
+  </div>
+
+  <h1>Dog Cost &amp; Lifetime Ownership Calculator</h1>
+  <p class="sub">Discover the real financial commitment of dog ownership. Calculate upfront puppy costs, annual veterinary and food expenses, and total 12-year lifetime costs by breed size.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.2;">
+        <label for="dog-size">Dog Size Category</label>
+        <select id="dog-size">
+          <option value="small">Small Dog (&lt; 22 lbs / Frenchie, Beagle, Shih Tzu)</option>
+          <option value="medium" selected>Medium Dog (23–55 lbs / Aussie, Golden, Lab)</option>
+          <option value="large">Large / Giant Breed (55+ lbs / German Shepherd, Dane)</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="currency-select">Currency</label>
+        <select id="currency-select">
+          <option value="$" selected>$ (USD)</option>
+          <option value="£">£ (GBP)</option>
+          <option value="€">€ (EUR)</option>
+          <option value="₹">₹ (INR)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="initial-cost">Adoption / Purchase Fee</label>
+        <input id="initial-cost" type="number" step="100" min="0" max="10000" value="500" />
+      </div>
+      <div style="flex:1;">
+        <label for="pet-insurance">Pet Health Insurance</label>
+        <select id="pet-insurance">
+          <option value="45" selected>Yes (~$45 / month)</option>
+          <option value="0">No (Self-insure emergency fund)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="grooming-need">Professional Grooming</label>
+        <select id="grooming-need">
+          <option value="low">Low / Short Hair (DIY Baths - $10/mo)</option>
+          <option value="med" selected>Moderate (Every 2-3 months - $40/mo)</option>
+          <option value="high">High / Poodle / Doodle (Monthly - $90/mo)</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="lifespan-years">Expected Lifespan</label>
+        <input id="lifespan-years" type="number" step="1" min="8" max="18" value="12" />
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">First-Year Total Cost</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-first-year">$2,780 (Year 1)</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-ongoing-sub">Ongoing Years: $1,680 / yr ($140 / mo) | 12-Year Lifetime: $21,260</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-monthly">$140 / mo</div>
+          <div class="metric-lbl">Average Monthly Spend</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-lifetime" style="color:#2563EB;">$21,260</div>
+          <div class="metric-lbl">Total 12-Year Lifetime</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-food-yr">$780 / yr</div>
+          <div class="metric-lbl">Annual Food Cost</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-vet-yr">$520 / yr</div>
+          <div class="metric-lbl">Annual Vet &amp; Meds</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">First-Year Upfront Gear Breakdown</h4>
+        <div class="calc-result-row">
+          <span>Adoption / Breeder Fee</span>
+          <span class="amt" id="d-adopt">$500</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Spay / Neuter &amp; Microchip</span>
+          <span class="amt" id="d-spay">$350</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Crate, Bed, Leash &amp; Bowls</span>
+          <span class="amt" id="d-gear">$250</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Initial Puppy Vaccine Series</span>
+          <span class="amt" id="d-vaccines">$200</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 Managing Unexpected Vet Emergencies</h4>
+      <ul class="mindmap-list">
+        <li><strong>The Foreign Object Hazard:</strong> The most common young dog emergency is gastrointestinal foreign body surgery (ingesting socks, balls, or rocks), which routinely costs $3,000 to $7,000.</li>
+        <li><strong>Insurance vs Dedicated High-Yield Savings:</strong> Having an emergency fund or reputable pet insurance policy active before pre-existing conditions arise protects your finances and your pet's life.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Sharing pet expenses, vet bills, or dog sitting with a partner or housemate?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to split pet food, grooming, and medicine bills with zero ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>Why Dog Size Significantly Changes Long-Term Costs</h2>
+    <p>A 75 lb Labrador consumes roughly three times the calorie volume of a 15 lb Terrier. Medication dosages (flea, tick, heartworm, antibiotics, anesthesia) are also dosed strictly by body weight, making large dogs approximately 40% to 60% more costly to care for over their lifetime.</p>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mathematical and household pet budgeting tools.</p>
+      </div>
+      <div>
+        <h4>Pet &amp; Lifestyle</h4>
+        <ul>
+          <li><a href="/tools/dog-cost-calculator/">Dog Cost Calculator</a></li>
+          <li><a href="/tools/trip-budget-calculator/">Trip Budget</a></li>
+          <li><a href="/tools/wedding-budget-calculator/">Wedding Budget</a></li>
+          <li><a href="/tools/rent-affordability-calculator/">Rent Affordability</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/electricity-cost-calculator/">Electricity Cost</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Pet Budget Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmt(sym, n) {
+  return sym + Math.round(n || 0).toLocaleString('en-US');
+}
+
+function calc() {
+  const size = document.getElementById('dog-size').value;
+  const initialFee = parseFloat(document.getElementById('initial-cost').value) || 0;
+  const insMonthly = parseFloat(document.getElementById('pet-insurance').value) || 0;
+  const groomType = document.getElementById('grooming-need').value;
+  const lifespan = Math.max(1, parseInt(document.getElementById('lifespan-years').value, 10) || 12);
+  const sym = document.getElementById('currency-select').value;
+
+  let annualFood = 550;
+  let spayFee = 300;
+  let gearFee = 200;
+  let annualVet = 450;
+
+  if (size === 'medium') {
+    annualFood = 850;
+    spayFee = 380;
+    gearFee = 280;
+    annualVet = 550;
+  } else if (size === 'large') {
+    annualFood = 1350;
+    spayFee = 450;
+    gearFee = 350;
+    annualVet = 700;
+  }
+
+  let annualGroom = 120;
+  if (groomType === 'med') annualGroom = 480;
+  if (groomType === 'high') annualGroom = 1080;
+
+  const annualInsurance = insMonthly * 12;
+  const toysTreats = 200;
+
+  const upfrontOneTime = initialFee + spayFee + gearFee + 200; // 200 for initial vaccines
+  const annualRecurring = annualFood + annualVet + annualGroom + annualInsurance + toysTreats;
+  const firstYearTotal = upfrontOneTime + annualRecurring;
+  const lifetimeTotal = upfrontOneTime + (annualRecurring * lifespan);
+  const avgMonthly = annualRecurring / 12;
+
+  document.getElementById('res-first-year').textContent = `${fmt(sym, firstYearTotal)} (Year 1)`;
+  document.getElementById('res-ongoing-sub').textContent = `Ongoing: ${fmt(sym, annualRecurring)} / yr (${fmt(sym, avgMonthly)} / mo) | ${lifespan}-Year Lifetime: ${fmt(sym, lifetimeTotal)}`;
+
+  document.getElementById('m-monthly').textContent = `${fmt(sym, avgMonthly)} / mo`;
+  document.getElementById('m-lifetime').textContent = fmt(sym, lifetimeTotal);
+  document.getElementById('m-food-yr').textContent = `${fmt(sym, annualFood)} / yr`;
+  document.getElementById('m-vet-yr').textContent = `${fmt(sym, annualVet)} / yr`;
+
+  document.getElementById('d-adopt').textContent = fmt(sym, initialFee);
+  document.getElementById('d-spay').textContent = fmt(sym, spayFee);
+  document.getElementById('d-gear').textContent = fmt(sym, gearFee);
+  document.getElementById('d-vaccines').textContent = fmt(sym, 200);
+}
+
+['dog-size', 'initial-cost', 'pet-insurance', 'grooming-need', 'lifespan-years', 'currency-select'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

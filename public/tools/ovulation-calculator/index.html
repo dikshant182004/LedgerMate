@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ovulation &amp; Period Calculator (Fertile Window, LMP &amp; Cycle Forecast) | LedgerMate</title>
+<meta name="description" content="Calculate your fertile window, next ovulation date, and future periods. Comprehensive medical guide on LMP (Last Menstrual Period), luteal phases, cervical mucus, and pregnancy test timing." />
+<link rel="canonical" href="https://tryledgermate.in/tools/ovulation-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Ovulation &amp; Fertile Window Calculator | LedgerMate" />
+<meta property="og:description" content="Pinpoint your most fertile days and upcoming ovulation dates with biological precision. 100% free and private." />
+<meta property="og:url" content="https://tryledgermate.in/tools/ovulation-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Ovulation & Period Calculator",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Biological ovulation, fertile window, and future menstrual cycle forecasting tool with variable cycle and luteal phase adjustments.",
+  "featureList": [
+    "Next ovulation date calculation based on LMP",
+    "6-day biological fertile window forecast",
+    "Custom average cycle length (21 to 45 days)",
+    "Adjustable luteal phase length (10 to 16 days)",
+    "Next 3 cycles forward calendar forecast",
+    "Earliest recommended home pregnancy test date (DPO)"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is LMP (Last Menstrual Period)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "LMP stands for Last Menstrual Period. Day 1 of your LMP is the very first day of actual, continuous red menstrual bleeding (not light pre-period spotting). Obstetricians and fertility specialists use Day 1 of the LMP as the universal baseline for calculating ovulation, gestational age, and due dates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does the fertile window last?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The biological fertile window spans 6 days: the 5 days leading up to ovulation plus the day of ovulation itself. This is because healthy sperm can survive for up to 5 days inside fertile cervical mucus, while an unfertilized ovum survives only 12 to 24 hours after release."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the luteal phase and why does it matter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The luteal phase is the second half of your menstrual cycle, starting the day after ovulation and ending the day before your next period. While the follicular phase can vary in length due to stress or illness, the luteal phase is remarkably consistent for each individual woman (typically 12 to 14 days)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between implantation bleeding and a menstrual period?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Implantation bleeding occurs roughly 8 to 10 days post-ovulation when the fertilized blastocyst burrows into the uterine lining. It is very light, light pink or brown, lasts only a few hours to 2 days, and has no clots. A menstrual period is heavier, bright red, lasts 4 to 7 days, and involves uterine cramping."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When is the most accurate time to take a home pregnancy test?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most reliable time to take a urine pregnancy test is on or after the first day of your expected missed period (typically 14 days post-ovulation / 14 DPO). Testing earlier often yields false negatives because hCG concentrations double every 48 hours and may not yet reach detectable thresholds."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/pregnancy-due-date-calculator/">Due Date Calculator</a>
+      <a href="/tools/bmr-calculator/">BMR Calculator</a>
+      <a href="/tools/tdee-calculator/">TDEE Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Ovulation &amp; Period Calculator
+  </div>
+
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">Ovulation &amp; Fertile Window Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Pinpoint your peak fertile days, next ovulation date, and future period dates. Based on biological cycle mathematics, LMP benchmarks, and variable luteal phase customization.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.2;">
+        <label for="period-start">First Day of Last Period (LMP Day 1)</label>
+        <input id="period-start" type="date" />
+      </div>
+      <div style="flex:1;">
+        <label for="cycle-length">Average Cycle Length (Days)</label>
+        <select id="cycle-length">
+          <option value="22">22 Days</option>
+          <option value="24">24 Days</option>
+          <option value="26">26 Days</option>
+          <option value="28" selected>28 Days (Standard Average)</option>
+          <option value="30">30 Days</option>
+          <option value="32">32 Days</option>
+          <option value="34">34 Days</option>
+          <option value="36">36 Days</option>
+          <option value="40">40 Days</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="luteal-phase">Luteal Phase Duration (Days)</label>
+        <select id="luteal-phase">
+          <option value="11">11 Days (Shorter)</option>
+          <option value="12">12 Days</option>
+          <option value="13">13 Days</option>
+          <option value="14" selected>14 Days (Clinical Standard)</option>
+          <option value="15">15 Days</option>
+          <option value="16">16 Days (Longer)</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="period-duration">Bleeding Duration (Days)</label>
+        <select id="period-duration">
+          <option value="3">3 Days</option>
+          <option value="4">4 Days</option>
+          <option value="5" selected>5 Days (Average)</option>
+          <option value="6">6 Days</option>
+          <option value="7">7 Days</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-result" style="margin-top:20px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Next Estimated Ovulation Date</span>
+        <div style="font-size:clamp(32px,6vw,44px);font-weight:800;color:var(--text);margin:6px 0;" id="res-ovulation-date">October 14, 2026</div>
+        <span style="font-size:14px;color:var(--text-muted);" id="res-fertile-sub">Fertile Window: Oct 9 – Oct 15 | Peak Conception Probability: Oct 13 &amp; 14</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-peak" style="color:#10B981;">Oct 13 &amp; 14</div>
+          <div class="metric-lbl">Peak Fertility Days</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-window">Oct 9 – 15</div>
+          <div class="metric-lbl">6-Day Fertile Span</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-next-period">Oct 28</div>
+          <div class="metric-lbl">Next Period Due</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-test-date">Oct 29</div>
+          <div class="metric-lbl">Earliest Pregnancy Test</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:18px;">
+        <h4 style="margin:0 0 12px;font-size:15px;color:var(--text);font-weight:700;">Upcoming 3-Cycle Forecast</h4>
+        <div class="calc-result-row">
+          <span>Cycle 1 (Current Cycle)</span>
+          <span class="amt" id="c1-dates">Ovulation Oct 14 | Period Oct 28</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Cycle 2 (Next Month)</span>
+          <span class="amt" id="c2-dates">Ovulation Nov 11 | Period Nov 25</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Cycle 3 (Subsequent Month)</span>
+          <span class="amt" id="c3-dates">Ovulation Dec 9 | Period Dec 23</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box" style="margin-top:24px;">
+      <h4>💡 Conception Probability by Cycle Day</h4>
+      <ul class="mindmap-list">
+        <li><strong>Peak Chance (O-2 and O-1):</strong> Intercourse on the two days immediately preceding ovulation produces the highest clinical pregnancy rates (~27% to 33% per cycle), because viable sperm are already waiting in the fallopian tubes when the egg is released.</li>
+        <li><strong>Ovulation Day (O):</strong> Intercourse on the day of ovulation carries an estimated 10% to 15% conception rate, as the egg must be fertilized within 12 to 24 hours of release.</li>
+        <li><strong>Post-Ovulation Day (O+1):</strong> The cervix closes, and the unfertilized ovum disintegrates. The probability of conception drops to near zero until the subsequent cycle.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p>Planning for a growing family or doctor visits?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to share prenatal healthcare, nursery setup, and household budgets — 100% free with no ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Open LedgerMate</a>
+    </div>
+
+  </div>
+
+  <!-- Deep Clinical & Biological Knowledge Base -->
+  <article style="margin-top:44px;line-height:1.7;">
+    <h2>The Complete Medical Guide to Menstrual Cycles, Ovulation &amp; Conception</h2>
+    <p>Understanding the biological events of the menstrual cycle removes the guesswork when trying to conceive (TTC) or natural family planning. Below is a comprehensive guide addressing every clinical term and query.</p>
+
+    <h3>1. What is LMP (Last Menstrual Period)?</h3>
+    <p><strong>LMP stands for Last Menstrual Period.</strong> In clinical obstetrics and reproductive endocrinology:</p>
+    <ul>
+      <li><strong>Day 1 of LMP:</strong> The very first day you observe full, bright red menstrual flow requiring a tampon, pad, or menstrual cup.</li>
+      <li><strong>What is NOT Day 1:</strong> Light brown or pinkish spotting that occurs a day or two prior is considered premenstrual spotting, not Day 1.</li>
+      <li><strong>Why Doctors Count from LMP:</strong> Although conception occurs around ovulation (typically two weeks later), ovulation date cannot be felt or verified with exact historical certainty by most patients. Menstrual bleeding is a clear, discrete event that a patient can accurately record.</li>
+    </ul>
+
+    <h3>2. The Four Phases of the Menstrual Cycle</h3>
+    <ol>
+      <li><strong>Menstrual Phase (Days 1–5):</strong> Progesterone and estrogen levels drop sharply, signaling the uterine spiral arteries to constrict and slough off the functional layer of the endometrium (menstrual flow).</li>
+      <li><strong>Follicular Phase (Days 1–13):</strong> The pituitary gland secretes Follicle-Stimulating Hormone (FSH). Ovarian follicles begin maturing; the dominant follicle secretes rising amounts of estrogen, which thickens the uterine lining and changes cervical mucus into a sperm-friendly fluid.</li>
+      <li><strong>Ovulatory Phase (Around Day 14):</strong> High estrogen triggers a surge in Luteinizing Hormone (LH). Within 24 to 36 hours of the LH surge, the dominant follicle ruptures, releasing a mature oocyte (egg) into the fimbria of the fallopian tube.</li>
+      <li><strong>Luteal Phase (Days 15–28):</strong> The collapsed follicle transforms into the <em>Corpus Luteum</em>, a temporary endocrine gland producing progesterone. Progesterone maintains the uterine lining for embryo implantation. If pregnancy does not occur, the corpus luteum dissolves, hormone levels plunge, and menstruation begins.</li>
+    </ol>
+
+    <h3>3. Understanding the Fertile Window &amp; Gamete Longevity</h3>
+    <p>A common misconception is that a woman can conceive at any point during her cycle. In reality, conception can only occur during the <strong>6-day fertile window</strong>:</p>
+    <ul>
+      <li><strong>Sperm Viability (up to 5 days):</strong> In the presence of alkaline fertile cervical mucus, healthy sperm can swim into the crypts of the cervix and survive for 3 to 5 days, awaiting ovulation.</li>
+      <li><strong>Egg Viability (12 to 24 hours):</strong> Once expelled from the ovary, an unfertilized ovum remains viable for only 12 to 24 hours before dissolving.</li>
+      <li><strong>Takeaway:</strong> Intercourse 1 to 2 days <em>before</em> ovulation yields the highest pregnancy rates, as sperm are already primed and positioned in the fallopian ampulla when the egg arrives.</li>
+    </ul>
+
+    <h3>4. Biomarkers &amp; Physical Signs of Ovulation</h3>
+    <p>In addition to algorithmic cycle trackers, clinical indicators help pinpoint ovulation:</p>
+    <ul>
+      <li><strong>Cervical Mucus (The Billings Method):</strong> As ovulation approaches, estrogen stimulates clear, slippery, stretchy cervical fluid with the consistency of raw egg whites (termed <em>spinnbarkeit</em>). This fluid nourishes sperm and guides them toward the cervix.</li>
+      <li><strong>Basal Body Temperature (BBT):</strong> Using a two-decimal basal thermometer first thing in the morning reveals a temperature spike of 0.5°F to 1.0°F (0.3°C to 0.6°C) caused by progesterone after ovulation has occurred. (BBT confirms ovulation retrospectively).</li>
+      <li><strong>Ovulation Predictor Kits (OPKs):</strong> Urine test strips detect the LH surge 24–36 hours prior to follicular rupture. A positive OPK test is the signal that peak fertility is occurring within the next day.</li>
+      <li><strong>Mittelschmerz:</strong> Roughly 20% of women experience a mild, one-sided dull ache or sharp twinge in the lower abdomen when the expanding follicle stretches the ovarian wall and ruptures.</li>
+    </ul>
+
+    <h3>5. Implantation Bleeding vs. Menstrual Period</h3>
+    <p>Many women experience light spotting around 8 to 10 days post-ovulation (DPO) and wonder whether it is an early period or embryo implantation:</p>
+    <div class="table-responsive">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Characteristic</th>
+            <th>Implantation Spotting</th>
+            <th>Menstrual Period</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Timing</strong></td>
+            <td>6 to 12 DPO (typically 8–10 days after ovulation)</td>
+            <td>12 to 16 DPO (at end of luteal phase)</td>
+          </tr>
+          <tr>
+            <td><strong>Color</strong></td>
+            <td>Light pink or light rust brown</td>
+            <td>Dark red, crimson, or bright red</td>
+          </tr>
+          <tr>
+            <td><strong>Flow &amp; Duration</strong></td>
+            <td>Scant spots, lasts 24 to 48 hours, does not soak a pad</td>
+            <td>Continuous flow, lasts 4 to 7 days, requires pads/tampons</td>
+          </tr>
+          <tr>
+            <td><strong>Blood Clotting</strong></td>
+            <td>Zero blood clots or tissue</td>
+            <td>Frequently contains small uterine tissue clots</td>
+          </tr>
+          <tr>
+            <td><strong>Cramping</strong></td>
+            <td>Very mild pinching or absent</td>
+            <td>Moderate to severe prostaglandins cramping</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6. When to Take a Home Pregnancy Test</h3>
+    <p>Home urine pregnancy tests detect human Chorionic Gonadotropin (hCG), the hormone secreted by the developing syncytiotrophoblast after implantation:</p>
+    <ul>
+      <li><strong>7–9 DPO:</strong> Implantation may not have occurred yet; false negatives are extremely common (~85%).</li>
+      <li><strong>10–12 DPO:</strong> Early sensitive tests (10 mIU/mL) may detect a faint positive line with first-morning urine.</li>
+      <li><strong>14 DPO (Day of Expected Period):</strong> Over 99% accuracy on standard digital and dipstick tests. If your period is late by even 1 day, test with your first morning void when urine is most concentrated.</li>
+    </ul>
+
+    <h2 style="margin-top:40px;">Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>What causes an irregular cycle?</summary>
+      <p>Cycle length is governed by the follicular phase. Factors that delay or prevent ovulation include Polycystic Ovary Syndrome (PCOS), thyroid disorders (hypo- or hyperthyroidism), elevated prolactin, intense athletic training, significant calorie deficits, acute psychological stress, jet lag, and cessation of hormonal birth control.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can you ovulate twice in one menstrual cycle?</summary>
+      <p>A woman cannot ovulate at two distinct times weeks apart during the same cycle. However, during hyperovulation, ovaries may release two or more eggs within a 24-hour window (the biological mechanism that produces fraternal twins). Once progesterone rises, further ovulation is hormonally blocked for that cycle.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can you get pregnant from intercourse during your period?</summary>
+      <p>While uncommon, it is biologically possible—especially for women with short menstrual cycles (e.g. 21 to 24 days). If intercourse occurs on Day 6 of bleeding and ovulation occurs early on Day 9 or 10, sperm can survive the 3 to 4 days until the egg is released, resulting in fertilization.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is a short luteal phase defect?</summary>
+      <p>A luteal phase under 10 days is known as a luteal phase defect. If progesterone drops prematurely, the uterine lining sheds before an arriving blastocyst has sufficient time to complete implantation. Women experiencing recurrent early miscarriages or short cycles often consult an endocrinologist for progesterone supplementation.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction group expense sharing. Free, no mandatory app download, no limits.</p>
+      </div>
+      <div>
+        <h4>Health Calculators</h4>
+        <ul>
+          <li><a href="/tools/ovulation-calculator/">Ovulation Calculator</a></li>
+          <li><a href="/tools/pregnancy-due-date-calculator/">Due Date Calculator</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calories</a></li>
+          <li><a href="/tools/bmr-calculator/">BMR Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Financial Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Compound Interest</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Health &amp; Financial Calculators. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+// Default LMP to 14 days ago
+const today = new Date();
+const defaultLmp = new Date(today.getTime() - 14 * 24 * 60 * 60 * 1000);
+const yyyy = defaultLmp.getFullYear();
+const mm = String(defaultLmp.getMonth() + 1).padStart(2, '0');
+const dd = String(defaultLmp.getDate()).padStart(2, '0');
+document.getElementById('period-start').value = `${yyyy}-${mm}-${dd}`;
+
+function calculate() {
+  const lmpVal = document.getElementById('period-start').value;
+  if (!lmpVal) return;
+
+  const lmpDate = new Date(lmpVal + 'T00:00:00');
+  const cycleLen = parseInt(document.getElementById('cycle-length').value, 10) || 28;
+  const lutealLen = parseInt(document.getElementById('luteal-phase').value, 10) || 14;
+
+  // Ovulation occurs (cycleLength - lutealPhase) days after LMP
+  const daysToOvulation = Math.max(1, cycleLen - lutealLen);
+  const ovulationDate = new Date(lmpDate.getTime() + daysToOvulation * 24 * 60 * 60 * 1000);
+
+  // Fertile window: 5 days before ovulation through ovulation day
+  const fertileStart = new Date(ovulationDate.getTime() - 5 * 24 * 60 * 60 * 1000);
+  const fertileEnd = new Date(ovulationDate.getTime() + 1 * 24 * 60 * 60 * 1000);
+
+  // Peak days: O-1 and O
+  const peakStart = new Date(ovulationDate.getTime() - 1 * 24 * 60 * 60 * 1000);
+
+  // Next period: LMP + cycleLen
+  const nextPeriod = new Date(lmpDate.getTime() + cycleLen * 24 * 60 * 60 * 1000);
+
+  // Earliest pregnancy test: Next period date or 14 DPO
+  const testDate = new Date(ovulationDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+
+  const opts = { month: 'short', day: 'numeric', year: 'numeric' };
+  const shortOpts = { month: 'short', day: 'numeric' };
+
+  document.getElementById('res-ovulation-date').textContent = ovulationDate.toLocaleDateString('en-US', opts);
+  document.getElementById('res-fertile-sub').textContent =
+    `Fertile Window: ${fertileStart.toLocaleDateString('en-US', shortOpts)} – ${ovulationDate.toLocaleDateString('en-US', shortOpts)} | Peak Fertility: ${peakStart.toLocaleDateString('en-US', shortOpts)} & ${ovulationDate.toLocaleDateString('en-US', shortOpts)}`;
+
+  document.getElementById('m-peak').textContent = `${peakStart.toLocaleDateString('en-US', shortOpts)} & ${ovulationDate.toLocaleDateString('en-US', shortOpts)}`;
+  document.getElementById('m-window').textContent = `${fertileStart.toLocaleDateString('en-US', shortOpts)} – ${ovulationDate.toLocaleDateString('en-US', shortOpts)}`;
+  document.getElementById('m-next-period').textContent = nextPeriod.toLocaleDateString('en-US', shortOpts);
+  document.getElementById('m-test-date').textContent = testDate.toLocaleDateString('en-US', shortOpts);
+
+  // Cycles 1, 2, 3 forecast
+  for (let c = 1; c <= 3; c++) {
+    const cycleLmp = new Date(lmpDate.getTime() + (c - 1) * cycleLen * 24 * 60 * 60 * 1000);
+    const cycleOv = new Date(cycleLmp.getTime() + daysToOvulation * 24 * 60 * 60 * 1000);
+    const cycleNext = new Date(cycleLmp.getTime() + cycleLen * 24 * 60 * 60 * 1000);
+
+    const cEl = document.getElementById(`c${c}-dates`);
+    if (cEl) {
+      cEl.textContent = `Ovulation: ${cycleOv.toLocaleDateString('en-US', shortOpts)} | Next Period: ${cycleNext.toLocaleDateString('en-US', shortOpts)}`;
+    }
+  }
+}
+
+['period-start', 'cycle-length', 'luteal-phase', 'period-duration'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calculate);
+    el.addEventListener('change', calculate);
+  }
+});
+
+calculate();
+</script>
+
+</body>
+</html>

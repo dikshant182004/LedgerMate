@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VAT &amp; Consumption Tax Calculator (Add, Remove &amp; Reverse VAT) | LedgerMate</title>
+<meta name="description" content="Free global VAT and Consumption Tax Calculator. Add VAT (Net to Gross), Remove VAT (Gross to Net), or find rates. Comprehensive presets for UK, Germany, France, Japan, EU, US Sales Tax, Canada GST/HST, Australia, India, and 30+ countries with complete educational guides and FAQs." />
+<link rel="canonical" href="https://tryledgermate.in/tools/vat-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="VAT &amp; Consumption Tax Calculator (Add, Remove &amp; Reverse VAT) | LedgerMate" />
+<meta property="og:description" content="Calculate gross from net, extract VAT backwards without mathematical errors, or discover effective tax rates across 30+ countries including UK, EU, Japan, Australia, and Canada." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=3" />
+
+<style>
+.preset-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.preset-pill {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.preset-pill:hover, .preset-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+.tax-summary-callout {
+  background: #F8F9FE;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.55;
+}
+.tax-summary-callout strong {
+  color: var(--text);
+}
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 16px 0;
+}
+.vat-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+.vat-matrix-table th {
+  background: #F3F1FA;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--border);
+  color: var(--text);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.vat-matrix-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.vat-matrix-table tr:hover td {
+  background: #FAF9FD;
+}
+.rate-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  background: #EEF2FF;
+  color: var(--accent);
+}
+.rate-badge.reduced {
+  background: #ECFDF5;
+  color: #059669;
+}
+.faq-section {
+  margin-top: 48px;
+}
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.faq-item[open] {
+  border-color: var(--accent);
+}
+.faq-item summary {
+  padding: 16px 20px;
+  font-weight: 700;
+  font-size: 15.5px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary::after {
+  content: "+";
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+.faq-item[open] summary::after {
+  content: "−";
+  color: var(--accent);
+}
+.faq-item p, .faq-item ul {
+  padding: 0 20px 18px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+.faq-item ul {
+  padding-left: 36px;
+}
+.faq-item strong {
+  color: var(--text);
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate VAT & Consumption Tax Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates VAT addition (net to gross), reverse VAT extraction (gross to net), and tax rates across 30+ international criteria including UK, Germany, France, Japan, EU, Canada, Australia, and India.",
+  "featureList": [
+    "Bidirectional calculation: Add VAT (+ Tax) vs Remove / Reverse VAT (Gross to Net)",
+    "Rate finder mode: Determine applied tax percentage from gross and net prices",
+    "Country presets: UK (20%/5%/0%), Germany (19%/7%), France (20%/10%/5.5%), Japan (10%/8% Invoice System), Australia (10%), Canada (GST/HST), India (18%/12%/5%), and 30+ global regimes",
+    "Prevents standard reverse VAT subtraction errors using correct algebraic formulas",
+    "Multi-currency support (£, €, $, ¥, ₩, ₹, CHF, kr, zł, R$, R, AED)",
+    "Comprehensive educational guides on VAT vs Sales Tax, Zero-Rated vs Exempt supplies, B2B Reverse Charge, and Japan Invoice Seido"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do you correctly remove 20% VAT from a gross price?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To remove 20% VAT from a gross total price, divide the gross amount by 1.20 (or multiply by 5/6). Never subtract 20% directly! For example, a £120 item divided by 1.20 equals £100 net (£20 VAT). If you mistakenly subtracted 20% from £120, you would get £96, which is an erroneous shortfall of £4."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the mathematical difference between adding VAT and removing VAT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Adding VAT calculates the tax on the pre-tax base: Gross = Net × (1 + Rate/100). Removing VAT extracts the tax base from an already inclusive total: Net = Gross ÷ (1 + Rate/100). Because the tax rate is defined as a percentage of Net (markup), but gross includes both net and tax, the tax represents a smaller fraction of the gross total (e.g. 20% on net is 16.67% of gross)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Zero-Rated (0%) and VAT-Exempt supplies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Zero-Rated supply is taxable at 0%, meaning no VAT is charged to the customer, but the business can reclaim all input VAT incurred on business purchases. A VAT-Exempt supply (such as banking, insurance, and medical care) is completely outside the VAT scope: no VAT is charged, but the business cannot recover any input VAT paid on its expenses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the United States not have a national VAT system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The United States relies on state and local Retail Sales Tax (RST) rather than a federal VAT. Sales tax is a single-stage levy assessed exclusively on the final retail sale to the consumer, collected by state and municipal jurisdictions (ranging from 0% to 10.25%). The US Constitution grants states sovereign taxation powers, and historical opposition to federal consumption taxation has preserved this state-level model."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the Input VAT vs Output VAT credit mechanism work for businesses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under the invoice-credit method, a VAT-registered business charges Output VAT to its customers on sales and pays Input VAT on purchases from suppliers. On its periodic VAT return, the company pays the tax authority only the net difference: Net VAT Payable = Output VAT - Input VAT. If Input VAT exceeds Output VAT, the business receives a tax refund."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Reverse Charge Mechanism on cross-border B2B invoices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Reverse Charge Mechanism (such as under Article 196 of the EU VAT Directive) shifts the liability to account for VAT from the foreign supplier to the business customer in the destination country. The supplier issues an invoice with 0% VAT bearing the customer's verified VAT ID and stating 'Reverse Charge applies'. The recipient simultaneously records input and output VAT on their local return."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Japan's Consumption Tax (10% vs 8%) and Qualified Invoice System work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Japan enforces a dual consumption tax (消費税): a standard 10% rate and an 8% reduced rate (軽減税率) covering groceries, takeaway food, non-alcoholic drinks, and newspaper subscriptions. Under the Qualified Invoice System (適格請求書等保存方式 / Invoice Seido), Japanese businesses can only claim input tax credits if their supplier is registered and prints an official registration number (T+13 digits) on the receipt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the mandatory VAT or GST registration thresholds worldwide?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Registration thresholds determine when small businesses must register for VAT: United Kingdom is £90,000; Germany is €22,000 (Kleinunternehmer); France is €91,900 (goods) or €36,800 (services); Australia is A$75,000; Canada is C$30,000; Japan is ¥10,000,000; and Singapore is S$1,000,000. In many countries, businesses below the threshold can voluntarily register to reclaim input VAT."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can international tourists reclaim VAT when shopping abroad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, many countries operate Tax-Free Shopping schemes for non-resident tourists exporting unused goods in personal luggage within 90 days. Retailers issue a Tax-Free Form, which tourists must have validated by customs at the international departure airport before boarding, minus processing fees charged by refund operators like Global Blue or Planet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do Goods and Services Tax (GST in Canada, Australia, India) and VAT compare?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Functionally, GST and VAT are the same economic concept: a multi-stage consumption tax featuring input tax credits. Nomenclature varies geographically: Europe and Latin America use VAT (TVA, IVA, MwSt, BTW), whereas Commonwealth nations (Australia, Canada, New Zealand, Singapore, India) adopted the term GST. India's GST features a 4-tier slab structure (5%, 12%, 18%, 28%), while Canada pairs federal GST (5%) with provincial taxes (HST/PST/QST)."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/discount-calculator/">Discount Calculator</a>
+      <a href="/tools/percentage-calculator/">Percentage Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> VAT &amp; Consumption Tax Calculator
+  </div>
+
+  <h1>Global VAT &amp; Consumption Tax Calculator</h1>
+  <p class="sub">Accurately calculate Net to Gross, extract VAT backwards without mathematical errors, or compute tax rates. Includes complete presets and rules for 30+ countries including the UK, Germany, France, Japan, Canada, Australia, and India.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="btn-mode-add">Add VAT (+ Tax to Net)</button>
+      <button type="button" class="chip-btn" id="btn-mode-remove">Remove VAT (Gross to Net)</button>
+      <button type="button" class="chip-btn" id="btn-mode-rate">Find Rate (From Net &amp; Gross)</button>
+    </div>
+
+    <!-- Country & Regional Preset Selector -->
+    <div class="calc-row" style="margin-bottom:14px;">
+      <div style="flex:1;">
+        <label for="country-preset">Country &amp; Tax Preset (30+ Criteria)</label>
+        <select id="country-preset">
+          <optgroup label="United Kingdom">
+            <option value="20" data-cur="£" selected>United Kingdom (20% Standard VAT)</option>
+            <option value="5" data-cur="£">United Kingdom (5% Reduced - Domestic Fuel, Energy)</option>
+            <option value="0" data-cur="£">United Kingdom (0% Zero-Rated - Books, Children's Wear, Food)</option>
+          </optgroup>
+          <optgroup label="European Union">
+            <option value="19" data-cur="€">Germany (19% Standard MwSt / USt)</option>
+            <option value="7" data-cur="€">Germany (7% Reduced - Groceries, Books, Hotels, Culture)</option>
+            <option value="20" data-cur="€">France (20% Standard TVA)</option>
+            <option value="10" data-cur="€">France (10% Intermediate - Restaurants, Public Transit, Renovation)</option>
+            <option value="5.5" data-cur="€">France (5.5% Reduced - Essential Groceries, Books, Clean Energy)</option>
+            <option value="2.1" data-cur="€">France (2.1% Super-Reduced - Reimbursable Medicine, Daily Press)</option>
+            <option value="22" data-cur="€">Italy (22% Standard IVA)</option>
+            <option value="10" data-cur="€">Italy (10% Reduced - Tourism, Hospitality, Utilities)</option>
+            <option value="4" data-cur="€">Italy (4% Super-Reduced - Essential Staples, Books)</option>
+            <option value="21" data-cur="€">Spain (21% Standard IVA)</option>
+            <option value="10" data-cur="€">Spain (10% Reduced - Transport, Hotels, Water, Eyewear)</option>
+            <option value="4" data-cur="€">Spain (4% Super-Reduced - Bread, Milk, Cheese, Medicine)</option>
+            <option value="21" data-cur="€">Netherlands (21% Standard BTW)</option>
+            <option value="9" data-cur="€">Netherlands (9% Reduced - Groceries, Books, Hotels, Hairdressers)</option>
+            <option value="23" data-cur="€">Ireland (23% Standard VAT)</option>
+            <option value="13.5" data-cur="€">Ireland (13.5% Reduced - Fuel, Electricity, Construction)</option>
+            <option value="9" data-cur="€">Ireland (9% Second Reduced - Newspapers, Sporting Facilities)</option>
+            <option value="23" data-cur="zł">Poland (23% Standard PTU / VAT)</option>
+            <option value="8" data-cur="zł">Poland (8% Reduced - Public Transport, Home Construction)</option>
+            <option value="5" data-cur="zł">Poland (5% Essential - Staple Food, Infant Items, Books)</option>
+            <option value="25" data-cur="kr">Sweden (25% Standard Moms)</option>
+            <option value="12" data-cur="kr">Sweden (12% Reduced - Groceries, Restaurant Dining)</option>
+            <option value="6" data-cur="kr">Sweden (6% Reduced - Passenger Transport, Books, Museums)</option>
+            <option value="25" data-cur="kr">Denmark (25% Standard Moms - Uniform Single Rate)</option>
+            <option value="25" data-cur="kr">Norway (25% Standard MVA)</option>
+            <option value="15" data-cur="kr">Norway (15% Food &amp; Drink MVA)</option>
+            <option value="12" data-cur="kr">Norway (12% Passenger Transport &amp; Lodging)</option>
+            <option value="21" data-cur="€">Belgium (21% Standard BTW / TVA)</option>
+            <option value="12" data-cur="€">Belgium (12% Reduced - Restaurant Dining excl. drinks)</option>
+            <option value="6" data-cur="€">Belgium (6% Reduced - Basic Food, Books, Renovation)</option>
+            <option value="20" data-cur="€">Austria (20% Standard USt)</option>
+            <option value="13" data-cur="€">Austria (13% Reduced - Domestic Flights, Animal Feed)</option>
+            <option value="10" data-cur="€">Austria (10% Reduced - Food, Books, Rent, Transit)</option>
+            <option value="8.1" data-cur="CHF">Switzerland (8.1% Standard MWST / TVA / IVA - 2026 Rate)</option>
+            <option value="3.8" data-cur="CHF">Switzerland (3.8% Special Rate - Hotel Lodging)</option>
+            <option value="2.6" data-cur="CHF">Switzerland (2.6% Reduced - Food, Water, Medicine, Books)</option>
+          </optgroup>
+          <optgroup label="Asia-Pacific">
+            <option value="10" data-cur="¥">Japan (10% Standard Consumption Tax 消費税)</option>
+            <option value="8" data-cur="¥">Japan (8% Reduced 軽減税率 - Groceries, Takeaway, Newspapers)</option>
+            <option value="10" data-cur="₩">South Korea (10% Standard 부가가치세 VAT)</option>
+            <option value="10" data-cur="$">Australia (10% Standard GST)</option>
+            <option value="15" data-cur="$">New Zealand (15% Standard Broad-Based GST)</option>
+            <option value="9" data-cur="$">Singapore (9% Standard GST - 2026 Rate)</option>
+            <option value="18" data-cur="₹">India (18% Standard GST - Most Services &amp; Electronics)</option>
+            <option value="12" data-cur="₹">India (12% GST - Processed Foods, Business Computers)</option>
+            <option value="5" data-cur="₹">India (5% GST - Essential Packaged Foods, Rail, Apparel)</option>
+            <option value="28" data-cur="₹">India (28% Luxury / Sin GST - Automobiles, Tobacco)</option>
+            <option value="10" data-cur="$">Malaysia (10% Standard Sales Tax SST)</option>
+            <option value="5" data-cur="$">Malaysia (5% Reduced SST - Petroleum, Raw Materials)</option>
+            <option value="7" data-cur="฿">Thailand (7% Standard VAT)</option>
+            <option value="12" data-cur="₱">Philippines (12% Standard VAT)</option>
+            <option value="11" data-cur="Rp">Indonesia (11% Standard PPN)</option>
+          </optgroup>
+          <optgroup label="Americas">
+            <option value="5" data-cur="$">Canada (5% Federal GST - AB, BC, SK, MB, YT, NT, NU)</option>
+            <option value="13" data-cur="$">Canada Ontario (13% Harmonized HST)</option>
+            <option value="15" data-cur="$">Canada Atlantic (15% HST - NS, NB, NL, PEI)</option>
+            <option value="14.975" data-cur="$">Canada Quebec (14.975% Combined GST + QST)</option>
+            <option value="12" data-cur="$">Canada BC (12% Combined GST 5% + PST 7%)</option>
+            <option value="8.5" data-cur="$">United States (8.5% Typical State + City Combined Sales Tax)</option>
+            <option value="16" data-cur="$">Mexico (16% Standard IVA)</option>
+            <option value="8" data-cur="$">Mexico (8% Northern Border Stimulus Region)</option>
+            <option value="19" data-cur="$">Chile (19% Standard IVA)</option>
+            <option value="19" data-cur="$">Colombia (19% Standard IVA)</option>
+            <option value="21" data-cur="$">Argentina (21% Standard IVA)</option>
+          </optgroup>
+          <optgroup label="Middle East &amp; Africa">
+            <option value="15" data-cur="SAR">Saudi Arabia (15% Standard VAT)</option>
+            <option value="5" data-cur="AED">United Arab Emirates (5% Standard VAT)</option>
+            <option value="10" data-cur="BHD">Bahrain (10% Standard VAT)</option>
+            <option value="15" data-cur="R">South Africa (15% Standard VAT)</option>
+            <option value="7.5" data-cur="₦">Nigeria (7.5% Standard VAT)</option>
+            <option value="16" data-cur="KSh">Kenya (16% Standard VAT)</option>
+          </optgroup>
+          <option value="custom">Custom Rate / Other Country...</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Quick Percentage Preset Buttons -->
+    <div style="margin-bottom:18px;">
+      <label style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.03em;">Popular Global Rates</label>
+      <div class="preset-pills" id="rate-pills">
+        <button type="button" class="preset-pill" onclick="setQuickRate(5)">5%</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(7)">7%</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(8)">8%</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(8.1)">8.1% (CH)</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(9)">9% (SG)</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(10)">10%</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(13.5)">13.5%</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(15)">15%</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(18)">18%</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(19)">19% (DE)</button>
+        <button type="button" class="preset-pill active" onclick="setQuickRate(20)">20% (UK/FR)</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(21)">21% (ES/NL)</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(23)">23% (IE/PL)</button>
+        <button type="button" class="preset-pill" onclick="setQuickRate(25)">25% (Nordics)</button>
+      </div>
+    </div>
+
+    <!-- Standard Amounts Input Section -->
+    <div id="section-standard-inputs">
+      <div class="calc-row">
+        <div style="flex:1.3;">
+          <label for="amount-input" id="lbl-amount">Net Amount (Excluding VAT)</label>
+          <div style="display:flex;gap:8px;">
+            <input id="amount-input" type="number" step="any" min="0" max="1000000000" value="100" style="flex:2;" />
+            <select id="currency-select" style="flex:1;">
+              <option value="£" selected>£ (GBP)</option>
+              <option value="€">€ (EUR)</option>
+              <option value="$">$ (USD/CAD/AUD/NZD/SGD)</option>
+              <option value="¥">¥ (JPY/CNY)</option>
+              <option value="₩">₩ (KRW)</option>
+              <option value="₹">₹ (INR)</option>
+              <option value="CHF">CHF (Swiss Franc)</option>
+              <option value="kr">kr (SEK/NOK/DKK)</option>
+              <option value="zł">zł (PLN)</option>
+              <option value="R$">R$ (BRL)</option>
+              <option value="R">R (ZAR)</option>
+              <option value="AED">AED</option>
+              <option value="SAR">SAR</option>
+            </select>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <label for="custom-vat-rate">Tax Rate (%)</label>
+          <div style="position:relative;">
+            <input id="custom-vat-rate" type="number" step="0.1" min="0" max="100" value="20" style="padding-right:28px;" />
+            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-weight:700;color:var(--text-muted);">%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rate Finder Input Section (Hidden by default) -->
+    <div id="section-rate-inputs" style="display:none;">
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="rate-net-input">Net Amount (Pre-Tax Price)</label>
+          <input id="rate-net-input" type="number" step="any" min="0" value="100" />
+        </div>
+        <div style="flex:1;">
+          <label for="rate-gross-input">Gross Amount (Total Paid)</label>
+          <input id="rate-gross-input" type="number" step="any" min="0" value="120" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Display -->
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;" id="res-headline-lbl">Total Gross Price (Inc. VAT)</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-primary-amt">£120.00</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-sub-desc">VAT Amount: £20.00 | Net Price: £100.00</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-net">£100.00</div>
+          <div class="metric-lbl">Net Amount (Pre-Tax)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-vat" style="color:#2563EB;">£20.00</div>
+          <div class="metric-lbl">VAT / Tax Portion</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-gross">£120.00</div>
+          <div class="metric-lbl">Total Gross Amount</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-rate">20%</div>
+          <div class="metric-lbl">Applied Tax Rate</div>
+        </div>
+      </div>
+
+      <!-- Tax Share Callout -->
+      <div class="tax-summary-callout" id="tax-summary-box">
+        <strong>Breakdown Insight:</strong> At a <strong>20%</strong> VAT rate, the tax amount of <strong>£20.00</strong> accounts for exactly <strong>16.67%</strong> (1/6th) of the total retail gross price paid by the customer. Net multiplier: <code>× 1.20</code> to add tax; <code>÷ 1.20</code> to remove tax.
+      </div>
+    </div>
+
+    <!-- Mindmap Box -->
+    <div class="mindmap-box" style="margin-top:20px;">
+      <h4>💡 The #1 Mathematical Mistake When Removing VAT</h4>
+      <ul class="mindmap-list">
+        <li><strong>Why Subtraction Fails:</strong> If a receipt totals £120 gross including 20% VAT, subtracting 20% directly (<code>120 - 24 = £96</code>) produces a fatal £4 shortfall! The original pre-tax price was £100, not £96.</li>
+        <li><strong>The Correct Division Rule:</strong> <code>Net = Gross ÷ (1 + Tax Rate ÷ 100)</code>. For 20% VAT: <code>£120 ÷ 1.20 = £100.00</code>. Extracted tax = <code>£120 - £100 = £20.00</code>.</li>
+        <li><strong>Tax as a Portion of Gross:</strong> The formula to determine VAT's percentage of the gross retail total is <code>Rate ÷ (100 + Rate)</code>. For 20% VAT: <code>20 ÷ 120 = 16.67%</code>.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Splitting multi-currency business invoices or team dinners?</p>
+        <span style="font-size:12px;color:var(--text-muted);">LedgerMate simplifies group bill splitting with zero ads, clean calculations, and zero account requirements.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+
+  <!-- Interactive Educational Concept Router -->
+  <div class="concept-router" style="margin-top:32px;">
+    <h3 style="font-size:20px;margin-bottom:14px;color:var(--text);">🎓 Comprehensive VAT &amp; Consumption Tax Educational Guide</h3>
+    <div class="concept-nav" id="vat-concept-nav">
+      <button type="button" class="concept-tab-btn active" onclick="switchVatConcept('math')">1. The Math of Reverse VAT</button>
+      <button type="button" class="concept-tab-btn" onclick="switchVatConcept('vat-vs-sales')">2. VAT vs Retail Sales Tax</button>
+      <button type="button" class="concept-tab-btn" onclick="switchVatConcept('zero-vs-exempt')">3. Zero-Rated vs Exempt</button>
+      <button type="button" class="concept-tab-btn" onclick="switchVatConcept('reverse-charge')">4. B2B Reverse Charge</button>
+      <button type="button" class="concept-tab-btn" onclick="switchVatConcept('japan-invoice')">5. Japan Invoice System (インボイス)</button>
+      <button type="button" class="concept-tab-btn" onclick="switchVatConcept('criteria-matrix')">6. Global Criteria Matrix</button>
+    </div>
+
+    <div class="concept-pane active" id="pane-vat-math">
+      <h4>1. The Mathematical Algebra: Why Direct Subtraction Destroys Your Profit Margin</h4>
+      <p>The most common accounting error among small business owners, freelancers, and consumers is attempting to extract VAT from an invoice by multiplying the gross amount by the tax percentage and subtracting the result. Mathematically, tax is levied on the <strong>net base</strong> (pre-tax value), not the inclusive gross:</p>
+      
+      <div class="concept-formula-box">
+        <strong>Adding VAT (Net to Gross):</strong><br>
+        Gross = Net × (1 + Rate ÷ 100)<br>
+        VAT = Net × (Rate ÷ 100)<br><br>
+        <strong>Removing / Reverse VAT (Gross to Net):</strong><br>
+        Net = Gross ÷ (1 + Rate ÷ 100)<br>
+        VAT = Gross − Net = Gross × [ Rate ÷ (100 + Rate) ]
+      </div>
+
+      <div class="concept-example-box">
+        <strong>Proof Example (UK 20% VAT on £120):</strong><br>
+        • Correct method: £120 ÷ 1.20 = <strong>£100.00 Net</strong> (VAT = £20.00).<br>
+        • Flawed subtraction: £120 − (20% of £120) = £120 − £24 = <strong>£96.00 Net</strong> (Deficit of £4.00 per item!).<br>
+        • Gross VAT percentage: 20 ÷ (100 + 20) = 20/120 = <strong>16.667% (1/6th of total price)</strong>.
+      </div>
+    </div>
+
+    <div class="concept-pane" id="pane-vat-vat-vs-sales">
+      <h4>2. Multi-Stage Value Added Tax (VAT) vs Single-Stage Retail Sales Tax (RST)</h4>
+      <p>Over 175 countries utilize a Value-Added Tax (or GST). The United States is the only major OECD economic power that does not have a federal VAT, relying instead on state-level Retail Sales Tax. The operational divergence between the two models is profound:</p>
+      <ul>
+        <li><strong>Multi-Stage Collection (VAT/GST):</strong> Tax is assessed incrementally at every single stage of production and distribution (raw material supplier, manufacturer, wholesaler, retailer). Each business collects tax on its sales (Output VAT) and claims a full credit for tax paid on its purchases (Input VAT). The government receives fractional tax payments throughout the supply chain, minimizing fraud and evasion.</li>
+        <li><strong>Single-Stage Collection (US Retail Sales Tax):</strong> Sales tax is assessed exclusively at the final point of retail sale to the end consumer. Inter-business sales (B2B) are exempted using resale certificates (exempt sale for resale). If a retail merchant defaults or operates in the informal economy, 100% of the tax revenue is permanently lost.</li>
+        <li><strong>Price Display Standards:</strong> In VAT jurisdictions (UK, EU, Japan, Australia), consumer retail prices are legally mandated to be <em>tax-inclusive</em> (what you see on the shelf is what you pay). In the United States and Canada, shelf prices are strictly <em>pre-tax</em>, with state, provincial, and local taxes tacked on at the checkout counter.</li>
+      </ul>
+    </div>
+
+    <div class="concept-pane" id="pane-vat-zero-vs-exempt">
+      <h4>3. Zero-Rated (0%) vs VAT-Exempt Supplies: The Critical Distinction</h4>
+      <p>Many business owners confuse <strong>0% Zero-Rated supplies</strong> with <strong>VAT-Exempt supplies</strong>. While neither item incurs tax on the customer invoice, their treatment of input tax credits is completely opposite:</p>
+      <div class="table-responsive">
+        <table class="vat-matrix-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Zero-Rated Supplies (0% VAT)</th>
+              <th>VAT-Exempt Supplies (No VAT)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Tax Charged to Customer</strong></td>
+              <td>0% (Itemized on invoice)</td>
+              <td>0% (Explicitly exempt from VAT scope)</td>
+            </tr>
+            <tr>
+              <td><strong>Input Tax Recovery for Business</strong></td>
+              <td><strong style="color:#059669;">100% Reclaimable:</strong> Business can claim full refunds on materials, laptops, and equipment.</td>
+              <td><strong style="color:#DC2626;">0% Reclaimable:</strong> Input VAT cannot be reclaimed; it becomes a permanent operating expense.</td>
+            </tr>
+            <tr>
+              <td><strong>Typical Examples</strong></td>
+              <td>Exports, basic staple groceries (unprocessed meats, vegetables), books, children's clothes (UK), prescription drugs.</td>
+              <td>Financial &amp; banking services, life insurance, medical doctor visits, residential rent, postal services.</td>
+            </tr>
+            <tr>
+              <td><strong>VAT Registration Impact</strong></td>
+              <td>Sales count toward registration thresholds; business must register to claim refunds.</td>
+              <td>Sales do not count toward standard registration turnover thresholds.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="concept-pane" id="pane-vat-reverse-charge">
+      <h4>4. B2B Cross-Border Transactions &amp; The Reverse Charge Mechanism</h4>
+      <p>When services or digital software (SaaS) are sold across international borders to a corporate customer, determining where consumption occurs and requiring foreign sellers to register in every country would create immense friction. To solve this, international tax treaties created the <strong>Reverse Charge Mechanism</strong> (e.g., Article 196 EU VAT Directive):</p>
+      <ul>
+        <li><strong>How it works:</strong> The supplier issues an invoice with <strong>0% VAT</strong>, notes the customer's validated tax ID (e.g., EU VIES VAT number), and prints the mandatory legal notation: <em>"Reverse Charge: Customer to account for VAT pursuant to Article 196 Directive 2006/112/EC"</em>.</li>
+        <li><strong>Self-Accounting:</strong> The recipient business declares both Output VAT (as if they had sold the service) and an identical Input VAT deduction (as an expense) on their domestic tax return. For businesses with full tax recovery rights, the cash net effect is exactly zero!</li>
+        <li><strong>B2C vs B2B:</strong> While B2B cross-border services use reverse charge, sales to non-business retail consumers (B2C) generally require the seller to collect the buyer's destination VAT (e.g., EU One-Stop-Shop / OSS regime, or UK HMRC Overseas Seller registration).</li>
+      </ul>
+    </div>
+
+    <div class="concept-pane" id="pane-vat-japan-invoice">
+      <h4>5. Japan's Consumption Tax (消費税) &amp; The 2026 Qualified Invoice System (インボイス制度)</h4>
+      <p>Japan introduced a dual-rate consumption tax in 2019 and launched the mandatory Qualified Invoice System (適格請求書等保存方式, known popularly as <em>Invoice Seido</em>) to regulate input tax credit deductions:</p>
+      <ul>
+        <li><strong>Dual-Tier Rates:</strong>
+          <br>• <strong>10% Standard Rate:</strong> Alcoholic beverages, restaurant dine-in meals, consumer electronics, clothing, professional services.
+          <br>• <strong>8% Reduced Rate (軽減税率):</strong> Takeaway food and drinks, groceries for home consumption, and newspapers published at least twice weekly under subscription.</li>
+        <li><strong>The Qualified Invoice Rule:</strong> In order for a corporate buyer to claim an input tax deduction for consumption tax paid to a vendor, the invoice <em>must</em> display the vendor's 13-digit registration number (prefixed by 'T', registered with the National Tax Agency / 国税庁).</li>
+        <li><strong>Impact on Freelancers (免税事業者):</strong> Small sole proprietors earning under 10,000,000 JPY annually were historically tax-exempt. Under the Invoice System, many have registered as taxable businesses (課税事業者) to provide qualifying invoices to corporate clients, utilizing transitional deemed purchase deductions (20% special rule / 2割特例).</li>
+      </ul>
+    </div>
+
+    <div class="concept-pane" id="pane-vat-criteria-matrix">
+      <h4>6. Global VAT / GST Criteria &amp; Registration Thresholds Matrix</h4>
+      <p>Summary of calculation criteria, tax authorities, and small business registration exemption thresholds across primary worldwide jurisdictions:</p>
+      <div class="table-responsive">
+        <table class="vat-matrix-table">
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th>Tax Name</th>
+              <th>Standard</th>
+              <th>Reduced Rates</th>
+              <th>Small Business Threshold</th>
+              <th>Tax Authority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>United Kingdom</strong></td>
+              <td>VAT</td>
+              <td><span class="rate-badge">20%</span></td>
+              <td><span class="rate-badge reduced">5%</span>, <span class="rate-badge reduced">0%</span></td>
+              <td>£90,000 / year</td>
+              <td>HMRC</td>
+            </tr>
+            <tr>
+              <td><strong>Germany</strong></td>
+              <td>USt / MwSt</td>
+              <td><span class="rate-badge">19%</span></td>
+              <td><span class="rate-badge reduced">7%</span>, <span class="rate-badge reduced">0%</span></td>
+              <td>€22,000 (Kleinunternehmer)</td>
+              <td>Finanzamt / BZSt</td>
+            </tr>
+            <tr>
+              <td><strong>France</strong></td>
+              <td>TVA</td>
+              <td><span class="rate-badge">20%</span></td>
+              <td><span class="rate-badge reduced">10%</span>, <span class="rate-badge reduced">5.5%</span>, <span class="rate-badge reduced">2.1%</span></td>
+              <td>€91,900 (goods) / €36,800 (services)</td>
+              <td>DGFiP</td>
+            </tr>
+            <tr>
+              <td><strong>Japan</strong></td>
+              <td>消費税 (JCT)</td>
+              <td><span class="rate-badge">10%</span></td>
+              <td><span class="rate-badge reduced">8%</span> (軽減税率)</td>
+              <td>¥10,000,000 / year</td>
+              <td>National Tax Agency (国税庁)</td>
+            </tr>
+            <tr>
+              <td><strong>Switzerland</strong></td>
+              <td>MWST / TVA</td>
+              <td><span class="rate-badge">8.1%</span></td>
+              <td><span class="rate-badge reduced">3.8%</span>, <span class="rate-badge reduced">2.6%</span></td>
+              <td>CHF 100,000 / year</td>
+              <td>ESTV / FTA</td>
+            </tr>
+            <tr>
+              <td><strong>Australia</strong></td>
+              <td>GST</td>
+              <td><span class="rate-badge">10%</span></td>
+              <td><span class="rate-badge reduced">0%</span> (GST-free fresh food)</td>
+              <td>A$75,000 / year</td>
+              <td>Australian Taxation Office (ATO)</td>
+            </tr>
+            <tr>
+              <td><strong>Canada</strong></td>
+              <td>GST / HST</td>
+              <td><span class="rate-badge">5%–15%</span></td>
+              <td><span class="rate-badge reduced">0%</span> (Zero-rated basic food)</td>
+              <td>C$30,000 / 4 quarters</td>
+              <td>Canada Revenue Agency (CRA)</td>
+            </tr>
+            <tr>
+              <td><strong>India</strong></td>
+              <td>GST</td>
+              <td><span class="rate-badge">18%</span></td>
+              <td><span class="rate-badge reduced">5%</span>, <span class="rate-badge reduced">12%</span>, <span class="rate-badge">28%</span></td>
+              <td>₹40 Lakh (goods) / ₹20 Lakh (services)</td>
+              <td>CBIC / GST Council</td>
+            </tr>
+            <tr>
+              <td><strong>South Korea</strong></td>
+              <td>VAT (부가가치세)</td>
+              <td><span class="rate-badge">10%</span></td>
+              <td><span class="rate-badge reduced">0%</span> (Exports)</td>
+              <td>₩80,000,000 (Simplified Taxpayer)</td>
+              <td>National Tax Service (NTS)</td>
+            </tr>
+            <tr>
+              <td><strong>Singapore</strong></td>
+              <td>GST</td>
+              <td><span class="rate-badge">9%</span></td>
+              <td><span class="rate-badge reduced">0%</span> (Exports &amp; Intl. services)</td>
+              <td>S$1,000,000 / year</td>
+              <td>IRAS</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Educational Article -->
+  <article style="margin-top:48px;">
+    <h2>Understanding Global VAT &amp; Consumption Tax: Formulas, Compliance &amp; Mechanics</h2>
+    <p>Value Added Tax (VAT) and Goods and Services Tax (GST) represent the dominant indirect taxation structure across modern economies. Unlike corporate or personal income taxes, which are assessed on economic earnings, consumption taxes are levied on final domestic expenditure. Whether you are an eCommerce merchant pricing merchandise across multiple countries, a freelancer billing international clients, or an expat decoding your foreign monthly bills, grasping the calculation mechanics is paramount.</p>
+
+    <h3>1. Input Tax vs. Output Tax: The Corporate Ledger Balance</h3>
+    <p>For VAT-registered corporations and registered independent contractors, VAT is not a cost of doing business; it is a fiduciary pass-through mechanism:</p>
+    <ul>
+      <li><strong>Output VAT (Sales):</strong> Tax collected from your customers on products or services you invoice. You hold these funds in escrow on behalf of the tax authority.</li>
+      <li><strong>Input VAT (Purchases):</strong> Tax paid to other vendors when purchasing raw goods, software subscriptions, office laptops, or utility services necessary for commercial activity.</li>
+      <li><strong>Settlement:</strong> At the end of each tax quarter or month, you balance the ledger: <code>Tax Remitted = Output VAT − Input VAT</code>. When Input VAT exceeds Output VAT (common during startup phases with heavy capital investments), the national treasury issues an actual cash refund.</li>
+    </ul>
+
+    <h3>2. Essential Elements of a Compliant Tax Invoice</h3>
+    <p>In jurisdictions governed by HMRC, EU directives, or Japan's National Tax Agency, an invoice must satisfy rigorous legal criteria to support valid input tax credits:</p>
+    <ul>
+      <li>Unique sequential invoice identification number.</li>
+      <li>Seller's registered corporate name, physical address, and official Tax/VAT Registration Number.</li>
+      <li>Date of supply (tax point) and date of invoice issuance.</li>
+      <li>Customer's legal entity name, address, and VAT number (for B2B cross-border reverse charge transactions).</li>
+      <li>Itemized description of products or services supplied with quantity and unit pre-tax price.</li>
+      <li>Subtotal net amount (pre-tax), broken down by applicable VAT rate (e.g. standard vs reduced).</li>
+      <li>Explicit total tax amount charged, denominated in the legal domestic currency.</li>
+      <li>Total gross payable amount.</li>
+    </ul>
+
+    <h3>3. The Economic Rationale for Reduced and Zero Tax Rates</h3>
+    <p>Consumption taxes are naturally regressive: lower-income households spend a larger proportion of their net income on basic living necessities compared to higher-income earners. To combat this socioeconomic inequality, governments create progressive exemptions:</p>
+    <ul>
+      <li><strong>Essential Foodstuffs:</strong> Most nations apply reduced or zero rates to unprocessed staple groceries (raw vegetables, milk, bread, eggs), while charging standard rates on dining out, confectionery, and pre-packaged junk food.</li>
+      <li><strong>Cultural &amp; Educational Works:</strong> Books, academic literature, printed newspapers, and museum admission often qualify for super-reduced rates (e.g., Germany's 7% rate or France's 5.5% rate) to foster literacy and arts engagement.</li>
+      <li><strong>Public Health &amp; Transit:</strong> Prescription medications, public train fares, and specialized assistive disability products frequently enjoy preferential tax treatment.</li>
+    </ul>
+  </article>
+
+  <!-- Comprehensive FAQ Section -->
+  <section class="faq-section">
+    <h2 style="font-size:24px;margin-bottom:20px;color:var(--text);">Frequently Asked Questions (FAQ)</h2>
+
+    <details class="faq-item" open>
+      <summary>How do you correctly remove 20% VAT from a total price?</summary>
+      <p>To remove 20% VAT from a gross price, divide the gross amount by 1.20 (or multiply by 5/6). <strong>Never subtract 20% directly!</strong> For example, a £120 item divided by 1.20 equals £100.00 net (£20.00 VAT). If you mistakenly subtracted 20% from £120, you would calculate £96.00, which is incorrect by £4.00.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>What is the mathematical difference between adding VAT and removing VAT?</summary>
+      <p>Adding VAT calculates tax on the pre-tax base: <code>Gross = Net × (1 + Rate ÷ 100)</code>. Removing VAT extracts the tax base from an already inclusive total: <code>Net = Gross ÷ (1 + Rate ÷ 100)</code>. Because tax is defined as a percentage of Net (markup), but gross includes both net and tax, the tax represents a smaller fraction of the gross total. For 20% VAT, the tax represents exactly <code>20 ÷ 120 = 16.67%</code> (or 1/6th) of the consumer retail price.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>What is the difference between Zero-Rated (0%) and VAT-Exempt supplies?</summary>
+      <p>A <strong>Zero-Rated supply</strong> is taxable at a rate of 0%. No tax is added to the customer's bill, but the business retains the legal right to claim back 100% of the input VAT incurred on its commercial expenses. A <strong>VAT-Exempt supply</strong> (such as bank loans, insurance policies, residential rents, and medical treatments) is completely outside the VAT system: no tax is charged to the buyer, but the business is legally barred from recovering any input VAT paid on its supplies.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Why doesn't the United States have a national VAT system?</summary>
+      <p>The United States relies on state and municipal Retail Sales Taxes (RST) rather than a national federal VAT. Sales tax is a single-stage levy assessed solely at the final transaction to the end consumer, with rates determined independently by states and counties (ranging from 0% in Oregon, Delaware, and Montana up to 10.25% in parts of California and Washington). The US Constitution reserves state revenue autonomy, and federal legislative consensus has traditionally opposed introducing an additional multi-stage consumption layer.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>How does the Input VAT vs Output VAT credit mechanism work for businesses?</summary>
+      <p>Under the invoice-credit system, a VAT-registered business charges <strong>Output VAT</strong> to its customers on sales and pays <strong>Input VAT</strong> to its suppliers on business purchases. On each periodic tax return, the business remits only the net difference to the tax office: <code>Net Tax Owed = Output VAT − Input VAT</code>. If Input VAT exceeds Output VAT during a period, the government issues a cash tax refund.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>What is the Reverse Charge Mechanism for cross-border business invoices?</summary>
+      <p>The Reverse Charge Mechanism (such as under Article 196 of the EU VAT Directive) shifts the obligation to pay VAT from the foreign seller to the domestic business customer. The seller issues an invoice showing 0% VAT, includes the customer's validated tax ID (e.g. EU VIES number), and notes that the reverse charge applies. The customer accounts for both output and input tax simultaneously in their domestic return, resulting in a net cash payment of zero for fully taxable businesses.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>How does Japan's 10% vs 8% Consumption Tax and Qualified Invoice System work?</summary>
+      <p>Japan enforces a dual-rate consumption tax (消費税): a standard 10% rate and an 8% reduced rate (軽減税率) covering groceries, takeaway food, non-alcoholic drinks, and subscribed newspapers. Under the Qualified Invoice System (適格請求書等保存方式 / <em>Invoice Seido</em>), Japanese companies can only deduct input tax if their supplier prints an official 13-digit registration number (T+13 digits) issued by the National Tax Agency on the receipt.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>What are the mandatory VAT/GST registration thresholds in major countries?</summary>
+      <p>Registration thresholds determine when small businesses must legally register for VAT: United Kingdom is £90,000; Germany is €22,000 (Kleinunternehmer); France is €91,900 (goods) or €36,800 (services); Australia is A$75,000; Canada is C$30,000; Japan is ¥10,000,000; and Singapore is S$1,000,000. Businesses trading beneath their national threshold can often register voluntarily to recover input tax on major capital investments.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Can international tourists claim VAT refunds on foreign shopping?</summary>
+      <p>Yes. Non-resident tourists visiting Europe, Japan, and other participating countries can reclaim VAT paid on tangible retail goods exported in personal baggage within 90 days. Retailers issue a dedicated Tax-Free export form. Before airport check-in, the tourist presents the unused items and receipts to customs officials for official stamping, after which refund providers (such as Global Blue or Planet) issue the cash or credit card reimbursement minus processing fees.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>How do Goods and Services Tax (GST in Canada, Australia, India) and VAT compare?</summary>
+      <p>GST and VAT are conceptually identical: both are multi-stage indirect consumption taxes featuring fractional collection and input tax credits. The naming convention reflects geography: European and Latin American jurisdictions adopted VAT, while Commonwealth members (Australia, New Zealand, Singapore, India, Canada) chose GST. India features a multi-tiered slab system (5%, 12%, 18%, 28%), whereas Australia utilizes a flat 10% rate with GST-free exemptions for basic food and health services.</p>
+    </details>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mathematical and international tax utilities with zero ads.</p>
+      </div>
+      <div>
+        <h4>Tax &amp; Business</h4>
+        <ul>
+          <li><a href="/tools/vat-calculator/">VAT &amp; Consumption Tax</a></li>
+          <li><a href="/tools/germany-salary-calculator/">Gehaltsrechner Deutschland</a></li>
+          <li><a href="/tools/japan-salary-calculator/">Japan 手取り計算 (Net Salary)</a></li>
+          <li><a href="/tools/korea-salary-calculator/">Korea 실수령액 (Net Salary)</a></li>
+          <li><a href="/tools/us-tax-calculator/">US Tax Estimator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/discount-calculator/">Discount Calculator</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/loan-emi-calculator/">Loan &amp; EMI Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About LedgerMate</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Free Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free International Tax &amp; Business Calculators.</p>
+  </div>
+</footer>
+
+<script>
+let mode = 'add'; // 'add', 'remove', or 'rate'
+
+function fmt(sym, val) {
+  const num = isNaN(val) ? 0 : val;
+  return sym + ' ' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  document.getElementById('btn-mode-add').classList.toggle('active', mode === 'add');
+  document.getElementById('btn-mode-remove').classList.toggle('active', mode === 'remove');
+  document.getElementById('btn-mode-rate').classList.toggle('active', mode === 'rate');
+
+  const stdSec = document.getElementById('section-standard-inputs');
+  const rateSec = document.getElementById('section-rate-inputs');
+
+  if (mode === 'rate') {
+    stdSec.style.display = 'none';
+    rateSec.style.display = 'block';
+    document.getElementById('res-headline-lbl').textContent = "Calculated Effective Tax Rate";
+  } else {
+    stdSec.style.display = 'block';
+    rateSec.style.display = 'none';
+    if (mode === 'add') {
+      document.getElementById('lbl-amount').textContent = "Net Amount (Excluding VAT)";
+      document.getElementById('res-headline-lbl').textContent = "Total Gross Price (Inc. VAT)";
+    } else {
+      document.getElementById('lbl-amount').textContent = "Gross Amount (Including VAT)";
+      document.getElementById('res-headline-lbl').textContent = "Net Price (Pre-VAT Amount)";
+    }
+  }
+  calc();
+}
+
+document.getElementById('btn-mode-add').addEventListener('click', () => setMode('add'));
+document.getElementById('btn-mode-remove').addEventListener('click', () => setMode('remove'));
+document.getElementById('btn-mode-rate').addEventListener('click', () => setMode('rate'));
+
+function setQuickRate(val) {
+  document.getElementById('custom-vat-rate').value = val;
+  const countryPreset = document.getElementById('country-preset');
+  
+  // Try to find matching preset option
+  let found = false;
+  for (let i = 0; i < countryPreset.options.length; i++) {
+    if (parseFloat(countryPreset.options[i].value) === val) {
+      countryPreset.selectedIndex = i;
+      const cur = countryPreset.options[i].getAttribute('data-cur');
+      if (cur) document.getElementById('currency-select').value = cur;
+      found = true;
+      break;
+    }
+  }
+  if (!found) {
+    countryPreset.value = 'custom';
+  }
+
+  // Update pills active state
+  updatePillsActive(val);
+  calc();
+}
+
+function updatePillsActive(rate) {
+  const pills = document.querySelectorAll('#rate-pills .preset-pill');
+  pills.forEach(p => {
+    const pVal = parseFloat(p.textContent);
+    p.classList.toggle('active', pVal === rate);
+  });
+}
+
+document.getElementById('country-preset').addEventListener('change', (e) => {
+  const selOption = e.target.options[e.target.selectedIndex];
+  if (e.target.value !== 'custom') {
+    const rateVal = parseFloat(e.target.value);
+    document.getElementById('custom-vat-rate').value = rateVal;
+    const cur = selOption.getAttribute('data-cur');
+    if (cur) {
+      const curSelect = document.getElementById('currency-select');
+      for (let i = 0; i < curSelect.options.length; i++) {
+        if (curSelect.options[i].value === cur) {
+          curSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+    updatePillsActive(rateVal);
+    calc();
+  }
+});
+
+function calc() {
+  const sym = document.getElementById('currency-select').value;
+
+  if (mode === 'rate') {
+    const net = parseFloat(document.getElementById('rate-net-input').value) || 0;
+    const gross = parseFloat(document.getElementById('rate-gross-input').value) || 0;
+    const vat = Math.max(0, gross - net);
+    const rate = net > 0 ? ((gross - net) / net) * 100 : 0;
+    const taxShareGross = gross > 0 ? (vat / gross) * 100 : 0;
+
+    document.getElementById('res-primary-amt').textContent = rate.toFixed(2) + '%';
+    document.getElementById('res-sub-desc').textContent = `VAT Tax Amount: ${fmt(sym, vat)} | Net: ${fmt(sym, net)} | Gross: ${fmt(sym, gross)}`;
+
+    document.getElementById('m-net').textContent = fmt(sym, net);
+    document.getElementById('m-vat').textContent = fmt(sym, vat);
+    document.getElementById('m-gross').textContent = fmt(sym, gross);
+    document.getElementById('m-rate').textContent = rate.toFixed(2) + '%';
+
+    document.getElementById('tax-summary-box').innerHTML = 
+      `<strong>Rate Finder Insight:</strong> Net <strong>${fmt(sym, net)}</strong> and Gross <strong>${fmt(sym, gross)}</strong> indicate an applied tax rate of <strong>${rate.toFixed(2)}%</strong>. The tax amount of <strong>${fmt(sym, vat)}</strong> accounts for <strong>${taxShareGross.toFixed(2)}%</strong> of the total retail price.`;
+    return;
+  }
+
+  const amount = parseFloat(document.getElementById('amount-input').value) || 0;
+  const rate = parseFloat(document.getElementById('custom-vat-rate').value) || 0;
+
+  let net = 0;
+  let vat = 0;
+  let gross = 0;
+
+  if (mode === 'add') {
+    net = amount;
+    vat = net * (rate / 100);
+    gross = net + vat;
+    document.getElementById('res-primary-amt').textContent = fmt(sym, gross);
+    document.getElementById('res-sub-desc').textContent = `VAT Portion: ${fmt(sym, vat)} | Net Base: ${fmt(sym, net)}`;
+  } else {
+    gross = amount;
+    net = gross / (1 + (rate / 100));
+    vat = gross - net;
+    document.getElementById('res-primary-amt').textContent = fmt(sym, net);
+    document.getElementById('res-sub-desc').textContent = `Extracted VAT: ${fmt(sym, vat)} | Total Gross: ${fmt(sym, gross)}`;
+  }
+
+  const taxShare = gross > 0 ? (vat / gross) * 100 : 0;
+  const mult = (1 + rate / 100).toFixed(4).replace(/\.?0+$/, '');
+
+  document.getElementById('m-net').textContent = fmt(sym, net);
+  document.getElementById('m-vat').textContent = fmt(sym, vat);
+  document.getElementById('m-gross').textContent = fmt(sym, gross);
+  document.getElementById('m-rate').textContent = rate + '%';
+
+  document.getElementById('tax-summary-box').innerHTML = 
+    `<strong>Breakdown Insight:</strong> At a <strong>${rate}%</strong> tax rate, the VAT amount of <strong>${fmt(sym, vat)}</strong> accounts for exactly <strong>${taxShare.toFixed(2)}%</strong> of the total retail gross price paid by the customer. Net multiplier: <code>× ${mult}</code> to add tax; <code>÷ ${mult}</code> to remove tax.`;
+}
+
+['amount-input', 'custom-vat-rate', 'currency-select', 'rate-net-input', 'rate-gross-input'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+function switchVatConcept(tabId) {
+  const tabs = ['math', 'vat-vs-sales', 'zero-vs-exempt', 'reverse-charge', 'japan-invoice', 'criteria-matrix'];
+  tabs.forEach(t => {
+    const pane = document.getElementById('pane-vat-' + t);
+    if (pane) pane.classList.remove('active');
+  });
+
+  const navBtns = document.querySelectorAll('#vat-concept-nav .concept-tab-btn');
+  navBtns.forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const targetPane = document.getElementById('pane-vat-' + tabId);
+  if (targetPane) {
+    targetPane.classList.add('active');
+  }
+}
+
+calc();
+</script>
+
+</body>
+</html>

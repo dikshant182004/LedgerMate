@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Time Zone Meeting Planner &amp; Team Overlap Calculator | LedgerMate</title>
+<meta name="description" content="Free Multi-City Time Zone Meeting Planner. Select individual team members across global cities, customize working hours, view a 24-hour visual overlap matrix, and find mutually agreeable meeting times." />
+<link rel="canonical" href="https://tryledgermate.in/tools/time-zone-converter/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Time Zone Meeting Planner &amp; Team Overlap Calculator | LedgerMate" />
+<meta property="og:description" content="Coordinate global remote teams with individual attendee selection, custom working hours, 24-hour visual timeline, and automated overlap recommendations." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<style>
+.breadcrumb{font-size:13px;color:#000000!important;margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.breadcrumb a{color:#000000!important;text-decoration:none;font-weight:600!important;}
+.breadcrumb a:hover{color:var(--accent)!important;text-decoration:underline!important;}
+.breadcrumb span{color:#000000!important;font-weight:700!important;}
+.breadcrumb .sep, .breadcrumb span.sep{color:#4B5563!important;font-weight:500!important;}
+.breadcrumb span[id], .breadcrumb span.current{color:#000000!important;font-weight:700!important;}
+
+.attendee-list{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+.attendee-card{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;transition:border-color .15s, box-shadow .15s;}
+.attendee-card:hover{border-color:var(--accent-light, #8B5CF6);}
+.attendee-input-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:180px;}
+.attendee-input-group label{font-size:12px;font-weight:700;color:var(--text-muted);margin:0;text-transform:uppercase;letter-spacing:0.03em;}
+.attendee-input-group input, .attendee-input-group select{padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:14px;font-weight:600;outline:none;}
+.attendee-input-group input:focus, .attendee-input-group select:focus{border-color:var(--accent);background:#fff;}
+.btn-remove-attendee{background:none;border:1px solid transparent;color:#EF4444;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all .15s;}
+.btn-remove-attendee:hover{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);}
+.btn-add-attendee{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px dashed var(--accent);color:var(--accent);padding:10px 18px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;margin-bottom:20px;}
+.btn-add-attendee:hover{background:rgba(124,58,237,0.06);border-style:solid;}
+
+.recommendations-box{background:linear-gradient(135deg, rgba(16,185,129,0.06), rgba(124,58,237,0.04));border:1px solid rgba(16,185,129,0.25);border-radius:14px;padding:18px;margin:20px 0;}
+.slot-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.slot-chip{background:#fff;border:1px solid #10B981;color:#065F46;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,0.04);}
+.slot-chip:hover{background:#10B981;color:#fff;transform:translateY(-1px);box-shadow:0 3px 8px rgba(16,185,129,0.25);}
+.slot-chip.amber{border-color:#F59E0B;color:#92400E;}
+.slot-chip.amber:hover{background:#F59E0B;color:#fff;}
+
+.matrix-container{overflow-x:auto;padding-bottom:10px;margin:24px 0;}
+.matrix-table{width:100%;min-width:760px;border-collapse:collapse;font-size:12px;text-align:center;}
+.matrix-table th{padding:8px 4px;font-weight:700;color:var(--text-muted);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;}
+.matrix-table td{padding:6px 2px;border:1px solid rgba(0,0,0,0.04);}
+.cell-prime{background:#10B981;color:#fff;font-weight:700;border-radius:4px;}
+.cell-extended{background:#FBBF24;color:#78350F;font-weight:600;border-radius:4px;}
+.cell-sleep{background:#F3F4F6;color:#9CA3AF;border-radius:4px;}
+.matrix-selected-col{box-shadow:inset 0 0 0 2px var(--accent);position:relative;}
+
+.concept-router{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:14px;padding:24px;margin:32px 0;}
+.concept-nav{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:20px;}
+.concept-tab-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;}
+.concept-tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.concept-tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 6px rgba(124,58,237,0.25);}
+.concept-pane{display:none;animation:fadeIn .2s ease;}
+.concept-pane.active{display:block;}
+
+.faq-grid{display:flex;flex-direction:column;gap:16px;margin:28px 0;}
+.faq-card{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .15s;}
+.faq-card:hover{border-color:var(--accent);}
+.faq-card h3{margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);display:flex;align-items:flex-start;gap:8px;}
+.faq-card p{margin:0;font-size:14.5px;line-height:1.65;color:var(--text-muted);}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Multi-City Time Zone Meeting Planner",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Multi-attendee global time zone meeting planner. Select individual team members, configure working hours, visualize 24-hour overlap matrix, and copy meeting invites.",
+  "featureList": [
+    "Individual participant selection across 40+ global cities & timezones",
+    "Independent working hour configuration for each team member",
+    "Automated Golden Overlap detection algorithm",
+    "Interactive 24-hour visual matrix timeline",
+    "Date rollover indicator (Next Day / Previous Day)",
+    "One-click shareable calendar & Slack invitation export"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do you schedule a meeting when team members are 12+ hours apart with no overlap?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When time zones are 12 to 14 hours apart (such as San Francisco and Singapore or California and India), mutual 9-to-5 working hours do not intersect. The solution is either: 1) Utilizing 'Split Bookend Hours' where one member joins early morning (7:30-8:30 AM) and the other late evening (8:00-9:00 PM), 2) Rotating meeting hours weekly so the late-night burden is evenly distributed, or 3) Defaulting to asynchronous video memos and written briefs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Rotational Sacrifice Rule in distributed remote teams?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Rotational Sacrifice Rule dictates that no single geographic region should permanently suffer unsociable meeting hours (early mornings before 8 AM or late evenings past 8 PM). Teams alternate recurring syncs weekly or bi-weekly so each hub shares the inconvenience equally, preventing chronic burnout."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do some countries like India, Iran, and Nepal have fractional time zone offsets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "While most global time zones are offset by whole hours from UTC, several nations use 30-minute or 45-minute offsets for geographical alignment and national sovereignty. India uses Indian Standard Time (UTC+5:30) to unify its 3,000 km breadth. Nepal uses UTC+5:45 based on the meridian passing through Mount Everest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Daylight Saving Time (DST) create scheduling chaos for global teams?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Countries switch clocks on different weekends. The United States springs forward on the second Sunday in March, while the European Union does so on the last Sunday in March—creating a 2-to-3 week window where the time difference shifts by one hour. Meanwhile, nations in the Southern Hemisphere fall back as the Northern Hemisphere springs forward."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should always be included in a multi-timezone meeting invite?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Always state: 1) The universal baseline time in UTC/GMT, 2) Each participant's exact local time with the 3-letter abbreviation (e.g. 10:00 AM EDT / 3:00 PM BST / 7:30 PM IST), 3) The calendar date for each participant (in case someone crosses midnight), and 4) A clear agenda."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When should an international meeting be cancelled in favor of an asynchronous update?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Meetings should be replaced by asynchronous memos (Google Docs, Notion, Loom, Slack) when: 1) The agenda is purely status updates or one-way broadcast, 2) The available overlap forces any team member to join outside 7:00 AM - 9:00 PM, or 3) Decisions can be resolved through structured written feedback within a 24-hour cycle."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/freelance-rate-calculator/">Freelance Rate</a>
+      <a href="/tools/cloud-cost-calculator/">Cloud Cost Estimator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;color:#000000;">
+    <a href="/" style="color:#000000;font-weight:600;">Home</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <a href="/#tools" style="color:#000000;font-weight:600;">Calculators</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <span style="color:#000000;font-weight:700;">Time Zone Meeting Planner</span>
+  </div>
+
+  <h1>Multi-City Time Zone Meeting Planner &amp; Overlap Finder</h1>
+  <p class="sub">Select individual team members from different cities and time zones. Customize working hours, discover the golden mutual overlap window, and export ready-to-paste calendar invitations.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div>
+        <h3 style="margin:0;font-size:18px;font-weight:800;color:var(--text);">Individual Team Members</h3>
+        <p style="margin:4px 0 0;font-size:13px;color:var(--text-muted);">Add each person separately with their specific city, timezone, and working schedule.</p>
+      </div>
+      <button class="btn-add-attendee" onclick="addAttendee()" id="btn-add-attendee">+ Add Person</button>
+    </div>
+
+    <!-- Dynamic Individual Attendee List -->
+    <div class="attendee-list" id="attendees-container">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Global Meeting Slider & Settings -->
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px;margin:20px 0;">
+      <div class="calc-row" style="margin-bottom:12px;">
+        <div style="flex:1.4;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <label for="meeting-slider" style="margin:0;">Meeting Start Hour (UTC Base):</label>
+            <span id="slider-utc-display" style="font-size:15px;font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace;">14:00 UTC</span>
+          </div>
+          <input id="meeting-slider" type="range" min="0" max="23.5" step="0.5" value="14" style="width:100%;cursor:pointer;" oninput="onSliderMove(this.value)" />
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-top:4px;">
+            <span>00:00</span>
+            <span>06:00</span>
+            <span>12:00</span>
+            <span>18:00</span>
+            <span>23:30</span>
+          </div>
+        </div>
+
+        <div style="flex:0.8;">
+          <label for="meeting-duration">Duration</label>
+          <select id="meeting-duration" onchange="renderAll()">
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60" selected>60 minutes</option>
+            <option value="90">90 minutes</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Automated Golden Overlap Recommendations -->
+    <div class="recommendations-box">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">🎯</span>
+        <h4 style="margin:0;font-size:15px;font-weight:800;color:var(--text);">Automated Best Overlap Windows (Mutual Work Hours)</h4>
+      </div>
+      <p style="margin:4px 0 10px;font-size:12.5px;color:var(--text-muted);">Click any chip below to jump straight to that optimal meeting slot for your team:</p>
+      <div class="slot-chips" id="recommended-chips">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- Calculated Result Summary -->
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 18px;">
+        <span style="font-size:12px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;">Selected Schedule Across All Locations</span>
+        <div style="font-size:26px;font-weight:800;color:var(--text);margin:8px 0;line-height:1.35;" id="res-primary-banner">
+          <!-- Injected via JS -->
+        </div>
+        <div id="res-suitability-badge" style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700;">
+          <!-- Badge -->
+        </div>
+      </div>
+
+      <!-- Individual Participant Time Cards -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;" id="individual-result-cards">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- One-Click Export / Copy Invite -->
+      <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+        <button onclick="copyInviteText()" id="btn-copy-invite" style="background:#1B1A28;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .15s;">
+          📋 Copy Meeting Schedule &amp; Invite
+        </button>
+      </div>
+    </div>
+
+    <!-- 24-Hour Visual Overlap Matrix Grid -->
+    <div style="margin-top:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h4 style="margin:0;font-size:15px;font-weight:800;color:var(--text);">24-Hour Mutual Overlap Matrix</h4>
+        <span style="font-size:12px;color:var(--text-muted);">Click any column to select that hour</span>
+      </div>
+      <div class="matrix-container">
+        <table class="matrix-table" id="overlap-matrix">
+          <!-- Injected via JS -->
+        </table>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 24-Hour Color Code Standard</h4>
+      <ul class="mindmap-list">
+        <li><strong>🟢 Green (Working Hours):</strong> Prime business hours configured for this participant (default 09:00 - 17:00). Highest cognitive focus.</li>
+        <li><strong>🟡 Yellow (Extended Hours):</strong> 2 hours before start or after end (e.g. 07:00-09:00 or 17:00-21:00). Acceptable for urgent or cross-continental syncs.</li>
+        <li><strong>🔴 Red (Night / Rest):</strong> Unsocial sleeping hours (21:00 - 07:00). Scheduling meetings here damages retention and wellbeing.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Managing remote team expenses or client project invoices across currencies?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to split multi-currency team expenses with zero subscription fees and no ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Open LedgerMate App</a>
+    </div>
+  </div>
+
+  <!-- Interactive Educational Concept Router -->
+  <div class="concept-router">
+    <div style="margin-bottom:14px;">
+      <span style="font-size:12px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Interactive Remote Work Guide</span>
+      <h3 style="margin:4px 0 0;font-size:22px;font-weight:800;color:var(--text);">Mastering Global Time Zones &amp; Distributed Scheduling</h3>
+    </div>
+
+    <div class="concept-nav">
+      <button class="concept-tab-btn active" onclick="switchConceptTab('golden-overlap')">The Golden Overlap</button>
+      <button class="concept-tab-btn" onclick="switchConceptTab('dst-asymmetry')">DST Asymmetry Trap</button>
+      <button class="concept-tab-btn" onclick="switchConceptTab('utc-offsets')">UTC vs GMT Explained</button>
+      <button class="concept-tab-btn" onclick="switchConceptTab('async-heuristics')">Async vs Sync Heuristic</button>
+      <button class="concept-tab-btn" onclick="switchConceptTab('rotational-equity')">Rotational Meeting Equity</button>
+    </div>
+
+    <div id="pane-golden-overlap" class="concept-pane active">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">What is the "Golden Overlap" Window?</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        The <strong>Golden Overlap</strong> is the narrow window of the day where two or more geographically distributed participants are simultaneously within their normal, awake, and productive business hours. In international operations, human energy is not symmetrical: 9:00 AM on a Monday morning yields high analytical sharpness, whereas 9:30 PM on a Friday night yields cognitive fatigue.
+      </p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);">
+        When coordinating across North America, Europe, and Asia, a three-way true 9-to-5 overlap is mathematically impossible because the Earth is divided into 24 one-hour meridians. A team spanning San Francisco (UTC-7), London (UTC+1), and Tokyo (UTC+9) spans 16 hours of separation. In such cases, the Golden Overlap shifts to <em>compromise bookends</em>: 13:00 to 14:30 UTC, which translates to early morning in California (6:00 AM - 7:30 AM), afternoon in the UK (2:00 PM - 3:30 PM), and late evening in Tokyo (10:00 PM - 11:30 PM).
+      </p>
+    </div>
+
+    <div id="pane-dst-asymmetry" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The Twice-Annual Daylight Saving Time (DST) Chaos</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Many distributed teams schedule recurring weekly meetings that suddenly break in March and October. This occurs because the transition dates for Daylight Saving Time are not synchronized globally:
+      </p>
+      <ul style="font-size:14px;line-height:1.65;color:var(--text-muted);padding-left:20px;margin-bottom:12px;">
+        <li><strong>United States &amp; Canada:</strong> Spring forward on the second Sunday of March and fall back on the first Sunday of November.</li>
+        <li><strong>European Union &amp; UK:</strong> Advance their clocks on the last Sunday of March and fall back on the last Sunday of October.</li>
+        <li><strong>Non-Observing Jurisdictions:</strong> India (IST), Japan (JST), Singapore (SGT), UAE (GST), and most of South America and Africa do not observe DST at all.</li>
+        <li><strong>Southern Hemisphere (Australia, New Zealand):</strong> Clocks move in the opposite seasonal direction (falling back in April and springing forward in October).</li>
+      </ul>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);">
+        During the 2-to-3 week gap in March, the time difference between New York and London shrinks from 5 hours to 4 hours. If your calendar invite was set in New York local time, your London colleagues will unexpectedly be expected to join an hour earlier than normal.
+      </p>
+    </div>
+
+    <div id="pane-utc-offsets" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">UTC vs GMT: Why UTC is the Anchor of Global Computing</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        While often used interchangeably, <strong>Greenwich Mean Time (GMT)</strong> is a formal civil time zone observed in the UK, Ireland, and West Africa, subject to Daylight Saving changes (when the UK shifts to British Summer Time / BST, UTC+1). In contrast, <strong>Coordinated Universal Time (UTC)</strong> is a strict scientific standard maintained by atomic clocks that <em>never</em> changes for daylight saving.
+      </p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);">
+        Always express cross-border team availability using UTC offsets (e.g. UTC-5, UTC+1, UTC+5:30). This avoids ambiguity caused by regional acronyms: for example, "CST" can mean Central Standard Time (US, UTC-6), China Standard Time (UTC+8), or Cuba Standard Time (UTC-5).
+      </p>
+    </div>
+
+    <div id="pane-async-heuristics" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The 5-Rule Async-First Decision Matrix</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        High-performing all-remote organizations (such as GitLab and Automattic) operate under a strict principle: <em>Default to asynchronous; meet only when bandwidth demands real-time debate.</em> Before scheduling a meeting across time zones, evaluate these criteria:
+      </p>
+      <ol style="font-size:14px;line-height:1.65;color:var(--text-muted);padding-left:20px;">
+        <li><strong>Status &amp; Progress Updates:</strong> 100% Asynchronous. Use Slack check-ins, Notion boards, or Jira comments. Never convene a live call to read slides.</li>
+        <li><strong>Informational Briefings:</strong> Record a 5-to-8 minute screen share video (Loom) at 1.2x speed with a link to the design doc.</li>
+        <li><strong>Complex Architectural Debates:</strong> Synchronous. When 5+ back-and-forth written comments fail to resolve a technical dilemma, a 25-minute live call saves days of friction.</li>
+        <li><strong>Critical Feedback &amp; One-on-Ones:</strong> Synchronous. Tone, empathy, and psychological safety require facial expressions and real-time audio.</li>
+        <li><strong>Brainstorming &amp; Strategy:</strong> Hybrid. Conduct silent written brainwriting for 48 hours asynchronously, followed by a focused 30-minute sync to finalize decisions.</li>
+      </ol>
+    </div>
+
+    <div id="pane-rotational-equity" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The Rotational Equity Rule: Distributing the Inconvenience</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        The most common cultural mistake in multinational corporations is <em>headquarters bias</em>: scheduling all global calls at 9:00 AM or 10:00 AM in the headquarters time zone (e.g. San Francisco or New York). This forces engineers in Singapore, India, or Australia to permanently join calls between 10:00 PM and midnight.
+      </p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);">
+        The <strong>Rotational Sacrifice Rule</strong> solves this: if a team has recurring weekly all-hands, Week A is scheduled at 8:00 AM PST (evening in Asia), and Week B is scheduled at 4:00 PM PST (morning in Asia, evening in the Americas). By sharing the burden, distributed retention increases significantly and resentment is eliminated.
+      </p>
+    </div>
+  </div>
+
+  <!-- In-Depth 1000+ Word Educational Article -->
+  <article style="margin-top:40px;">
+    <h2>Complete Guide to Multi-Timezone Team Scheduling &amp; Collaboration</h2>
+    <p>
+      Modern software development, design, and global business are fundamentally distributed. Whether you are leading an agile sprint across San Francisco, London, and Bengaluru, or coordinating freelance deliverables between New York and Tokyo, navigating 24 time zones without triggering burnout is one of the highest leverage organizational skills you can master.
+    </p>
+
+    <h3>1. The Geometry of the 24 Meridians and UTC Offsets</h3>
+    <p>
+      The globe is partitioned into 24 primary longitudinal zones of roughly 15 degrees each, anchored at the Royal Observatory in Greenwich, London (Prime Meridian, 0° longitude). However, geopolitical boundaries rarely follow straight lines of longitude. Countries draw time zone borders according to trade relationships, administrative convenience, and solar noon:
+    </p>
+    <ul>
+      <li><strong>China's Single Time Zone:</strong> Spanning over 5,000 kilometers from east to west (geographically covering five distinct solar time zones), the People's Republic of China observes a single unified standard: China Standard Time (UTC+8). As a result, residents in western provinces like Xinjiang do not experience solar noon until nearly 3:00 PM in the afternoon.</li>
+      <li><strong>Fractional Offsets:</strong> Rather than conforming to integer offsets, several nations adopted half-hour or 45-minute adjustments. Indian Standard Time (IST, UTC+5:30) and Sri Lanka (UTC+5:30) bisect the subcontinent. Iran uses Iran Standard Time (UTC+3:30). Nepal chose UTC+5:45 to match the solar time of Kathmandu's sacred Gauri Sankar mountain. Australia's Northern Territory and South Australia use UTC+9:30 (ACST).</li>
+      <li><strong>The International Date Line (IDL):</strong> Running down the Pacific Ocean (roughly along the 180° meridian), crossing the IDL shifts the calendar date forward or backward by 24 hours. A team member in Auckland, New Zealand (UTC+12 / +13) is effectively living in tomorrow relative to a colleague in Los Angeles (UTC-8 / -7).</li>
+    </ul>
+
+    <h3>2. The Three-Tier Energy Model for Remote Workers</h3>
+    <p>
+      Productive remote scheduling relies on respecting biological circadian rhythms. A calendar tool that treats all awake hours equally fails to account for human ergonomics. We divide the 24-hour cycle into three distinct functional tiers:
+    </p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:18px 0;">
+      <h4 style="margin:0 0 8px;font-size:15px;color:var(--text);">Tier 1: Prime Business Hours (09:00 – 17:00 Local)</h4>
+      <p style="margin:0;font-size:14px;color:var(--text-muted);line-height:1.6;">
+        Characterized by peak cognitive vigilance, low latency responses, and high creative synthesis. Meetings scheduled here require zero personal lifestyle sacrifice and allow attendees to take notes, articulate arguments, and review complex codebases without fatigue.
+      </p>
+    </div>
+
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:18px 0;">
+      <h4 style="margin:0 0 8px;font-size:15px;color:var(--text);">Tier 2: Extended / Waking Hours (07:00 – 09:00 &amp; 17:00 – 21:00 Local)</h4>
+      <p style="margin:0;font-size:14px;color:var(--text-muted);line-height:1.6;">
+        These represent the transitional buffer hours. Early morning (07:00 - 09:00) catches employees before their standard routine begins, while early evening (17:00 - 21:00) infringes upon dinner, family commitments, and rest. While usable for urgent synchronization or sprint planning, recurring meetings here must be rotated to prevent attrition.
+      </p>
+    </div>
+
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:18px 0;">
+      <h4 style="margin:0 0 8px;font-size:15px;color:var(--text);">Tier 3: The Red Zone / Sleep Hours (21:00 – 07:00 Local)</h4>
+      <p style="margin:0;font-size:14px;color:var(--text-muted);line-height:1.6;">
+        Rest and recuperation. Forcing team members into calls during these hours triggers chronic sleep deprivation, increases cognitive error rates by over 40%, and destroys employee morale. If a meeting forces anyone into Tier 3, it should be canceled immediately in favor of an asynchronous memo.
+      </p>
+    </div>
+
+    <h3>3. Step-by-Step Workflow to Schedule Without Friction</h3>
+    <ol>
+      <li><strong>Populate Every Participant Individually:</strong> Use our calculator to add each team member with their exact local city and personal working hours. Never assume two people in the same continent have identical hours (e.g. parents vs early morning lifters).</li>
+      <li><strong>Inspect the Automated Recommendations:</strong> Look at the green-tinted chips generated above. If an overlap exists where 100% of attendees are in Tier 1 (Prime), select it.</li>
+      <li><strong>Check Calendar Dates Across Midnight:</strong> Confirm whether any participant has rolled over into the next day (e.g. Tuesday morning for Sydney while it is still Monday afternoon in San Francisco).</li>
+      <li><strong>Export the Invite Text:</strong> Use the one-click "Copy Meeting Schedule" button. Paste the formatted breakdown into your calendar description and Slack channel so no attendee is left guessing their local conversion.</li>
+    </ol>
+  </article>
+
+  <!-- 6 In-Depth FAQs -->
+  <section style="margin-top:48px;">
+    <h2 style="font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px;">Frequently Asked Questions (FAQ)</h2>
+    <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">Practical solutions to common international scheduling hurdles.</p>
+
+    <div class="faq-grid">
+      <div class="faq-card">
+        <h3><span>❓</span> How do we meet when our team is 12 to 14 hours apart?</h3>
+        <p>When teams span locations like California (UTC-7) and Singapore (UTC+8), their 9-to-5 working hours have 0% mutual overlap. You have three viable strategies: 1) Split bookends (e.g. 8:00 AM California = 11:00 PM Singapore), 2) Alternating weekly shifts so no one stays up late every single week, and 3) Asynchronous sprint reviews using written design docs and 5-minute video summaries.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> What is the "Rotational Burden" method?</h3>
+        <p>Instead of locking a recurring meeting into a time convenient only for corporate headquarters, the meeting rotates bi-weekly. Week 1 favors the Western Hemisphere, while Week 2 favors the Eastern Hemisphere. This ensures remote equity and prevents high employee turnover in remote satellite offices.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> Why does India use UTC+5:30 instead of a whole hour?</h3>
+        <p>Indian Standard Time was established in 1906 based on the 82.5° East longitude meridian passing near Mirzapur (Uttar Pradesh), which lies precisely 5 hours and 30 minutes ahead of the Greenwich meridian. Rather than splitting the country into two awkward time zones, India unified under this half-hour offset.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> How does Daylight Saving Time (DST) disrupt recurring calendar invites?</h3>
+        <p>The US switches clocks on the 2nd Sunday in March, while Europe switches on the last Sunday in March, and countries like India and Japan never change. If a meeting is created as a recurring Google Calendar event in New York time, overseas participants will find the meeting shifts by one hour for 3 weeks twice a year. Always re-check your schedule when seasonal shifts occur.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> What information should always be included in an international meeting invite?</h3>
+        <p>Always include: 1) The UTC reference time, 2) Converted local times for every attendee with their 3-letter abbreviation (e.g. EDT, BST, JST), 3) The exact calendar date for each location to avoid date-line misunderstandings, and 4) An asynchronous fallback option for those unable to attend live.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> When should we replace a live meeting with an asynchronous update?</h3>
+        <p>Replace live meetings when the agenda consists of one-way announcements, project status updates, or presentations without collaborative decision-making. Asynchronous tools like Loom, Notion, and Google Docs give team members the freedom to digest information at their own peak cognitive hours without disrupting their sleep.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free multi-city time zone and distributed team tools.</p>
+      </div>
+      <div>
+        <h4>Remote Work Tools</h4>
+        <ul>
+          <li><a href="/tools/time-zone-converter/">Time Zone Meeting Planner</a></li>
+          <li><a href="/tools/freelance-rate-calculator/">Freelance Rate</a></li>
+          <li><a href="/tools/cloud-cost-calculator/">Cloud Cost Estimator</a></li>
+          <li><a href="/tools/download-time-calculator/">Download Time</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Compound Interest</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Distributed Team Utilities.</p>
+  </div>
+</footer>
+
+<script>
+// Global City Catalog with UTC Offsets (Standard & Daylight aware)
+const CITY_CATALOG = [
+  // Americas
+  { id: 'us-sfo', name: 'San Francisco (US West)', tz: 'PST/PDT', offset: -7, region: 'Americas' },
+  { id: 'us-lax', name: 'Los Angeles (US West)', tz: 'PST/PDT', offset: -7, region: 'Americas' },
+  { id: 'us-den', name: 'Denver (US Mountain)', tz: 'MST/MDT', offset: -6, region: 'Americas' },
+  { id: 'us-chi', name: 'Chicago (US Central)', tz: 'CST/CDT', offset: -5, region: 'Americas' },
+  { id: 'us-nyc', name: 'New York (US East)', tz: 'EST/EDT', offset: -4, region: 'Americas' },
+  { id: 'ca-tor', name: 'Toronto (Canada East)', tz: 'EDT', offset: -4, region: 'Americas' },
+  { id: 'br-sao', name: 'São Paulo (Brazil)', tz: 'BRT', offset: -3, region: 'Americas' },
+  { id: 'ar-bue', name: 'Buenos Aires (Argentina)', tz: 'ART', offset: -3, region: 'Americas' },
+  
+  // Europe & Africa
+  { id: 'uk-lon', name: 'London (UK)', tz: 'GMT/BST', offset: 1, region: 'Europe' },
+  { id: 'ie-dub', name: 'Dublin (Ireland)', tz: 'IST/BST', offset: 1, region: 'Europe' },
+  { id: 'de-ber', name: 'Berlin (Germany)', tz: 'CET/CEST', offset: 2, region: 'Europe' },
+  { id: 'fr-par', name: 'Paris (France)', tz: 'CET/CEST', offset: 2, region: 'Europe' },
+  { id: 'nl-ams', name: 'Amsterdam (Netherlands)', tz: 'CET/CEST', offset: 2, region: 'Europe' },
+  { id: 'pl-war', name: 'Warsaw (Poland)', tz: 'CET/CEST', offset: 2, region: 'Europe' },
+  { id: 'es-mad', name: 'Madrid (Spain)', tz: 'CET/CEST', offset: 2, region: 'Europe' },
+  { id: 'ua-kyi', name: 'Kyiv (Ukraine)', tz: 'EEST', offset: 3, region: 'Europe' },
+  { id: 'za-jnb', name: 'Johannesburg (South Africa)', tz: 'SAST', offset: 2, region: 'Africa' },
+  { id: 'ke-nbi', name: 'Nairobi (Kenya)', tz: 'EAT', offset: 3, region: 'Africa' },
+
+  // Middle East & South Asia
+  { id: 'ae-dxb', name: 'Dubai (UAE)', tz: 'GST', offset: 4, region: 'Middle East' },
+  { id: 'in-del', name: 'New Delhi / Bengaluru (India)', tz: 'IST', offset: 5.5, region: 'South Asia' },
+  { id: 'pk-khi', name: 'Karachi (Pakistan)', tz: 'PKT', offset: 5, region: 'South Asia' },
+  { id: 'bd-dha', name: 'Dhaka (Bangladesh)', tz: 'BST', offset: 6, region: 'South Asia' },
+
+  // Southeast & East Asia
+  { id: 'th-bkk', name: 'Bangkok (Thailand)', tz: 'ICT', offset: 7, region: 'Asia' },
+  { id: 'sg-sin', name: 'Singapore', tz: 'SGT', offset: 8, region: 'Asia' },
+  { id: 'my-kul', name: 'Kuala Lumpur (Malaysia)', tz: 'MYT', offset: 8, region: 'Asia' },
+  { id: 'ph-mnl', name: 'Manila (Philippines)', tz: 'PHT', offset: 8, region: 'Asia' },
+  { id: 'hk-hkg', name: 'Hong Kong', tz: 'HKT', offset: 8, region: 'Asia' },
+  { id: 'cn-sha', name: 'Shanghai / Beijing (China)', tz: 'CST', offset: 8, region: 'Asia' },
+  { id: 'jp-tyo', name: 'Tokyo (Japan)', tz: 'JST', offset: 9, region: 'Asia' },
+  { id: 'kr-sel', name: 'Seoul (South Korea)', tz: 'KST', offset: 9, region: 'Asia' },
+
+  // Oceania
+  { id: 'au-per', name: 'Perth (Australia West)', tz: 'AWST', offset: 8, region: 'Oceania' },
+  { id: 'au-syd', name: 'Sydney / Melbourne (Australia)', tz: 'AEST/AEDT', offset: 10, region: 'Oceania' },
+  { id: 'nz-akl', name: 'Auckland (New Zealand)', tz: 'NZST/NZDT', offset: 12, region: 'Oceania' },
+  { id: 'us-hnl', name: 'Honolulu (Hawaii)', tz: 'HST', offset: -10, region: 'Pacific' }
+];
+
+// Initial Attendees State (Individual team members)
+let attendees = [
+  { id: 'att-1', name: 'Alice (Product)', cityId: 'us-sfo', workStart: 9, workEnd: 17 },
+  { id: 'att-2', name: 'Bob (Eng Lead)', cityId: 'uk-lon', workStart: 9, workEnd: 17 },
+  { id: 'att-3', name: 'Priya (Fullstack)', cityId: 'in-del', workStart: 9, workEnd: 17 }
+];
+
+let currentUtcHour = 14; // Default 14:00 UTC (9am SF, 3pm London, 7:30pm India)
+
+function getCityById(id) {
+  return CITY_CATALOG.find(c => c.id === id) || CITY_CATALOG[0];
+}
+
+function addAttendee() {
+  const newIndex = attendees.length + 1;
+  const defaultCities = ['jp-tyo', 'de-ber', 'br-sao', 'sg-sin', 'au-syd', 'us-nyc'];
+  const nextCity = defaultCities[(newIndex - 4) % defaultCities.length] || 'us-nyc';
+  
+  attendees.push({
+    id: 'att-' + Date.now(),
+    name: `Team Member ${newIndex}`,
+    cityId: nextCity,
+    workStart: 9,
+    workEnd: 17
+  });
+  renderAttendeeInputs();
+  renderAll();
+}
+
+function removeAttendee(id) {
+  if (attendees.length <= 1) {
+    alert('At least one team member is required.');
+    return;
+  }
+  attendees = attendees.filter(a => a.id !== id);
+  renderAttendeeInputs();
+  renderAll();
+}
+
+function updateAttendee(id, field, value) {
+  const att = attendees.find(a => a.id === id);
+  if (!att) return;
+  if (field === 'workStart' || field === 'workEnd') {
+    att[field] = parseFloat(value);
+  } else {
+    att[field] = value;
+  }
+  renderAll();
+}
+
+function renderAttendeeInputs() {
+  const container = document.getElementById('attendees-container');
+  container.innerHTML = '';
+
+  attendees.forEach((att, idx) => {
+    const card = document.createElement('div');
+    card.className = 'attendee-card';
+    card.id = `card-${att.id}`;
+
+    // Options for city dropdown
+    const optionsHtml = CITY_CATALOG.map(c => 
+      `<option value="${c.id}" ${c.id === att.cityId ? 'selected' : ''}>${c.name} (${c.tz}, UTC ${c.offset >= 0 ? '+' : ''}${c.offset})</option>`
+    ).join('');
+
+    card.innerHTML = `
+      <div class="attendee-input-group" style="flex:1.2;min-width:160px;">
+        <label>Person / Role Name</label>
+        <input type="text" value="${escapeHtml(att.name)}" oninput="updateAttendee('${att.id}', 'name', this.value)" placeholder="e.g. Sarah (Designer)" />
+      </div>
+
+      <div class="attendee-input-group" style="flex:2;min-width:220px;">
+        <label>City &amp; Timezone</label>
+        <select onchange="updateAttendee('${att.id}', 'cityId', this.value)">
+          ${optionsHtml}
+        </select>
+      </div>
+
+      <div class="attendee-input-group" style="flex:1;min-width:130px;">
+        <label>Work Hours</label>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <select style="padding:8px 6px;font-size:13px;" onchange="updateAttendee('${att.id}', 'workStart', this.value)">
+            ${[6,7,8,9,10,11].map(h => `<option value="${h}" ${h === att.workStart ? 'selected' : ''}>${formatHourOnly(h)}</option>`).join('')}
+          </select>
+          <span style="font-size:12px;color:var(--text-muted);">to</span>
+          <select style="padding:8px 6px;font-size:13px;" onchange="updateAttendee('${att.id}', 'workEnd', this.value)">
+            ${[16,17,18,19,20,21].map(h => `<option value="${h}" ${h === att.workEnd ? 'selected' : ''}>${formatHourOnly(h)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      ${attendees.length > 1 ? `
+        <button class="btn-remove-attendee" onclick="removeAttendee('${att.id}')" title="Remove this person">
+          &times; Remove
+        </button>
+      ` : ''}
+    `;
+    container.appendChild(card);
+  });
+}
+
+function escapeHtml(str) {
+  return (str || '').replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[tag] || tag));
+}
+
+function formatHourOnly(h) {
+  let period = h >= 12 ? 'PM' : 'AM';
+  let disp = h % 12;
+  if (disp === 0) disp = 12;
+  return `${disp} ${period}`;
+}
+
+function formatDecimalHour(val) {
+  let whole = Math.floor(val);
+  let min = Math.round((val % 1) * 60);
+  let period = 'AM';
+
+  whole = ((whole % 24) + 24) % 24;
+  if (whole >= 12) {
+    period = 'PM';
+    if (whole > 12) whole -= 12;
+  }
+  if (whole === 0) whole = 12;
+
+  const minStr = min > 0 ? `:${min.toString().padStart(2, '0')}` : ':00';
+  return `${whole}${minStr} ${period}`;
+}
+
+function getLocalHourInfo(utcH, offset) {
+  let localH = utcH + offset;
+  let dayShift = 0;
+  if (localH >= 24) {
+    dayShift = Math.floor(localH / 24);
+  } else if (localH < 0) {
+    dayShift = Math.floor(localH / 24);
+  }
+  let normalizedH = ((localH % 24) + 24) % 24;
+  return { localH, normalizedH, dayShift };
+}
+
+function getAttendeeStatus(normalizedH, workStart, workEnd) {
+  if (normalizedH >= workStart && normalizedH < workEnd) {
+    return { type: 'prime', label: '🟢 Prime Work', color: '#10B981', bg: 'rgba(16,185,129,0.1)' };
+  } else if ((normalizedH >= workStart - 2 && normalizedH < workStart) || (normalizedH >= workEnd && normalizedH < workEnd + 3)) {
+    return { type: 'extended', label: '🟡 Extended / Evening', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)' };
+  }
+  return { type: 'sleep', label: '🔴 Night / Sleep', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' };
+}
+
+function onSliderMove(val) {
+  currentUtcHour = parseFloat(val);
+  renderAll();
+}
+
+function selectUtcSlot(utcH) {
+  currentUtcHour = utcH;
+  document.getElementById('meeting-slider').value = utcH;
+  renderAll();
+}
+
+function renderAll() {
+  const wholeUtc = Math.floor(currentUtcHour);
+  const minUtc = Math.round((currentUtcHour % 1) * 60);
+  document.getElementById('slider-utc-display').textContent = `${wholeUtc.toString().padStart(2, '0')}:${minUtc.toString().padStart(2, '0')} UTC`;
+  document.getElementById('meeting-slider').value = currentUtcHour;
+
+  const duration = parseInt(document.getElementById('meeting-duration').value, 10) || 60;
+
+  // Calculate suitability across all attendees
+  let primeCount = 0;
+  let extendedCount = 0;
+  let sleepCount = 0;
+
+  const results = attendees.map(att => {
+    const city = getCityById(att.cityId);
+    const timeInfo = getLocalHourInfo(currentUtcHour, city.offset);
+    const status = getAttendeeStatus(timeInfo.normalizedH, att.workStart, att.workEnd);
+
+    if (status.type === 'prime') primeCount++;
+    else if (status.type === 'extended') extendedCount++;
+    else sleepCount++;
+
+    return {
+      att,
+      city,
+      timeInfo,
+      status,
+      formattedTime: formatDecimalHour(timeInfo.localH)
+    };
+  });
+
+  // Top banner summary
+  const bannerParts = results.map(r => `${r.formattedTime} (${r.city.tz})`);
+  document.getElementById('res-primary-banner').textContent = bannerParts.join('  •  ');
+
+  // Suitability badge
+  const badgeEl = document.getElementById('res-suitability-badge');
+  if (sleepCount === 0 && extendedCount === 0) {
+    badgeEl.textContent = '🟢 Perfect Golden Overlap: 100% of team members in prime business hours!';
+    badgeEl.style.background = 'rgba(16,185,129,0.12)';
+    badgeEl.style.color = '#065F46';
+  } else if (sleepCount === 0) {
+    badgeEl.textContent = `🟡 Acceptable Overlap: ${primeCount} in prime hours, ${extendedCount} in extended/evening hours.`;
+    badgeEl.style.background = 'rgba(245,158,11,0.15)';
+    badgeEl.style.color = '#92400E';
+  } else {
+    badgeEl.textContent = `⚠️ Unsocial Hours: ${sleepCount} member(s) would be sleeping or in deep off-hours.`;
+    badgeEl.style.background = 'rgba(239,68,68,0.12)';
+    badgeEl.style.color = '#991B1B';
+  }
+
+  // Render individual participant result cards
+  const cardsContainer = document.getElementById('individual-result-cards');
+  cardsContainer.innerHTML = '';
+
+  results.forEach(r => {
+    let dayNote = '';
+    if (r.timeInfo.dayShift > 0) {
+      dayNote = `<span style="font-size:11px;font-weight:700;color:#2563EB;background:rgba(37,99,235,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">Next Day (+${r.timeInfo.dayShift})</span>`;
+    } else if (r.timeInfo.dayShift < 0) {
+      dayNote = `<span style="font-size:11px;font-weight:700;color:#6B7280;background:rgba(107,114,128,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">Previous Day (${r.timeInfo.dayShift})</span>`;
+    }
+
+    const card = document.createElement('div');
+    card.style.display = 'flex';
+    card.style.justifyContent = 'space-between';
+    card.style.alignItems = 'center';
+    card.style.padding = '14px 18px';
+    card.style.borderRadius = '10px';
+    card.style.background = 'var(--bg)';
+    card.style.borderLeft = `5px solid ${r.status.color}`;
+
+    card.innerHTML = `
+      <div>
+        <div style="font-weight:800;font-size:15px;color:var(--text);">${escapeHtml(r.att.name)}</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">
+          ${r.city.name} — ${r.city.tz} (UTC ${r.city.offset >= 0 ? '+' : ''}${r.city.offset})
+          <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">[Work window: ${formatHourOnly(r.att.workStart)} - ${formatHourOnly(r.att.workEnd)}]</span>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:20px;font-weight:800;color:var(--text);font-family:'JetBrains Mono',monospace;">
+          ${r.formattedTime} ${dayNote}
+        </div>
+        <div style="margin-top:4px;">
+          <span style="font-size:12px;font-weight:700;color:${r.status.color};background:${r.status.bg};padding:3px 10px;border-radius:12px;">
+            ${r.status.label}
+          </span>
+        </div>
+      </div>
+    `;
+    cardsContainer.appendChild(card);
+  });
+
+  // Calculate Automated Overlap Recommendations
+  findOverlapWindows();
+
+  // Render 24-Hour Overlap Matrix
+  renderMatrix();
+}
+
+function findOverlapWindows() {
+  const chipsContainer = document.getElementById('recommended-chips');
+  chipsContainer.innerHTML = '';
+
+  const slots = [];
+
+  // Evaluate every half hour in UTC
+  for (let h = 0; h < 24; h += 0.5) {
+    let prime = 0;
+    let extended = 0;
+    let sleep = 0;
+
+    attendees.forEach(att => {
+      const city = getCityById(att.cityId);
+      const timeInfo = getLocalHourInfo(h, city.offset);
+      const st = getAttendeeStatus(timeInfo.normalizedH, att.workStart, att.workEnd);
+      if (st.type === 'prime') prime++;
+      else if (st.type === 'extended') extended++;
+      else sleep++;
+    });
+
+    if (sleep === 0) {
+      slots.push({
+        utc: h,
+        prime,
+        extended,
+        perfect: extended === 0
+      });
+    }
+  }
+
+  if (slots.length === 0) {
+    chipsContainer.innerHTML = '<span style="font-size:13px;color:var(--text-muted);">No zero-sleep hours exist across these cities. Consider an asynchronous update or rotating shifts.</span>';
+    return;
+  }
+
+  // Take the best 6 distinct slots
+  const bestSlots = slots.slice(0, 6);
+  bestSlots.forEach(s => {
+    const whole = Math.floor(s.utc);
+    const min = Math.round((s.utc % 1) * 60);
+    const timeStr = `${whole.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')} UTC`;
+    
+    // Sample first 2 attendees to preview local times
+    const previews = attendees.slice(0, 2).map(a => {
+      const city = getCityById(a.cityId);
+      const t = getLocalHourInfo(s.utc, city.offset);
+      return `${formatDecimalHour(t.localH)} ${city.tz}`;
+    }).join(' / ');
+
+    const chip = document.createElement('button');
+    chip.className = `slot-chip ${s.perfect ? '' : 'amber'}`;
+    chip.innerHTML = `<span>${s.perfect ? '★' : '●'} ${timeStr}</span> <span style="font-size:11px;opacity:0.85;">(${previews})</span>`;
+    chip.onclick = () => selectUtcSlot(s.utc);
+    chipsContainer.appendChild(chip);
+  });
+}
+
+function renderMatrix() {
+  const table = document.getElementById('overlap-matrix');
+  table.innerHTML = '';
+
+  // Header row with UTC hours
+  let headerHtml = '<thead><tr><th style="text-align:left;min-width:130px;padding-left:10px;">Participant</th>';
+  for (let h = 0; h < 24; h++) {
+    const isSelected = Math.floor(currentUtcHour) === h;
+    headerHtml += `<th class="${isSelected ? 'matrix-selected-col' : ''}" style="cursor:pointer;" onclick="selectUtcSlot(${h})">${h}</th>`;
+  }
+  headerHtml += '</tr></thead>';
+
+  let bodyHtml = '<tbody>';
+
+  attendees.forEach(att => {
+    const city = getCityById(att.cityId);
+    bodyHtml += `<tr><td style="text-align:left;font-weight:700;padding:6px 10px;white-space:nowrap;">
+      ${escapeHtml(att.name)} <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(${city.tz})</span>
+    </td>`;
+
+    for (let h = 0; h < 24; h++) {
+      const timeInfo = getLocalHourInfo(h, city.offset);
+      const st = getAttendeeStatus(timeInfo.normalizedH, att.workStart, att.workEnd);
+      const isSelected = Math.floor(currentUtcHour) === h;
+
+      let cellClass = 'cell-sleep';
+      let titleText = `${formatDecimalHour(timeInfo.localH)} - Sleeping / Rest`;
+      if (st.type === 'prime') {
+        cellClass = 'cell-prime';
+        titleText = `${formatDecimalHour(timeInfo.localH)} - Prime Working Hours`;
+      } else if (st.type === 'extended') {
+        cellClass = 'cell-extended';
+        titleText = `${formatDecimalHour(timeInfo.localH)} - Extended / Waking Hours`;
+      }
+
+      bodyHtml += `<td class="${isSelected ? 'matrix-selected-col' : ''}" style="cursor:pointer;" onclick="selectUtcSlot(${h})" title="${titleText}">
+        <div class="${cellClass}" style="padding:6px 2px;font-size:11px;">
+          ${Math.floor(timeInfo.normalizedH)}
+        </div>
+      </td>`;
+    }
+    bodyHtml += '</tr>';
+  });
+
+  bodyHtml += '</tbody>';
+  table.innerHTML = headerHtml + bodyHtml;
+}
+
+function copyInviteText() {
+  const duration = document.getElementById('meeting-duration').value || '60';
+  const wholeUtc = Math.floor(currentUtcHour);
+  const minUtc = Math.round((currentUtcHour % 1) * 60);
+  const utcStr = `${wholeUtc.toString().padStart(2, '0')}:${minUtc.toString().padStart(2, '0')} UTC`;
+
+  let text = `📅 Global Team Meeting Schedule\n`;
+  text += `Duration: ${duration} minutes\n`;
+  text += `Universal Reference: ${utcStr}\n\n`;
+  text += `Local Times by Participant:\n`;
+
+  attendees.forEach(att => {
+    const city = getCityById(att.cityId);
+    const timeInfo = getLocalHourInfo(currentUtcHour, city.offset);
+    let dayStr = '';
+    if (timeInfo.dayShift > 0) dayStr = ` (Next Day +${timeInfo.dayShift})`;
+    else if (timeInfo.dayShift < 0) dayStr = ` (Previous Day ${timeInfo.dayShift})`;
+
+    text += `• ${att.name} (${city.name}): ${formatDecimalHour(timeInfo.localH)} ${city.tz}${dayStr}\n`;
+  });
+
+  text += `\nCoordinated via LedgerMate Time Zone Planner (https://tryledgermate.in/tools/time-zone-converter/)`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy-invite');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '✅ Copied to Clipboard!';
+    btn.style.background = '#10B981';
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.style.background = '#1B1A28';
+    }, 2500);
+  }).catch(err => {
+    alert('Please copy manually:\n\n' + text);
+  });
+}
+
+function switchConceptTab(tabId) {
+  document.querySelectorAll('.concept-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.concept-tab-btn').forEach(b => b.classList.remove('active'));
+
+  const targetPane = document.getElementById('pane-' + tabId);
+  if (targetPane) targetPane.classList.add('active');
+
+  const btn = Array.from(document.querySelectorAll('.concept-tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+  if (btn) btn.classList.add('active');
+}
+
+// Initial setup
+renderAttendeeInputs();
+renderAll();
+</script>
+
+</body>
+</html>

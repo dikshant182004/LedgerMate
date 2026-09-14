@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home Loan EMI &amp; Prepayment Calculator 2026 | LedgerMate</title>
+<meta name="description" content="Free Home Loan &amp; Personal Loan EMI Calculator with interactive Prepayment and Step-up EMI simulator. See how prepaying ₹1 Lakh or increasing EMI yearly cuts years off your tenure and saves lakhs in interest." />
+<link rel="canonical" href="https://tryledgermate.in/tools/loan-emi-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Loan EMI Calculator with Prepayment | LedgerMate" />
+<meta property="og:description" content="Calculate monthly EMI and simulate prepayments and annual step-up EMIs. Save lakhs in interest." />
+<meta property="og:url" content="https://tryledgermate.in/tools/loan-emi-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Loan EMI & Prepayment Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "description": "Calculate loan EMI, interest saved through part-prepayment, and annual step-up EMI schedules.",
+  "featureList": [
+    "Monthly EMI calculation for home, car, and personal loans",
+    "Lump-sum part-prepayment simulator",
+    "Annual Step-up EMI simulator (e.g. +5% yearly)",
+    "Interest saved and tenure reduction analytics",
+    "Educational concept router on amortization, EBLR, and prepayment rules"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is home loan EMI calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EMI is calculated using the standard mathematical formula: E = P × r × (1+r)^n / ((1+r)^n - 1), where P is Principal loan amount, r is monthly interest rate (annual rate divided by 12 and 100), and n is total monthly tenure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does early prepayment save significantly more interest than late prepayment?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because home loan amortization schedules front-load interest payments in the initial years when the principal outstanding is highest, making a prepayment in Year 2 or 3 directly reduces the principal base on which subsequent compound interest is calculated for the remaining 17+ years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Step-Up EMI, and how does it reduce loan tenure?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Step-Up EMI strategy involves voluntarily increasing your monthly EMI payment by 5% or 10% each year, matching your annual salary hike. Because the increased amount goes 100% toward principal repayment, a 20-year home loan can typically be retired in 10 to 12 years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are there prepayment penalties on home loans?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In India, RBI mandates that banks and housing finance companies (HFCs) cannot levy any foreclosure charges or prepayment penalties on floating-rate home loans borrowed by individual borrowers. In the US, prepayment penalty clauses are strictly regulated under the Dodd-Frank Act."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between reducing balance and flat interest rates?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under a reducing balance method (standard for home loans), interest is charged each month only on the remaining unpaid loan balance. Under a flat interest rate (often quoted in car or personal loans), interest is calculated on the original loan amount for the entire tenure, making the effective interest rate nearly double the stated nominal rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does EBLR (External Benchmark Lending Rate) affect home loan EMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EBLR links floating home loan interest rates directly to an external benchmark, primarily the RBI Repo Rate. When the central bank hikes or cuts the repo rate, commercial banks must reset your loan interest rate accordingly, usually adjusting your loan tenure unless you request an EMI change."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/rent-vs-buy-calculator/">Rent vs Buy</a>
+      <a href="/tools/rent-affordability-calculator/">Rent Affordability</a>
+      <a href="/tools/india-ctc-salary-calculator/">India CTC In-Hand</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Loan EMI &amp; Prepayment Calculator
+  </div>
+
+  <h1 id="title-text" style="font-size:36px;margin-bottom:12px;text-align:center;">Home Loan EMI &amp; Prepayment Calculator</h1>
+  <p class="sub" id="sub-text" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Calculate your exact monthly EMI and simulate how part-prepayments or annual 5% step-up payments save lakhs in interest and cut years off your tenure.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <!-- Principal & Currency -->
+    <div class="calc-row">
+      <div style="flex:1.5;">
+        <label for="loan-amount">Loan Amount (Principal)</label>
+        <div style="display:flex;gap:8px;">
+          <input id="loan-amount" type="number" step="50000" min="50000" max="100000000" value="5000000" style="flex:2;" />
+          <select id="currency-select" style="flex:1;">
+            <option value="₹" selected>₹ (INR)</option>
+            <option value="$">$ (USD)</option>
+            <option value="€">€ (EUR)</option>
+            <option value="£">£ (GBP)</option>
+            <option value="A$">A$ (AUD)</option>
+            <option value="C$">C$ (CAD)</option>
+          </select>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <label for="interest-rate">Interest Rate (% per annum)</label>
+        <input id="interest-rate" type="number" step="0.05" min="1" max="36" value="8.5" />
+      </div>
+    </div>
+
+    <!-- Tenure -->
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="loan-tenure">Loan Tenure (Years)</label>
+        <input id="loan-tenure" type="number" step="1" min="1" max="35" value="20" />
+      </div>
+      <div style="flex:1;">
+        <label for="loan-type">Loan Category</label>
+        <select id="loan-type">
+          <option value="home" selected>Home Loan (~8.4% - 9.0%)</option>
+          <option value="car">Car Loan (~8.8% - 10.5%)</option>
+          <option value="personal">Personal Loan (~10.5% - 16.0%)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Prepayment Simulator Options -->
+    <div style="background:#F6F5FB;border:1px solid var(--border);border-radius:12px;padding:16px;margin:16px 0;">
+      <h4 style="margin:0 0 10px;font-size:14px;color:var(--accent);">⚡ Prepayment &amp; Step-Up Accelerator</h4>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="prepay-lumpsum">One-Time Lump Sum Prepayment</label>
+          <input id="prepay-lumpsum" type="number" step="50000" min="0" value="200000" placeholder="e.g. 200000" />
+        </div>
+        <div style="flex:1;">
+          <label for="prepay-year">Pay at End of Year</label>
+          <select id="prepay-year">
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3" selected>Year 3</option>
+            <option value="5">Year 5</option>
+            <option value="7">Year 7</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="stepup-pct">Annual Step-Up EMI (%)</label>
+          <select id="stepup-pct">
+            <option value="0">0% (Keep Fixed)</option>
+            <option value="5" selected>+5% each year</option>
+            <option value="10">+10% each year</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Banner -->
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Standard Monthly EMI</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-monthly-emi">₹43,391</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-tenure-sub">For 20 years (240 monthly payments)</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="res-principal-stat">₹50,00,000</div>
+          <div class="metric-lbl">Principal Borrowed</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-interest-stat">₹54,13,879</div>
+          <div class="metric-lbl">Total Interest Payable</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-total-stat">₹1,04,13,879</div>
+          <div class="metric-lbl">Total Amount Payable</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-saved-stat" style="color:var(--green);">₹24,35,000</div>
+          <div class="metric-lbl">Interest Saved (Prepayment)</div>
+        </div>
+      </div>
+
+      <!-- Prepayment Impact Card -->
+      <div id="prepay-impact-card" style="background:#EEF2FF;border-left:4px solid var(--accent);border-radius:10px;padding:16px 20px;margin-top:20px;">
+        <h4 style="margin:0 0 6px;color:#312E81;">Prepayment &amp; Step-Up Impact Summary</h4>
+        <div id="prepay-summary-text" style="font-size:14.5px;color:#1E1B4B;line-height:1.6;"></div>
+      </div>
+
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06);display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a href="/guides/home-loan-prepayment-rules/" class="concept-inline-link">How Home Loan Prepayment Saves 3x–4x Interest <span class="arrow">→</span></a>
+        <a href="/guides/home-loan-prepayment-rules/#rules" class="concept-inline-link">Prepayment Penalty Rules Explained <span class="arrow">→</span></a>
+        <a href="/guides/mortgage-interest-and-amortization/#amort" class="concept-inline-link">How Reducing Balance Math Works <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <!-- Mindmap -->
+    <div class="mindmap-box">
+      <h4>💡 Smart Prepayment Strategy Mindmap</h4>
+      <ul class="mindmap-list">
+        <li><strong>Early Prepayment Advantage:</strong> Prepaying ₹1 Lakh in Year 2 or Year 3 saves 3x to 4x more interest than prepaying in Year 15, because early payments immediately knock down the compounding principal base.</li>
+        <li><strong>Step-Up EMI Power:</strong> Increasing your monthly EMI by just 5% every year (inline with your annual salary raise) typically slashes a 20-year home loan down to ~11 to 12 years.</li>
+        <li><strong>No Prepayment Penalties:</strong> RBI regulations prohibit floating-rate home loans from charging any prepayment penalty for individual borrowers.</li>
+      </ul>
+    </div>
+
+    <!-- App CTA -->
+    <div class="calc-cta">
+      <div>
+        <p>Splitting rent or home maintenance with roommates?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Track joint bills with LedgerMate with zero ads and zero daily limits.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try Free App</a>
+    </div>
+  </div>
+
+  <!-- Educational Concept Router -->
+  <section class="concept-router" id="concept-guide">
+    <div class="concept-router-head">
+      <div class="concept-router-title">
+        <span>🎓 Mortgage &amp; Loan EMI Concepts Explained</span>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
+    </div>
+
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('emi-math')">1. The EMI Formula &amp; Math</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('emi-prepay')">2. Early Prepayment Multiplier</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('emi-stepup')">3. Step-Up EMI Strategy</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('emi-eblr')">4. Floating Rates &amp; Repo EBLR</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('emi-reducing')">5. Reducing Balance vs Flat Rate</button>
+    </div>
+
+    <!-- Pane 1 -->
+    <div class="concept-pane active" id="pane-emi-math">
+      <h4>The Mathematics Behind Equated Monthly Installments (EMI)</h4>
+      <p>An Equated Monthly Installment (EMI) is a fixed payment amount made by a borrower to a lender at a specified date each calendar month. EMIs apply to both interest and principal each month so that over a specified number of years, the loan is paid off in full.</p>
+      <div class="concept-formula-box">
+        E = P × r × (1 + r)ⁿ ÷ [(1 + r)ⁿ - 1]<br>
+        • P = Principal loan amount<br>
+        • r = Monthly interest rate (Annual rate ÷ 12 ÷ 100)<br>
+        • n = Loan tenure in months (Years × 12)
+      </div>
+      <p>While the total monthly payment <code>E</code> remains constant throughout the loan term, the proportion of principal versus interest changes dynamically. In the earliest years, interest represents 70% to 85% of each payment.</p>
+      <a href="/guides/mortgage-interest-and-amortization/#amort" class="concept-full-guide-link">Read Full Guide: Mortgage Amortization &amp; EMI Math <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 2 -->
+    <div class="concept-pane" id="pane-emi-prepay">
+      <h4>The Early Prepayment Multiplier Effect</h4>
+      <p>When you make a part-prepayment on a home loan, 100% of that payment is deducted directly from the outstanding principal balance. The bank recalculates future interest charges based on this lower principal base.</p>
+      <div class="concept-example-box">
+        <strong>Why Timing Matters:</strong><br>
+        • Prepaying ₹2,00,000 at the end of Year 2 on a 20-year, 8.5% loan saves approximately <strong>₹5,80,000</strong> in interest over the life of the loan.<br>
+        • Prepaying that exact same ₹2,00,000 in Year 17 saves only <strong>₹42,000</strong> in interest.<br>
+        <em>Conclusion: Every rupee prepaid in the first 5 years delivers roughly 10x to 14x more interest relief than late prepayments.</em>
+      </div>
+      <a href="/guides/home-loan-prepayment-rules/" class="concept-full-guide-link">Read Full Guide: Home Loan Prepayment Rules &amp; Savings Multipliers <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 3 -->
+    <div class="concept-pane" id="pane-emi-stepup">
+      <h4>The Step-Up EMI Strategy: Retiring Loans in Half the Time</h4>
+      <p>Most borrowers experience steady wage growth of 6% to 12% annually as their careers advance. Yet their home loan EMI remains artificially locked at day-one levels.</p>
+      <p>By instituting an automated <strong>5% or 10% annual Step-Up EMI</strong>, your monthly payment increases smoothly in tandem with your annual appraisal. The entire incremental payment goes straight toward principal reduction, collapsing a 20-year loan down to 10–12 years without causing budgetary strain.</p>
+      <a href="/guides/home-loan-prepayment-rules/#stepup" class="concept-full-guide-link">Read Full Guide: The Step-Up EMI Payoff Accelerator <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 4 -->
+    <div class="concept-pane" id="pane-emi-eblr">
+      <h4>EBLR, MCLR &amp; Repo Rate Transmission Mechanics</h4>
+      <p>Floating home loans are benchmarked against external rates:</p>
+      <ul>
+        <li><strong>External Benchmark Lending Rate (EBLR):</strong> Mandated by the Reserve Bank of India since October 2019, loans are tied directly to the RBI Repo Rate plus a fixed bank spread. When RBI adjusts the repo rate, your loan interest adjusts automatically within 3 months.</li>
+        <li><strong>Tenure Extension vs EMI Increase:</strong> When interest rates rise, banks by default increase your loan tenure rather than increasing your monthly EMI, preventing immediate cashflow shocks. However, this can stretch a 20-year loan into a 28-year loan unless you proactively request an EMI reset.</li>
+      </ul>
+    </div>
+
+    <!-- Pane 5 -->
+    <div class="concept-pane" id="pane-emi-reducing">
+      <h4>Reducing Balance Method vs Flat Rate (The Auto Loan Trap)</h4>
+      <p>Always verify whether an interest rate is quoted as <em>Reducing Balance</em> or <em>Flat Rate</em>:</p>
+      <ul>
+        <li><strong>Reducing Balance (Home Loans):</strong> Interest is calculated every month on the declining unpaid principal. If you borrow ₹50 Lakhs and pay off ₹10 Lakhs, you only pay interest on ₹40 Lakhs.</li>
+        <li><strong>Flat Rate (Often used in Car/Personal Loans):</strong> Interest is calculated on the entire original principal for the full duration, regardless of how much you have paid back. A "9% flat rate" actually equals an effective reducing rate of roughly <strong>16.2%</strong>!</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- In-Depth Editorial Guide -->
+  <article style="margin-top:40px;">
+    <h2>The Complete Guide to Home Loan EMIs, Amortization &amp; Prepayment Economics</h2>
+    <p>A home loan is typically the largest financial liability an individual or family will ever undertake. Over a traditional 20 or 30-year tenure, the cumulative interest paid to the lender frequently exceeds the original principal borrowed. On a ₹50,00,000 ($60,000) home loan at an 8.5% interest rate over 20 years, total interest charges amount to over ₹54,13,000—meaning you repay more than double the original purchase loan.</p>
+
+    <p>Understanding how amortized loans function enables you to use targeted financial maneuvers—such as strategic prepayments, tenure restructuring, and annual step-up allocations—to retain tens of lakhs in your personal wealth portfolio rather than transferring it to institutional lenders.</p>
+
+    <h3>1. The Anatomy of an Amortization Schedule</h3>
+    <p>Every monthly EMI payment is split into two distinct portions: interest payment (the bank's profit) and principal repayment (equity accumulation). In an amortized loan, the lender collects interest on the remaining principal balance. Because the balance is at its absolute peak on day one, the interest portion dominates the initial payments.</p>
+    <p>Consider the trajectory of a ₹50 Lakh home loan at 8.5%:</p>
+    <ul style="padding-left:22px;line-height:1.7;color:var(--text);">
+      <li><strong>Month 1:</strong> Total EMI is ₹43,391. The interest component is ₹35,417 (81.6%), while principal repayment is a mere ₹7,974 (18.4%).</li>
+      <li><strong>Month 60 (Year 5):</strong> Total EMI remains ₹43,391. The interest component is ₹32,010 (73.8%), and principal repayment has climbed to ₹11,381.</li>
+      <li><strong>Month 180 (Year 15):</strong> Total EMI remains ₹43,391. The interest component has fallen to ₹16,920 (39.0%), and principal repayment is now ₹26,471 (61.0%).</li>
+    </ul>
+
+    <h3>2. The Power of Early Lump-Sum Prepayments</h3>
+    <p>Because interest charges are calculated directly on the outstanding principal, making a lump-sum prepayment in the early phases of the loan delivers exponential interest savings. When you prepay ₹2,00,000 in Year 2, that entire amount eliminates ₹2,00,000 of high-interest-bearing principal. Over the remaining 18 years, the bank is deprived of compounding interest on that ₹2,00,000 balance, saving you nearly ₹6,00,000 in cumulative interest.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>How is home loan EMI calculated?</summary>
+      <p>EMI is calculated using the standard mathematical formula: E = P × r × (1+r)^n / ((1+r)^n - 1), where P is Principal loan amount, r is monthly interest rate (annual rate divided by 12 and 100), and n is total monthly tenure.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why does early prepayment save significantly more interest than late prepayment?</summary>
+      <p>Because home loan amortization schedules front-load interest payments in the initial years when the principal outstanding is highest, making a prepayment in Year 2 or 3 directly reduces the principal base on which subsequent compound interest is calculated for the remaining 17+ years.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is a Step-Up EMI, and how does it reduce loan tenure?</summary>
+      <p>A Step-Up EMI strategy involves voluntarily increasing your monthly EMI payment by 5% or 10% each year, matching your annual salary hike. Because the increased amount goes 100% toward principal repayment, a 20-year home loan can typically be retired in 10 to 12 years.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Are there prepayment penalties on home loans?</summary>
+      <p>In India, RBI mandates that banks and housing finance companies (HFCs) cannot levy any foreclosure charges or prepayment penalties on floating-rate home loans borrowed by individual borrowers. In the US, prepayment penalty clauses are strictly regulated under the Dodd-Frank Act.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the difference between reducing balance and flat interest rates?</summary>
+      <p>Under a reducing balance method (standard for home loans), interest is charged each month only on the remaining unpaid loan balance. Under a flat interest rate (often quoted in car or personal loans), interest is calculated on the original loan amount for the entire tenure, making the effective interest rate nearly double the stated nominal rate.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How does EBLR (External Benchmark Lending Rate) affect home loan EMI?</summary>
+      <p>EBLR links floating home loan interest rates directly to an external benchmark, primarily the RBI Repo Rate. When the central bank hikes or cuts the repo rate, commercial banks must reset your loan interest rate accordingly, usually adjusting your loan tenure unless you request an EMI change.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction calculations and shared expense tracking.</p>
+      </div>
+      <div>
+        <h4>Finance Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">EMI &amp; Prepayment Calculator</a></li>
+          <li><a href="/tools/india-ctc-salary-calculator/">India CTC In-Hand</a></li>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a></li>
+          <li><a href="/tools/rent-vs-buy-calculator/">Rent vs Buy Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/rent-affordability-calculator/">Rent Affordability</a></li>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Split (Sq Ft)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guides</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/blog/how-to-calculate-prorated-rent/">Prorated Rent Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Financial Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmt(n) {
+  const curr = document.getElementById('currency-select').value;
+  if (curr === '₹') {
+    return '₹' + Math.round(n || 0).toLocaleString('en-IN');
+  }
+  return curr + Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+}
+
+function switchConcept(conceptId) {
+  const tabs = document.querySelectorAll("#concept-tabs .concept-tab-btn");
+  tabs.forEach(t => t.classList.remove("active"));
+  const panes = document.querySelectorAll("#concept-guide .concept-pane");
+  panes.forEach(p => p.classList.remove("active"));
+
+  if (event && event.target) {
+    event.target.classList.add("active");
+  }
+  const targetPane = document.getElementById("pane-" + conceptId);
+  if (targetPane) {
+    targetPane.classList.add("active");
+  }
+}
+
+function calc() {
+  const p = parseFloat(document.getElementById('loan-amount').value) || 0;
+  const annualR = parseFloat(document.getElementById('interest-rate').value) || 0;
+  const years = parseFloat(document.getElementById('loan-tenure').value) || 1;
+  const prepay = parseFloat(document.getElementById('prepay-lumpsum').value) || 0;
+  const prepayYr = parseInt(document.getElementById('prepay-year').value, 10) || 3;
+  const stepup = parseFloat(document.getElementById('stepup-pct').value) || 0;
+
+  const r = annualR / (12 * 100);
+  const n = years * 12;
+
+  if (p <= 0 || r <= 0 || n <= 0) return;
+
+  // Standard EMI Formula: E = P * r * (1+r)^n / ((1+r)^n - 1)
+  const emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const standardTotalPayable = emi * n;
+  const standardTotalInterest = standardTotalPayable - p;
+
+  document.getElementById('res-monthly-emi').textContent = fmt(emi);
+  document.getElementById('res-tenure-sub').textContent = `For ${years} years (${n} monthly payments)`;
+  document.getElementById('res-principal-stat').textContent = fmt(p);
+  document.getElementById('res-interest-stat').textContent = fmt(standardTotalInterest);
+  document.getElementById('res-total-stat').textContent = fmt(standardTotalPayable);
+
+  // Simulate month by month with prepay and step-up
+  let balance = p;
+  let totalInterestWithAccel = 0;
+  let currentEmi = emi;
+  let monthsPaid = 0;
+
+  for (let m = 1; m <= n * 2; m++) {
+    if (balance <= 0) break;
+    monthsPaid = m;
+
+    // Apply annual step-up at beginning of each year (month 13, 25, etc)
+    if (stepup > 0 && m > 1 && (m - 1) % 12 === 0) {
+      currentEmi = currentEmi * (1 + (stepup / 100));
+    }
+
+    // Monthly interest
+    const interestForMonth = balance * r;
+    totalInterestWithAccel += interestForMonth;
+
+    let principalPaidThisMonth = currentEmi - interestForMonth;
+    if (principalPaidThisMonth > balance) {
+      principalPaidThisMonth = balance;
+    }
+    balance -= principalPaidThisMonth;
+
+    // Lump sum prepayment
+    if (prepay > 0 && m === prepayYr * 12) {
+      balance = Math.max(0, balance - prepay);
+    }
+  }
+
+  const interestSaved = Math.max(0, standardTotalInterest - totalInterestWithAccel);
+  const monthsSaved = Math.max(0, n - monthsPaid);
+  const yearsSaved = (monthsSaved / 12).toFixed(1);
+
+  document.getElementById('res-saved-stat').textContent = fmt(interestSaved);
+
+  let prepayText = `By prepaying ${fmt(prepay)} in Year ${prepayYr}`;
+  if (stepup > 0) {
+    prepayText += ` and stepping up EMI by ${stepup}% each year`;
+  }
+  prepayText += `:<br />• You save approximately <strong style="color:var(--green);">${fmt(interestSaved)}</strong> in total interest.<br />• You close your loan <strong style="color:var(--accent);">${yearsSaved} years earlier</strong> (in ${(monthsPaid/12).toFixed(1)} years instead of ${years} years).`;
+
+  document.getElementById('prepay-summary-text').innerHTML = prepayText;
+}
+
+['loan-amount', 'currency-select', 'interest-rate', 'loan-tenure', 'loan-type', 'prepay-lumpsum', 'prepay-year', 'stepup-pct'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

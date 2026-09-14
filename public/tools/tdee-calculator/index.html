@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TDEE Calculator (Total Daily Energy Expenditure &amp; Macro Targets) | LedgerMate</title>
+<meta name="description" content="Calculate your exact Total Daily Energy Expenditure (TDEE), BMR, and target calories for fat loss or lean bulk. Medical-grade Mifflin-St Jeor and Katch-McArdle equations with macronutrient breakdowns." />
+<link rel="canonical" href="https://tryledgermate.in/tools/tdee-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="TDEE &amp; Calorie Deficit Calculator | LedgerMate" />
+<meta property="og:description" content="Calculate your maintenance calories, fat loss deficit, and muscle-building surplus with macro grams." />
+<meta property="og:url" content="https://tryledgermate.in/tools/tdee-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=4" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate TDEE & Calorie Deficit Calculator",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Scientific Total Daily Energy Expenditure (TDEE) and BMR calculator featuring Mifflin-St Jeor and Katch-McArdle formulas, calorie goals, and macro splits.",
+  "featureList": [
+    "Imperial (lbs, ft, in) and Metric (kg, cm) unit support",
+    "Mifflin-St Jeor clinical BMR equation",
+    "Katch-McArdle formula based on Lean Body Mass (LBM)",
+    "5 physical activity level multipliers",
+    "Target calories for mild loss (-250), standard fat loss (-500), and lean bulk (+250)",
+    "Detailed daily macronutrient split (Protein, Healthy Fats, Carbohydrates in grams)"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between BMR and TDEE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Basal Metabolic Rate (BMR) is the baseline energy expenditure required strictly to sustain cellular life and vital organ function in a coma-like resting state. Total Daily Energy Expenditure (TDEE) represents all energy burned in 24 hours, combining BMR with Non-Exercise Activity (NEAT), Thermic Effect of Food (TEF), and planned Exercise (EAT)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which formula is most accurate for calculating TDEE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Mifflin-St Jeor formula is recognized by the American Dietetic Association as the most accurate equation for the general population. If you have an accurate body fat percentage measurement (from DEXA or hydrostatic weighing), the Katch-McArdle equation provides superior accuracy by evaluating lean body mass."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How large should a calorie deficit be for safe fat loss?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A standard calorie deficit of 500 kcal per day corresponds to approximately 1 pound (0.45 kg) of fat loss per week (3,500 kcal deficit). A conservative deficit of 250 kcal/day (0.5 lb/week) preserves maximum lean muscle mass."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  .unit-toggle-group {
+    display: flex;
+    background: var(--bg);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    gap: 4px;
+  }
+  .unit-toggle-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 12px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+  }
+  .unit-toggle-btn.active {
+    background: var(--card);
+    color: var(--accent);
+    box-shadow: 0 1px 4px rgba(30, 20, 70, 0.08);
+  }
+  .goal-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+  @media (max-width: 640px) {
+    .goal-card-grid { grid-template-columns: 1fr; }
+  }
+  .goal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.15s;
+  }
+  .goal-card.featured {
+    border-color: var(--accent);
+    background: #F8F7FF;
+  }
+  .goal-card h4 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .goal-cals {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .goal-card.featured .goal-cals {
+    color: var(--accent);
+  }
+  .macro-pill {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/bmr-calculator/">BMR Calculator</a>
+      <a href="/tools/ovulation-calculator/">Ovulation Calculator</a>
+      <a href="/tools/scientific-calculator/">Scientific Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> TDEE &amp; Calorie Calculator
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">TDEE &amp; Calorie Deficit Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Calculate your exact Total Daily Energy Expenditure (TDEE), BMR, and optimal macronutrient targets for healthy fat loss or muscle hypertrophy.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <!-- Unit Selector -->
+    <div class="unit-toggle-group">
+      <button type="button" class="unit-toggle-btn active" id="btn-unit-imperial">Imperial (lbs / feet / inches)</button>
+      <button type="button" class="unit-toggle-btn" id="btn-unit-metric">Metric (kg / cm)</button>
+    </div>
+
+    <!-- Gender & Age -->
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="gender">Biological Sex</label>
+        <select id="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="age">Age (years)</label>
+        <input id="age" type="number" min="14" max="100" value="28" />
+      </div>
+    </div>
+
+    <!-- Height & Weight Imperial -->
+    <div class="calc-row" id="row-imperial-inputs">
+      <div style="flex:1;display:flex;gap:8px;">
+        <div style="flex:1;">
+          <label for="height-ft">Height (Feet)</label>
+          <input id="height-ft" type="number" min="4" max="7" value="5" />
+        </div>
+        <div style="flex:1;">
+          <label for="height-in">Inches</label>
+          <input id="height-in" type="number" min="0" max="11" value="10" />
+        </div>
+      </div>
+      <div style="flex:1;">
+        <label for="weight-lbs">Weight (Pounds)</label>
+        <input id="weight-lbs" type="number" min="70" max="500" value="175" />
+      </div>
+    </div>
+
+    <!-- Height & Weight Metric -->
+    <div class="calc-row" id="row-metric-inputs" style="display:none;">
+      <div style="flex:1;">
+        <label for="height-cm">Height (cm)</label>
+        <input id="height-cm" type="number" min="120" max="230" value="178" />
+      </div>
+      <div style="flex:1;">
+        <label for="weight-kg">Weight (kg)</label>
+        <input id="weight-kg" type="number" min="35" max="250" value="79" />
+      </div>
+    </div>
+
+    <!-- Activity Level -->
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="activity">Daily Physical Activity Level</label>
+        <select id="activity">
+          <option value="1.2">Sedentary (Desk job, little to no exercise)</option>
+          <option value="1.375" selected>Lightly Active (Light exercise 1–3 days/week)</option>
+          <option value="1.55">Moderately Active (Moderate exercise 3–5 days/week)</option>
+          <option value="1.725">Very Active (Heavy training 6–7 days/week)</option>
+          <option value="1.9">Extremely Active (Athletic double-sessions or heavy manual labor)</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="bodyfat">Body Fat % (Optional)</label>
+        <input id="bodyfat" type="number" step="0.5" min="4" max="60" placeholder="e.g. 18 (for Katch-McArdle)" />
+      </div>
+    </div>
+
+    <!-- Results Display -->
+    <div class="calc-result" style="margin-top:20px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Daily Maintenance Energy (TDEE)</span>
+        <div style="font-size:clamp(32px,6vw,44px);font-weight:800;color:var(--text);margin:6px 0;">
+          <span id="res-tdee">2,385</span> <span style="font-size:20px;font-weight:600;color:var(--text-muted);">kcal / day</span>
+        </div>
+        <span style="font-size:14px;color:var(--text-muted);">Eat this amount of calories daily to maintain current body weight.</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="res-bmr">1,735</div>
+          <div class="metric-lbl">BMR (Basal Metabolic Rate)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-bmi">25.1</div>
+          <div class="metric-lbl">Estimated BMI</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-weekly-cals">16,695</div>
+          <div class="metric-lbl">Weekly Energy Output</div>
+        </div>
+      </div>
+
+      <!-- Goal Targets -->
+      <h3 style="font-size:16px;margin:24px 0 12px;font-weight:700;">Daily Calorie Targets by Fitness Goal</h3>
+      <div class="goal-card-grid">
+        <div class="goal-card">
+          <h4>Mild Fat Loss (-0.5 lb/wk)</h4>
+          <div class="goal-cals" id="goal-mild-loss">2,135</div>
+          <span style="font-size:12px;color:var(--text-muted);">-250 kcal/day</span>
+        </div>
+        <div class="goal-card featured">
+          <span class="badge-pill badge-free" style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);">Standard Deficit</span>
+          <h4>Fat Loss (-1.0 lb/wk)</h4>
+          <div class="goal-cals" id="goal-standard-loss">1,885</div>
+          <span style="font-size:12px;color:var(--accent);font-weight:600;">-500 kcal/day (Recommended)</span>
+        </div>
+        <div class="goal-card">
+          <h4>Lean Muscle Bulk (+0.5 lb/wk)</h4>
+          <div class="goal-cals" id="goal-lean-gain">2,635</div>
+          <span style="font-size:12px;color:var(--text-muted);">+250 kcal/day</span>
+        </div>
+      </div>
+
+      <!-- Daily Macro Breakdown -->
+      <h3 style="font-size:16px;margin:24px 0 10px;font-weight:700;">Recommended Macronutrients for Standard Deficit (-500 kcal)</h3>
+      <div id="macro-container">
+        <div class="macro-pill">
+          <strong>🥩 Protein (30% Calories)</strong>
+          <span id="macro-protein" style="font-weight:700;color:var(--accent);">141g (565 kcal)</span>
+        </div>
+        <div class="macro-pill">
+          <strong>🥑 Healthy Dietary Fats (30% Calories)</strong>
+          <span id="macro-fats" style="font-weight:700;color:var(--accent);">63g (565 kcal)</span>
+        </div>
+        <div class="macro-pill">
+          <strong>🍚 Carbohydrates (40% Calories)</strong>
+          <span id="macro-carbs" style="font-weight:700;color:var(--accent);">188g (754 kcal)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p>Sharing gym memberships, meal prep budgets, or flat groceries?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Track and split shared food and household bills seamlessly with LedgerMate — 100% free with no ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Open LedgerMate</a>
+    </div>
+  </div>
+
+  <article style="margin-top:44px;line-height:1.7;">
+    <h2>The Definitive Clinical Guide to TDEE &amp; Energy Balance</h2>
+    <p>Your <strong>Total Daily Energy Expenditure (TDEE)</strong> is the aggregate number of calories your body burns in a complete 24-hour day. Understanding the mathematical components of human energy expenditure allows you to achieve precise fat loss or muscular hypertrophy without extreme dieting.</p>
+
+    <h3>1. The Four Biological Components of TDEE</h3>
+    <ul>
+      <li><strong>Basal Metabolic Rate (BMR) (~60–70%):</strong> The baseline energy required to sustain vital physiological organs (liver, brain, heart, kidneys) at complete rest.</li>
+      <li><strong>Non-Exercise Activity Thermogenesis (NEAT) (~15%):</strong> Calories expended through spontaneous physical movement—walking, typing, taking the stairs, cooking, and maintaining posture.</li>
+      <li><strong>Thermic Effect of Food (TEF) (~8–10%):</strong> Metabolic energy consumed to ingest, digest, absorb, and assimilate nutrients. Dietary protein has the highest TEF (20–30%), meaning nearly a third of protein calories are burned off purely during digestion.</li>
+      <li><strong>Exercise Activity Thermogenesis (EAT) (~5–15%):</strong> Intentional athletic training, weight lifting, cycling, and running.</li>
+    </ul>
+
+    <h3>2. The Formulas Explained</h3>
+    <div class="table-responsive">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Formula</th>
+            <th>Clinical Equation</th>
+            <th>Best Suited For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mifflin-St Jeor</strong></td>
+            <td>Men: 10×W + 6.25×H - 5×A + 5<br />Women: 10×W + 6.25×H - 5×A - 161</td>
+            <td>General population, individuals without DEXA scans (validated ±10% clinical accuracy).</td>
+          </tr>
+          <tr>
+            <td><strong>Katch-McArdle</strong></td>
+            <td>BMR = 370 + 21.6 × (Lean Mass in kg)</td>
+            <td>Athletes, bodybuilders, or individuals with known body fat percentage.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3. Physical Activity Level Multipliers</h3>
+    <p>To convert BMR into TDEE, clinical nutrition applies empirical physical activity multipliers:</p>
+    <ul>
+      <li><strong>Sedentary (1.20):</strong> Desk worker averaging under 5,000 steps per day with no formal exercise.</li>
+      <li><strong>Lightly Active (1.375):</strong> 5,000–8,000 steps per day or 1 to 3 days of light resistance/cardio training.</li>
+      <li><strong>Moderately Active (1.55):</strong> 8,000–12,000 steps per day or 3 to 5 days of moderate to vigorous exercise.</li>
+      <li><strong>Very Active (1.725):</strong> 12,000+ steps per day or 6 to 7 days of intense sports or heavy resistance lifting.</li>
+      <li><strong>Extremely Active (1.90):</strong> Professional endurance athletes or hard physical labor (construction, forestry) combined with training.</li>
+    </ul>
+
+    <h3>4. Metabolic Adaptation &amp; Why Plateaus Happen</h3>
+    <p>As you lose body weight, your body requires fewer calories to maintain and move a lighter frame. Furthermore, biological adaptation (adaptive thermogenesis) decreases spontaneous NEAT (fidgeting less, resting more). To break plateaus, re-calculate your TDEE every 10–15 lbs (5–7 kg) lost, or implement a 1-week maintenance diet break to restore leptin and thyroid hormones.</p>
+
+    <h2 style="margin-top:40px;">Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>What is the difference between BMR and TDEE?</summary>
+      <p>BMR is your baseline metabolic rate at complete rest in bed. TDEE is BMR multiplied by your physical activity multiplier. You will always burn significantly more calories than your BMR each day.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How often should I recalculate my TDEE?</summary>
+      <p>Recalculate your TDEE every 10 to 15 pounds (4 to 7 kg) of weight loss or gain. As your body mass drops, your BMR and energy cost of movement naturally decrease, requiring adjusted calorie targets to avoid plateaus.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why shouldn't I eat fewer than 1,200 calories per day?</summary>
+      <p>Eating below 1,200 calories (for women) or 1,500 calories (for men) often leads to severe metabolic adaptation, muscle mass loss, hormonal imbalances, micronutrient deficiencies, and binge-restrict cycles.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction group expense sharing. Free, no mandatory app download, no limits.</p>
+      </div>
+      <div>
+        <h4>Health Calculators</h4>
+        <ul>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calorie Calculator</a></li>
+          <li><a href="/tools/bmr-calculator/">BMR Calculator</a></li>
+          <li><a href="/tools/ovulation-calculator/">Ovulation Calculator</a></li>
+          <li><a href="/tools/pregnancy-due-date-calculator/">Pregnancy Due Date</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Financial Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Compound Interest</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Calculations &amp; Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+let unitMode = "imperial";
+
+const btnImperial = document.getElementById("btn-unit-imperial");
+const btnMetric = document.getElementById("btn-unit-metric");
+const rowImperial = document.getElementById("row-imperial-inputs");
+const rowMetric = document.getElementById("row-metric-inputs");
+
+const genderEl = document.getElementById("gender");
+const ageEl = document.getElementById("age");
+const hFtEl = document.getElementById("height-ft");
+const hInEl = document.getElementById("height-in");
+const wLbsEl = document.getElementById("weight-lbs");
+const hCmEl = document.getElementById("height-cm");
+const wKgEl = document.getElementById("weight-kg");
+const actEl = document.getElementById("activity");
+const bfEl = document.getElementById("bodyfat");
+
+btnImperial.addEventListener("click", () => setUnit("imperial"));
+btnMetric.addEventListener("click", () => setUnit("metric"));
+
+function setUnit(mode) {
+  unitMode = mode;
+  if (mode === "imperial") {
+    btnImperial.classList.add("active");
+    btnMetric.classList.remove("active");
+    rowImperial.style.display = "flex";
+    rowMetric.style.display = "none";
+  } else {
+    btnMetric.classList.add("active");
+    btnImperial.classList.remove("active");
+    rowImperial.style.display = "none";
+    rowMetric.style.display = "flex";
+  }
+  calculate();
+}
+
+[genderEl, ageEl, hFtEl, hInEl, wLbsEl, hCmEl, wKgEl, actEl, bfEl].forEach(el => {
+  el.addEventListener("input", calculate);
+  el.addEventListener("change", calculate);
+});
+
+function calculate() {
+  const gender = genderEl.value;
+  const age = parseFloat(ageEl.value) || 25;
+  const activity = parseFloat(actEl.value) || 1.375;
+  const bf = parseFloat(bfEl.value);
+
+  let weightKg = 75;
+  let heightCm = 175;
+
+  if (unitMode === "imperial") {
+    const ft = parseFloat(hFtEl.value) || 5;
+    const inch = parseFloat(hInEl.value) || 10;
+    const lbs = parseFloat(wLbsEl.value) || 175;
+    heightCm = (ft * 30.48) + (inch * 2.54);
+    weightKg = lbs * 0.45359237;
+  } else {
+    heightCm = parseFloat(hCmEl.value) || 178;
+    weightKg = parseFloat(wKgEl.value) || 79;
+  }
+
+  let bmr = 0;
+  if (!isNaN(bf) && bf > 4 && bf < 60) {
+    const leanMassKg = weightKg * (1 - (bf / 100));
+    bmr = 370 + (21.6 * leanMassKg);
+  } else {
+    if (gender === "male") {
+      bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+    } else {
+      bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+    }
+  }
+
+  const tdee = bmr * activity;
+  const heightM = heightCm / 100;
+  const bmi = (weightKg / (heightM * heightM)).toFixed(1);
+
+  document.getElementById("res-tdee").textContent = Math.round(tdee).toLocaleString();
+  document.getElementById("res-bmr").textContent = Math.round(bmr).toLocaleString();
+  document.getElementById("res-bmi").textContent = bmi;
+  document.getElementById("res-weekly-cals").textContent = Math.round(tdee * 7).toLocaleString();
+
+  const mildLoss = Math.max(1200, Math.round(tdee - 250));
+  const standardLoss = Math.max(1200, Math.round(tdee - 500));
+  const leanGain = Math.round(tdee + 250);
+
+  document.getElementById("goal-mild-loss").textContent = mildLoss.toLocaleString();
+  document.getElementById("goal-standard-loss").textContent = standardLoss.toLocaleString();
+  document.getElementById("goal-lean-gain").textContent = leanGain.toLocaleString();
+
+  const targetCals = standardLoss;
+  const proteinGrams = Math.round((targetCals * 0.30) / 4);
+  const fatGrams = Math.round((targetCals * 0.30) / 9);
+  const carbGrams = Math.round((targetCals * 0.40) / 4);
+
+  document.getElementById("macro-protein").textContent = `${proteinGrams}g (${Math.round(proteinGrams * 4)} kcal)`;
+  document.getElementById("macro-fats").textContent = `${fatGrams}g (${Math.round(fatGrams * 9)} kcal)`;
+  document.getElementById("macro-carbs").textContent = `${carbGrams}g (${Math.round(carbGrams * 4)} kcal)`;
+}
+
+calculate();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Retirement &amp; 401(k) Calculator (With Employer Match &amp; 4% Rule) | LedgerMate</title>
+<meta name="description" content="Calculate your retirement nest egg, 401(k) employer matching, compound investment growth, and monthly retirement income using the 4% safe withdrawal rule. Free &amp; ad-free." />
+<link rel="canonical" href="https://tryledgermate.in/tools/retirement-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Retirement &amp; 401(k) Calculator | LedgerMate" />
+<meta property="og:description" content="Calculate your retirement nest egg, 401(k) employer match, and 4% safe withdrawal monthly income." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=3" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Retirement & 401(k) Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates future retirement corpus, employer 401(k) matching funds, and sustainable monthly retirement income.",
+  "featureList": [
+    "401(k) employer matching contribution simulator",
+    "Compound investment growth projection (7% to 10%)",
+    "4% Safe Withdrawal Rule monthly retirement income",
+    "Inflation-adjusted purchasing power"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the 4% safe withdrawal rule?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 4% rule (based on the Trinity Study) states that you can safely withdraw 4% of your total retirement investment portfolio in your first year of retirement, adjusting that dollar amount for inflation each subsequent year, with a 95%+ probability of your portfolio lasting 30 years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is taking full advantage of the 401(k) employer match essential?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An employer match is an immediate 50% to 100% guaranteed return on your contributed money. For example, contributing 6% with a 50% match adds an extra 3% of your salary directly into your portfolio for free."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/loan-emi-calculator/">Loan EMI</a>
+      <a href="/tools/percentage-calculator/">Percentage Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Retirement &amp; 401(k) Calculator
+  </div>
+
+  <h1>Retirement &amp; 401(k) Calculator</h1>
+  <p class="sub">Model your retirement nest egg with compound investment returns, employer 401(k) matches, and calculate your sustainable monthly income using the 4% safe withdrawal rule.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="current-age">Current Age</label>
+        <input id="current-age" type="number" step="1" min="18" max="75" value="30" />
+      </div>
+      <div style="flex:1;">
+        <label for="retire-age">Target Retirement Age</label>
+        <input id="retire-age" type="number" step="1" min="35" max="85" value="65" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="current-savings">Current Retirement Balance</label>
+        <div style="display:flex;gap:8px;">
+          <input id="current-savings" type="number" step="5000" min="0" max="10000000" value="45000" style="flex:2;" />
+          <select id="currency-select" style="flex:1;">
+            <option value="$" selected>$ (USD)</option>
+            <option value="₹">₹ (INR)</option>
+            <option value="€">€ (EUR)</option>
+            <option value="£">£ (GBP)</option>
+          </select>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <label for="annual-salary">Annual Gross Salary</label>
+        <input id="annual-salary" type="number" step="5000" min="10000" max="2000000" value="85000" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="employee-contrib-pct">Your 401(k) / Savings Rate (%)</label>
+        <input id="employee-contrib-pct" type="number" step="1" min="1" max="50" value="8" />
+      </div>
+      <div style="flex:1;">
+        <label for="employer-match-pct">Employer Match (%)</label>
+        <select id="employer-match-pct">
+          <option value="0.5-6" selected>50% match up to 6% of salary (3% total)</option>
+          <option value="1.0-4">100% match up to 4% of salary (4% total)</option>
+          <option value="1.0-5">100% match up to 5% of salary (5% total)</option>
+          <option value="0">No employer match (0%)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="annual-return">Expected Annual Return (%)</label>
+        <input id="annual-return" type="number" step="0.5" min="2" max="15" value="8.0" />
+      </div>
+      <div style="flex:1;">
+        <label for="annual-inflation">Estimated Inflation (%)</label>
+        <input id="annual-inflation" type="number" step="0.25" min="0" max="8" value="2.5" />
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Projected Retirement Nest Egg</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-total-corpus">$2,384,000</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-income-sub">Safe Monthly Income (4% Rule): $7,946 / month ($95,360 / year)</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-monthly-income" style="color:#10B981;">$7,946 / mo</div>
+          <div class="metric-lbl">Monthly 4% Withdrawal</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-compounded" style="color:#2563EB;">$1,885,000</div>
+          <div class="metric-lbl">Compound Growth Earned</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-match-total">$89,250</div>
+          <div class="metric-lbl">Free Employer Match</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-inflation-adj">$1,005,000</div>
+          <div class="metric-lbl">Today's Purchasing Power</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">Annual Contributions Breakdown</h4>
+        <div class="calc-result-row">
+          <span>Your Contribution</span>
+          <span class="amt" id="d-you-contrib">$6,800 / yr</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Employer Match Contribution</span>
+          <span class="amt" id="d-match-contrib">$2,550 / yr</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Total Invested Annually</span>
+          <span class="amt" id="d-total-annual">$9,350 / yr ($779 / mo)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 The Power of Starting 10 Years Earlier</h4>
+      <ul class="mindmap-list">
+        <li><strong>The 8% Compounding Miracle:</strong> At 8% annual growth, money doubles roughly every 9 years. A 25-year-old who invests for just 10 years and stops often ends up with more wealth at 65 than a 35-year-old who invests continuously for 30 years.</li>
+        <li><strong>Never Leave Match Money on the Table:</strong> If your employer offers a 50% match up to 6%, contributing less than 6% is literally declining part of your contractual compensation.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Splitting monthly rent and household budgets to save more for retirement?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to keep shared living costs organized and save faster.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>How the 4% Safe Withdrawal Rule Works</h2>
+    <p>Originating from the landmark Trinity Study, the 4% rule demonstrates that withdrawing 4% of a diversified 60/40 or 75/25 stock/bond portfolio annually has survived every historical market crash, depression, and high-inflation period in modern history over 30-year spans.</p>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mathematical and retirement wealth calculators.</p>
+      </div>
+      <div>
+        <h4>Retirement &amp; Investing</h4>
+        <ul>
+          <li><a href="/tools/retirement-calculator/">Retirement &amp; 401(k)</a></li>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a></li>
+          <li><a href="/tools/us-tax-calculator/">US Tax Estimator</a></li>
+          <li><a href="/tools/loan-emi-calculator/">Loan EMI</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/discount-calculator/">Discount Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Wealth &amp; Retirement Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmt(sym, n) {
+  return sym + Math.round(n || 0).toLocaleString('en-US');
+}
+
+function calc() {
+  const currentAge = parseInt(document.getElementById('current-age').value, 10) || 30;
+  const retireAge = parseInt(document.getElementById('retire-age').value, 10) || 65;
+  const initialSavings = parseFloat(document.getElementById('current-savings').value) || 0;
+  const salary = parseFloat(document.getElementById('annual-salary').value) || 0;
+  const employeePct = (parseFloat(document.getElementById('employee-contrib-pct').value) || 0) / 100;
+  const matchOption = document.getElementById('employer-match-pct').value;
+  const returnRate = (parseFloat(document.getElementById('annual-return').value) || 0) / 100;
+  const inflationRate = (parseFloat(document.getElementById('annual-inflation').value) || 0) / 100;
+  const sym = document.getElementById('currency-select').value;
+
+  const yearsToGrow = Math.max(1, retireAge - currentAge);
+
+  // Match calc
+  let matchPct = 0;
+  if (matchOption === '0.5-6') {
+    matchPct = Math.min(employeePct, 0.06) * 0.5;
+  } else if (matchOption === '1.0-4') {
+    matchPct = Math.min(employeePct, 0.04);
+  } else if (matchOption === '1.0-5') {
+    matchPct = Math.min(employeePct, 0.05);
+  }
+
+  const youAnnual = salary * employeePct;
+  const matchAnnual = salary * matchPct;
+  const totalAnnualContrib = youAnnual + matchAnnual;
+  const monthlyContrib = totalAnnualContrib / 12;
+
+  // Compound future value
+  const monthlyRate = returnRate / 12;
+  const totalMonths = yearsToGrow * 12;
+
+  const fvInitial = initialSavings * Math.pow(1 + returnRate, yearsToGrow);
+  let fvAnnuity = 0;
+  if (monthlyRate > 0) {
+    fvAnnuity = monthlyContrib * (Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate;
+  } else {
+    fvAnnuity = monthlyContrib * totalMonths;
+  }
+
+  const totalCorpus = fvInitial + fvAnnuity;
+  const totalContributed = initialSavings + (totalAnnualContrib * yearsToGrow);
+  const totalGrowth = Math.max(0, totalCorpus - totalContributed);
+  const totalMatchSum = matchAnnual * yearsToGrow;
+
+  // 4% safe withdrawal rule
+  const safeAnnualIncome = totalCorpus * 0.04;
+  const safeMonthlyIncome = safeAnnualIncome / 12;
+
+  // Inflation adjusted purchasing power today
+  const inflationAdj = totalCorpus / Math.pow(1 + inflationRate, yearsToGrow);
+
+  document.getElementById('res-total-corpus').textContent = fmt(sym, totalCorpus);
+  document.getElementById('res-income-sub').textContent = `Safe Monthly Income (4% Rule): ${fmt(sym, safeMonthlyIncome)} / mo (${fmt(sym, safeAnnualIncome)} / yr)`;
+
+  document.getElementById('m-monthly-income').textContent = `${fmt(sym, safeMonthlyIncome)} / mo`;
+  document.getElementById('m-compounded').textContent = fmt(sym, totalGrowth);
+  document.getElementById('m-match-total').textContent = fmt(sym, totalMatchSum);
+  document.getElementById('m-inflation-adj').textContent = fmt(sym, inflationAdj);
+
+  document.getElementById('d-you-contrib').textContent = `${fmt(sym, youAnnual)} / yr`;
+  document.getElementById('d-match-contrib').textContent = `${fmt(sym, matchAnnual)} / yr`;
+  document.getElementById('d-total-annual').textContent = `${fmt(sym, totalAnnualContrib)} / yr (${fmt(sym, monthlyContrib)} / mo)`;
+}
+
+['current-age', 'retire-age', 'current-savings', 'annual-salary', 'employee-contrib-pct', 'employer-match-pct', 'annual-return', 'annual-inflation', 'currency-select'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

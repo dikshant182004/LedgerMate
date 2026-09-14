@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Free Rent Split Calculator — Fair Rent by Room Size | LedgerMate</title>
-<meta name="description" content="Free rent split calculator for roommates. Split evenly or weight by room size/quality so bigger rooms pay a fair share. No sign-up required." />
+<title>Rent Split Calculator by Square Footage & Room Size (Free) | LedgerMate</title>
+<meta name="description" content="Free rent split calculator by square footage, room size, and private amenities. Fairly split apartment rent between roommates based on bedroom sq ft, private baths, and shared common areas. 100% free alternative to Splitwise rent calculator." />
 <link rel="canonical" href="https://tryledgermate.in/tools/rent-split-calculator/" />
 <meta name="robots" content="index, follow" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Free Rent Split Calculator | LedgerMate" />
-<meta property="og:description" content="Split rent evenly or by room size/quality, so bigger rooms pay a fair share. Free, no sign-up." />
+<meta property="og:title" content="Rent Split Calculator by Square Footage & Room Size | LedgerMate" />
+<meta property="og:description" content="Fairly split apartment rent by bedroom square footage, shared common areas, and private bathrooms. Free alternative to Splitwise rent calculator with zero ads or limits." />
 <meta property="og:url" content="https://tryledgermate.in/tools/rent-split-calculator/" />
 <link rel="icon" href="/icons/favicon-32.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,11 +24,19 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "LedgerMate Rent Split Calculator",
+  "name": "LedgerMate Rent Split Calculator by Square Footage",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web, iOS, Android",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "Calculate fair rent splits among roommates based on relative room size, square footage, and private amenities."
+  "description": "Calculate fair rent splits among roommates based on bedroom square footage, common area sharing, and private amenities. Free alternative to Splitwise rent calculator with no daily limits.",
+  "featureList": [
+    "Square footage rent split",
+    "Room size weight multiplier",
+    "50/50 common area proportional split",
+    "Private ensuite bathroom adjustments",
+    "No sign-up required",
+    "Free alternative to Splitwise rent calculator"
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -38,23 +46,123 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How do you split rent fairly when rooms are different sizes?",
+      "name": "How do you split rent by square footage fairly?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Give each room a weight based on size, private bathroom, or closet space, then split rent proportionally to those weights instead of splitting it evenly. A room worth 30% more space should generally pay a proportionally larger share."
+        "text": "The fairest approach is the 50/50 Common Area Formula: 50% of the total rent is split equally among all roommates for shared spaces (kitchen, living room, laundry), and the remaining 50% is divided proportionally by bedroom square footage and amenities like private bathrooms."
       }
     },
     {
       "@type": "Question",
-      "name": "Is this rent split calculator free?",
+      "name": "Is this a free alternative to the Splitwise rent calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, free with no sign-up. To track rent every month automatically with reminders, try LedgerMate."
+        "text": "Yes. Splitwise caps free features with 3-expense daily limits and shows 10-second timer ads. LedgerMate is completely free with no limits, no ads, and provides both square footage and room size rent calculations with real-time roommate sync."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much extra should someone pay for a private ensuite bathroom?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In most shared apartments, a private attached bathroom typically adds 10% to 20% to that bedroom's share of the private rent, or a flat $75 to $150 per month depending on the local rental market."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How should roommates split utilities like electric, gas, and Wi-Fi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Even if rent is split by square footage, shared utilities like electricity, gas, water, and Wi-Fi should almost always be split 100% equally among all roommates."
       }
     }
   ]
 }
 </script>
+<style>
+  .mode-switch {
+    display: flex;
+    background: var(--bg);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  .mode-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .mode-btn.active {
+    background: var(--card);
+    color: var(--accent);
+    box-shadow: 0 1px 4px rgba(30, 20, 70, 0.08);
+  }
+  .sqft-row {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1fr auto;
+    gap: 10px;
+    align-items: center;
+    background: var(--bg);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  @media (max-width: 640px) {
+    .sqft-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .mode-btn {
+      font-size: 12px;
+      padding: 7px 6px;
+    }
+  }
+  .bath-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .bath-toggle input {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+  }
+  .metric-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(109, 79, 235, 0.08);
+    color: var(--accent);
+  }
+  .splitwise-callout {
+    background: #F4F3FF;
+    border: 1px solid #D6D0F8;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-top: 32px;
+  }
+</style>
 </head>
 <body>
 
@@ -75,12 +183,19 @@
   <div class="breadcrumb" style="justify-content:center;">
     <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Rent Split Calculator
   </div>
-  <h1 style="font-size:36px;margin-bottom:12px;">Free Rent Split Calculator</h1>
-  <p class="sub" style="font-size:16px;max-width:580px;">Split apartment rent evenly, or weight it by room size and private bathrooms so everyone pays a fair share.</p>
+  <h1 style="font-size:36px;margin-bottom:12px;">Rent Split Calculator by Square Footage &amp; Room Size</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;">Fairly divide apartment rent between roommates based on bedroom square footage, shared common areas, and private bathrooms. Free alternative to Splitwise rent calculator with zero ads.</p>
 </header>
 
 <div class="narrow" style="padding-bottom:56px;">
   <div class="calc-card">
+    <!-- Mode Switcher -->
+    <div class="mode-switch" role="tablist">
+      <button class="mode-btn active" id="mode-sqft" type="button" role="tab">Square Footage (Sq Ft)</button>
+      <button class="mode-btn" id="mode-weights" type="button" role="tab">Room Perks / Weights</button>
+      <button class="mode-btn" id="mode-even" type="button" role="tab">Even Split</button>
+    </div>
+
     <div class="calc-row">
       <div style="flex:1;">
         <label for="currency">Currency</label>
@@ -97,26 +212,91 @@
       </div>
       <div style="flex:1.5;">
         <label for="total-rent">Total Monthly Rent</label>
-        <input id="total-rent" type="number" step="10" min="0" value="2800" placeholder="e.g. 2800" />
+        <input id="total-rent" type="number" step="10" min="0" value="3000" placeholder="e.g. 3000" />
       </div>
     </div>
 
-    <label>Roommates &amp; Room Weights</label>
-    <p style="font-size:13px;color:var(--text-muted);margin:-6px 0 12px;">Weight 1.0 = standard room. Increase to 1.3 for master suite / private bath, or 0.85 for a smaller room.</p>
-    
-    <div id="people-list" class="people-list"></div>
-
-    <div class="calc-row">
-      <input id="new-person" type="text" placeholder="Roommate name" style="flex:2;" />
-      <input id="new-weight" type="number" step="0.05" min="0.1" value="1.0" style="flex:1;" title="Room weight" />
-      <button class="btn btn-primary" id="add-person-btn" type="button">+ Add</button>
+    <!-- Square Footage Specific Options -->
+    <div id="sqft-options">
+      <div style="margin:14px 0 8px;display:flex;justify-content:space-between;align-items:center;">
+        <label style="margin:0;">Common Area Split Formula</label>
+        <span id="common-pct-label" style="font-size:13px;font-weight:700;color:var(--accent);">50% Common / 50% Bedrooms</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 10px;">
+        The 50/50 rule divides half the rent equally for the shared living room &amp; kitchen, and half proportionally by bedroom square footage.
+      </p>
+      <div class="chip-group" id="common-pct-chips">
+        <button type="button" class="chip-btn active" data-pct="50">50% Shared (Recommended)</button>
+        <button type="button" class="chip-btn" data-pct="40">40% Shared / 60% Bedrooms</button>
+        <button type="button" class="chip-btn" data-pct="30">30% Shared / 70% Bedrooms</button>
+        <button type="button" class="chip-btn" data-pct="0">100% Strict Sq Ft</button>
+      </div>
     </div>
 
+    <!-- Multiplier Mode Description -->
+    <div id="weights-options" style="display:none;">
+      <label>Room Weights &amp; Amenities</label>
+      <p style="font-size:13px;color:var(--text-muted);margin:-4px 0 12px;">Standard queen room = 1.0. Master suite / private bath = 1.3 to 1.4. Smaller room = 0.85.</p>
+    </div>
+
+    <!-- Even Mode Description -->
+    <div id="even-options" style="display:none;">
+      <label>Roommates (Even Headcount Split)</label>
+      <p style="font-size:13px;color:var(--text-muted);margin:-4px 0 12px;">Divides the total monthly rent equally among all roommates.</p>
+    </div>
+
+    <!-- Roommate List Container -->
+    <div id="rooms-list" class="people-list"></div>
+
+    <!-- Add Roommate Form -->
+    <div id="add-room-form" class="calc-row" style="background:var(--bg);padding:10px;border-radius:10px;border:1px dashed var(--border);">
+      <input id="new-name" type="text" placeholder="Roommate name (e.g. Alex)" style="flex:2;" />
+      <div id="new-sqft-box" style="flex:1.2;display:flex;align-items:center;gap:6px;">
+        <input id="new-sqft" type="number" step="10" min="20" value="150" placeholder="Sq Ft" />
+        <span style="font-size:12.5px;font-weight:600;color:var(--text-muted);">sqft</span>
+      </div>
+      <div id="new-weight-box" style="flex:1;display:none;">
+        <input id="new-weight" type="number" step="0.05" min="0.1" value="1.0" title="Room weight" />
+      </div>
+      <div id="new-bath-box" style="display:flex;align-items:center;padding:0 4px;">
+        <label class="bath-toggle" title="Check if room includes private bathroom">
+          <input type="checkbox" id="new-bath" />
+          <span>Private Bath</span>
+        </label>
+      </div>
+      <button class="btn btn-primary" id="add-room-btn" type="button" style="white-space:nowrap;">+ Add Room</button>
+    </div>
+
+    <!-- Metrics Summary (Square Footage Mode) -->
+    <div id="sqft-metrics" class="metric-grid" style="margin-top:20px;">
+      <div class="metric-box">
+        <div class="metric-val" id="total-sqft-val">460</div>
+        <div class="metric-lbl">Total Bedroom Sq Ft</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="avg-rent-val">$1,000</div>
+        <div class="metric-lbl">Average / Roommate</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="sqft-rate-val">$3.26</div>
+        <div class="metric-lbl">Private Space $/Sq Ft</div>
+      </div>
+    </div>
+
+    <!-- Calculated Result Breakdown -->
     <div class="calc-result" id="result">
-      <h3 style="margin:0 0 12px;font-size:16px;">Each Roommate's Monthly Rent</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 style="margin:0;font-size:16px;">Each Roommate's Monthly Rent</h3>
+        <span id="formula-badge" class="metric-pill">50/50 Common Area Formula</span>
+      </div>
       <div id="rent-breakdown"></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06);display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a href="/guides/utility-and-rent-decoupling/" class="concept-inline-link">What does utility and rent decoupling mean? <span class="arrow">→</span></a>
+        <a href="#concept-guide" onclick="switchConcept('rs-common')" class="concept-inline-link">Why not split 100% by Sq Ft? <span class="arrow">→</span></a>
+      </div>
     </div>
 
+    <!-- Flatmate Group Export CTA -->
     <div class="calc-cta">
       <div>
         <p>Want rent and utilities tracked every month with zero hassle?</p>
@@ -124,26 +304,157 @@
       </div>
       <a id="btn-export-group" href="/app/?name=Apartment+Rent&currency=$" class="btn btn-primary">Create Flat Group →</a>
     </div>
+
+    <!-- Splitwise Rent Calculator Comparison Callout -->
+    <div class="splitwise-callout">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+        <span class="badge-pill badge-free">Free Splitwise Alternative</span>
+        <h3 style="margin:0;font-size:16px;">Looking for the Splitwise Rent Calculator?</h3>
+      </div>
+      <p style="font-size:14px;color:#373356;margin:0 0 12px;line-height:1.6;">
+        Splitwise previously offered a basic rent calculator, but their app now imposes 3-expense daily limits, 10-second countdown ads, and subscription paywalls. LedgerMate is a 100% free alternative with real square footage calculations, shared common area weighting, and live roommate expense sync.
+      </p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a href="/tools/couple-roommate-rent-calculator/" style="font-size:13.5px;font-weight:700;color:var(--accent);">Couple &amp; Single Roommate Calculator →</a>
+        <span style="color:var(--border);">·</span>
+        <a href="/compare/splitwise-alternative/" style="font-size:13.5px;font-weight:700;color:var(--accent);">Compare LedgerMate vs Splitwise →</a>
+        <span style="color:var(--border);">·</span>
+        <a href="/blog/fair-rent-split-unequal-rooms/" style="font-size:13.5px;font-weight:700;color:var(--accent);">Read Unequal Room Size Guide →</a>
+      </div>
+    </div>
   </div>
 
-  <article style="margin-top:48px;">
-    <h2>How to Split Rent Fairly Between Roommates</h2>
-    <p>An even split works fine when every room is identical — but it stops feeling fair the moment one room is noticeably bigger, has its own bathroom, or gets better natural light.</p>
-    
-    <div class="callout-box">
-      <p><strong>Weighted Rent Formula:</strong> Each Roommate's Rent = (Their Room Weight ÷ Sum of All Room Weights) × Total Rent</p>
+  <!-- Educational Concept Router -->
+  <section class="concept-router" id="concept-guide">
+    <div class="concept-router-head">
+      <div class="concept-router-title">
+        <span>🎓 Rent Splitting &amp; Room Valuation Concepts</span>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
     </div>
 
-    <p>A room weighted 1.3 against two rooms weighted 1.0 will pay an appropriately higher share, while the smaller rooms save money. Everyone agrees on the multipliers before signing the lease, preventing friction later.</p>
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('rs-common')">1. The 50/50 Common Area Rule</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('rs-bath')">2. Private Bathroom Premium</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('rs-amenities')">3. Balconies, Closets &amp; Sunlight</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('rs-envyfree')">4. Sperner's Lemma (Envy-Free Division)</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('rs-utils')">5. Utility vs Rent Decoupling</button>
+    </div>
+
+    <!-- Pane 1 -->
+    <div class="concept-pane active" id="pane-rs-common">
+      <h4>The 50/50 Common Area Rule: Why Pure Sq Ft Fails</h4>
+      <p>The most frequent error roommates commit when dividing a lease is allocating 100% of the rent strictly by bedroom square footage. If an apartment has a 250 sq ft master bedroom and a 125 sq ft guest room, a pure square-footage formula forces the master tenant to pay exactly double the rent.</p>
+      <p>This is deeply unfair because both roommates have identical, equal access to the rest of the apartment: the kitchen, stove, refrigerator, living room, dining area, hallways, and patio. In a typical apartment, bedrooms only account for 40% to 55% of the total footprint.</p>
+      <div class="concept-formula-box">
+        Common Area Pool (50%) = Total Rent × 0.50 ÷ Total Roommates (Split 100% Equally)<br>
+        Private Space Pool (50%) = Total Rent × 0.50 × (Bedroom Sq Ft ÷ Total Bedroom Sq Ft)
+      </div>
+      <a href="/blog/fair-rent-split-unequal-rooms/" class="concept-full-guide-link">Read Full Guide: How to Split Rent Fairly When Rooms Are Unequal <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 2 -->
+    <div class="concept-pane" id="pane-rs-bath">
+      <h4>Private Ensuite Bathroom: The 15% Weighting Standard</h4>
+      <p>Having a private bathroom attached directly to your bedroom is widely considered the premier amenity in shared housing. It eliminates morning scheduling conflicts, provides personal cosmetic storage, and grants total privacy.</p>
+      <p>In roommate contracts, real estate appraisers evaluate an attached master bathroom as a <strong>15% premium on private bedroom value</strong>. In this calculator, enabling the "Private Bath" toggle increases that room's effective square footage weighting by 15%, mathematically transferring $80 to $150/month of the rent burden to the recipient.</p>
+    </div>
+
+    <!-- Pane 3 -->
+    <div class="concept-pane" id="pane-rs-amenities">
+      <h4>Balconies, Walk-in Closets &amp; Natural Sunlight</h4>
+      <p>Two bedrooms may measure exactly 140 square feet on a floor plan, but their qualitative experience can be night and day:</p>
+      <ul>
+        <li><strong>Floor-to-Ceiling Windows &amp; South-Facing Light:</strong> Bright natural sunlight is consistently valued at +5% to +10% over an interior room facing an alleyway or air shaft.</li>
+        <li><strong>Private Balcony / Terrace Access:</strong> An exclusive outdoor balcony warrants a 10% to 15% private space premium.</li>
+        <li><strong>Walk-in Closet vs Reach-in Wardrobe:</strong> Significant built-in storage offsets the need for bulky dressers, freeing up functional floor space.</li>
+      </ul>
+      <p>Use the <em>"Weighted Rooms"</em> tab in this tool to apply custom fractional multipliers (e.g. 1.25x for Master Suite, 0.9x for Windowless Room) when rooms have unequal amenities.</p>
+    </div>
+
+    <!-- Pane 4 -->
+    <div class="concept-pane" id="pane-rs-envyfree">
+      <h4>Sperner's Lemma &amp; The Nobel Prize Math of Envy-Free Rent</h4>
+      <p>In game theory and mathematical economics, an allocation is <strong>"envy-free"</strong> if no roommate prefers another person's room at that person's price. Proven by mathematician Emanuel Sperner, an envy-free equilibrium is mathematically guaranteed to exist for any apartment.</p>
+      <div class="concept-example-box">
+        <strong>The Sealed Bid Auction Technique:</strong> If roommates cannot agree on room prices, each roommate submits a confidential bid stating what they are willing to pay for Room A, Room B, and Room C (with their three bids summing to total apartment rent). The rooms are assigned to maximize collective surplus, guaranteeing zero roommate resentment.
+      </div>
+    </div>
+
+    <!-- Pane 5 -->
+    <div class="concept-pane" id="pane-rs-utils">
+      <h4>Decoupling Rent from Utilities and Household Sundries</h4>
+      <p>Never bundle variable utility bills into the rent split formula:</p>
+      <ul>
+        <li><strong>Rent is Spatial:</strong> Rent pays for real estate, square footage, and structural amenities. It is fixed for the 12-month lease.</li>
+        <li><strong>Utilities are Behavioral:</strong> Power, gas, water, and trash are consumed dynamically by people. They should always be split <strong>100% equally per capita</strong> regardless of who has the bigger bedroom.</li>
+      </ul>
+      <a href="/guides/utility-and-rent-decoupling/" class="concept-full-guide-link">Read Full Guide: What Is Utility and Rent Decoupling? <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <article style="margin-top:48px;">
+    <h2>How to Split Rent by Square Footage (The Fair Formula)</h2>
+    <p>The most common dispute among roommates is trying to split rent strictly by bedroom square footage while ignoring common space. A 200 sq ft master bedroom isn't the entire apartment — everyone shares equal access to the kitchen, refrigerator, living room, and balcony.</p>
+    
+    <div class="callout-box">
+      <p><strong>The 50/50 Common Space Formula:</strong><br />
+      1. Divide <strong>50% of the rent equally</strong> among all roommates for common areas.<br />
+      2. Divide the <strong>remaining 50% proportionally</strong> by each bedroom's square footage.</p>
+    </div>
+
+    <h3>Step-by-Step Square Footage Example</h3>
+    <p>Imagine a 3-bedroom apartment with a total monthly rent of <strong>$3,000</strong>:</p>
+    <ul>
+      <li><strong>Alex (Master Bedroom):</strong> 220 sq ft with private ensuite bathroom.</li>
+      <li><strong>Sam (Standard Bedroom):</strong> 140 sq ft with shared bathroom.</li>
+      <li><strong>Taylor (Cozy Bedroom):</strong> 100 sq ft with shared bathroom.</li>
+      <li><strong>Total Bedroom Area:</strong> 460 sq ft.</li>
+    </ul>
+    <p>Using the 50/50 formula:</p>
+    <ol>
+      <li><strong>Common Area Pool ($1,500):</strong> Each roommate pays <strong>$500</strong> for equal access to living spaces.</li>
+      <li><strong>Private Bedroom Pool ($1,500):</strong> Distributed based on bedroom size plus the private bathroom amenity:
+        <ul>
+          <li>Alex: pays ~$780 for private space &rarr; <strong>$1,280 total</strong></li>
+          <li>Sam: pays ~$430 for private space &rarr; <strong>$930 total</strong></li>
+          <li>Taylor: pays ~$290 for private space &rarr; <strong>$790 total</strong></li>
+        </ul>
+      </li>
+    </ol>
+    <p>This ensures the person with the smallest bedroom saves over $200 per month compared to an even split, while the person with the master suite pays for the luxury they enjoy.</p>
+
+    <h2>Private Bathrooms, Balconies, &amp; Amenities</h2>
+    <p>Square footage alone doesn't tell the full story. A private ensuite bathroom is one of the most desirable perks in apartment living. In roommate agreements, private bathrooms are typically accounted for in one of two ways:</p>
+    <ul>
+      <li><strong>15% Sq Ft Adjustment (Built into this calculator):</strong> Checking "Private Bath" adjusts the room's effective private value by +15%, factoring the bathroom's exclusive utility into the rent split.</li>
+      <li><strong>Flat Monthly Premium:</strong> The person with the private bath pays an extra $75 to $150 per month, which is deducted from the shared base rent before dividing square footage.</li>
+    </ul>
+
+    <h2>Why Use LedgerMate Over the Splitwise Rent Calculator?</h2>
+    <p>For years, roommates relied on Splitwise's rent calculator. However, recent changes to Splitwise have added friction:</p>
+    <ul>
+      <li><strong>Zero Ads &amp; Zero Paywalls:</strong> LedgerMate has no 10-second timer ads and never locks features behind a $39.99/year subscription.</li>
+      <li><strong>Seamless Transition from Calculator to Monthly Tracking:</strong> Once your roommates agree on the rent split, click "Create Flat Group" to track monthly rent, utility bills, Wi-Fi, and household groceries in real time.</li>
+      <li><strong>No Mandatory App Downloads:</strong> Send a web link to your flatmates and everyone can see balances immediately on iOS, Android, or desktop.</li>
+    </ul>
 
     <h2>Frequently Asked Questions</h2>
     <details class="faq-item" open>
-      <summary>How do you split rent fairly when rooms are different sizes?</summary>
-      <p>Give each room a weight based on size, private bathroom, or closet space, then split rent proportionally to those weights instead of splitting it evenly.</p>
+      <summary>How do you split rent by square footage fairly?</summary>
+      <p>The fairest approach is the 50/50 Common Area Formula: 50% of the total rent is split equally among all roommates for shared spaces (kitchen, living room, laundry), and the remaining 50% is divided proportionally by bedroom square footage and private amenities.</p>
     </details>
     <details class="faq-item">
-      <summary>How do you split shared utilities like Wi-Fi and electricity?</summary>
-      <p>Unless one roommate runs an energy-intensive server or space heater 24/7, utilities should almost always be split completely evenly among all roommates, regardless of room size.</p>
+      <summary>Is this a free alternative to the Splitwise rent calculator?</summary>
+      <p>Yes. Splitwise caps free features with 3-expense daily limits and shows 10-second timer ads. LedgerMate is completely free with no limits, no ads, and provides both square footage and room size rent calculations with real-time roommate sync.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How much extra should someone pay for a private ensuite bathroom?</summary>
+      <p>In most shared apartments, a private attached bathroom typically adds 10% to 20% to that bedroom's share of the private rent, or a flat $75 to $150 per month depending on the local rental market.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How do roommates split shared utilities like electricity and Wi-Fi?</summary>
+      <p>Unless one roommate operates high-power machinery or a continuous space heater, utilities like electricity, gas, water, and Wi-Fi should almost always be split 100% equally among all roommates regardless of room size.</p>
     </details>
   </article>
 </div>
@@ -157,26 +468,27 @@
     <div>
       <h4>Free Tools</h4>
       <ul>
+        <li><a href="/tools/couple-roommate-rent-calculator/">Couple Rent Splitter</a></li>
+        <li><a href="/tools/rent-split-calculator/">Rent Split Calculator by Sq Ft</a></li>
         <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
         <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
-        <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
         <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
         <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
-        <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
       </ul>
     </div>
     <div>
       <h4>Compare</h4>
       <ul>
         <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+        <li><a href="/blog/splitwise-free-limit-alternatives/">Splitwise Limits &amp; Timers</a></li>
         <li><a href="/blog/best-splitwise-alternatives/">Top Free Apps 2026</a></li>
       </ul>
     </div>
     <div>
       <h4>Guides</h4>
       <ul>
-        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
         <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
         <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
       </ul>
     </div>
@@ -185,47 +497,205 @@
 </footer>
 
 <script>
-  let people = [
-    { id: "1", name: "Alex (Master + Ensuite Bath)", weight: 1.35 },
-    { id: "2", name: "Sam (Standard Queen)", weight: 1.0 },
-    { id: "3", name: "Taylor (Smaller Bedroom)", weight: 0.85 }
+  let currentMode = "sqft"; // "sqft" | "weights" | "even"
+  let commonAreaPct = 50;
+
+  let rooms = [
+    { id: "1", name: "Alex (Master Bedroom)", sqft: 220, weight: 1.35, privateBath: true },
+    { id: "2", name: "Sam (Standard Queen)", sqft: 140, weight: 1.0, privateBath: false },
+    { id: "3", name: "Taylor (Smaller Bedroom)", sqft: 100, weight: 0.85, privateBath: false }
   ];
 
   const curEl = document.getElementById("currency");
-  const peopleListEl = document.getElementById("people-list");
   const totalRentEl = document.getElementById("total-rent");
-  const newPersonEl = document.getElementById("new-person");
-  const newWeightEl = document.getElementById("new-weight");
+  const roomsListEl = document.getElementById("rooms-list");
   const exportBtn = document.getElementById("btn-export-group");
 
-  document.getElementById("add-person-btn").addEventListener("click", addPerson);
-  newPersonEl.addEventListener("keydown", (e) => { if (e.key === "Enter") addPerson(); });
+  // Mode buttons
+  const modeSqftBtn = document.getElementById("mode-sqft");
+  const modeWeightsBtn = document.getElementById("mode-weights");
+  const modeEvenBtn = document.getElementById("mode-even");
+
+  // Sections
+  const sqftOptionsEl = document.getElementById("sqft-options");
+  const weightsOptionsEl = document.getElementById("weights-options");
+  const evenOptionsEl = document.getElementById("even-options");
+  const sqftMetricsEl = document.getElementById("sqft-metrics");
+  const formulaBadgeEl = document.getElementById("formula-badge");
+
+  // Form elements
+  const newNameEl = document.getElementById("new-name");
+  const newSqftEl = document.getElementById("new-sqft");
+  const newWeightEl = document.getElementById("new-weight");
+  const newBathEl = document.getElementById("new-bath");
+  const newSqftBox = document.getElementById("new-sqft-box");
+  const newWeightBox = document.getElementById("new-weight-box");
+  const newBathBox = document.getElementById("new-bath-box");
+  const addRoomBtn = document.getElementById("add-room-btn");
+
+  // Mode click listeners
+  modeSqftBtn.addEventListener("click", () => setMode("sqft"));
+  modeWeightsBtn.addEventListener("click", () => setMode("weights"));
+  modeEvenBtn.addEventListener("click", () => setMode("even"));
+
+  function setMode(mode) {
+    currentMode = mode;
+    [modeSqftBtn, modeWeightsBtn, modeEvenBtn].forEach(b => b.classList.remove("active"));
+    
+    sqftOptionsEl.style.display = "none";
+    weightsOptionsEl.style.display = "none";
+    evenOptionsEl.style.display = "none";
+    sqftMetricsEl.style.display = "none";
+
+    newSqftBox.style.display = "none";
+    newWeightBox.style.display = "none";
+    newBathBox.style.display = "none";
+
+    if (mode === "sqft") {
+      modeSqftBtn.classList.add("active");
+      sqftOptionsEl.style.display = "block";
+      sqftMetricsEl.style.display = "grid";
+      newSqftBox.style.display = "flex";
+      newBathBox.style.display = "flex";
+      formulaBadgeEl.textContent = `${commonAreaPct}/${100 - commonAreaPct} Common Area Formula`;
+    } else if (mode === "weights") {
+      modeWeightsBtn.classList.add("active");
+      weightsOptionsEl.style.display = "block";
+      newWeightBox.style.display = "block";
+      formulaBadgeEl.textContent = "Proportional Room Multiplier";
+    } else {
+      modeEvenBtn.classList.add("active");
+      evenOptionsEl.style.display = "block";
+      formulaBadgeEl.textContent = "Even Equal Split";
+    }
+
+    render();
+    calculate();
+  }
+
+  // Common area percent chips
+  document.querySelectorAll("#common-pct-chips .chip-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#common-pct-chips .chip-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      commonAreaPct = parseInt(btn.dataset.pct, 10);
+      const commonLabel = document.getElementById("common-pct-label");
+      if (commonAreaPct === 0) {
+        commonLabel.textContent = "100% Strict Square Footage";
+        formulaBadgeEl.textContent = "100% Strict Sq Ft Split";
+      } else {
+        commonLabel.textContent = `${commonAreaPct}% Common / ${100 - commonAreaPct}% Bedrooms`;
+        formulaBadgeEl.textContent = `${commonAreaPct}/${100 - commonAreaPct} Common Area Formula`;
+      }
+      calculate();
+    });
+  });
+
+  addRoomBtn.addEventListener("click", addRoom);
+  newNameEl.addEventListener("keydown", (e) => { if (e.key === "Enter") addRoom(); });
+  newSqftEl.addEventListener("keydown", (e) => { if (e.key === "Enter") addRoom(); });
+  newWeightEl.addEventListener("keydown", (e) => { if (e.key === "Enter") addRoom(); });
   totalRentEl.addEventListener("input", calculate);
   curEl.addEventListener("change", calculate);
 
-  function addPerson() {
-    const name = newPersonEl.value.trim();
-    const weight = parseFloat(newWeightEl.value) || 1.0;
+  function addRoom() {
+    const name = newNameEl.value.trim();
     if (!name) return;
-    people.push({ id: crypto.randomUUID(), name, weight });
-    newPersonEl.value = "";
+    const sqft = parseFloat(newSqftEl.value) || 120;
+    const weight = parseFloat(newWeightEl.value) || 1.0;
+    const privateBath = newBathEl.checked;
+
+    rooms.push({
+      id: crypto.randomUUID(),
+      name,
+      sqft,
+      weight,
+      privateBath
+    });
+
+    newNameEl.value = "";
+    newSqftEl.value = "120";
     newWeightEl.value = "1.0";
+    newBathEl.checked = false;
+
     render();
     calculate();
   }
 
   function render() {
-    peopleListEl.innerHTML = people.map(p => `
-      <div class="people-row">
-        <span style="flex:1;font-weight:600;">${escapeHtml(p.name)}</span>
-        <span style="color:var(--accent);font-weight:700;font-size:13px;">weight ${p.weight.toFixed(2)}</span>
-        <button type="button" data-id="${p.id}" class="remove-person">×</button>
-      </div>
-    `).join("");
+    if (rooms.length === 0) {
+      roomsListEl.innerHTML = `<p style="text-align:center;color:var(--text-muted);font-size:14px;padding:12px;">No rooms added yet. Add a roommate above.</p>`;
+      return;
+    }
 
-    peopleListEl.querySelectorAll(".remove-person").forEach(btn => {
+    if (currentMode === "sqft") {
+      roomsListEl.innerHTML = rooms.map(r => `
+        <div class="sqft-row">
+          <input type="text" value="${escapeHtml(r.name)}" data-id="${r.id}" class="room-name-input" placeholder="Roommate name" style="background:var(--card);" />
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="number" value="${r.sqft}" min="20" step="5" data-id="${r.id}" class="room-sqft-input" style="background:var(--card);" />
+            <span style="font-size:12.5px;color:var(--text-muted);font-weight:600;">sqft</span>
+          </div>
+          <label class="bath-toggle">
+            <input type="checkbox" data-id="${r.id}" class="room-bath-input" ${r.privateBath ? "checked" : ""} />
+            <span>Private Bath</span>
+          </label>
+          <button type="button" data-id="${r.id}" class="remove-room" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;padding:4px 8px;border-radius:6px;">×</button>
+        </div>
+      `).join("");
+    } else if (currentMode === "weights") {
+      roomsListEl.innerHTML = rooms.map(r => `
+        <div class="people-row">
+          <input type="text" value="${escapeHtml(r.name)}" data-id="${r.id}" class="room-name-input" placeholder="Roommate name" style="flex:2;" />
+          <div style="flex:1;display:flex;align-items:center;gap:6px;">
+            <span style="font-size:12.5px;color:var(--text-muted);font-weight:600;">wt</span>
+            <input type="number" step="0.05" min="0.1" value="${r.weight.toFixed(2)}" data-id="${r.id}" class="room-weight-input" />
+          </div>
+          <button type="button" data-id="${r.id}" class="remove-room">×</button>
+        </div>
+      `).join("");
+    } else {
+      roomsListEl.innerHTML = rooms.map(r => `
+        <div class="people-row">
+          <input type="text" value="${escapeHtml(r.name)}" data-id="${r.id}" class="room-name-input" placeholder="Roommate name" style="flex:1;" />
+          <span style="font-size:13px;font-weight:600;color:var(--text-muted);padding-right:8px;">Equal share</span>
+          <button type="button" data-id="${r.id}" class="remove-room">×</button>
+        </div>
+      `).join("");
+    }
+
+    // Attach listeners
+    roomsListEl.querySelectorAll(".room-name-input").forEach(inp => {
+      inp.addEventListener("change", (e) => {
+        const item = rooms.find(r => r.id === e.target.dataset.id);
+        if (item) { item.name = e.target.value.trim() || item.name; calculate(); }
+      });
+    });
+
+    roomsListEl.querySelectorAll(".room-sqft-input").forEach(inp => {
+      inp.addEventListener("input", (e) => {
+        const item = rooms.find(r => r.id === e.target.dataset.id);
+        if (item) { item.sqft = parseFloat(e.target.value) || 0; calculate(); }
+      });
+    });
+
+    roomsListEl.querySelectorAll(".room-weight-input").forEach(inp => {
+      inp.addEventListener("input", (e) => {
+        const item = rooms.find(r => r.id === e.target.dataset.id);
+        if (item) { item.weight = parseFloat(e.target.value) || 1.0; calculate(); }
+      });
+    });
+
+    roomsListEl.querySelectorAll(".room-bath-input").forEach(inp => {
+      inp.addEventListener("change", (e) => {
+        const item = rooms.find(r => r.id === e.target.dataset.id);
+        if (item) { item.privateBath = e.target.checked; calculate(); }
+      });
+    });
+
+    roomsListEl.querySelectorAll(".remove-room").forEach(btn => {
       btn.addEventListener("click", () => {
-        people = people.filter(p => p.id !== btn.dataset.id);
+        rooms = rooms.filter(r => r.id !== btn.dataset.id);
         render();
         calculate();
       });
@@ -235,24 +705,90 @@
   function calculate() {
     const cur = curEl.value;
     const result = document.getElementById("result");
-    const total = parseFloat(totalRentEl.value) || 0;
-    if (people.length === 0 || total <= 0) {
+    const totalRent = parseFloat(totalRentEl.value) || 0;
+    const breakdownEl = document.getElementById("rent-breakdown");
+
+    if (rooms.length === 0 || totalRent <= 0) {
       result.style.display = "none";
       return;
     }
     result.style.display = "block";
-    const totalWeight = people.reduce((a, p) => a + p.weight, 0);
 
-    document.getElementById("rent-breakdown").innerHTML = people.map(p => {
-      const share = (p.weight / totalWeight) * total;
-      const pct = (p.weight / totalWeight) * 100;
-      return `
-        <div class="calc-result-row">
-          <span>${escapeHtml(p.name)} <span style="font-size:12.5px;color:var(--text-muted);">(${pct.toFixed(1)}%)</span></span>
-          <span class="amt">${cur}${share.toFixed(2)}</span>
+    const headcount = rooms.length;
+    let rentShares = [];
+
+    if (currentMode === "sqft") {
+      const commonFraction = commonAreaPct / 100;
+      const commonPool = totalRent * commonFraction;
+      const privatePool = totalRent - commonPool;
+      const commonPerPerson = commonPool / headcount;
+
+      // Private bedroom score: sqft adjusted for ensuite bath (+15% score)
+      const adjustedScores = rooms.map(r => {
+        const bathMultiplier = r.privateBath ? 1.15 : 1.0;
+        return (Math.max(r.sqft, 10)) * bathMultiplier;
+      });
+      const totalScore = adjustedScores.reduce((a, b) => a + b, 0);
+      const totalBedroomSqft = rooms.reduce((a, r) => a + (r.sqft || 0), 0);
+
+      rentShares = rooms.map((r, i) => {
+        const score = adjustedScores[i];
+        const privateShare = totalScore > 0 ? (score / totalScore) * privatePool : (privatePool / headcount);
+        const totalShare = commonPerPerson + privateShare;
+        const pct = (totalShare / totalRent) * 100;
+
+        return {
+          name: r.name,
+          totalShare,
+          pct,
+          detail: `${r.sqft} sq ft${r.privateBath ? " + Ensuite Bath" : ""}`,
+          commonPart: commonPerPerson,
+          privatePart: privateShare
+        };
+      });
+
+      // Update metrics
+      document.getElementById("total-sqft-val").textContent = `${totalBedroomSqft} sqft`;
+      document.getElementById("avg-rent-val").textContent = `${cur}${Math.round(totalRent / headcount)}`;
+      const effectiveRate = totalBedroomSqft > 0 ? (privatePool / totalBedroomSqft).toFixed(2) : "0.00";
+      document.getElementById("sqft-rate-val").textContent = `${cur}${effectiveRate}/sqft`;
+
+    } else if (currentMode === "weights") {
+      const totalWeight = rooms.reduce((a, r) => a + (r.weight || 1.0), 0);
+      rentShares = rooms.map(r => {
+        const share = totalWeight > 0 ? (r.weight / totalWeight) * totalRent : (totalRent / headcount);
+        const pct = (share / totalRent) * 100;
+        return {
+          name: r.name,
+          totalShare: share,
+          pct,
+          detail: `weight ${r.weight.toFixed(2)}`
+        };
+      });
+    } else {
+      // Even split
+      const share = totalRent / headcount;
+      const pct = 100 / headcount;
+      rentShares = rooms.map(r => ({
+        name: r.name,
+        totalShare: share,
+        pct,
+        detail: `equal 1/${headcount}`
+      }));
+    }
+
+    breakdownEl.innerHTML = rentShares.map(s => `
+      <div class="calc-result-row">
+        <div>
+          <div style="font-weight:700;">${escapeHtml(s.name)}</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
+            ${s.detail} · <span style="color:var(--accent);font-weight:600;">${s.pct.toFixed(1)}% of total</span>
+            ${s.commonPart !== undefined && commonAreaPct > 0 ? `· (${cur}${s.commonPart.toFixed(0)} common + ${cur}${s.privatePart.toFixed(0)} private)` : ""}
+          </div>
         </div>
-      `;
-    }).join("");
+        <span class="amt">${cur}${s.totalShare.toFixed(2)}</span>
+      </div>
+    `).join("");
 
     exportBtn.href = `/app/?name=Apartment+Rent&currency=${encodeURIComponent(cur)}`;
   }
@@ -261,8 +797,25 @@
     return String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
+  function switchConcept(conceptId) {
+    const tabs = document.querySelectorAll("#concept-tabs .concept-tab-btn");
+    tabs.forEach(t => t.classList.remove("active"));
+    const panes = document.querySelectorAll("#concept-guide .concept-pane");
+    panes.forEach(p => p.classList.remove("active"));
+
+    if (event && event.target) {
+      event.target.classList.add("active");
+    }
+    const targetPane = document.getElementById("pane-" + conceptId);
+    if (targetPane) {
+      targetPane.classList.add("active");
+    }
+  }
+
+  // Initial setup
   render();
   calculate();
 </script>
 </body>
 </html>
+

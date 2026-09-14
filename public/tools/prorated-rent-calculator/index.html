@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prorated Rent Calculator (Global Currencies &amp; Country Rules) | LedgerMate</title>
+<meta name="description" content="Calculate exact prorated rent for mid-month move-in or move-out across the US, UK, Australia, Canada, Germany, and India. Supports exact calendar days, weekly rent, and 365-day formulas." />
+<link rel="canonical" href="https://tryledgermate.in/tools/prorated-rent-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Prorated Rent Calculator (Multi-Currency &amp; Country Standards) | LedgerMate" />
+<meta property="og:description" content="Calculate exact prorated rent for mid-month move-in or move-out with multi-currency support, weekly/monthly modes, and itemized receipts." />
+<meta property="og:url" content="https://tryledgermate.in/tools/prorated-rent-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Prorated Rent Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate exact prorated rent, daily rental rates, move-in security deposits, and utilities across international jurisdictions.",
+  "featureList": [
+    "Multi-currency support ($, €, £, ₹, A$, C$, ₩, S$)",
+    "Exact days in calendar month method (28, 29, 30, 31)",
+    "Australia/NZ weekly rent proration (Daily rate = Weekly / 7)",
+    "30-day Banker/Commercial rule and 365-day annual property management methods",
+    "Move-in and move-out date pickers",
+    "Total move-in costs breakdown (Rent + Deposit + Utilities)",
+    "Educational concept router explaining proration rules and legal standards"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is prorated rent calculated mathematically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Prorated rent is calculated by dividing the monthly rent by the number of days in the month to establish the daily rate, then multiplying that rate by the number of days the tenant occupies the property during that partial billing period."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you count the move-in day when prorating rent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Legally, the tenant gains exclusive possession and keys to the property on the move-in date. Therefore, the move-in day is counted as a billable day under landlord-tenant law in the US, UK, Canada, Australia, and most international jurisdictions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does prorating work in Australia and New Zealand where rent is quoted weekly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In Australia and New Zealand, standard leases specify rent on a per-week basis. The statutory daily rate is calculated simply as Weekly Rent ÷ 7. For mid-week move-ins, multiply this daily rate by the exact days until the first regular rent cycle starts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a landlord refuse to prorate rent for a mid-month move-in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A landlord can decline to start a lease mid-month and insist that the lease begins on the 1st. However, if the landlord grants possession and allows occupancy starting on a mid-month date, charging a full month's rent for a partial month is considered improper or illegal in almost all jurisdictions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which prorating method is the fairest between Exact Days and 30-Day Banker Rule?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Exact Days in Month method is widely recognized as the fairest because it reflects the true calendar duration of the month. In a 31-day month like October or March, the 30-day method artificially inflates the daily rate, while in a 28-day February it undercharges."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are utilities and parking spaces also prorated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, flat-fee ancillary charges such as garage parking stalls, storage lockers, and bundled monthly utility fees should be prorated on the exact same daily rate proportion as the primary apartment rent."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">Tools</a>
+      <a href="/tools/rent-affordability-calculator/">Rent Affordability</a>
+      <a href="/tools/rent-vs-buy-calculator/">Rent vs Buy</a>
+      <a href="/tools/rent-split-calculator/">Rent Split (Sq Ft)</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Prorated Rent Calculator
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">Prorated Rent Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Calculate exact prorated rent for moving in or out mid-month. Supports global currencies, Australian weekly rent, US calendar days, European commercial 30-day norms, and complete move-in cost receipts.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    
+    <!-- Country Standards Bar -->
+    <div style="margin-bottom:16px;text-align:center;">
+      <span style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;display:block;margin-bottom:8px;">Select Country Legal Convention</span>
+      <div class="chip-group" style="justify-content:center;" id="country-presets">
+        <button type="button" class="chip-btn active" onclick="applyCountryPreset('us')">🇺🇸 USA (Exact Days)</button>
+        <button type="button" class="chip-btn" onclick="applyCountryPreset('uk')">🇬🇧 UK (Annual 365 / Cal)</button>
+        <button type="button" class="chip-btn" onclick="applyCountryPreset('au')">🇦🇺 Australia / NZ (Weekly ÷ 7)</button>
+        <button type="button" class="chip-btn" onclick="applyCountryPreset('ca')">🇨🇦 Canada (Provincial)</button>
+        <button type="button" class="chip-btn" onclick="applyCountryPreset('de')">🇩🇪 Germany / EU (30-Day BGB)</button>
+        <button type="button" class="chip-btn" onclick="applyCountryPreset('in')">🇮🇳 India (Monthly / Society)</button>
+      </div>
+    </div>
+
+    <!-- Move-in / Move-out mode -->
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="mode-movein">Move-In Mid Month</button>
+      <button type="button" class="chip-btn" id="mode-moveout">Move-Out Mid Month</button>
+    </div>
+
+    <!-- Rent Amount, Frequency & Currency selection -->
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="rent-amount" id="lbl-rent-amount">Monthly Rent Amount</label>
+        <div style="display:flex;gap:8px;">
+          <input id="rent-amount" type="number" min="50" max="10000000" step="25" value="2400" style="flex:2;" />
+          <select id="currency-select" style="flex:1;">
+            <option value="$" selected>$ (USD)</option>
+            <option value="€">€ (EUR)</option>
+            <option value="£">£ (GBP)</option>
+            <option value="₹">₹ (INR)</option>
+            <option value="A$">A$ (AUD)</option>
+            <option value="C$">C$ (CAD)</option>
+            <option value="₩">₩ (KRW)</option>
+            <option value="S$">S$ (SGD)</option>
+            <option value="NZ$">NZ$ (NZD)</option>
+          </select>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <label for="rent-cycle">Billing Frequency</label>
+        <select id="rent-cycle">
+          <option value="monthly" selected>Monthly Rent (Standard)</option>
+          <option value="weekly">Weekly Rent (AU / NZ standard)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Date selector & Proration formula -->
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="target-date" id="lbl-target-date">Move-In Date</label>
+        <input id="target-date" type="date" value="2026-10-18" />
+      </div>
+      <div style="flex:1;">
+        <label for="prorate-method">Proration Formula Method</label>
+        <select id="prorate-method">
+          <option value="exact" selected>Exact Days in Month (Most Common &amp; Fair)</option>
+          <option value="banker">30-Day Banker / Commercial (Flat 30 days/mo)</option>
+          <option value="annual">Annual Average 365 (Rent × 12 ÷ 365 days)</option>
+          <option value="weekly7">Weekly Divisor (Weekly Rent ÷ 7 days)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Optional security deposit & utilities -->
+    <div class="calc-row" style="margin-top:10px;">
+      <div style="flex:1;">
+        <label for="security-deposit">Security / Damage Deposit (Optional)</label>
+        <input id="security-deposit" type="number" min="0" placeholder="e.g. 2400" />
+      </div>
+      <div style="flex:1;">
+        <label for="monthly-utils">Monthly Utilities / Amenity Fees (Optional)</label>
+        <input id="monthly-utils" type="number" min="0" placeholder="e.g. 150" />
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="calc-result" style="margin-top:28px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Prorated Rent Owed</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-prorated-rent">$1,083.87</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-days-subtext">For 14 days of occupancy (Oct 18 – Oct 31)</span>
+      </div>
+
+      <!-- Metric stats -->
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="res-daily-rate">$77.42</div>
+          <div class="metric-lbl">Daily Rental Rate</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-days-occupied">14</div>
+          <div class="metric-lbl">Billable Days</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-total-movein">$1,083.87</div>
+          <div class="metric-lbl">Total Move-In Due</div>
+        </div>
+      </div>
+
+      <!-- Detailed Statement / Receipt -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin:20px 0;">
+        <h4 style="margin:0 0 10px;font-size:14px;color:var(--text);display:flex;justify-content:space-between;align-items:center;">
+          <span>Itemized Move-In Statement</span>
+          <button type="button" id="btn-copy-receipt" style="border:none;background:var(--card);padding:4px 10px;font-size:12px;font-weight:700;color:var(--accent);border-radius:6px;cursor:pointer;border:1px solid var(--border);">Copy Statement</button>
+        </h4>
+        <div id="receipt-details" style="font-size:13.5px;line-height:1.6;color:var(--text-muted);">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <div class="calc-cta">
+        <p>Splitting this rent with roommates? Settle it instantly with zero sign-up.</p>
+        <a href="/app/" class="btn btn-primary" id="btn-export-ledgermate">Split in LedgerMate →</a>
+      </div>
+
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06);display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a href="/guides/prorated-rent-calculation-methods/" class="concept-inline-link">Which Proration Method Does Your Lease Require? <span class="arrow">→</span></a>
+        <a href="#concept-guide" onclick="switchConcept('c-movein')" class="concept-inline-link">Is Move-In Day Counted? <span class="arrow">→</span></a>
+        <a href="#concept-guide" onclick="switchConcept('c-weekly')" class="concept-inline-link">Weekly Rent Math (AU/NZ) <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educational Concept Router -->
+  <section class="concept-router" id="concept-guide">
+    <div class="concept-router-head">
+      <div class="concept-router-title">
+        <span>📖 Prorated Rent Concepts &amp; Legal Rules</span>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
+    </div>
+
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('c-method')">1. Calculation Methods Compared</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-movein')">2. Move-In Day Rule</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-weekly')">3. Weekly Rent (Australia/NZ)</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-deposit')">4. Security Deposit Rules</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('c-notice')">5. Move-Out Notice &amp; Mid-Month</button>
+    </div>
+
+    <!-- Pane 1: Methods -->
+    <div class="concept-pane active" id="pane-c-method">
+      <h4>Exact Days vs 30-Day Banker Rule vs 365-Day Method</h4>
+      <p>When prorating rent, the formula divides your monthly rent by a divisor to arrive at your daily rate. Three distinct divisors are accepted in property law:</p>
+      <ul>
+        <li><strong>Exact Calendar Days (Most Fair):</strong> Uses the precise number of days in the month (28, 29, 30, or 31). A $2,400 rent in 31-day October produces a daily rate of $77.42. In a 30-day month like April, the daily rate is $80.00. In a 28-day February, the daily rate is $85.71.</li>
+        <li><strong>30-Day Banker's / Commercial Rule:</strong> Treats every month as having exactly 30 days (`Rent ÷ 30`). In Germany (BGB § 556b) and several US commercial leases, this standardizes accounting, but can slightly overcharge tenants during 31-day months.</li>
+        <li><strong>Annual Average 365-Day Method:</strong> Institutional property management software (like Yardi, AppFolio, RealPage) frequently uses `(Monthly Rent × 12) ÷ 365 = Daily Rate`. For $2,400/mo, the daily rate is $78.90 every single day of the year.</li>
+      </ul>
+      <div class="concept-formula-box">
+        Exact Method: Daily Rate = Monthly Rent ÷ Days in Month<br>
+        Banker Method: Daily Rate = Monthly Rent ÷ 30<br>
+        Annual Method: Daily Rate = (Monthly Rent × 12) ÷ 365
+      </div>
+      <div class="concept-example-box">
+        <strong>Example:</strong> Moving in on October 18 ($2,400 rent, 14 days left):<br>
+        • Exact Days (31 days): $77.42 × 14 = <strong>$1,083.87</strong><br>
+        • 30-Day Banker Rule: $80.00 × 14 = <strong>$1,120.00</strong> (Tenant pays $36.13 more)<br>
+        • Annual 365 Rule: $78.90 × 14 = <strong>$1,104.66</strong>
+      </div>
+      <a href="/guides/prorated-rent-calculation-methods/" class="concept-full-guide-link">Read Full Guide: The 4 Proration Divisors &amp; Laws <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 2: Move-in day rule -->
+    <div class="concept-pane" id="pane-c-movein">
+      <h4>The Move-In Day Rule: Do You Pay for the Day You Move In?</h4>
+      <p>Under tenancy law across common law jurisdictions (US, UK, Canada, Australia), a tenant receives legal possession, rights of quiet enjoyment, and key access on the move-in date stated in the lease.</p>
+      <p>Because you hold legal keys and occupancy starting at 12:01 AM or the handover hour, the move-in date is always counted as a billable day. The mathematical formula for billable days is inclusive:</p>
+      <div class="concept-formula-box">
+        Billable Days = (Total Days in Month - Move-In Date Number) + 1
+      </div>
+      <p>If you sign a lease beginning on July 10 in a 31-day month: `31 - 10 + 1 = 22` billable days. For move-outs, you pay through the key surrender date: moving out on the 10th equals 10 billable days.</p>
+      <a href="/guides/prorated-rent-calculation-methods/" class="concept-full-guide-link">Read Full Guide: The Move-In Day Inclusivity Rule <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 3: Weekly Rent -->
+    <div class="concept-pane" id="pane-c-weekly">
+      <h4>Weekly Rent Proration in Australia and New Zealand</h4>
+      <p>In Australia (NSW Fair Trading, Consumer Affairs Victoria, Residential Tenancies Authority Queensland) and New Zealand (Tenancy Services), rent is legally advertised and calculated on a weekly basis (e.g. $650 per week).</p>
+      <p>To convert weekly rent into daily rates or monthly equivalents:</p>
+      <div class="concept-formula-box">
+        Daily Rental Rate = Weekly Rent ÷ 7<br>
+        Monthly Rent = (Weekly Rent ÷ 7) × 365 ÷ 12 = Weekly Rent × 4.3482
+      </div>
+      <div class="concept-example-box">
+        <strong>Australian Example:</strong> A Melbourne apartment rented at A$700 per week has a daily rate of exactly A$100.00 (`700 ÷ 7`). If moving in 4 days before the standard weekly direct debit cycle begins, the prorated charge is simply `4 × A$100.00 = A$400.00`.
+      </div>
+    </div>
+
+    <!-- Pane 4: Deposit rules -->
+    <div class="concept-pane" id="pane-c-deposit">
+      <h4>Security Deposits, Advance Rent &amp; Statutory Caps</h4>
+      <p>A common dispute during mid-month move-ins is whether the first month's full rent or the prorated rent is paid on move-in day:</p>
+      <ul>
+        <li><strong>Standard Policy A (Prorated First Month):</strong> Tenant pays the prorated rent for the partial month plus the security deposit on move-in day. On the 1st of the following month, full regular rent begins.</li>
+        <li><strong>Standard Policy B (Full Month First, Prorated Second Month):</strong> Many corporate landlords charge a full month's rent upfront on move-in day to ensure funds clear, and then deduct the prorated credit on the second calendar month's rent bill.</li>
+        <li><strong>Jurisdictional Deposit Caps:</strong> In the UK, the Tenant Fees Act 2019 caps security deposits at 5 weeks' rent. In California (AB 12, effective 2024), security deposits are legally capped at 1 month's rent. In Ontario, landlords may only collect a rent deposit equal to one rental period (last month's rent).</li>
+      </ul>
+    </div>
+
+    <!-- Pane 5: Notice period -->
+    <div class="concept-pane" id="pane-c-notice">
+      <h4>Notice Periods &amp; Mid-Month Move-Out Obligations</h4>
+      <p>While moving in mid-month is straightforward, moving out mid-month requires careful review of your lease termination clause:</p>
+      <ul>
+        <li><strong>Fixed-Term Lease Expiry:</strong> If your 12-month lease ends on October 15, you only owe rent through October 15.</li>
+        <li><strong>Month-to-Month Periodic Tenancies:</strong> In many jurisdictions (such as New York, California, and the UK), a standard 30-day notice requirement must coincide with a full rental period. Unless agreed in writing, giving notice on October 10 might not end your obligation until November 30.</li>
+        <li>Always obtain written agreement from your landlord confirming the exact move-out date and the prorated final rent amount before vacating.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Deep-Dive Editorial Guide -->
+  <article style="margin-top:40px;">
+    <h2>Complete Guide to Prorated Rent: Formulas, International Standards &amp; Legal Rights</h2>
+    <p>Prorated rent is the proportionate adjustment of a tenant's rental fee when moving in after the first day of the billing cycle or moving out before the last day. Without proration, a tenant moving in on October 25 would be forced to pay an entire month's rent for merely seven days of actual physical occupancy.</p>
+    
+    <p>Whether you are a tenant reviewing a new residential lease agreement, a landlord drafting an itemized move-in invoice, or roommates dividing shared housing costs, calculating prorated rent with mathematical precision prevents disputes and ensures fair housing compliance.</p>
+
+    <h3>International Legal Standards Overview</h3>
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Country / Region</th>
+            <th>Primary Rent Basis</th>
+            <th>Statutory Proration Method</th>
+            <th>Move-In Day Counted?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>United States</strong></td>
+            <td>Monthly</td>
+            <td>Exact days in month (or 30-day commercial rule)</td>
+            <td>Yes (Day of legal possession)</td>
+          </tr>
+          <tr>
+            <td><strong>United Kingdom</strong></td>
+            <td>Monthly / Calendar</td>
+            <td>Calendar month daily rate or 365 annual average</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td><strong>Australia &amp; New Zealand</strong></td>
+            <td>Weekly</td>
+            <td>Weekly rent divided by 7 days</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td><strong>Canada (ON, BC, QC)</strong></td>
+            <td>Monthly</td>
+            <td>Exact calendar days of occupancy</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td><strong>Germany &amp; EU</strong></td>
+            <td>Monthly (Kaltmiete)</td>
+            <td>BGB § 556b / 30-day commercial standard</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td><strong>India</strong></td>
+            <td>Monthly</td>
+            <td>Calendar days (Rent + Society Maintenance)</td>
+            <td>Yes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Step-by-Step Mathematical Calculation</h3>
+    <p>To calculate prorated rent manually without software, follow this three-step workflow:</p>
+    <ol style="padding-left:22px;line-height:1.7;color:var(--text);">
+      <li><strong>Determine Billable Days:</strong> For a mid-month move-in, subtract the arrival date from the total days in that calendar month and add 1 (to include the move-in day itself): <code>Billable Days = (Total Days - Move-In Date) + 1</code>.</li>
+      <li><strong>Establish the Daily Rate:</strong> Divide the contracted monthly rent by the chosen divisor. Under the fair exact-days method, divide by 30 for April, June, September, November; divide by 28 (or 29 in leap years) for February; divide by 31 for all other months.</li>
+      <li><strong>Multiply Rate by Days:</strong> Multiply the daily rate by the billable days to determine the exact prorated rental balance due.</li>
+    </ol>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>How is prorated rent calculated mathematically?</summary>
+      <p>Prorated rent is calculated by dividing monthly rent by the number of days in the specific month to find the daily rental rate, then multiplying that rate by the number of days the tenant occupies the property during that partial billing period.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do you count the move-in day when prorating rent?</summary>
+      <p>Yes. Legally, the tenant gains exclusive possession, rights to quiet enjoyment, and physical key access on the move-in date. Therefore, the move-in day is counted as a billable day under landlord-tenant law in the US, UK, Canada, Australia, and most international jurisdictions.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How does prorating work in Australia and New Zealand?</summary>
+      <p>In Australia and New Zealand, standard leases specify rent on a per-week basis. The statutory daily rate is calculated simply as Weekly Rent ÷ 7. For mid-week move-ins, multiply this daily rate by the exact days until the first regular rent cycle starts.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can a landlord refuse to prorate rent?</summary>
+      <p>A landlord can decline to start a lease mid-month and insist that the tenancy begin on the 1st. However, if the landlord grants possession and allows occupancy starting on a mid-month date, charging a full month's rent for a partial month is considered improper or illegal in almost all jurisdictions.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Which prorating method is the fairest between Exact Days and 30-Day Banker Rule?</summary>
+      <p>The Exact Days in Month method is widely recognized as the fairest because it reflects the true calendar duration of the month. In a 31-day month like October or March, the 30-day method artificially inflates the daily rate, while in a 28-day February it undercharges.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Are utilities, storage lockers, and parking spaces also prorated?</summary>
+      <p>Yes, flat-fee ancillary charges such as garage parking stalls, storage lockers, and bundled monthly utility fees should be prorated on the exact same daily rate proportion as the primary apartment rent.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What happens in a leap year like 2028?</summary>
+      <p>During leap years, February has 29 days instead of 28. Our calculator dynamically determines the leap year calendar and divides by 29 days, ensuring you never overpay when moving in during late February.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction group expense sharing. Free, no mandatory app download, no limits.</p>
+      </div>
+      <div>
+        <h4>Rent &amp; Living Tools</h4>
+        <ul>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+          <li><a href="/tools/rent-affordability-calculator/">Rent Affordability (30% Rule)</a></li>
+          <li><a href="/tools/rent-vs-buy-calculator/">Rent vs Buy Calculator</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter (Sq Ft)</a></li>
+          <li><a href="/tools/couple-roommate-rent-calculator/">Couple Rent Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calorie Calculator</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+          <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guides</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Vs Splitwise</a></li>
+          <li><a href="/blog/splitwise-free-limit-alternatives/">Splitwise Limits &amp; Timers</a></li>
+          <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Calculations &amp; Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+  let mode = "movein"; // "movein" | "moveout"
+
+  const modeMoveInBtn = document.getElementById("mode-movein");
+  const modeMoveOutBtn = document.getElementById("mode-moveout");
+  const rentInput = document.getElementById("rent-amount");
+  const cycleSelect = document.getElementById("rent-cycle");
+  const currencySelect = document.getElementById("currency-select");
+  const dateInput = document.getElementById("target-date");
+  const methodSelect = document.getElementById("prorate-method");
+  const depositInput = document.getElementById("security-deposit");
+  const utilsInput = document.getElementById("monthly-utils");
+  const lblTargetDate = document.getElementById("lbl-target-date");
+  const lblRentAmount = document.getElementById("lbl-rent-amount");
+
+  function applyCountryPreset(country) {
+    const buttons = document.querySelectorAll("#country-presets .chip-btn");
+    buttons.forEach(b => b.classList.remove("active"));
+    if (event && event.target) {
+      event.target.classList.add("active");
+    }
+
+    if (country === "us") {
+      currencySelect.value = "$";
+      cycleSelect.value = "monthly";
+      methodSelect.value = "exact";
+      rentInput.value = "2400";
+    } else if (country === "uk") {
+      currencySelect.value = "£";
+      cycleSelect.value = "monthly";
+      methodSelect.value = "annual";
+      rentInput.value = "1800";
+    } else if (country === "au") {
+      currencySelect.value = "A$";
+      cycleSelect.value = "weekly";
+      methodSelect.value = "weekly7";
+      rentInput.value = "650";
+    } else if (country === "ca") {
+      currencySelect.value = "C$";
+      cycleSelect.value = "monthly";
+      methodSelect.value = "exact";
+      rentInput.value = "2200";
+    } else if (country === "de") {
+      currencySelect.value = "€";
+      cycleSelect.value = "monthly";
+      methodSelect.value = "banker";
+      rentInput.value = "1400";
+    } else if (country === "in") {
+      currencySelect.value = "₹";
+      cycleSelect.value = "monthly";
+      methodSelect.value = "exact";
+      rentInput.value = "35000";
+    }
+    updateCycleLabel();
+    calculate();
+  }
+
+  function updateCycleLabel() {
+    if (cycleSelect.value === "weekly") {
+      lblRentAmount.textContent = "Weekly Rent Amount";
+      if (methodSelect.value !== "weekly7") {
+        methodSelect.value = "weekly7";
+      }
+    } else {
+      lblRentAmount.textContent = "Monthly Rent Amount";
+      if (methodSelect.value === "weekly7") {
+        methodSelect.value = "exact";
+      }
+    }
+  }
+
+  modeMoveInBtn.addEventListener("click", () => {
+    mode = "movein";
+    modeMoveInBtn.classList.add("active");
+    modeMoveOutBtn.classList.remove("active");
+    lblTargetDate.textContent = "Move-In Date";
+    calculate();
+  });
+
+  modeMoveOutBtn.addEventListener("click", () => {
+    mode = "moveout";
+    modeMoveOutBtn.classList.add("active");
+    modeMoveInBtn.classList.remove("active");
+    lblTargetDate.textContent = "Move-Out Date";
+    calculate();
+  });
+
+  cycleSelect.addEventListener("change", () => {
+    updateCycleLabel();
+    calculate();
+  });
+
+  [rentInput, currencySelect, dateInput, methodSelect, depositInput, utilsInput].forEach(el => {
+    el.addEventListener("input", calculate);
+    el.addEventListener("change", calculate);
+  });
+
+  function switchConcept(conceptId) {
+    const tabs = document.querySelectorAll("#concept-tabs .concept-tab-btn");
+    tabs.forEach(t => t.classList.remove("active"));
+    const panes = document.querySelectorAll(".concept-pane");
+    panes.forEach(p => p.classList.remove("active"));
+
+    if (event && event.target) {
+      event.target.classList.add("active");
+    }
+    const targetPane = document.getElementById("pane-" + conceptId);
+    if (targetPane) {
+      targetPane.classList.add("active");
+    }
+  }
+
+  function formatMoney(sym, val) {
+    return sym + Number(val).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calculate() {
+    const rawRent = parseFloat(rentInput.value) || 0;
+    const deposit = parseFloat(depositInput.value) || 0;
+    const utils = parseFloat(utilsInput.value) || 0;
+    const method = methodSelect.value;
+    const isWeekly = cycleSelect.value === "weekly";
+    const sym = currencySelect.value;
+
+    const dateVal = dateInput.value;
+    if (!dateVal) return;
+    const parts = dateVal.split("-");
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10); // 1-12
+    const day = parseInt(parts[2], 10);
+
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    let occupiedDays = 0;
+    let subtext = "";
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const mName = monthNames[month - 1];
+
+    if (mode === "movein") {
+      occupiedDays = Math.max(1, daysInMonth - day + 1);
+      subtext = `For ${occupiedDays} days of occupancy (${mName} ${day} – ${mName} ${daysInMonth})`;
+    } else {
+      occupiedDays = Math.max(1, day);
+      subtext = `For ${occupiedDays} days of occupancy (${mName} 1 – ${mName} ${day})`;
+    }
+
+    let dailyRate = 0;
+    let divisor = daysInMonth;
+
+    if (isWeekly || method === "weekly7") {
+      // Weekly rent divided by 7
+      dailyRate = rawRent / 7;
+    } else {
+      // Monthly rent
+      if (method === "banker") divisor = 30;
+      else if (method === "annual") divisor = 365 / 12;
+      else divisor = daysInMonth;
+      dailyRate = rawRent / divisor;
+    }
+
+    const proratedRent = dailyRate * occupiedDays;
+    const utilsDivisor = isWeekly ? 7 : divisor;
+    const proratedUtils = utils ? (utils / utilsDivisor) * occupiedDays : 0;
+    const totalMoveIn = proratedRent + deposit + proratedUtils;
+
+    document.getElementById("res-prorated-rent").textContent = formatMoney(sym, proratedRent);
+    document.getElementById("res-days-subtext").textContent = subtext;
+    document.getElementById("res-daily-rate").textContent = formatMoney(sym, dailyRate);
+    document.getElementById("res-days-occupied").textContent = occupiedDays;
+    document.getElementById("res-total-movein").textContent = formatMoney(sym, totalMoveIn);
+
+    // Itemized receipt
+    const receiptHtml = `
+      <div style="display:flex;justify-content:space-between;padding:4px 0;">
+        <span>Prorated Rent (${occupiedDays} days @ ${formatMoney(sym, dailyRate)}/day):</span>
+        <strong style="color:var(--text);">${formatMoney(sym, proratedRent)}</strong>
+      </div>
+      ${deposit > 0 ? `
+      <div style="display:flex;justify-content:space-between;padding:4px 0;">
+        <span>Security / Damage Deposit:</span>
+        <strong style="color:var(--text);">${formatMoney(sym, deposit)}</strong>
+      </div>` : ""}
+      ${proratedUtils > 0 ? `
+      <div style="display:flex;justify-content:space-between;padding:4px 0;">
+        <span>Prorated Utilities / Amenities (${occupiedDays} days):</span>
+        <strong style="color:var(--text);">${formatMoney(sym, proratedUtils)}</strong>
+      </div>` : ""}
+      <div style="display:flex;justify-content:space-between;padding:8px 0 0;margin-top:6px;border-top:1px solid var(--border);font-weight:700;color:var(--accent);">
+        <span>Total Due on Move-In:</span>
+        <span>${formatMoney(sym, totalMoveIn)}</span>
+      </div>
+    `;
+    document.getElementById("receipt-details").innerHTML = receiptHtml;
+  }
+
+  document.getElementById("btn-copy-receipt").addEventListener("click", () => {
+    const text = `Prorated Rent Summary:\n${document.getElementById("receipt-details").innerText}`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById("btn-copy-receipt");
+      btn.textContent = "Copied!";
+      setTimeout(() => btn.textContent = "Copy Statement", 2000);
+    });
+  });
+
+  calculate();
+</script>
+</body>
+</html>

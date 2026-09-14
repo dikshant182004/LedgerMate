@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advanced Cloud Infrastructure &amp; AWS/GCP Cost Estimator | LedgerMate</title>
+<meta name="description" content="Professional multi-cloud cost calculator. Accurately calculate AWS, Google Cloud, and Azure bills with instance families, vCPU/RAM sliders, multi-AZ databases, storage tiers, IOPS, internet egress, NAT gateways, and IPv4 fees." />
+<link rel="canonical" href="https://tryledgermate.in/tools/cloud-cost-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Advanced Cloud Infrastructure &amp; AWS/GCP Cost Estimator | LedgerMate" />
+<meta property="og:description" content="Accurately estimate monthly cloud hosting bills with compute families, storage tiers, NAT gateways, egress bandwidth, and FinOps savings plans." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<style>
+.breadcrumb{font-size:13px;color:#000000!important;margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.breadcrumb a{color:#000000!important;text-decoration:none;font-weight:600!important;}
+.breadcrumb a:hover{color:var(--accent)!important;text-decoration:underline!important;}
+.breadcrumb span{color:#000000!important;font-weight:700!important;}
+.breadcrumb .sep, .breadcrumb span.sep{color:#4B5563!important;font-weight:500!important;}
+.breadcrumb span[id], .breadcrumb span.current{color:#000000!important;font-weight:700!important;}
+
+.cfg-section{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;transition:border-color .15s;}
+.cfg-section:hover{border-color:var(--accent-light, #8B5CF6);}
+.cfg-title{display:flex;align-items:center;gap:8px;margin:0 0 16px;font-size:16px;font-weight:800;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:10px;}
+.cfg-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;background:rgba(124,58,237,0.1);color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;}
+
+.slider-container{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+.slider-val{font-size:14px;font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace;}
+
+.finops-alert{background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(239,68,68,0.05));border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:16px;margin:18px 0;}
+.finops-alert h4{margin:0 0 8px;font-size:14.5px;font-weight:800;color:#92400E;display:flex;align-items:center;gap:6px;}
+.finops-alert ul{margin:0;padding-left:20px;font-size:13.5px;color:#78350F;line-height:1.55;}
+
+.comparison-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;}
+.comparison-table th{background:var(--bg);padding:10px 12px;text-align:left;font-weight:700;color:var(--text);border-bottom:2px solid var(--border);}
+.comparison-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text-muted);}
+.comparison-table tr:hover td{background:rgba(124,58,237,0.02);}
+
+.concept-router{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:14px;padding:24px;margin:32px 0;}
+.concept-nav{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:20px;}
+.concept-tab-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;}
+.concept-tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.concept-tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 6px rgba(124,58,237,0.25);}
+.concept-pane{display:none;animation:fadeIn .2s ease;}
+.concept-pane.active{display:block;}
+
+.faq-grid{display:flex;flex-direction:column;gap:16px;margin:28px 0;}
+.faq-card{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .15s;}
+.faq-card:hover{border-color:var(--accent);}
+.faq-card h3{margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);display:flex;align-items:flex-start;gap:8px;}
+.faq-card p{margin:0;font-size:14.5px;line-height:1.65;color:var(--text-muted);}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Advanced Cloud & AWS/GCP Cost Estimator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Multi-cloud infrastructure cost calculator covering compute instance families, reserved savings plans, multi-AZ databases, storage tiers, IOPS, egress bandwidth, NAT gateways, and IPv4 fees.",
+  "featureList": [
+    "AWS, Google Cloud (GCP), and Azure architectural modeling",
+    "vCPU and RAM capacity sizing with 4 instance families",
+    "Multi-AZ High Availability database replication pricing",
+    "EBS gp3 block storage with provisioned IOPS calculation",
+    "CDN cache offload analysis cutting origin egress costs",
+    "Hidden cloud cost detection: NAT Gateways, inter-AZ transfer, and IPv4 allocation fees"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is cloud egress bandwidth often the most shocking line item on an AWS bill?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cloud providers allow data ingress (uploading to the cloud) for free, but charge steep tiered fees ($0.085 to $0.09 per GB) for data exiting their network to the public internet. For video streaming, mobile app backends, or public APIs transferring 20 TB monthly, egress alone adds over $1,700 to the bill unless offloaded through a global CDN."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the hidden cost of AWS NAT Gateways?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AWS charges $0.045 per hour per NAT Gateway ($32.85/month) just to keep the gateway running, PLUS an additional $0.045 per gigabyte of data processed through it. A standard multi-AZ architecture with 3 private subnets running 3 NAT Gateways incurs ~$98.55/month before processing any traffic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Reserved Instances (RIs) and Savings Plans?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard Reserved Instances commit you to a specific instance family, operating system, and region for 1 or 3 years. Compute Savings Plans commit you to a consistent dollar-per-hour spend (e.g. $10/hour), providing up to 66% discounts with full flexibility across instance families, regions, operating systems, and serverless compute like AWS Fargate and Lambda."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why did cloud bills increase in 2024 due to public IPv4 addresses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In February 2024, AWS introduced a fee of $0.005 per hour ($3.65/month) for every public IPv4 address assigned to EC2 instances, NAT gateways, or load balancers, even if the instance is running or idle. For organizations with hundreds of public IPs, this policy added thousands of dollars annually."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Multi-AZ replication affect managed database costs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enabling Multi-AZ on Amazon RDS or Google Cloud SQL provisions a synchronous standby replica in a separate physical availability zone. This doubles compute instance costs and storage volume costs (2x multiplier) while adding minor inter-AZ replication bandwidth, ensuring zero data loss during hardware failures."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can development and staging environments cut cloud spend by 65%?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A standard month contains 730 hours. Development and QA teams typically work 40 hours per week (approx. 160-180 hours per month). Automating scheduled shutdowns of non-production servers on weeknights and weekends reduces their operating hours from 730 to 180, slashing compute bills by ~75%."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/time-zone-converter/">Time Zone Planner</a>
+      <a href="/tools/freelance-rate-calculator/">Freelance Rate</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;color:#000000;">
+    <a href="/" style="color:#000000;font-weight:600;">Home</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <a href="/#tools" style="color:#000000;font-weight:600;">Calculators</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <span style="color:#000000;font-weight:700;">Cloud Cost Estimator</span>
+  </div>
+
+  <h1>Advanced Cloud &amp; AWS/GCP Cost Estimator</h1>
+  <p class="sub">Accurately calculate production infrastructure costs. Model compute instance families, multi-AZ database clustering, block &amp; object storage, IOPS, CDN bandwidth offload, and hidden NAT gateway fees.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <!-- 1. Cloud Provider & Region -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>🌐 1. Cloud Provider &amp; Regional Baseline</span>
+        <span class="cfg-badge">Architecture Baseline</span>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="provider-select">Primary Cloud Provider</label>
+          <select id="provider-select" onchange="recalc()">
+            <option value="aws" selected>Amazon Web Services (AWS EC2 / RDS / S3)</option>
+            <option value="gcp">Google Cloud Platform (Compute Engine / Cloud SQL / GCS)</option>
+            <option value="azure">Microsoft Azure (Virtual Machines / Azure SQL / Blob)</option>
+            <option value="hybrid">Hetzner + Cloudflare + Supabase (Cost-Optimized Stack)</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="region-select">Data Center Region</label>
+          <select id="region-select" onchange="recalc()">
+            <option value="1.0" selected>US East (N. Virginia / Ohio) - Baseline 1.0x</option>
+            <option value="1.12">US West (Oregon / N. California) - +12%</option>
+            <option value="1.08">Europe (Frankfurt / Ireland / London) - +8%</option>
+            <option value="1.20">Asia Pacific (Tokyo / Singapore / Sydney) - +20%</option>
+            <option value="1.15">India (Mumbai) - +15%</option>
+            <option value="1.35">South America (São Paulo) - +35%</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Compute Configuration -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>⚡ 2. Virtual Compute Instances</span>
+        <span class="cfg-badge" id="badge-compute-total">$0.00 / mo</span>
+      </div>
+
+      <div class="calc-row">
+        <div style="flex:1.2;">
+          <label for="instance-family">Instance Family</label>
+          <select id="instance-family" onchange="recalc()">
+            <option value="gen" selected>General Purpose (Balanced vCPU &amp; RAM, e.g. t4g / m6i / e2)</option>
+            <option value="comp">Compute Optimized (High clock-speed CPU, e.g. c6i / c7g / c2)</option>
+            <option value="mem">Memory Optimized (High RAM database/cache, e.g. r6i / r7g / m2)</option>
+            <option value="gpu">Accelerated GPU (NVIDIA T4/A10G for AI Inference &amp; Rendering)</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="os-select">Operating System</label>
+          <select id="os-select" onchange="recalc()">
+            <option value="linux" selected>Linux / Ubuntu / Debian (Free / Open Source)</option>
+            <option value="windows">Windows Server (+ $0.046/vCPU-hr License)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-row" style="margin-top:12px;">
+        <div style="flex:1;">
+          <label for="vm-vcpu">vCPU Cores per VM: <span id="val-vcpu" class="slider-val">4 vCPU</span></label>
+          <input id="vm-vcpu" type="range" min="1" max="64" value="4" oninput="document.getElementById('val-vcpu').textContent=this.value+' vCPU';recalc()" />
+        </div>
+        <div style="flex:1;">
+          <label for="vm-ram">RAM per VM: <span id="val-ram" class="slider-val">16 GB</span></label>
+          <input id="vm-ram" type="range" min="1" max="256" value="16" oninput="document.getElementById('val-ram').textContent=this.value+' GB';recalc()" />
+        </div>
+      </div>
+
+      <div class="calc-row" style="margin-top:12px;">
+        <div style="flex:1;">
+          <label for="vm-count">Number of VM Instances</label>
+          <input id="vm-count" type="number" min="0" max="200" value="2" oninput="recalc()" />
+        </div>
+        <div style="flex:1;">
+          <label for="vm-hours">Operating Hours / Month</label>
+          <select id="vm-hours" onchange="recalc()">
+            <option value="730" selected>730 hours (24/7 Full Production)</option>
+            <option value="180">180 hours (Business Hours / Staging with Auto-Shutdown)</option>
+            <option value="365">365 hours (Half-time / Batch Jobs)</option>
+          </select>
+        </div>
+        <div style="flex:1.2;">
+          <label for="compute-pricing">Pricing &amp; Commitment Plan</label>
+          <select id="compute-pricing" onchange="recalc()">
+            <option value="1.0" selected>On-Demand (100% Flexible / Zero Commitment)</option>
+            <option value="0.67">1-Year Savings Plan / Reserved (-33% discount)</option>
+            <option value="0.44">3-Year Savings Plan / Reserved (-56% discount)</option>
+            <option value="0.25">Spot / Preemptible Instances (-75% discount)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Managed Database -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>🗄️ 3. Managed Database (RDS / Cloud SQL)</span>
+        <span class="cfg-badge" id="badge-db-total">$0.00 / mo</span>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1.2;">
+          <label for="db-engine">Database Engine</label>
+          <select id="db-engine" onchange="recalc()">
+            <option value="postgres" selected>PostgreSQL / MySQL (Standard Managed RDS)</option>
+            <option value="aurora">Amazon Aurora / AlloyDB (High Performance Distributed +30%)</option>
+            <option value="redis">Redis / ElastiCache In-Memory Cluster</option>
+            <option value="none">None / Self-Hosted on Compute</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="db-ha">High Availability (HA)</label>
+          <select id="db-ha" onchange="recalc()">
+            <option value="1.0">Single-AZ (Development / 1x Node)</option>
+            <option value="2.0" selected>Multi-AZ (Production Standby Failover / 2x Nodes)</option>
+            <option value="3.0">Multi-AZ + Read Replica (High Scale / 3x Nodes)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-row" style="margin-top:12px;">
+        <div style="flex:1;">
+          <label for="db-vcpu">DB vCPU</label>
+          <select id="db-vcpu" onchange="recalc()">
+            <option value="2" selected>2 vCPU / 8 GB RAM (db.t4g.large / db-custom-2-8)</option>
+            <option value="4">4 vCPU / 16 GB RAM (db.m6g.xlarge)</option>
+            <option value="8">8 vCPU / 32 GB RAM (db.m6g.2xlarge)</option>
+            <option value="16">16 vCPU / 64 GB RAM (db.r6g.4xlarge)</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="db-storage-gb">Allocated DB SSD Storage (GB)</label>
+          <input id="db-storage-gb" type="number" min="20" max="10000" step="50" value="150" oninput="recalc()" />
+        </div>
+        <div style="flex:1;">
+          <label for="db-backup-days">Automated Backup Retention</label>
+          <select id="db-backup-days" onchange="recalc()">
+            <option value="7" selected>7 Days of Snapshots</option>
+            <option value="14">14 Days of Snapshots</option>
+            <option value="30">30 Days of Snapshots</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Block & Object Storage -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>💾 4. Block Storage (EBS) &amp; Object Storage (S3/GCS)</span>
+        <span class="cfg-badge" id="badge-storage-total">$0.00 / mo</span>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="ebs-gb">Block Storage (EBS gp3 / PD Balanced) in GB</label>
+          <input id="ebs-gb" type="number" min="0" max="50000" step="50" value="300" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.08 / GB-month (Includes 3,000 baseline IOPS free)</span>
+        </div>
+        <div style="flex:1;">
+          <label for="ebs-extra-iops">Extra Provisioned IOPS (Beyond 3,000)</label>
+          <input id="ebs-extra-iops" type="number" min="0" max="50000" step="500" value="0" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.005 per extra IOPS-month</span>
+        </div>
+      </div>
+
+      <div class="calc-row" style="margin-top:12px;">
+        <div style="flex:1;">
+          <label for="s3-standard-gb">S3 / GCS Standard Hot Storage (GB)</label>
+          <input id="s3-standard-gb" type="number" min="0" max="500000" step="100" value="800" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.023 / GB-month</span>
+        </div>
+        <div style="flex:1;">
+          <label for="s3-archive-gb">Glacier / Coldline Archive Storage (GB)</label>
+          <input id="s3-archive-gb" type="number" min="0" max="500000" step="250" value="1500" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.004 / GB-month</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Networking, Egress & Hidden Costs -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>🌐 5. Networking, Egress &amp; Hidden Gotchas</span>
+        <span class="cfg-badge" id="badge-network-total">$0.00 / mo</span>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1.2;">
+          <label for="egress-gb">Monthly Outbound Internet Egress (GB)</label>
+          <input id="egress-gb" type="number" min="0" max="500000" step="200" value="2500" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">Standard AWS/GCP rate: ~$0.09 / GB (First 100 GB free)</span>
+        </div>
+        <div style="flex:1;">
+          <label for="cdn-offload">CDN Cache Offload (Cloudflare / CloudFront)</label>
+          <select id="cdn-offload" onchange="recalc()">
+            <option value="0">0% Offload (Direct Origin - 100% Cloud Egress Fee)</option>
+            <option value="0.50">50% CDN Cache Hit Ratio</option>
+            <option value="0.80" selected>80% CDN Cache Hit Ratio (-80% origin egress!)</option>
+            <option value="0.95">95% CDN Cache Hit Ratio (Highly optimized static assets)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-row" style="margin-top:12px;">
+        <div style="flex:1;">
+          <label for="nat-count">NAT Gateways (AWS Private Subnets)</label>
+          <input id="nat-count" type="number" min="0" max="10" value="2" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$32.85/mo hourly fee + $0.045/GB processed</span>
+        </div>
+        <div style="flex:1;">
+          <label for="ipv4-count">Public IPv4 Addresses</label>
+          <input id="ipv4-count" type="number" min="0" max="50" value="3" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.005/hr ($3.65/mo per IP fee instituted in 2024)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Enterprise Commit & FinOps Discounts -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>🏷️ 6. FinOps Discounts &amp; Free Tier</span>
+        <span class="cfg-badge">Discounts Applied</span>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="enterprise-discount">Enterprise Discount Program (EDP / Commit %)</label>
+          <select id="enterprise-discount" onchange="recalc()">
+            <option value="0" selected>0% (Standard Retail Pricing)</option>
+            <option value="0.08">8% (Startup Program / Mid-Market)</option>
+            <option value="0.15">15% (Tier-1 Cloud Commitment)</option>
+            <option value="0.22">22% (Enterprise Enterprise Agreement)</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="free-tier-toggle">Apply Cloud Free Tier Allowances</label>
+          <select id="free-tier-toggle" onchange="recalc()">
+            <option value="yes" selected>Yes (Deduct 100 GB egress, 5 GB S3, etc.)</option>
+            <option value="no">No (Calculate Gross Production Spend)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time Cost Results Banner -->
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:12px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;">Estimated Monthly Infrastructure Bill</span>
+        <div style="font-size:48px;font-weight:800;color:var(--text);margin:6px 0;font-family:'JetBrains Mono',monospace;" id="res-monthly-total">$0.00 / mo</div>
+        <span style="font-size:14px;color:var(--text-muted);" id="res-annual-summary">Annual Projected Spend: $0 / year</span>
+      </div>
+
+      <!-- Metric Boxes -->
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-compute" style="color:#2563EB;">$0.00</div>
+          <div class="metric-lbl">Virtual Compute</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-db" style="color:#7C3AED;">$0.00</div>
+          <div class="metric-lbl">Managed Database</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-storage" style="color:#10B981;">$0.00</div>
+          <div class="metric-lbl">EBS &amp; S3 Storage</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-network" style="color:#EF4444;">$0.00</div>
+          <div class="metric-lbl">Egress &amp; NAT Gateways</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Table -->
+      <div style="background:var(--bg);border-radius:12px;padding:16px 20px;margin-top:20px;">
+        <h4 style="margin:0 0 12px;font-size:15px;font-weight:800;color:var(--text);">Comprehensive Cost Itemization</h4>
+        <div class="calc-result-row">
+          <span>Compute Instances (<span id="row-vm-desc">2 VMs</span>)</span>
+          <span class="amt" id="row-compute-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Managed Database (<span id="row-db-desc">PostgreSQL Multi-AZ</span>)</span>
+          <span class="amt" id="row-db-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Block Storage (EBS gp3 + IOPS)</span>
+          <span class="amt" id="row-ebs-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Object Storage (S3 Standard &amp; Glacier)</span>
+          <span class="amt" id="row-s3-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Net Outbound Egress (After CDN Offload)</span>
+          <span class="amt" id="row-egress-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>NAT Gateways (<span id="row-nat-desc">2 units</span>) &amp; IPv4 Addresses</span>
+          <span class="amt" id="row-nat-val">$0.00</span>
+        </div>
+        <div class="calc-result-row" id="row-discount-container" style="color:#10B981;font-weight:700;">
+          <span>FinOps / Enterprise Commitment Discount</span>
+          <span class="amt" id="row-discount-val">-$0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FinOps Optimization Radar Alerts -->
+    <div class="finops-alert" id="finops-alert-box">
+      <h4>⚡ FinOps Architectural Opportunities Detected</h4>
+      <ul id="finops-alert-list">
+        <!-- Injected via JS -->
+      </ul>
+    </div>
+
+    <!-- Multi-Cloud Architecture Comparison Table -->
+    <div style="margin-top:28px;">
+      <h3 style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px;">Estimated Spend Across Providers for Same Workload</h3>
+      <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:14px;">How this exact architecture compares across major hyperscalers vs modern cost-optimized infrastructure:</p>
+      
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Provider / Architecture</th>
+            <th>Monthly Total</th>
+            <th>Compute &amp; DB</th>
+            <th>Storage &amp; Egress</th>
+            <th>Primary Advantage</th>
+          </tr>
+        </thead>
+        <tbody id="provider-comparison-body">
+          <!-- Injected via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Sharing cloud invoices, API tokens, or SaaS licenses with co-founders?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to split monthly cloud bills with transparent receipt tracking and zero fees.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <!-- Interactive Educational Concept Router -->
+  <div class="concept-router">
+    <div style="margin-bottom:14px;">
+      <span style="font-size:12px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Engineering &amp; FinOps Masterclass</span>
+      <h3 style="margin:4px 0 0;font-size:22px;font-weight:800;color:var(--text);">How Cloud Providers Bill You &amp; How to Cut Waste</h3>
+    </div>
+
+    <div class="concept-nav">
+      <button class="concept-tab-btn active" onclick="switchCloudTab('egress-trap')">The Egress Bandwidth Trap</button>
+      <button class="concept-tab-btn" onclick="switchCloudTab('nat-gateway')">The Hidden NAT Gateway Tax</button>
+      <button class="concept-tab-btn" onclick="switchCloudTab('savings-plans')">Savings Plans vs Reserved</button>
+      <button class="concept-tab-btn" onclick="switchCloudTab('multi-az')">Multi-AZ vs Single-AZ Math</button>
+      <button class="concept-tab-btn" onclick="switchCloudTab('finops-phases')">4-Phase FinOps Framework</button>
+    </div>
+
+    <div id="pane-egress-trap" class="concept-pane active">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Why Egress Bandwidth Destroys Growth-Stage Margins</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        In the cloud ecosystem, incoming data transfer (ingress) is completely free, creating an attractive onboarding incentive. However, extracting data back out to the internet (egress) is heavily taxed at approximately <strong>$0.08 to $0.09 per gigabyte</strong> on AWS, GCP, and Azure.
+      </p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        If your web application or mobile API transfers 10 terabytes (10,000 GB) of data each month, you pay nearly $900 strictly in network exit fees—often surpassing the cost of the virtual servers generating that data.
+      </p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);">
+        <strong>The Solution:</strong> Deploying a modern Content Delivery Network (such as Cloudflare or AWS CloudFront) caches static media, images, CSS/JS bundles, and cacheable API endpoints on thousands of global edge nodes. An 85% cache hit ratio reduces your origin egress volume by 85%, cutting a $900 bill down to $135 instantly.
+      </p>
+    </div>
+
+    <div id="pane-nat-gateway" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The Hidden AWS NAT Gateway Tax</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        To secure enterprise databases and backend microservices, standard AWS architectural guidelines recommend placing instances inside private subnets without public IPv4 addresses. To allow these private instances to download security updates, install npm packages, or call third-party APIs, AWS mandates an <strong>AWS Managed NAT Gateway</strong>.
+      </p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        What many engineers do not realize until invoice time is that AWS charges a dual fee:
+      </p>
+      <ul style="font-size:14px;line-height:1.65;color:var(--text-muted);padding-left:20px;margin-bottom:12px;">
+        <li><strong>Hourly Existence Fee:</strong> $0.045/hour per NAT Gateway ($32.85 per month). For high availability across 3 Availability Zones (AZs), this is $98.55/month just sitting idle.</li>
+        <li><strong>Data Processing Fee:</strong> An extra $0.045 per gigabyte of data that passes through the NAT Gateway.</li>
+      </ul>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);">
+        If your backend worker downloads 5 TB of machine learning weights or database backups from S3 through a NAT Gateway, you pay $225 in processing fees. Configuring <em>VPC Gateway Endpoints for S3</em> routes that traffic internally for free, completely bypassing the NAT Gateway.
+      </p>
+    </div>
+
+    <div id="pane-savings-plans" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Savings Plans vs Reserved Instances (RIs)</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Running on-demand compute is the most expensive way to rent cloud infrastructure. Committing to steady-state usage unlocks dramatic financial discounts:
+      </p>
+      <ul style="font-size:14px;line-height:1.65;color:var(--text-muted);padding-left:20px;margin-bottom:12px;">
+        <li><strong>Compute Savings Plans:</strong> The most flexible commitment model. You commit to spending a consistent hourly baseline (e.g. $10.00/hour) for 1 or 3 years. It automatically applies across EC2 instances, AWS Fargate containers, and AWS Lambda serverless execution, regardless of region, instance family, or OS. Yields up to 66% discounts.</li>
+        <li><strong>EC2 Instance Savings Plans:</strong> Commit to a specific instance family in a specific region (e.g. m6g in us-east-1). Provides higher discounts (up to 72%), but locks you into that specific machine architecture.</li>
+        <li><strong>Spot / Preemptible Instances:</strong> Spare hyperscaler capacity auctioned off at 70% to 90% discounts. AWS can terminate a Spot instance with a 2-minute notice if demand spikes, making it ideal for stateless batch processing, CI/CD runners, and background queue workers.</li>
+      </ul>
+    </div>
+
+    <div id="pane-multi-az" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Multi-AZ High Availability vs Single-AZ Math</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Selecting "Multi-AZ" on a managed database dropdown literally creates a duplicate instance in a completely separate physical data center building (Availability Zone). This provides automated synchronous replication: if Lightning strikes AZ-1, the DNS endpoint automatically fails over to the standby replica in AZ-2 within 60 seconds with zero data loss.
+      </p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);">
+        However, it doubles both the compute hourly cost and the attached storage volume cost (200% factor). A staging or test database rarely justifies Multi-AZ; disabling Multi-AZ on non-production clusters instantly halves their database costs.
+      </p>
+    </div>
+
+    <div id="pane-finops-phases" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The 4-Phase FinOps Optimization Framework</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Cloud Financial Operations (FinOps) is the discipline of maximizing business value from cloud spending. Implement these four recurring phases:
+      </p>
+      <ol style="font-size:14px;line-height:1.65;color:var(--text-muted);padding-left:20px;">
+        <li><strong>Inform (Tagging &amp; Attribution):</strong> Enforce mandatory AWS/GCP tags (`Environment`, `Service`, `Owner`). You cannot optimize what you cannot measure.</li>
+        <li><strong>Eliminate Zombie Resources:</strong> Search for unattached EBS volumes, idle Elastic IPs ($3.65/mo each), obsolete manual snapshots older than 90 days, and idle load balancers.</li>
+        <li><strong>Right-Size Workloads:</strong> Analyze CloudWatch CPU utilization over a 30-day window. If average utilization is below 15%, downsize from an `xlarge` to a `large` or switch to ARM-based Graviton3 instances for 20% better price-performance.</li>
+        <li><strong>Cover with Commitments:</strong> Once steady-state usage is stabilized, purchase 1-year No-Upfront Compute Savings Plans covering 70% to 80% of your baseline compute.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- In-Depth 1000+ Word Educational Article -->
+  <article style="margin-top:40px;">
+    <h2>The Complete Engineering Guide to Cloud Infrastructure Cost Architecture</h2>
+    <p>
+      Cloud economics is governed by a fundamental trade-off: <em>elastic convenience versus unit margin efficiency</em>. While renting compute instances with an API call eliminates upfront capital expenditure (CapEx), unmonitored operational expenditure (OpEx) can quickly compromise a startup's runway or an enterprise business unit's profitability.
+    </p>
+
+    <h3>1. The Anatomy of a Modern Cloud Bill</h3>
+    <p>
+      Every major hyperscaler (Amazon Web Services, Google Cloud Platform, Microsoft Azure) constructs customer invoices by unbundling physical datacenter resources into five fundamental metering categories:
+    </p>
+    <ul>
+      <li><strong>Compute Metering (Seconds &amp; Hours):</strong> Virtual Central Processing Units (vCPUs) and Random Access Memory (RAM) billed by the second, with a 60-second minimum. The hourly rate depends on the underlying silicon (x86 Intel Xeon, AMD EPYC, or ARM Graviton/Ampere), instance generation, and operating system licensing fees.</li>
+      <li><strong>Block Storage (Gigabyte-Months &amp; IOPS):</strong> Network-attached storage volumes (such as AWS EBS gp3 or GCP Persistent Disk) that act as virtual hard drives for VMs. You pay for the <em>provisioned</em> capacity, whether that drive is 10% full or 95% full. High-transaction databases requiring dedicated Input/Output Operations per Second (IOPS) pay surcharge fees per IOPS.</li>
+      <li><strong>Object Storage (Storage Tiers &amp; API Calls):</strong> Flat namespaces for blobs and files (AWS S3, Google Cloud Storage, Azure Blob). Pricing is tiered based on retrieval frequency: Standard Hot ($0.023/GB), Infrequent Access ($0.0125/GB), and Cold Archive ($0.00099/GB). In addition, every 1,000 PUT, COPY, POST, or LIST requests incur micro-metered charges.</li>
+      <li><strong>Network Egress &amp; Transit:</strong> Moving bits out of the provider's private optical network to the public Internet or across regional boundaries. Ingress is universally free; egress carries a premium.</li>
+      <li><strong>Managed Service Markups:</strong> Relational Database Service (RDS), ElastiCache, Managed Kubernetes (EKS/GKE), and Kafka services. Providers add an average 30% to 60% premium over raw EC2 instances in exchange for automated patching, point-in-time recovery, and zero-downtime failover.</li>
+    </ul>
+
+    <h3>2. The ARM Graviton Revolution: 20% Direct Cost Reduction</h3>
+    <p>
+      For over a decade, cloud compute was dominated by x86 architecture processors from Intel and AMD. Beginning with AWS Graviton2 and accelerating with Graviton3 and Google's Axion processors, custom ARM-based silicon has fundamentally altered cloud unit economics.
+    </p>
+    <p>
+      ARM instances (such as AWS `t4g`, `m7g`, `c7g`, and `r7g`) consume up to 60% less energy per compute cycle than legacy x86 hardware. Cloud providers pass these savings directly to customers: an ARM instance is priced roughly <strong>20% cheaper</strong> than its equivalent Intel instance, while simultaneously delivering up to 15% to 25% superior benchmark performance for workloads running Linux, Node.js, Python, Go, and Java.
+    </p>
+
+    <h3>3. Realistic Architectural Case Study: The 1,000-User to 100,000-User Growth Transition</h3>
+    <p>
+      Consider a modern web application scaling its infrastructure. Understanding the cost trajectory prevents painful emergency migrations:
+    </p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:18px 0;">
+      <h4 style="margin:0 0 8px;font-size:15px;color:var(--text);">Stage 1: The Monolith MVP ($45 - $120 / Month)</h4>
+      <p style="margin:0;font-size:14px;color:var(--text-muted);line-height:1.6;">
+        A single general-purpose compute instance (2 vCPU, 4 GB RAM) running a unified monolith with a local PostgreSQL database and static assets served through a free Cloudflare proxy. Storage is less than 50 GB. Internet egress is below 100 GB.
+      </p>
+    </div>
+
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:18px 0;">
+      <h4 style="margin:0 0 8px;font-size:15px;color:var(--text);">Stage 2: Decoupled High Availability ($450 - $1,200 / Month)</h4>
+      <p style="margin:0;font-size:14px;color:var(--text-muted);line-height:1.6;">
+        The database is extracted into a managed Multi-AZ RDS PostgreSQL cluster ($150 - $350/mo) for automated failover. The web tier scales across two availability zones behind an Application Load Balancer ($25/mo). Two NAT Gateways are provisioned ($65/mo). S3 object storage reaches 1 TB ($23/mo). Egress bandwidth offloaded to CloudFront ($80/mo).
+      </p>
+    </div>
+
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:18px 0;">
+      <h4 style="margin:0 0 8px;font-size:15px;color:var(--text);">Stage 3: Enterprise Microservices &amp; Multi-Region ($4,000 - $15,000+ / Month)</h4>
+      <p style="margin:0;font-size:14px;color:var(--text-muted);line-height:1.6;">
+        Kubernetes (EKS/GKE) clusters with autoscaling node groups. Multi-AZ Redis clusters for session caching. Multi-terabyte S3 data lakes with Athena querying. Cross-region data replication, dedicated VPC peering, and enterprise compliance logging (CloudTrail, Datadog integration).
+      </p>
+    </div>
+  </article>
+
+  <!-- 6 In-Depth FAQs -->
+  <section style="margin-top:48px;">
+    <h2 style="font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px;">Frequently Asked Questions (FAQ)</h2>
+    <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">Expert answers to complex cloud billing and architectural questions.</p>
+
+    <div class="faq-grid">
+      <div class="faq-card">
+        <h3><span>❓</span> Why is cloud egress bandwidth so much more expensive than server compute?</h3>
+        <p>Major cloud providers enforce asymmetrical pricing: uploading data into their cloud is free, but transmitting data out to the internet costs $0.08 to $0.09 per GB. This structure creates an ecosystem barrier to multi-cloud setups. For bandwidth-heavy applications, routing traffic through a CDN with high cache hit ratios is the single most effective way to eliminate egress fees.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> How do AWS NAT Gateways become an unexpected cost center?</h3>
+        <p>An AWS Managed NAT Gateway charges a baseline hourly rate of $0.045/hour ($32.85 per month per gateway), PLUS $0.045 per gigabyte of processed data. If an engineering team provisions 3 NAT Gateways across 3 Availability Zones for high availability, they incur nearly $100 per month in idle fees before handling any traffic. Utilizing VPC Gateway Endpoints for S3 and DynamoDB allows instances to bypass the NAT Gateway entirely at zero cost.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> What is the difference between Compute Savings Plans and Reserved Instances?</h3>
+        <p>Standard Reserved Instances require committing to a specific instance type, operating system, and region for 1 or 3 years. Compute Savings Plans, introduced by AWS, require committing to an hourly spend ($/hour) and automatically apply across EC2 instances, AWS Fargate, and AWS Lambda, regardless of instance family, operating system, or geographical region, offering up to 66% discounts with maximum flexibility.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> Why did AWS begin charging for public IPv4 addresses in 2024?</h3>
+        <p>Due to the global exhaustion of available IPv4 address space, AWS implemented a charge of $0.005 per hour per public IPv4 address ($3.65/month per IP) in February 2024. This applies to all running EC2 instances, load balancers, and NAT gateways. Organizations can audit their public IP inventory and migrate internal workloads to dual-stack IPv6 or private subnets to eliminate unnecessary IP fees.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> When does a Multi-AZ database setup become necessary?</h3>
+        <p>Multi-AZ replication synchronously copies database transactions to a standby instance in a physically separate availability zone. It is essential for revenue-critical production systems where unplanned downtime must be resolved via automated failover in under 60 seconds. For development, staging, or internal analytics databases, Single-AZ deployments save 50% on database costs.</p>
+      </div>
+
+      <div class="faq-card">
+        <h3><span>❓</span> How can scheduled instance automation save 65% on non-production cloud spend?</h3>
+        <p>A full month consists of 730 hours. Development, testing, and staging environments are typically only utilized during standard business hours (approx. 40 hours per week, or 160-180 hours per month). Using AWS EventBridge and Lambda or GCP Cloud Scheduler to stop non-production instances on weeknights and weekends immediately slashes their compute and database spend by ~70% to 75%.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free cloud infrastructure and distributed engineering calculators.</p>
+      </div>
+      <div>
+        <h4>Tech &amp; Cloud Tools</h4>
+        <ul>
+          <li><a href="/tools/cloud-cost-calculator/">Cloud Cost Estimator</a></li>
+          <li><a href="/tools/time-zone-converter/">Time Zone Planner</a></li>
+          <li><a href="/tools/freelance-rate-calculator/">Freelance Rate</a></li>
+          <li><a href="/tools/download-time-calculator/">Download Time</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/electricity-cost-calculator/">Electricity Cost</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Cloud FinOps Tools.</p>
+  </div>
+</footer>
+
+<script>
+function fmt(n) {
+  return '$' + (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function recalc() {
+  const provider = document.getElementById('provider-select').value;
+  const regionMultiplier = parseFloat(document.getElementById('region-select').value) || 1.0;
+
+  // 1. Compute
+  const family = document.getElementById('instance-family').value;
+  const os = document.getElementById('os-select').value;
+  const vcpu = parseInt(document.getElementById('vm-vcpu').value, 10) || 1;
+  const ram = parseInt(document.getElementById('vm-ram').value, 10) || 1;
+  const vmCount = parseInt(document.getElementById('vm-count').value, 10) || 0;
+  const hours = parseInt(document.getElementById('vm-hours').value, 10) || 730;
+  const computePricing = parseFloat(document.getElementById('compute-pricing').value) || 1.0;
+
+  // Base unit rates per vCPU-hr and RAM-GB-hr
+  let vcpuRate = 0.038;
+  let ramRate = 0.005;
+
+  if (family === 'comp') {
+    vcpuRate = 0.046;
+    ramRate = 0.004;
+  } else if (family === 'mem') {
+    vcpuRate = 0.034;
+    ramRate = 0.007;
+  } else if (family === 'gpu') {
+    vcpuRate = 0.12;
+    ramRate = 0.015;
+  }
+
+  // OS licensing surcharge
+  let osSurchargePerHour = (os === 'windows') ? (vcpu * 0.046) : 0;
+
+  let hourlyPerVm = (vcpu * vcpuRate + ram * ramRate) * regionMultiplier + osSurchargePerHour;
+  let computeMonthly = vmCount * hours * hourlyPerVm * computePricing;
+
+  // 2. Database
+  const dbEngine = document.getElementById('db-engine').value;
+  const dbHa = parseFloat(document.getElementById('db-ha').value) || 1.0;
+  const dbVcpu = parseInt(document.getElementById('db-vcpu').value, 10) || 2;
+  const dbStorageGb = parseFloat(document.getElementById('db-storage-gb').value) || 0;
+  const backupDays = parseInt(document.getElementById('db-backup-days').value, 10) || 7;
+
+  let dbMonthly = 0;
+  if (dbEngine !== 'none') {
+    let dbEngineMultiplier = (dbEngine === 'aurora') ? 1.30 : (dbEngine === 'redis' ? 0.90 : 1.0);
+    let dbVcpuHour = dbVcpu * 0.048 * regionMultiplier * dbEngineMultiplier;
+    let dbCompute = 730 * dbVcpuHour * dbHa * computePricing; // Apply savings plan if enabled
+    let dbStorage = dbStorageGb * 0.115 * dbHa * regionMultiplier;
+    let dbBackup = (dbStorageGb * (backupDays / 30) * 0.095);
+    dbMonthly = dbCompute + dbStorage + dbBackup;
+  }
+
+  // 3. Storage
+  const ebsGb = parseFloat(document.getElementById('ebs-gb').value) || 0;
+  const extraIops = parseFloat(document.getElementById('ebs-extra-iops').value) || 0;
+  const s3StandardGb = parseFloat(document.getElementById('s3-standard-gb').value) || 0;
+  const s3ArchiveGb = parseFloat(document.getElementById('s3-archive-gb').value) || 0;
+
+  const ebsMonthly = (ebsGb * 0.08 + extraIops * 0.005) * regionMultiplier;
+  const s3StandardMonthly = s3StandardGb * 0.023 * regionMultiplier;
+  const s3ArchiveMonthly = s3ArchiveGb * 0.004 * regionMultiplier;
+  const storageMonthly = ebsMonthly + s3StandardMonthly + s3ArchiveMonthly;
+
+  // 4. Networking & Hidden Costs
+  const grossEgressGb = parseFloat(document.getElementById('egress-gb').value) || 0;
+  const cdnOffload = parseFloat(document.getElementById('cdn-offload').value) || 0;
+  const natCount = parseInt(document.getElementById('nat-count').value, 10) || 0;
+  const ipv4Count = parseInt(document.getElementById('ipv4-count').value, 10) || 0;
+  const freeTier = document.getElementById('free-tier-toggle').value === 'yes';
+
+  // Net origin egress after CDN cache hit
+  let netEgressGb = grossEgressGb * (1 - cdnOffload);
+  if (freeTier) {
+    netEgressGb = Math.max(0, netEgressGb - 100); // 100 GB AWS/GCP free tier
+  }
+
+  // Egress tiered pricing (~$0.09/GB)
+  let egressMonthly = 0;
+  if (provider === 'hybrid') {
+    egressMonthly = netEgressGb * 0.005; // Free/cheap CDN egress
+  } else {
+    egressMonthly = netEgressGb * 0.09;
+  }
+
+  // NAT Gateway pricing: $0.045/hr + $0.045/GB processed
+  let natHourlyMonthly = natCount * 730 * 0.045;
+  let natDataMonthly = (grossEgressGb * 0.6) * 0.045; // ~60% traffic through NAT
+  let natMonthly = natHourlyMonthly + natDataMonthly;
+
+  // Public IPv4 pricing ($0.005/hr = $3.65/month each)
+  let ipv4Monthly = ipv4Count * 730 * 0.005;
+
+  let networkMonthly = egressMonthly + natMonthly + ipv4Monthly;
+
+  // Gross total before enterprise discount
+  let grossMonthly = computeMonthly + dbMonthly + storageMonthly + networkMonthly;
+
+  // Enterprise commitment discount
+  const edpDiscount = parseFloat(document.getElementById('enterprise-discount').value) || 0;
+  let discountAmount = grossMonthly * edpDiscount;
+  let netMonthly = grossMonthly - discountAmount;
+  let annualTotal = netMonthly * 12;
+
+  // Update Badges & UI Summaries
+  document.getElementById('badge-compute-total').textContent = fmt(computeMonthly) + ' / mo';
+  document.getElementById('badge-db-total').textContent = fmt(dbMonthly) + ' / mo';
+  document.getElementById('badge-storage-total').textContent = fmt(storageMonthly) + ' / mo';
+  document.getElementById('badge-network-total').textContent = fmt(networkMonthly) + ' / mo';
+
+  document.getElementById('res-monthly-total').textContent = fmt(netMonthly) + ' / mo';
+  document.getElementById('res-annual-summary').textContent = `Annual Projected Spend: ${fmt(annualTotal)} / year | Pricing Model: ${((1 - computePricing)*100).toFixed(0)}% Compute Savings applied`;
+
+  document.getElementById('m-compute').textContent = fmt(computeMonthly);
+  document.getElementById('m-db').textContent = fmt(dbMonthly);
+  document.getElementById('m-storage').textContent = fmt(storageMonthly);
+  document.getElementById('m-network').textContent = fmt(networkMonthly);
+
+  // Detailed rows
+  document.getElementById('row-vm-desc').textContent = `${vmCount} × (${vcpu} vCPU, ${ram}GB RAM)`;
+  document.getElementById('row-compute-val').textContent = fmt(computeMonthly);
+
+  let dbDescText = dbEngine === 'none' ? 'Disabled' : `${dbEngine.toUpperCase()} (${dbHa === 2 ? 'Multi-AZ' : (dbHa === 3 ? 'Multi-AZ + Replica' : 'Single-AZ')})`;
+  document.getElementById('row-db-desc').textContent = dbDescText;
+  document.getElementById('row-db-val').textContent = fmt(dbMonthly);
+
+  document.getElementById('row-ebs-val').textContent = fmt(ebsMonthly);
+  document.getElementById('row-s3-val').textContent = fmt(s3StandardMonthly + s3ArchiveMonthly);
+  document.getElementById('row-egress-val').textContent = `${fmt(egressMonthly)} (${netEgressGb.toFixed(0)} GB net)`;
+  document.getElementById('row-nat-desc').textContent = `${natCount} NAT + ${ipv4Count} IPv4`;
+  document.getElementById('row-nat-val').textContent = fmt(natMonthly + ipv4Monthly);
+
+  const discRow = document.getElementById('row-discount-container');
+  if (edpDiscount > 0) {
+    discRow.style.display = 'flex';
+    document.getElementById('row-discount-val').textContent = `-${fmt(discountAmount)}`;
+  } else {
+    discRow.style.display = 'none';
+  }
+
+  // FinOps Audit Alerts
+  renderFinopsAlerts({
+    computeMonthly,
+    egressMonthly,
+    natMonthly,
+    natCount,
+    grossEgressGb,
+    cdnOffload,
+    computePricing,
+    hours,
+    vmCount
+  });
+
+  // Cross-Provider Comparison Table
+  renderProviderComparison(netMonthly, computeMonthly, dbMonthly, storageMonthly, networkMonthly);
+}
+
+function renderFinopsAlerts(data) {
+  const list = document.getElementById('finops-alert-list');
+  list.innerHTML = '';
+  const alerts = [];
+
+  if (data.computePricing === 1.0 && data.computeMonthly > 100) {
+    let potentialSaving = data.computeMonthly * 0.33;
+    alerts.push(`<strong>Compute On-Demand Penalty:</strong> You are running compute 100% on-demand. Committing to a 1-year Compute Savings Plan will instantly save ~${fmt(potentialSaving)}/month ($${Math.round(potentialSaving * 12)}/year) with zero architectural changes.`);
+  }
+
+  if (data.cdnOffload < 0.8 && data.grossEgressGb >= 1000) {
+    let unoptimizedCost = data.grossEgressGb * 0.09;
+    let optimizedCost = (data.grossEgressGb * 0.20) * 0.09;
+    let diff = unoptimizedCost - optimizedCost;
+    alerts.push(`<strong>CDN Cache Opportunity:</strong> Origin egress represents a high variable cost. Enabling Cloudflare or CloudFront caching at an 80% cache hit ratio will reduce egress bills by up to ${fmt(diff)}/month.`);
+  }
+
+  if (data.natCount > 0 && data.natMonthly > 50) {
+    alerts.push(`<strong>NAT Gateway Idle Surcharge:</strong> Your ${data.natCount} NAT Gateway(s) incur ${fmt(data.natMonthly)}/month. Consider attaching free VPC Gateway Endpoints for S3 and DynamoDB to keep heavy internal traffic off the NAT processing meter.`);
+  }
+
+  if (data.hours === 730 && data.vmCount >= 2) {
+    alerts.push(`<strong>Non-Production Automation:</strong> If any of your ${data.vmCount} instances serve development or staging workloads, scheduling them to auto-stop outside office hours (180 hrs/mo) slashes their compute cost by ~75%.`);
+  }
+
+  if (alerts.length === 0) {
+    alerts.push(`<strong>Optimal Configuration:</strong> Your architecture balances savings commitments, caching offloads, and lean network topology efficiently.`);
+  }
+
+  alerts.forEach(a => {
+    const li = document.createElement('li');
+    li.innerHTML = a;
+    li.style.marginBottom = '6px';
+    list.appendChild(li);
+  });
+}
+
+function renderProviderComparison(total, comp, db, stor, net) {
+  const tbody = document.getElementById('provider-comparison-body');
+  tbody.innerHTML = '';
+
+  const rows = [
+    {
+      provider: 'Amazon Web Services (AWS)',
+      monthly: total,
+      compDb: comp + db,
+      storNet: stor + net,
+      adv: 'Broadest managed ecosystem, Aurora, Graviton3, global enterprise compliance.'
+    },
+    {
+      provider: 'Google Cloud Platform (GCP)',
+      monthly: total * 0.96,
+      compDb: (comp + db) * 0.95,
+      storNet: (stor + net) * 0.98,
+      adv: 'Per-second sustained use discounts, superior Kubernetes (GKE), global fiber network.'
+    },
+    {
+      provider: 'Microsoft Azure',
+      monthly: total * 1.02,
+      compDb: (comp + db) * 1.03,
+      storNet: (stor + net) * 0.99,
+      adv: 'Best for Windows Server licensing, enterprise Active Directory, hybrid on-prem.'
+    },
+    {
+      provider: 'Hetzner + Cloudflare + Supabase',
+      monthly: total * 0.38,
+      compDb: (comp + db) * 0.32,
+      storNet: (stor + net) * 0.45,
+      adv: 'Drastic cost reduction (up to 60-70%), free egress via Cloudflare, bare-metal CPU performance.'
+    }
+  ];
+
+  rows.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:700;color:var(--text);">${r.provider}</td>
+      <td style="font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace;">${fmt(r.monthly)} / mo</td>
+      <td>${fmt(r.compDb)}</td>
+      <td>${fmt(r.storNet)}</td>
+      <td style="font-size:12.5px;">${r.adv}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function switchCloudTab(tabId) {
+  document.querySelectorAll('.concept-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.concept-tab-btn').forEach(b => b.classList.remove('active'));
+
+  const targetPane = document.getElementById('pane-' + tabId);
+  if (targetPane) targetPane.classList.add('active');
+
+  const btn = Array.from(document.querySelectorAll('.concept-tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+  if (btn) btn.classList.add('active');
+}
+
+// Initial calculation
+recalc();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Калькулятор зарплаты 2026 (НДФЛ на руки и Gross/Net) | LedgerMate</title>
+<meta name="description" content="Точный расчет зарплаты на руки (Net) и оклада (Gross) в России по прогрессивной шкале НДФЛ 2025–2026 (13–22%), страховые взносы СФР 30% и вычеты на детей. Поддержка русского и английского языков." />
+<link rel="canonical" href="https://tryledgermate.in/tools/russia-salary-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Калькулятор зарплаты 2026 (НДФЛ и на руки) | LedgerMate" />
+<meta property="og:description" content="Расчет зарплаты «на руки» и налогов с учетом прогрессивной 5-ступенчатой шкалы НДФЛ 2025–2026 и взносов работодателя." />
+<meta property="og:url" content="https://tryledgermate.in/tools/russia-salary-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<style>
+.breadcrumb{font-size:13px;color:#000000!important;margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.breadcrumb a{color:#000000!important;text-decoration:none;font-weight:600!important;}
+.breadcrumb a:hover{color:var(--accent)!important;text-decoration:underline!important;}
+.breadcrumb span{color:#000000!important;font-weight:700!important;}
+.breadcrumb .sep, .breadcrumb span.sep{color:#4B5563!important;font-weight:500!important;}
+.breadcrumb span[id], .breadcrumb span.current{color:#000000!important;font-weight:700!important;}
+.concept-router{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:14px;padding:20px;margin:24px 0;}
+.concept-nav{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px;}
+.concept-tab-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s;}
+.concept-tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.concept-tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.concept-pane{display:none;}
+.concept-pane.active{display:block;animation:fadeIn .2s ease-in-out;}
+.concept-pane h4{margin:0 0 8px;font-size:16px;color:var(--text);}
+.concept-pane p{margin:0 0 10px;font-size:14px;color:var(--text-muted);line-height:1.6;}
+.concept-inline-link{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--accent);background:rgba(99,102,241,0.08);padding:2px 7px;border-radius:10px;margin-left:6px;cursor:pointer;text-decoration:none;vertical-align:middle;transition:all .15s;}
+.concept-inline-link:hover{background:var(--accent);color:#fff;}
+.concept-inline-link .arrow{font-size:12px;}
+.concept-full-guide-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;margin-top:8px;}
+.concept-full-guide-link:hover{text-decoration:underline;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Russia Salary & Tax Calculator (НДФЛ)",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" },
+  "description": "Russia salary take-home and employer payroll tax calculator reflecting the 2025/2026 5-bracket progressive NDFL tax scale and SFR social insurance.",
+  "featureList": [
+    "Gross to Net (расчет на руки) and Net to Gross reverse calculation",
+    "2025-2026 progressive personal income tax brackets (13%, 15%, 18%, 20%, 22%)",
+    "Standard monthly tax deductions for children (вычеты на детей)",
+    "Employer mandatory social insurance contributions (СФР 30% and accidents 0.2%)",
+    "Total employer cost of employment breakdown",
+    "Instant bilingual toggle (Russian / English)"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Как рассчитывается прогрессивный НДФЛ в России в 2025–2026 годах?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "С 2025 года введена 5-ступенчатая шкала НДФЛ: до 2,4 млн ₽ в год — 13%; от 2,4 до 5 млн ₽ — 15%; от 5 до 20 млн ₽ — 18%; от 20 до 50 млн ₽ — 20%; свыше 50 млн ₽ — 22%. Повышенная ставка применяется исключительно к сумме, превышающей установленный порог."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Сколько страховых взносов платит работодатель сверх оклада сотрудника?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Работодатель уплачивает единый тариф страховых взносов в СФР в размере 30% до достижения предельной базы (свыше — 15,1%), плюс взносы на травматизм от 0,2%. Эти средства не удерживаются из зарплаты сотрудника, а уплачиваются за счет компании."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "В чем разница между Gross и Net зарплатой?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Gross (брутто) — это начисленный оклад по трудовому договору до удержания налогов. Net (нетто / на руки) — фактическая сумма, перечисляемая на банковскую карту работника после вычета НДФЛ (13–22%)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как работают стандартные вычеты на детей в 2026 году?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Вычет на первого ребенка составляет 1 400 ₽ в месяц, на второго — 2 800 ₽, на третьего и последующих — 6 000 ₽. Вычет уменьшает налогооблагаемую базу до месяца, в котором суммарный доход сотрудника с начала года достигнет 450 000 ₽."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Чем трудовой договор (ТК РФ) отличается от самозанятости (НПД)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "По ТК РФ работодатель удерживает 13–22% НДФЛ и платит 30% взносов в СФР, гарантируя оплачиваемый отпуск и больничные. Самозанятый платит налог на профессиональный доход 4% (с физлиц) или 6% (с юрлиц), но формирует пенсионный стаж и социальные гарантии самостоятельно."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Сколько денег можно вернуть по налоговым вычетам (лечение, спорт, жилье)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "По социальным вычетам (лечение, спорт, обучение) можно заявить расходы до 150 000 ₽ в год и вернуть до 19 500 ₽. По имущественному вычету при покупке жилья можно вернуть до 260 000 ₽ (13% от 2 млн ₽) и до 390 000 ₽ с процентов по ипотеке."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools" id="nav-all-tools">Калькуляторы</a>
+      <a href="/tools/japan-salary-calculator/">手取り計算 (日本)</a>
+      <a href="/tools/korea-salary-calculator/">연봉 실수령액 (한국)</a>
+      <a href="/tools/germany-salary-calculator/">Gehaltsrechner (DE)</a>
+      <a href="/app/" class="btn btn-primary" id="nav-cta-btn">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;color:#000000;">
+    <a href="/" id="bc-home" style="color:#000000;font-weight:600;">Главная</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <a href="/#tools" id="bc-tools" style="color:#000000;font-weight:600;">Калькуляторы</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <span id="bc-curr" style="color:#000000;font-weight:700;">Калькулятор зарплаты (НДФЛ)</span>
+  </div>
+
+  <div class="lang-selector-bar">
+    <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Язык / Language:</span>
+    <button class="lang-btn active" id="btn-lang-ru" onclick="setLang('ru')">Русский (RUB)</button>
+    <button class="lang-btn" id="btn-lang-en" onclick="setLang('en')">English (RUB)</button>
+  </div>
+
+  <h1 id="title-text" style="font-size:36px;margin-bottom:12px;text-align:center;">Калькулятор зарплаты 2026 (НДФЛ)</h1>
+  <p class="sub" id="sub-text" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Быстрый и точный расчет суммы «на руки» и налогов с учетом пятиступенчатой прогрессивной шкалы НДФЛ 2025–2026 и страховых взносов работодателя в СФР.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="btn-mode-gross">У меня сумма оклада (Gross)</button>
+      <button type="button" class="chip-btn" id="btn-mode-net">Хочу получить на руки (Net)</button>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="salary-input" id="lbl-salary">Сумма оклада до вычета (₽ в месяц)</label>
+        <input id="salary-input" type="number" step="5000" min="10000" max="10000000" value="120000" />
+      </div>
+      <div style="flex:1;">
+        <label for="children-count" id="lbl-children">Количество детей (вычет)</label>
+        <select id="children-count">
+          <option value="0" selected id="opt-c0">Нет детей</option>
+          <option value="1" id="opt-c1">1 ребенок (1 400 ₽ вычет)</option>
+          <option value="2" id="opt-c2">2 детей (2 800 ₽ вычет)</option>
+          <option value="3" id="opt-c3">3 детей и более (8 800 ₽ вычет)</option>
+        </select>
+      </div>
+    </div>
+
+    <label style="margin-top:14px;display:block;text-align:center;" id="lbl-presets">Популярные оклады</label>
+    <div class="chip-group" style="justify-content:center;">
+      <button type="button" class="chip-btn" onclick="setSalary(60000)">60 000 ₽</button>
+      <button type="button" class="chip-btn" onclick="setSalary(90000)">90 000 ₽</button>
+      <button type="button" class="chip-btn active" onclick="setSalary(120000)">120 000 ₽</button>
+      <button type="button" class="chip-btn" onclick="setSalary(180000)">180 000 ₽</button>
+      <button type="button" class="chip-btn" onclick="setSalary(250000)">250 000 ₽</button>
+      <button type="button" class="chip-btn" onclick="setSalary(400000)">400 000 ₽</button>
+    </div>
+
+    <div class="calc-result" style="margin-top:20px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;" id="lbl-res-hero">Зарплата на руки (в месяц)</span>
+        <div style="font-size:clamp(32px,6vw,44px);font-weight:800;color:var(--text);margin:6px 0;" id="res-net-primary">104 400 ₽</div>
+        <span style="font-size:14px;color:var(--text-muted);" id="res-net-sub">В год на руки: 1 252 800 ₽ (НДФЛ 13% в месяц: 15 600 ₽)</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-gross">120 000 ₽</div>
+          <div class="metric-lbl" id="m-lbl-gross">Оклад до налогов</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-ndfl" style="color:#E0563F;">15 600 ₽</div>
+          <div class="metric-lbl" id="m-lbl-ndfl">НДФЛ удержанный</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-social">36 000 ₽</div>
+          <div class="metric-lbl" id="m-lbl-social">Взносы компании (30%)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-total-cost">156 000 ₽</div>
+          <div class="metric-lbl" id="m-lbl-total">Общая стоимость сотрудника</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:16px;">
+        <h4 style="margin:0 0 12px;font-size:15px;color:var(--text);font-weight:700;" id="lbl-breakdown-title">Разбивка налогов и взносов</h4>
+        <div class="calc-result-row">
+          <span id="lbl-d-ndfl">НДФЛ (налог на доходы физлиц) <span class="concept-inline-link" onclick="switchRuConcept('ndfl-brackets')">Шкала<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-ndfl">15 600 ₽</span>
+        </div>
+        <div class="calc-result-row">
+          <span id="lbl-d-social">Единый тариф страховых взносов СФР (30%) <span class="concept-inline-link" onclick="switchRuConcept('sfr-contributions')">СФР 30%<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-social">36 000 ₽</span>
+        </div>
+        <div class="calc-result-row">
+          <span id="lbl-d-injuries">Взносы на травматизм (0,2%) <span class="concept-inline-link" onclick="switchRuConcept('sfr-contributions')">Тариф<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-injuries">240 ₽</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router: Russian Version -->
+    <div id="ru-concept-box-ru" class="concept-router" style="margin-top:24px;">
+      <div class="concept-nav" id="ru-concept-nav-ru">
+        <button type="button" class="concept-tab-btn active" onclick="switchRuConcept('ndfl-brackets')">Шкала НДФЛ 13–22%</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('sfr-contributions')">Взносы СФР 30%</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('child-deductions')">Вычеты на детей</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('social-deductions')">Вычеты 150 000 ₽</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('npd-selfemployed')">Самозанятость НПД</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('global-compare')">Мировые зарплаты</button>
+      </div>
+
+      <div class="concept-pane active" id="pane-ru-ndfl-brackets">
+        <h4>Пятиступенчатая прогрессивная шкала НДФЛ (2025–2026)</h4>
+        <p>С 2025 года в России действует пятиступенчатая прогрессивная шкала НДФЛ: до 2,4 млн ₽ в год (до 200 тыс. ₽/мес) ставка составляет 13%; от 2,4 до 5 млн ₽ — 15%; от 5 до 20 млн ₽ — 18%; от 20 до 50 млн ₽ — 20%; свыше 50 млн ₽ — 22%. Повышенные ставки рассчитываются исключительно с суммы превышения соответствующего порога.</p>
+        <div style="margin-top:10px;">
+          <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">Предельная vs эффективная ставка налога &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-sfr-contributions">
+        <h4>Страховые взносы работодателя в СФР (30% + 0,2%)</h4>
+        <p>Работодатель сверх оклада сотрудника уплачивает единый тариф обязательных страховых взносов в Социальный фонд России (СФР) в размере 30% (пенсионное, медицинское и социальное страхование) до предельной величины базы (в 2026 году около 2,75 млн ₽). С суммы превышения тариф снижается до 15,1%. Взносы на травматизм составляют от 0,2% (для офисных работников). Сотрудник этих денег не теряет — их полностью покрывает компания.</p>
+        <div style="margin-top:10px;">
+          <a href="/guides/ctc-vs-in-hand-salary-structure/" class="concept-full-guide-link">Полная стоимость сотрудника (Gross vs Net vs CTC) &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-child-deductions">
+        <h4>Стандартные ежемесячные вычеты на детей (ст. 218 НК РФ)</h4>
+        <p>Родители, усыновители и опекуны имеют право на ежемесячное уменьшение налогооблагаемого дохода: на первого ребенка — 1 400 ₽, на второго — 2 800 ₽, на третьего и каждого последующего — 6 000 ₽. Вычет предоставляется до месяца, в котором совокупный доход с начала года превысил 450 000 ₽.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-social-deductions">
+        <h4>Социальные и имущественные налоговые вычеты</h4>
+        <p>По социальным расходам (платная медицина, фитнес, спорт, обучение) лимит увеличен до 150 000 ₽ в год — можно вернуть до 19 500 ₽ (13%). При покупке жилья положен имущественный вычет до 2 000 000 ₽ (возврат до 260 000 ₽) плюс до 390 000 ₽ с процентов по ипотеке (итого до 650 000 ₽ на человека).</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-npd-selfemployed">
+        <h4>Трудовой договор (ТК РФ) vs Самозанятость (НПД 4–6%)</h4>
+        <p>При оформлении по ТК РФ работодатель удерживает 13–22% НДФЛ и платит 30% в СФР, предоставляя 28 дней оплачиваемого отпуска и 100% оплату больничных. Самозанятый (НПД) платит всего 4% при работе с физлицами или 6% с юридическими лицами (годовой лимит дохода до 2,4 млн ₽), но не формирует страховой стаж и пенсионные баллы без добровольных взносов.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-global-compare">
+        <h4>Сравнение зарплат и удержаний в ключевых странах мира</h4>
+        <div class="table-responsive" style="margin-top:10px;">
+          <table class="compare-table" style="font-size:12.5px;">
+            <thead>
+              <tr>
+                <th>Страна</th>
+                <th>Налог на доходы</th>
+                <th>Страховые взносы с работника</th>
+                <th>Доля «на руки» (Net)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Россия (RU)</strong></td>
+                <td>13% – 22% (НДФЛ 2026)</td>
+                <td>0% (30% платит компания)</td>
+                <td>85% 〜 87%</td>
+              </tr>
+              <tr>
+                <td><strong>Южная Корея (KR)</strong></td>
+                <td>6% – 45% + местный налог</td>
+                <td>9.74% (Пенсия, медицина, занятость)</td>
+                <td>82% 〜 88%</td>
+              </tr>
+              <tr>
+                <td><strong>Япония (JP)</strong></td>
+                <td>5% – 45% + налог жителей 10%</td>
+                <td>~15% (Пенсия, медстрах, 介護)</td>
+                <td>75% 〜 82%</td>
+              </tr>
+              <tr>
+                <td><strong>Германия (DE)</strong></td>
+                <td>14% – 45% (Steuerklasse)</td>
+                <td>~20% (Пенсия, медстрах, уход)</td>
+                <td>58% 〜 68%</td>
+              </tr>
+              <tr>
+                <td><strong>США (US)</strong></td>
+                <td>10% – 37% + штаты 0–13.3%</td>
+                <td>7.65% (FICA: Social Security + Med)</td>
+                <td>70% 〜 78%</td>
+              </tr>
+              <tr>
+                <td><strong>Индия (IN)</strong></td>
+                <td>0% – 30% (New Regime)</td>
+                <td>12% EPF (пенсионный фонд)</td>
+                <td>85% 〜 92%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router: English Version -->
+    <div id="ru-concept-box-en" class="concept-router" style="margin-top:24px;display:none;">
+      <div class="concept-nav" id="ru-concept-nav-en">
+        <button type="button" class="concept-tab-btn active" onclick="switchRuConcept('ndfl-brackets')">1. NDFL Brackets 13%–22%</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('sfr-contributions')">2. Employer SFR (30%)</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('child-deductions')">3. Child Deductions</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('social-deductions')">4. Social Deductions</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('npd-selfemployed')">5. Labor Law vs Self-Employed</button>
+        <button type="button" class="concept-tab-btn" onclick="switchRuConcept('global-compare')">6. Global Comparison</button>
+      </div>
+
+      <div class="concept-pane active" id="pane-ru-en-ndfl-brackets">
+        <h4>Five-Tier Progressive Personal Income Tax (NDFL 2025–2026)</h4>
+        <p>Under Federal Law No. 176-FZ, Russia enforces a 5-bracket progressive personal income tax scale: up to 2.4M RUB/year (up to 200,000 ₽/mo) is taxed at 13%; 2.4M to 5M RUB is taxed at 15%; 5M to 20M RUB is taxed at 18%; 20M to 50M RUB is taxed at 20%; and income exceeding 50M RUB is taxed at 22%. The higher rates apply strictly to cumulative income exceeding each threshold within the calendar year.</p>
+        <div style="margin-top:10px;">
+          <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">Marginal vs Effective Tax Rate Guide &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-en-sfr-contributions">
+        <h4>Employer Mandatory Social Fund (SFR) Contributions (30% + 0.2%)</h4>
+        <p>In Russia, mandatory social insurance is not deducted from employee paychecks. Instead, the employer contributes 30% in unified social contributions to the Social Fund of Russia (covering pension, medical care, and temporary disability/maternity) up to an annual wage threshold (~2.75M RUB in 2026), and 15.1% on excess income. Workplace injury insurance adds 0.2% to 8.5% (0.2% for office/IT roles). These contributions do not decrease employee take-home pay.</p>
+        <div style="margin-top:10px;">
+          <a href="/guides/ctc-vs-in-hand-salary-structure/" class="concept-full-guide-link">Total Cost of Employment (Gross vs Net vs CTC) &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-en-child-deductions">
+        <h4>Standard Monthly Child Tax Deductions (Art. 218 Tax Code)</h4>
+        <p>Parents, adoptive parents, and legal guardians working in Russia are entitled to monthly pre-tax deductions: 1,400 RUB for the 1st child, 2,800 RUB for the 2nd child, and 6,000 RUB for the 3rd and each subsequent child. The deduction applies each month until cumulative gross income from the beginning of the year reaches 450,000 RUB.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-en-social-deductions">
+        <h4>Social &amp; Property Tax Deductions (Cash Rebates)</h4>
+        <p>For qualifying social expenses (certified healthcare, medicine, fitness, and personal education), the annual deductible expense cap is 150,000 RUB, allowing a direct cash refund of up to 19,500 RUB (13%). First-time home buyers can claim a property deduction on up to 2,000,000 RUB of purchase costs (up to 260,000 RUB refund) plus 13% of mortgage interest on up to 3,000,000 RUB (up to 390,000 RUB refund), totaling up to 650,000 RUB per person.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-en-npd-selfemployed">
+        <h4>Labor Contract (TK RF) vs. Self-Employed Professional Tax (NPD 4%–6%)</h4>
+        <p>Under a standard labor contract (TK RF), the employer withholds 13%–22% NDFL, pays 30% SFR social insurance, and guarantees 28 calendar days of paid vacation and fully subsidized sick leave. Self-employed freelancers under the Professional Income Tax regime (NPD) pay only 4% on B2C revenue or 6% on B2B revenue (up to 2.4M RUB/year), but receive no statutory paid leave and accumulate zero state pension points unless they contribute voluntarily.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-ru-en-global-compare">
+        <h4>Global Salary Take-Home &amp; Payroll Tax Comparison</h4>
+        <div class="table-responsive" style="margin-top:10px;">
+          <table class="compare-table" style="font-size:12.5px;">
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Personal Income Tax</th>
+                <th>Employee Social Levies</th>
+                <th>Effective Take-Home (Net)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Russia (RU)</strong></td>
+                <td>13% – 22% (Progressive NDFL)</td>
+                <td>0% (30% paid by employer)</td>
+                <td>85% 〜 87%</td>
+              </tr>
+              <tr>
+                <td><strong>South Korea (KR)</strong></td>
+                <td>6% – 45% + local surtax</td>
+                <td>9.74% (Pension, health, care, UI)</td>
+                <td>82% 〜 88%</td>
+              </tr>
+              <tr>
+                <td><strong>Japan (JP)</strong></td>
+                <td>5% – 45% + 10% resident tax</td>
+                <td>~15% (Kousei Nenkin, health, UI)</td>
+                <td>75% 〜 82%</td>
+              </tr>
+              <tr>
+                <td><strong>Germany (DE)</strong></td>
+                <td>14% – 45% (Steuerklasse)</td>
+                <td>~20% (Pension, health, care, UI)</td>
+                <td>58% 〜 68%</td>
+              </tr>
+              <tr>
+                <td><strong>United States (US)</strong></td>
+                <td>10% – 37% + state 0–13.3%</td>
+                <td>7.65% (FICA: Social Security + Med)</td>
+                <td>70% 〜 78%</td>
+              </tr>
+              <tr>
+                <td><strong>India (IN)</strong></td>
+                <td>0% – 30% (New Regime)</td>
+                <td>12% EPF (Provident Fund)</td>
+                <td>85% 〜 92%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box" style="margin-top:24px;">
+      <h4 id="lbl-tip-title">💡 Советы по налоговым вычетам в 2026 году</h4>
+      <ul class="mindmap-list" id="lbl-tip-list">
+        <li><strong>Прогрессивная шкала НДФЛ:</strong> Если совокупный годовой доход превышает 2,4 млн ₽ (200 000 ₽ в месяц), на сумму превышения начисляется ставка 15% вместо 13%.</li>
+        <li><strong>Социальный вычет на лечение и спорт:</strong> Максимальный размер расходов, с которых можно вернуть НДФЛ, составляет 150 000 ₽ в год (возврат до 19 500 ₽).</li>
+        <li><strong>Имущественный вычет при покупке жилья:</strong> Каждый гражданин РФ имеет право вернуть до 260 000 ₽ (13% от 2 млн ₽) с покупки квартиры плюс до 390 000 ₽ с уплаченных процентов по ипотеке.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p id="lbl-cta-title">Совместные расходы с коллегами или друзьями?</p>
+        <span style="font-size:12px;color:var(--text-muted);" id="lbl-cta-sub">Удобный расчет совместных поездок, подарков и аренды без комиссии в LedgerMate.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary" id="lbl-cta-btn">Открыть LedgerMate</a>
+    </div>
+
+  </div>
+
+  <article style="margin-top:44px;line-height:1.7;" id="article-container">
+    <div id="content-ru">
+      <h2>Как устроено налогообложение зарплаты в России в 2025–2026 годах</h2>
+      <p>С 1 января 2025 года в Российской Федерации вступили в силу масштабные изменения Налогового кодекса РФ (Федеральный закон № 176-ФЗ): привычная плоская 13%-ная шкала налога на доходы физических лиц заменена на дифференцированную пятиступенчатую прогрессивную систему. При расчете заработной платы налоги удерживаются нарастающим итогом с начала каждого календарного года. Ниже представлен подробный анализ того, как формируется сумма на руки (Net), какие обязательства несет работодатель (СФР) и как вернуть переплаченные налоги с помощью государственных вычетов.</p>
+
+      <h3>1. Пятиступенчатая шкала НДФЛ (2025–2026)</h3>
+      <div class="table-responsive">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Годовой доход</th>
+              <th>Месячный эквивалент</th>
+              <th>Ставка НДФЛ</th>
+              <th>Принцип начисления</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>До 2 400 000 ₽</td>
+              <td>До 200 000 ₽/мес</td>
+              <td>13%</td>
+              <td>Базовая ставка для подавляющего большинства граждан РФ.</td>
+            </tr>
+            <tr>
+              <td>От 2 400 000 до 5 000 000 ₽</td>
+              <td>От 200 000 до 416 667 ₽/мес</td>
+              <td>15%</td>
+              <td>15% применяется только к сумме, превышающей 2,4 млн ₽.</td>
+            </tr>
+            <tr>
+              <td>От 5 000 000 до 20 000 000 ₽</td>
+              <td>От 416 667 до 1 666 667 ₽/мес</td>
+              <td>18%</td>
+              <td>18% начисляется на сумму свыше 5 млн ₽ в год.</td>
+            </tr>
+            <tr>
+              <td>От 20 000 000 до 50 000 000 ₽</td>
+              <td>От 1 666 667 до 4 166 667 ₽/мес</td>
+              <td>20%</td>
+              <td>20% начисляется на часть дохода свыше 20 млн ₽.</td>
+            </tr>
+            <tr>
+              <td>Свыше 50 000 000 ₽</td>
+              <td>Свыше 4 166 667 ₽/мес</td>
+              <td>22%</td>
+              <td>Максимальная ставка прогрессивной шкалы.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Важно:</strong> Прогрессивная шкала не означает, что весь доход сотрудника с окладом 250 000 ₽ облагается по ставке 15%. Первые 2 400 000 ₽ облагаются строго по ставке 13% (312 000 ₽ налога), и только оставшиеся 600 000 ₽ (с 10-го по 12-й месяц года) облагаются по ставке 15% (90 000 ₽). Эффективная ставка налога для такого оклада составит всего 13,4% в год.</p>
+
+      <h3>2. Страховые взносы работодателя (СФР) и реальная стоимость найма</h3>
+      <p>Многие сотрудники полагают, что налоги в России ограничиваются 13% НДФЛ. Однако российская система разделяет налоговое бремя: подоходный налог вычитается из начисленной зарплаты работника, а обязательные страховые взносы уплачиваются работодателем за собственный счет сверху оклада:</p>
+      <ul>
+        <li><strong>Единый тариф страховых взносов (30%):</strong> объединяет пенсионное страхование (ОПС), медицинское (ОМС) и социальное на случай временной нетрудоспособности и материнства (ВНиМ). Взносы перечисляются в Социальный фонд России (СФР). При достижении предельной величины базы (в 2026 году — около 2,75 млн ₽) ставка снижается до 15,1%.</li>
+        <li><strong>Взносы на травматизм (0,2% — 8,5%):</strong> тариф зависит от класса профессионального риска организации. Для IT-компаний, банков и офисных структур он минимален — 0,2%.</li>
+      </ul>
+      <p><em>Пример:</em> При окладе 100 000 ₽ сотрудник получает на руки 87 000 ₽ (после вычета 13 000 ₽ НДФЛ). Работодатель же тратит на сотрудника 100 000 ₽ + 30 000 ₽ (взносы СФР) + 200 ₽ (травматизм) = 130 200 ₽ в месяц. Реальный налоговый клин составляет более 33% от общих затрат бизнеса на рабочее место.</p>
+
+      <h3>3. Налоговые вычеты: как вернуть свои деньги от государства</h3>
+      <p>Любой налоговый резидент РФ, получающий «белую» зарплату и уплачивающий НДФЛ по ставке 13–22%, имеет законное право вернуть уплаченный налог через механизм налоговых вычетов:</p>
+      <ol>
+        <li><strong>Стандартные вычеты на детей (ст. 218 НК РФ):</strong> предоставляются ежемесячно по месту работы: 1 400 ₽ на первого ребенка, 2 800 ₽ на второго, 6 000 ₽ на третьего и каждого следующего. Предел годового дохода для применения вычета составляет 450 000 ₽.</li>
+        <li><strong>Социальный налоговый вычет (ст. 219 НК РФ):</strong> увеличенный лимит расходов составляет 150 000 ₽ в год (включает медицинские услуги, покупку лекарств, фитнес-абонементы, собственное обучение). Максимальная сумма возврата составляет 19 500 ₽ в год. На обучение детей действует отдельный лимит — 110 000 ₽ на ребенка (возврат до 14 300 ₽).</li>
+        <li><strong>Имущественный вычет при покупке жилья (ст. 220 НК РФ):</strong> позволяет вернуть 13% от стоимости покупки квартиры/дома (лимит расходов 2 000 000 ₽, возврат до 260 000 ₽) плюс 13% от суммы уплаченных банку процентов по ипотеке (лимит расходов 3 000 000 ₽, возврат до 390 000 ₽). Суммарно один человек может вернуть до 650 000 ₽, а супруги при совместной покупке — до 1 300 000 ₽.</li>
+        <li><strong>Инвестиционный вычет (ИИС-3):</strong> при открытии и пополнении индивидуального инвестиционного счета третьего типа на сумму до 400 000 ₽ в год можно вернуть от 52 000 до 88 000 ₽ уплаченного НДФЛ ежегодно.</li>
+      </ol>
+
+      <h2 style="margin-top:40px;">Часто задаваемые вопросы (FAQ)</h2>
+      <details class="faq-item" open>
+        <summary>Как рассчитывается прогрессивный НДФЛ в России в 2025–2026 годах?</summary>
+        <p>С 2025 года введена 5-ступенчатая шкала НДФЛ: до 2,4 млн ₽ в год — 13%; от 2,4 до 5 млн ₽ — 15%; от 5 до 20 млн ₽ — 18%; от 20 до 50 млн ₽ — 20%; свыше 50 млн ₽ — 22%. Повышенная ставка применяется исключительно к сумме, превышающей установленный порог.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Сколько страховых взносов платит работодатель сверх оклада сотрудника?</summary>
+        <p>Работодатель уплачивает единый тариф страховых взносов в СФР в размере 30% до достижения предельной базы (свыше — 15,1%), плюс взносы на травматизм от 0,2%. Эти средства не удерживаются из зарплаты сотрудника, а уплачиваются за счет компании.</p>
+      </details>
+      <details class="faq-item">
+        <summary>В чем разница между Gross и Net зарплатой?</summary>
+        <p>Gross (брутто) — это начисленный оклад по трудовому договору до удержания налогов. Net (нетто / на руки) — фактическая сумма, перечисляемая на банковскую карту работника после вычета НДФЛ (13–22%).</p>
+      </details>
+      <details class="faq-item">
+        <summary>Как работают стандартные вычеты на детей в 2026 году?</summary>
+        <p>Вычет на первого ребенка составляет 1 400 ₽ в месяц, на второго — 2 800 ₽, на третьего и последующих — 6 000 ₽. Вычет уменьшает налогооблагаемую базу до месяца, в котором суммарный доход сотрудника с начала года достигнет 450 000 ₽.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Чем трудовой договор (ТК РФ) отличается от самозанятости (НПД)?</summary>
+        <p>По ТК РФ работодатель удерживает 13–22% НДФЛ и платит 30% взносов в СФР, гарантируя оплачиваемый отпуск и больничные. Самозанятый платит налог на профессиональный доход 4% (с физлиц) или 6% (с юрлиц), но формирует пенсионный стаж и социальные гарантии самостоятельно.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Сколько денег можно вернуть по налоговым вычетам (лечение, спорт, жилье)?</summary>
+        <p>По социальным вычетам (лечение, спорт, обучение) можно заявить расходы до 150 000 ₽ в год и вернуть до 19 500 ₽. По имущественному вычету при покупке жилья можно вернуть до 260 000 ₽ (13% от 2 млн ₽) и до 390 000 ₽ с процентов по ипотеке.</p>
+      </details>
+    </div>
+
+    <div id="content-en" style="display:none;">
+      <h2>Complete Guide to Russia Salary, Progressive NDFL &amp; Payroll Taxes (2026)</h2>
+      <p>Under Federal Law No. 176-FZ, Russia has reformed its individual income tax structure, replacing the former flat 13% rate with a 5-tier progressive scale ranging from 13% to 22%. In addition to employee-side income tax (NDFL), employers must pay unified social insurance contributions (SFR 30%) on top of the contracted gross salary. This guide details how take-home pay is computed, employer payroll burdens, tax return deduction mechanisms, and international take-home comparisons.</p>
+
+      <h3>1. Five-Tier Progressive Personal Income Tax (NDFL) Scale</h3>
+      <div class="table-responsive">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Annual Taxable Income</th>
+              <th>Monthly Equivalent</th>
+              <th>NDFL Tax Rate</th>
+              <th>Application Logic</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Up to 2,400,000 RUB</td>
+              <td>Up to 200,000 ₽/mo</td>
+              <td>13%</td>
+              <td>Standard rate covering the majority of Russian salaried professionals.</td>
+            </tr>
+            <tr>
+              <td>2,400,000 to 5,000,000 RUB</td>
+              <td>200,000 to 416,667 ₽/mo</td>
+              <td>15%</td>
+              <td>Applies only to income exceeding 2.4M RUB.</td>
+            </tr>
+            <tr>
+              <td>5,000,000 to 20,000,000 RUB</td>
+              <td>416,667 to 1,666,667 ₽/mo</td>
+              <td>18%</td>
+              <td>Applies only to income exceeding 5M RUB.</td>
+            </tr>
+            <tr>
+              <td>20,000,000 to 50,000,000 RUB</td>
+              <td>1,666,667 to 4,166,667 ₽/mo</td>
+              <td>20%</td>
+              <td>Applies only to income exceeding 20M RUB.</td>
+            </tr>
+            <tr>
+              <td>Over 50,000,000 RUB</td>
+              <td>Over 4,166,667 ₽/mo</td>
+              <td>22%</td>
+              <td>Top marginal tax bracket.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2. Employer Social Fund (SFR) Contributions &amp; Total Cost of Employment</h3>
+      <p>In Russia, mandatory social insurance is not deducted from employee salaries. Instead, the employer contributes 30% in unified social taxes to the Social Fund of Russia (covering state pension, mandatory medical insurance, and temporary disability/maternity) up to an annual wage base cap (~2.75M RUB in 2026), and 15.1% on excess income. An additional 0.2% to 8.5% covers occupational injury risk.</p>
+
+      <h3>3. Standard &amp; Social Tax Deductions (Rebates)</h3>
+      <p>Russian tax residents can recover withheld NDFL via standard deductions for children (1,400 ₽ for child 1; 2,800 ₽ for child 2; 6,000 ₽ for child 3+ up to a 450,000 ₽ cumulative annual income threshold) and social deductions for medical treatment, education, and fitness up to 150,000 ₽ per year (yielding up to 19,500 ₽ in cash refund).</p>
+
+      <h3>4. Property Purchase Deduction</h3>
+      <p>First-time home buyers can claim a 13% tax refund on up to 2,000,000 RUB of property acquisition costs (up to 260,000 RUB refund) plus 13% of mortgage interest up to 3,000,000 RUB (up to 390,000 RUB refund), for a maximum tax refund of 650,000 RUB per person.</p>
+
+      <h2 style="margin-top:40px;">Frequently Asked Questions (FAQ)</h2>
+      <details class="faq-item" open>
+        <summary>How does the progressive NDFL tax work in Russia (2025–2026)?</summary>
+        <p>Russia uses a 5-tier progressive bracket: 13% up to 2.4M ₽, 15% between 2.4M and 5M ₽, 18% between 5M and 20M ₽, 20% between 20M and 50M ₽, and 22% over 50M ₽. The higher rate applies strictly to income exceeding each threshold on a cumulative calendar-year basis.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How much in payroll taxes does an employer pay on top of salary?</summary>
+        <p>The employer pays 30% unified social contributions to the Social Fund of Russia (SFR) up to the statutory cap, plus 0.2% accident insurance. These taxes are paid directly by the enterprise and are not deducted from the employee's net pay.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is the difference between Gross and Net pay in Russia?</summary>
+        <p>Gross is the contractual salary stated in the labor agreement before taxation. Net is the final cash amount transferred to the employee's bank card after subtracting 13%–22% personal income tax.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do the child tax deductions work?</summary>
+        <p>Monthly deductions reduce taxable gross: 1,400 ₽ for the 1st child, 2,800 ₽ for the 2nd child, and 6,000 ₽ for each subsequent child until cumulative yearly income reaches 450,000 ₽.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How does Labor Contract (TK RF) compare to Self-Employment (NPD)?</summary>
+        <p>Under TK RF, employees receive 28 days of paid leave, sick pay, and employer-paid pension/health insurance while paying 13%–22% NDFL. Self-employed workers (NPD) pay 4% (B2C) or 6% (B2B) tax on income up to 2.4M ₽, but receive no employer benefits.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How much can one claim in tax refunds for medical care, education, and housing?</summary>
+        <p>Social deductions cover up to 150,000 ₽ in expenses (up to 19,500 ₽ refund). Property purchases allow claiming up to 260,000 ₽ on the home plus 390,000 ₽ on mortgage interest.</p>
+      </details>
+    </div>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Бесплатные финансовые калькуляторы и честный учет совместных расходов.</p>
+      </div>
+      <div>
+        <h4>Зарплатные калькуляторы</h4>
+        <ul>
+          <li><a href="/tools/russia-salary-calculator/">Россия (НДФЛ 2026)</a></li>
+          <li><a href="/tools/germany-salary-calculator/">Германия (Gehalt)</a></li>
+          <li><a href="/tools/japan-salary-calculator/">Япония (手取り)</a></li>
+          <li><a href="/tools/korea-salary-calculator/">Корея (실수령액)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Финансовые инструменты</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Ипотечный калькулятор</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Сложный процент</a></li>
+          <li><a href="/tools/rent-split-calculator/">Раздел аренды</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>О сервисе</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Аналог Splitwise</a></li>
+          <li><a href="/app/">Веб-приложение</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Бесплатные финансовые инструменты. <a href="/">Главная</a> · <a href="/app/">Веб-приложение</a></p>
+  </div>
+</footer>
+
+<script>
+let currentLang = 'ru';
+let mode = 'gross'; // 'gross' or 'net'
+
+const i18n = {
+  ru: {
+    bcHome: 'Главная',
+    bcTools: 'Калькуляторы',
+    bcCurr: 'Калькулятор зарплаты (НДФЛ)',
+    title: 'Калькулятор зарплаты 2026 (НДФЛ)',
+    sub: 'Быстрый и точный расчет суммы «на руки» и налогов с учетом пятиступенчатой прогрессивной шкалы НДФЛ 2025–2026 и страховых взносов работодателя в СФР.',
+    btnGross: 'У меня сумма оклада (Gross)',
+    btnNet: 'Хочу получить на руки (Net)',
+    lblSalaryGross: 'Сумма оклада до вычета (₽ в месяц)',
+    lblSalaryNet: 'Желаемая сумма на руки (₽ в месяц)',
+    lblChildren: 'Количество детей (вычет)',
+    optC0: 'Нет детей',
+    optC1: '1 ребенок (1 400 ₽ вычет)',
+    optC2: '2 детей (2 800 ₽ вычет)',
+    optC3: '3 детей и более (8 800 ₽ вычет)',
+    lblPresets: 'Популярные оклады',
+    lblResHero: 'Зарплата на руки (в месяц)',
+    resNetSubTemplate: (ann, mon) => `В год на руки: ${ann} (НДФЛ в месяц: ${mon})`,
+    mGross: 'Оклад до налогов',
+    mNdfl: 'НДФЛ удержанный',
+    mSocial: 'Взносы компании (30%)',
+    mTotal: 'Общая стоимость сотрудника',
+    lblBreakdownTitle: 'Разбивка налогов и взносов',
+    lblDNdfl: 'НДФЛ (налог на доходы физлиц)',
+    lblDSocial: 'Единый тариф страховых взносов СФР (30%)',
+    lblDInjuries: 'Взносы на травматизм (0,2%)',
+    lblTipTitle: '💡 Советы по налоговым вычетам в 2026 году',
+    tipListHtml: `<li><strong>Прогрессивная шкала НДФЛ:</strong> Если совокупный годовой доход превышает 2,4 млн ₽ (200 000 ₽ в месяц), на сумму превышения начисляется ставка 15% вместо 13%.</li>
+<li><strong>Социальный вычет на лечение и спорт:</strong> Максимальный размер расходов, с которых можно вернуть НДФЛ, составляет 150 000 ₽ в год (возврат до 19 500 ₽).</li>
+<li><strong>Имущественный вычет при покупке жилья:</strong> Каждый гражданин РФ имеет право вернуть до 260 000 ₽ (13% от 2 млн ₽) с покупки квартиры плюс до 390 000 ₽ с уплаченных процентов по ипотеке.</li>`,
+    ctaTitle: 'Совместные расходы с коллегами или друзьями?',
+    ctaSub: 'Удобный расчет совместных поездок, подарков и аренды без комиссии в LedgerMate.',
+    ctaBtn: 'Открыть LedgerMate'
+  },
+  en: {
+    bcHome: 'Home',
+    bcTools: 'Calculators',
+    bcCurr: 'Russia Salary Calculator (NDFL)',
+    title: 'Russia Salary & Take-Home Calculator 2026',
+    sub: 'Calculate your monthly take-home salary (Net) and employer payroll costs in Russia using the 2025-2026 5-bracket progressive personal income tax (NDFL) system and SFR contributions.',
+    btnGross: 'I know Gross Salary (Before Tax)',
+    btnNet: 'I want Net Take-Home (In Hand)',
+    lblSalaryGross: 'Monthly Gross Salary (RUB before tax)',
+    lblSalaryNet: 'Desired Net Take-Home (RUB per month)',
+    lblChildren: 'Children Count (Tax Deduction)',
+    optC0: 'No children',
+    optC1: '1 child (1,400 ₽ deduction)',
+    optC2: '2 children (2,800 ₽ deduction)',
+    optC3: '3 or more children (8,800 ₽ deduction)',
+    lblPresets: 'Popular Salary Levels',
+    lblResHero: 'Net Monthly Take-Home Pay',
+    resNetSubTemplate: (ann, mon) => `Annual Take-Home: ${ann} (Monthly NDFL: ${mon})`,
+    mGross: 'Gross Salary',
+    mNdfl: 'Personal Income Tax (NDFL)',
+    mSocial: 'Employer Social Taxes (30%)',
+    mTotal: 'Total Employer Payroll Cost',
+    lblBreakdownTitle: 'Detailed Payroll Taxes Breakdown',
+    lblDNdfl: 'NDFL Personal Income Tax (13%–22%)',
+    lblDSocial: 'Unified Social Fund Insurance (SFR 30%)',
+    lblDInjuries: 'Workplace Injury Insurance (0.2%)',
+    lblTipTitle: '💡 Russian Tax Deductions & Tips (2026)',
+    tipListHtml: `<li><strong>Progressive NDFL Scale:</strong> If cumulative annual earnings exceed 2.4M RUB (200,000 RUB per month), the excess portion is taxed at 15% instead of the 13% base rate.</li>
+<li><strong>Social Deductions (Medical &amp; Fitness):</strong> The annual qualifying expense limit is 150,000 RUB, enabling a direct cash refund of up to 19,500 RUB (13%).</li>
+<li><strong>Property Purchase Tax Deduction:</strong> Russian tax residents can reclaim up to 260,000 RUB (13% of 2M RUB) on property purchases, plus up to 390,000 RUB on mortgage interest paid.</li>`,
+    ctaTitle: 'Sharing flat rent or group dinner bills in Russia?',
+    ctaSub: 'Split group trips, dinners, and apartment costs seamlessly with LedgerMate — 100% free with no ads.',
+    ctaBtn: 'Open LedgerMate Free'
+  }
+};
+
+function switchRuConcept(tabId) {
+  const panes = document.querySelectorAll('.concept-pane');
+  const buttons = document.querySelectorAll('.concept-tab-btn');
+  panes.forEach(p => p.classList.remove('active'));
+  buttons.forEach(b => {
+    const onclickStr = b.getAttribute('onclick') || '';
+    b.classList.toggle('active', onclickStr.includes(`'${tabId}'`));
+  });
+
+  const targetPaneRu = document.getElementById('pane-ru-' + tabId);
+  const targetPaneEn = document.getElementById('pane-ru-en-' + tabId);
+  if (targetPaneRu) targetPaneRu.classList.add('active');
+  if (targetPaneEn) targetPaneEn.classList.add('active');
+
+  const activeBox = currentLang === 'ru' ? document.getElementById('ru-concept-box-ru') : document.getElementById('ru-concept-box-en');
+  if (activeBox) {
+    activeBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-lang-ru').classList.toggle('active', lang === 'ru');
+  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang;
+
+  const t = i18n[lang];
+  document.getElementById('bc-home').textContent = t.bcHome;
+  document.getElementById('bc-tools').textContent = t.bcTools;
+  document.getElementById('bc-curr').textContent = t.bcCurr;
+  document.getElementById('title-text').textContent = t.title;
+  document.getElementById('sub-text').textContent = t.sub;
+  document.getElementById('btn-mode-gross').textContent = t.btnGross;
+  document.getElementById('btn-mode-net').textContent = t.btnNet;
+  document.getElementById('lbl-salary').textContent = mode === 'gross' ? t.lblSalaryGross : t.lblSalaryNet;
+  document.getElementById('lbl-children').textContent = t.lblChildren;
+  document.getElementById('opt-c0').textContent = t.optC0;
+  document.getElementById('opt-c1').textContent = t.optC1;
+  document.getElementById('opt-c2').textContent = t.optC2;
+  document.getElementById('opt-c3').textContent = t.optC3;
+  document.getElementById('lbl-presets').textContent = t.lblPresets;
+  document.getElementById('lbl-res-hero').textContent = t.lblResHero;
+  document.getElementById('m-lbl-gross').textContent = t.mGross;
+  document.getElementById('m-lbl-ndfl').textContent = t.mNdfl;
+  document.getElementById('m-lbl-social').textContent = t.mSocial;
+  document.getElementById('m-lbl-total').textContent = t.mTotal;
+  document.getElementById('lbl-breakdown-title').textContent = t.lblBreakdownTitle;
+  
+  // Update breakdown rows with interactive concept links preserved
+  document.getElementById('lbl-d-ndfl').innerHTML = (lang === 'ru' ? 'НДФЛ (налог на доходы физлиц)' : 'Personal Income Tax (NDFL 13%–22%)') +
+    ` <span class="concept-inline-link" onclick="switchRuConcept('ndfl-brackets')">${lang === 'ru' ? 'Шкала' : 'Brackets'}<span class="arrow">&rarr;</span></span>`;
+  document.getElementById('lbl-d-social').innerHTML = (lang === 'ru' ? 'Единый тариф страховых взносов СФР (30%)' : 'Unified Social Fund Insurance (SFR 30%)') +
+    ` <span class="concept-inline-link" onclick="switchRuConcept('sfr-contributions')">${lang === 'ru' ? 'СФР 30%' : 'SFR 30%'}<span class="arrow">&rarr;</span></span>`;
+  document.getElementById('lbl-d-injuries').innerHTML = (lang === 'ru' ? 'Взносы на травматизм (0,2%)' : 'Workplace Injury Insurance (0.2%)') +
+    ` <span class="concept-inline-link" onclick="switchRuConcept('sfr-contributions')">${lang === 'ru' ? 'Тариф' : 'Rate'}<span class="arrow">&rarr;</span></span>`;
+
+  document.getElementById('lbl-tip-title').textContent = t.lblTipTitle;
+  const tipListEl = document.getElementById('lbl-tip-list');
+  if (tipListEl) tipListEl.innerHTML = t.tipListHtml;
+
+  document.getElementById('lbl-cta-title').textContent = t.ctaTitle;
+  document.getElementById('lbl-cta-sub').textContent = t.ctaSub;
+  document.getElementById('lbl-cta-btn').textContent = t.ctaBtn;
+
+  // Toggle bilingual concept boxes
+  const ruBox = document.getElementById('ru-concept-box-ru');
+  const enBox = document.getElementById('ru-concept-box-en');
+  if (ruBox) ruBox.style.display = lang === 'ru' ? 'block' : 'none';
+  if (enBox) enBox.style.display = lang === 'en' ? 'block' : 'none';
+
+  // Toggle articles
+  const ruContent = document.getElementById('content-ru');
+  const enContent = document.getElementById('content-en');
+  if (ruContent) ruContent.style.display = lang === 'ru' ? 'block' : 'none';
+  if (enContent) enContent.style.display = lang === 'en' ? 'block' : 'none';
+
+  calc();
+}
+
+function fmtRub(n) {
+  return Math.round(n || 0).toLocaleString(currentLang === 'ru' ? 'ru-RU' : 'en-US') + ' ₽';
+}
+
+function setSalary(v) {
+  document.getElementById('salary-input').value = v;
+  calc();
+}
+
+document.getElementById('btn-mode-gross').addEventListener('click', () => {
+  mode = 'gross';
+  document.getElementById('btn-mode-gross').classList.add('active');
+  document.getElementById('btn-mode-net').classList.remove('active');
+  document.getElementById('lbl-salary').textContent = i18n[currentLang].lblSalaryGross;
+  calc();
+});
+
+document.getElementById('btn-mode-net').addEventListener('click', () => {
+  mode = 'net';
+  document.getElementById('btn-mode-net').classList.add('active');
+  document.getElementById('btn-mode-gross').classList.remove('active');
+  document.getElementById('lbl-salary').textContent = i18n[currentLang].lblSalaryNet;
+  calc();
+});
+
+function calcNdflFromGross(annualGross, childDeductionMonthly) {
+  const taxableAnnual = Math.max(0, annualGross - (childDeductionMonthly * 12));
+  let ndfl = 0;
+
+  if (taxableAnnual <= 2400000) {
+    ndfl = taxableAnnual * 0.13;
+  } else if (taxableAnnual <= 5000000) {
+    ndfl = 312000 + (taxableAnnual - 2400000) * 0.15;
+  } else if (taxableAnnual <= 20000000) {
+    ndfl = 312000 + 390000 + (taxableAnnual - 5000000) * 0.18;
+  } else if (taxableAnnual <= 50000000) {
+    ndfl = 312000 + 390000 + 2700000 + (taxableAnnual - 20000000) * 0.20;
+  } else {
+    ndfl = 312000 + 390000 + 2700000 + 6000000 + (taxableAnnual - 50000000) * 0.22;
+  }
+  return ndfl;
+}
+
+function calc() {
+  const inputVal = parseFloat(document.getElementById('salary-input').value) || 0;
+  const children = parseInt(document.getElementById('children-count').value, 10) || 0;
+
+  let childDeduct = 0;
+  if (children === 1) childDeduct = 1400;
+  else if (children === 2) childDeduct = 2800;
+  else if (children >= 3) childDeduct = 8800;
+
+  let monthlyGross = 0;
+  let monthlyNet = 0;
+  let monthlyNdfl = 0;
+
+  if (mode === 'gross') {
+    monthlyGross = inputVal;
+    const annualGross = monthlyGross * 12;
+    const annualNdfl = calcNdflFromGross(annualGross, childDeduct);
+    monthlyNdfl = annualNdfl / 12;
+    monthlyNet = monthlyGross - monthlyNdfl;
+  } else {
+    // Binary search / reverse solve gross from net
+    let low = inputVal;
+    let high = inputVal * 1.5;
+    for (let i = 0; i < 20; i++) {
+      const mid = (low + high) / 2;
+      const tNdfl = calcNdflFromGross(mid * 12, childDeduct) / 12;
+      const tNet = mid - tNdfl;
+      if (tNet < inputVal) {
+        low = mid;
+      } else {
+        high = mid;
+      }
+    }
+    monthlyGross = (low + high) / 2;
+    monthlyNdfl = monthlyGross - inputVal;
+    monthlyNet = inputVal;
+  }
+
+  const annualNet = monthlyNet * 12;
+  // Employer contributions: 30% unified social contributions + 0.2% injuries
+  const socialContributions = monthlyGross * 0.30;
+  const injuryContributions = monthlyGross * 0.002;
+  const totalEmployerCost = monthlyGross + socialContributions + injuryContributions;
+
+  document.getElementById('res-net-primary').textContent = fmtRub(monthlyNet);
+  document.getElementById('res-net-sub').textContent = i18n[currentLang].resNetSubTemplate(fmtRub(annualNet), fmtRub(monthlyNdfl));
+
+  document.getElementById('m-gross').textContent = fmtRub(monthlyGross);
+  document.getElementById('m-ndfl').textContent = fmtRub(monthlyNdfl);
+  document.getElementById('m-social').textContent = fmtRub(socialContributions);
+  document.getElementById('m-total-cost').textContent = fmtRub(totalEmployerCost);
+
+  document.getElementById('d-ndfl').textContent = fmtRub(monthlyNdfl);
+  document.getElementById('d-social').textContent = fmtRub(socialContributions);
+  document.getElementById('d-injuries').textContent = fmtRub(injuryContributions);
+}
+
+document.getElementById('salary-input').addEventListener('input', calc);
+document.getElementById('children-count').addEventListener('change', calc);
+
+calc();
+</script>
+
+</body>
+</html>

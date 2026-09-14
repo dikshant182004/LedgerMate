@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>US Tax Calculator &amp; Refund Estimator 2026 | LedgerMate</title>
+<meta name="description" content="Calculate your 2026 US Federal income tax, FICA contributions, and estimated IRS tax refund or amount owed. Includes updated 2026 tax brackets and standard deductions." />
+<link rel="canonical" href="https://tryledgermate.in/tools/us-tax-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="US Tax Calculator &amp; Refund Estimator 2026 | LedgerMate" />
+<meta property="og:description" content="Estimate your federal income tax refund or balance due. Updated 2026 tax brackets, FICA limits, and Child Tax Credit." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=3" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate US Tax & Refund Estimator 2026",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates US federal income tax liability, FICA taxes, and estimated refund for tax year 2026.",
+  "featureList": [
+    "2026 standard deductions ($15,000 Single / $30,000 Married)",
+    "Federal progressive brackets (10% to 37%)",
+    "FICA Social Security cap ($176,100) & Medicare",
+    "Child Tax Credit and W-2 tax withholding refund predictor"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the 2026 standard deduction?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For the 2026 tax year, the projected IRS standard deduction is approximately $15,000 for Single filers, $30,000 for Married Filing Jointly, and $22,500 for Head of Household."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is a large tax refund not necessarily a good thing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A large tax refund means you had too much tax withheld from each paycheck throughout the year, essentially giving the federal government an interest-free loan instead of keeping that money to earn interest or pay down high-interest debt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between standard deduction and itemized deductions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The standard deduction is a fixed dollar amount that reduces taxable income without requiring documentation. Itemized deductions (Schedule A) let you deduct specific expenses such as state/local taxes (SALT capped at $10,000), mortgage interest, and charitable donations. You take whichever amount is larger."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the Child Tax Credit work in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Child Tax Credit provides up to $2,000 per qualifying child under age 17. Up to $1,700 of this credit is refundable through the Additional Child Tax Credit (ACTC) even if your total income tax liability is zero."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the IRS safe harbor rule to avoid underpayment penalties?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To avoid penalties, you must pay at least 90% of your current tax year liability or 100% of your prior year tax liability (110% if prior year Adjusted Gross Income exceeded $150,000) through withholding or quarterly estimated payments."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does receiving a raise ever reduce total take-home pay due to tax brackets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. In a progressive tax system, higher tax percentages only apply to dollars that fall into higher brackets. Every dollar earned below that bracket is still taxed at the lower rates. A raise will always result in higher net cash."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a>
+      <a href="/guides/marginal-vs-effective-tax-rate/">Tax Bracket Guide</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> US Tax &amp; Refund Estimator (2026)
+  </div>
+
+  <h1 style="font-size:clamp(28px, 4vw, 40px);margin-bottom:12px;text-align:center;">US Tax &amp; Refund Estimator 2026</h1>
+  <p class="sub" style="font-size:16px;max-width:680px;margin:0 auto;text-align:center;">Accurately calculate your annual federal income tax liability, FICA social security &amp; medicare taxes, and predict whether you will receive an IRS refund or owe taxes.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="annual-gross">Annual Gross Income ($)</label>
+        <input id="annual-gross" type="number" step="2500" min="10000" max="10000000" value="85000" />
+      </div>
+      <div style="flex:1;">
+        <label for="filing-status">Filing Status</label>
+        <select id="filing-status">
+          <option value="single" selected>Single</option>
+          <option value="married">Married Filing Jointly</option>
+          <option value="head">Head of Household</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="withheld-ytd">Federal Tax Withheld to Date ($)</label>
+        <input id="withheld-ytd" type="number" step="500" min="0" max="500000" value="11500" />
+      </div>
+      <div style="flex:1;">
+        <label for="num-children">Qualifying Children (Child Tax Credit)</label>
+        <select id="num-children">
+          <option value="0" selected>0 Children</option>
+          <option value="1">1 Child ($2,000 Credit)</option>
+          <option value="2">2 Children ($4,000 Credit)</option>
+          <option value="3">3 Children ($6,000 Credit)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Estimated Tax Outcome</span>
+        <div style="font-size:42px;font-weight:800;color:var(--text);margin:6px 0;" id="res-refund-headline">Estimated Refund: $1,420</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-refund-sub">Federal Tax: $10,080 | Taxes Withheld: $11,500</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-fed-tax" style="color:#2563EB;">$10,080</div>
+          <div class="metric-lbl">Federal Income Tax</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-fica-tax">$6,503</div>
+          <div class="metric-lbl">FICA (SS + Medicare)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-eff-tax">11.9%</div>
+          <div class="metric-lbl">Effective Tax Rate</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-take-home">$68,417</div>
+          <div class="metric-lbl">Annual Take-Home</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">Detailed Tax Calculation Breakdown</h4>
+        <div class="calc-result-row">
+          <span>Standard Deduction <span class="concept-inline-link" onclick="switchTaxConcept('standard')" style="cursor:pointer;">Deductions<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-standard-ded">$15,000</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Taxable Income (AGI minus deduction) <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-inline-link">Brackets<span class="arrow">&rarr;</span></a></span>
+          <span class="amt" id="d-taxable-income">$70,000</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Child Tax Credit <span class="concept-inline-link" onclick="switchTaxConcept('ctc')" style="cursor:pointer;">$2k Rules<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-child-credit">$0</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Social Security (6.2%) &amp; Medicare (1.45%) <span class="concept-inline-link" onclick="switchTaxConcept('fica')" style="cursor:pointer;">FICA Guide<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-fica">$5,270 + $1,233</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router -->
+    <div class="concept-router" style="margin-top:24px;">
+      <div class="concept-nav">
+        <button type="button" class="concept-tab-btn active" onclick="switchTaxConcept('standard')">Standard vs Itemized</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('marginal')">Marginal vs Effective</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('ctc')">Child Tax Credit</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('safeharbor')">Safe Harbor &amp; Penalties</button>
+        <button type="button" class="concept-tab-btn" onclick="switchTaxConcept('k401')">401(k) Savings</button>
+      </div>
+
+      <div class="concept-pane active" id="pane-standard">
+        <h4>Standard Deduction vs Itemized Deductions (Schedule A)</h4>
+        <p>The standard deduction ($15,000 Single / $30,000 Married) is a no-questions-asked tax shield that roughly 90% of US filers choose. You should only itemize if your combined eligible deductions—such as mortgage interest, charitable donations, medical expenses over 7.5% of AGI, and state/local taxes (SALT capped at $10,000)—exceed the standard deduction threshold.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-marginal">
+        <h4>Marginal Rate vs Effective Tax Rate</h4>
+        <p>Your marginal rate is the tax rate applied to your top dollar of income. Your effective rate is your actual blended average tax burden (<code>Total Tax / Gross Income</code>). Because progressive buckets start at 0% and 10%, even an earner in the 24% marginal bracket typically pays an effective tax rate of just 12% to 15%.</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">Read Marginal vs Effective Tax Rate Guide &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-ctc">
+        <h4>The Child Tax Credit (CTC) &amp; ACTC Refundable Limit</h4>
+        <p>The Child Tax Credit provides up to $2,000 per qualifying child under age 17. If your total income tax liability is reduced to $0, up to $1,700 per child can be refunded directly to you via the Additional Child Tax Credit (ACTC), provided you have at least $2,500 in earned income. CTC phases out for single earners above $200,000 ($400,000 for married couples).</p>
+      </div>
+
+      <div class="concept-pane" id="pane-safeharbor">
+        <h4>IRS Safe Harbor: Avoid Underpayment Penalties</h4>
+        <p>If you owe more than $1,000 when filing your tax return, the IRS may levy an underpayment penalty unless you meet safe harbor requirements. You avoid penalties if your total payments equal at least 90% of your 2026 tax liability OR 100% of your prior year tax liability (110% if your prior AGI exceeded $150,000).</p>
+      </div>
+
+      <div class="concept-pane" id="pane-k401">
+        <h4>Lowering Your Tax Bill with Traditional 401(k)</h4>
+        <p>Pre-tax 401(k) contributions reduce your gross taxable income dollar-for-dollar. Contributing $10,000 into a traditional 401(k) when in the 22% bracket cuts your federal tax bill by $2,200 immediately, while also dropping your state tax burden in 41 states.</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/what-is-a-401k-how-it-works/" class="concept-full-guide-link">Read Complete 401(k) Deep Dive Guide &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 2026 Federal Tax Planning</h4>
+      <ul class="mindmap-list">
+        <li><strong>Standard Deduction Dominance:</strong> Most Americans take the standard deduction ($15,000 Single / $30,000 Married) rather than itemizing, since itemized mortgage and SALT deductions rarely exceed these high limits.</li>
+        <li><strong>Target a $0 Refund:</strong> The optimal tax return yields neither a massive refund nor a high tax balance. If your refund exceeds $3,000, consider submitting a revised Form W-4 to boost your monthly cash flow.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Sharing household or tax-deductible shared expenses?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Keep your roommate and couple finances organized with LedgerMate — 100% free.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>The Complete Guide to US Federal Income Tax &amp; Refund Estimation (2026)</h2>
+    <p>Every April, over 150 million Americans file IRS Form 1040 to reconcile their income taxes. Many eagerly await a tax refund check, while others face unexpected tax bills accompanied by IRS penalties. Estimating your annual tax liability ahead of time allows you to adjust your withholding, fund tax-sheltered accounts, and manage your household cash flow with confidence.</p>
+    <p>This comprehensive guide details the exact mathematical steps behind federal tax calculation, standard vs. itemized deductions, refundable tax credits, and the psychology of refunds.</p>
+
+    <h2>Step 1: The IRS Tax Calculation Formula</h2>
+    <p>The journey from your gross earnings to your final IRS balance or refund follows an exact formula:</p>
+    <div style="background:#F6F5FB;border-radius:10px;padding:16px 20px;margin:16px 0;font-family:monospace;font-size:14px;color:var(--text);border-left:4px solid var(--accent);">
+      1. Total Gross Income (W-2 Wages, 1099, Dividends, Interest, Capital Gains)<br/>
+      2. Minus "Above-the-Line" Deductions (Traditional IRA, HSA, Student Loan Interest)<br/>
+      3. = Adjusted Gross Income (AGI)<br/>
+      4. Minus Greater of Standard Deduction or Itemized Deductions (Schedule A)<br/>
+      5. = Taxable Income<br/>
+      6. Apply Progressive Tax Brackets (10%, 12%, 22%, 24%, 32%, 35%, 37%)<br/>
+      7. = Tentative Tax Liability<br/>
+      8. Minus Non-Refundable &amp; Refundable Tax Credits (Child Tax Credit, EV Credits)<br/>
+      9. = Total Final Federal Tax Liability<br/>
+      10. Final Balance = Total Tax Liability - Total Taxes Withheld &amp; Paid (Box 2 on W-2)
+    </div>
+
+    <h2>Step 2: 2026 Federal Income Tax Brackets (Single Filers)</h2>
+    <p>Below are the official projected tax brackets for 2026:</p>
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Marginal Rate</th>
+            <th>Single Taxable Income</th>
+            <th>Married Filing Jointly</th>
+            <th>Tax on Bottom of Bracket</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>10%</strong></td>
+            <td>$0 to $11,925</td>
+            <td>$0 to $23,850</td>
+            <td>$0</td>
+          </tr>
+          <tr>
+            <td><strong>12%</strong></td>
+            <td>$11,925 to $48,475</td>
+            <td>$23,850 to $96,950</td>
+            <td>$1,192.50</td>
+          </tr>
+          <tr>
+            <td><strong>22%</strong></td>
+            <td>$48,475 to $103,350</td>
+            <td>$96,950 to $206,700</td>
+            <td>$5,578.50</td>
+          </tr>
+          <tr>
+            <td><strong>24%</strong></td>
+            <td>$103,350 to $197,300</td>
+            <td>$206,700 to $394,600</td>
+            <td>$17,651.00</td>
+          </tr>
+          <tr>
+            <td><strong>32%</strong></td>
+            <td>$197,300 to $250,525</td>
+            <td>$394,600 to $501,050</td>
+            <td>$40,199.00</td>
+          </tr>
+          <tr>
+            <td><strong>35%</strong></td>
+            <td>$250,525 to $626,350</td>
+            <td>$501,050 to $751,600</td>
+            <td>$57,231.00</td>
+          </tr>
+          <tr>
+            <td><strong>37%</strong></td>
+            <td>Over $626,350</td>
+            <td>Over $751,600</td>
+            <td>$188,769.75</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Step 3: Standard Deduction vs. Itemized Deductions</h2>
+    <p>Taxpayers must choose between the standard deduction and itemizing on Schedule A:</p>
+    <ul>
+      <li><strong>Standard Deduction (Projected 2026):</strong> $15,000 for single filers, $30,000 for married couples, and $22,500 for head of household. Filers aged 65 or older receive an extra $1,550 to $1,950.</li>
+      <li><strong>Itemized Deductions (Schedule A):</strong> You list specific expenditures including state and local income/property taxes (capped at $10,000 by the SALT cap), qualified home mortgage interest (up to $750,000 principal), charitable donations to 501(c)(3) entities, and unreimbursed medical expenses exceeding 7.5% of AGI.</li>
+    </ul>
+
+    <h2>Step 4: Refund Psychology — The Hidden Cost of Overwithholding</h2>
+    <p>A $4,000 tax refund feels like a windfall, but economically it represents an interest-free loan given to the federal government. With money market and high-yield savings accounts offering 4% to 5% annual yields, overwithholding $4,000 costs a taxpayer roughly $160 to $200 in lost interest income each year.</p>
+    <p>Conversely, underwithholding by more than $1,000 can trigger IRS Section 6654 penalties. The optimal strategy is targeting an annual refund or tax bill between -$200 and +$200 by submitting an accurate Form W-4 to your employer whenever your life circumstances (marriage, child, salary increase) change.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>What is the 2026 standard deduction?</summary>
+      <p>For the 2026 tax year, the projected IRS standard deduction is approximately $15,000 for Single filers, $30,000 for Married Filing Jointly, and $22,500 for Head of Household.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why is a large tax refund not necessarily a good thing?</summary>
+      <p>A large tax refund means you had too much tax withheld from each paycheck throughout the year, essentially giving the federal government an interest-free loan instead of keeping that money to earn interest or pay down high-interest debt.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the difference between standard deduction and itemized deductions?</summary>
+      <p>The standard deduction is a fixed dollar amount that reduces taxable income without requiring documentation. Itemized deductions (Schedule A) let you deduct specific expenses such as state/local taxes (SALT capped at $10,000), mortgage interest, and charitable donations. You take whichever amount is larger.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How does the Child Tax Credit work in 2026?</summary>
+      <p>The Child Tax Credit provides up to $2,000 per qualifying child under age 17. Up to $1,700 of this credit is refundable through the Additional Child Tax Credit (ACTC) even if your total income tax liability is zero.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the IRS safe harbor rule to avoid underpayment penalties?</summary>
+      <p>To avoid penalties, you must pay at least 90% of your current tax year liability or 100% of your prior year tax liability (110% if prior year Adjusted Gross Income exceeded $150,000) through withholding or quarterly estimated payments.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Does receiving a raise ever reduce total take-home pay due to tax brackets?</summary>
+      <p>No. In a progressive tax system, higher tax percentages only apply to dollars that fall into higher brackets. Every dollar earned below that bracket is still taxed at the lower rates. A raise will always result in higher net cash.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mathematical and tax estimation utilities.</p>
+      </div>
+      <div>
+        <h4>US Tax &amp; Finance</h4>
+        <ul>
+          <li><a href="/tools/us-tax-calculator/">US Tax &amp; Refund Estimator</a></li>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a></li>
+          <li><a href="/tools/rent-vs-buy-calculator/">Rent vs Buy Calculator</a></li>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/discount-calculator/">Discount Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Tax &amp; Financial Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmtUsd(n) {
+  return '$' + Math.round(n || 0).toLocaleString('en-US');
+}
+
+function calcFedTax(taxable, status) {
+  if (taxable <= 0) return 0;
+  let tax = 0;
+
+  if (status === 'single') {
+    if (taxable <= 11925) tax = taxable * 0.10;
+    else if (taxable <= 48475) tax = 1192.50 + (taxable - 11925) * 0.12;
+    else if (taxable <= 103350) tax = 5578.50 + (taxable - 48475) * 0.22;
+    else if (taxable <= 197300) tax = 17651.00 + (taxable - 103350) * 0.24;
+    else if (taxable <= 250525) tax = 40199.00 + (taxable - 197300) * 0.32;
+    else if (taxable <= 626350) tax = 57231.00 + (taxable - 250525) * 0.35;
+    else tax = 188769.75 + (taxable - 626350) * 0.37;
+  } else if (status === 'married') {
+    if (taxable <= 23850) tax = taxable * 0.10;
+    else if (taxable <= 96950) tax = 2385.00 + (taxable - 23850) * 0.12;
+    else if (taxable <= 206700) tax = 11157.00 + (taxable - 96950) * 0.22;
+    else if (taxable <= 394600) tax = 35302.00 + (taxable - 206700) * 0.24;
+    else if (taxable <= 501050) tax = 80398.00 + (taxable - 394600) * 0.32;
+    else if (taxable <= 751600) tax = 114462.00 + (taxable - 501050) * 0.35;
+    else tax = 202154.50 + (taxable - 751600) * 0.37;
+  } else {
+    // Head of Household
+    if (taxable <= 17000) tax = taxable * 0.10;
+    else if (taxable <= 64850) tax = 1700.00 + (taxable - 17000) * 0.12;
+    else if (taxable <= 103350) tax = 7442.00 + (taxable - 64850) * 0.22;
+    else if (taxable <= 197300) tax = 15912.00 + (taxable - 103350) * 0.24;
+    else if (taxable <= 250500) tax = 38460.00 + (taxable - 197300) * 0.32;
+    else if (taxable <= 626350) tax = 55484.00 + (taxable - 250500) * 0.35;
+    else tax = 187031.50 + (taxable - 626350) * 0.37;
+  }
+  return tax;
+}
+
+function calc() {
+  const gross = parseFloat(document.getElementById('annual-gross').value) || 0;
+  const status = document.getElementById('filing-status').value;
+  const withheld = parseFloat(document.getElementById('withheld-ytd').value) || 0;
+  const children = parseInt(document.getElementById('num-children').value, 10) || 0;
+
+  let standardDed = 15000;
+  if (status === 'married') standardDed = 30000;
+  else if (status === 'head') standardDed = 22500;
+
+  const taxable = Math.max(0, gross - standardDed);
+  const rawFedTax = calcFedTax(taxable, status);
+  const childCredit = children * 2000;
+  const finalFedTax = Math.max(0, rawFedTax - childCredit);
+
+  // FICA
+  const ssTax = Math.min(gross, 176100) * 0.062;
+  const medTax = gross * 0.0145;
+  const ficaTotal = ssTax + medTax;
+
+  const totalTaxes = finalFedTax + ficaTotal;
+  const takeHome = Math.max(0, gross - totalTaxes);
+  const effRate = gross > 0 ? ((finalFedTax / gross) * 100).toFixed(1) + '%' : '0%';
+
+  const refundOrDue = withheld - finalFedTax;
+  if (refundOrDue >= 0) {
+    document.getElementById('res-refund-headline').textContent = `Estimated Refund: ${fmtUsd(refundOrDue)}`;
+    document.getElementById('res-refund-headline').style.color = '#10B981';
+    document.getElementById('res-refund-sub').textContent = `Federal Tax: ${fmtUsd(finalFedTax)} | Taxes Withheld: ${fmtUsd(withheld)}`;
+  } else {
+    document.getElementById('res-refund-headline').textContent = `Estimated Tax Owed: ${fmtUsd(Math.abs(refundOrDue))}`;
+    document.getElementById('res-refund-headline').style.color = '#E0563F';
+    document.getElementById('res-refund-sub').textContent = `Federal Tax: ${fmtUsd(finalFedTax)} | Taxes Withheld: ${fmtUsd(withheld)}`;
+  }
+
+  document.getElementById('m-fed-tax').textContent = fmtUsd(finalFedTax);
+  document.getElementById('m-fica-tax').textContent = fmtUsd(ficaTotal);
+  document.getElementById('m-eff-tax').textContent = effRate;
+  document.getElementById('m-take-home').textContent = fmtUsd(takeHome);
+
+  document.getElementById('d-standard-ded').textContent = fmtUsd(standardDed);
+  document.getElementById('d-taxable-income').textContent = fmtUsd(taxable);
+  document.getElementById('d-child-credit').textContent = fmtUsd(childCredit);
+  document.getElementById('d-fica').textContent = `${fmtUsd(ssTax)} (SS) + ${fmtUsd(medTax)} (Med)`;
+}
+
+['annual-gross', 'filing-status', 'withheld-ytd', 'num-children'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+function switchTaxConcept(tabId) {
+  const tabs = ['standard', 'marginal', 'ctc', 'safeharbor', 'k401'];
+  tabs.forEach(t => {
+    const pane = document.getElementById('pane-' + t);
+    if (pane) pane.classList.remove('active');
+  });
+  const activePane = document.getElementById('pane-' + tabId);
+  if (activePane) activePane.classList.add('active');
+
+  const navBtns = document.querySelectorAll('.concept-tab-btn');
+  navBtns.forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const router = document.querySelector('.concept-router');
+  if (router) {
+    router.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+calc();
+</script>
+
+</body>
+</html>

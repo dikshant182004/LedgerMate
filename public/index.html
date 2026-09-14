@@ -28,7 +28,7 @@
 <noscript>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
 </noscript>
-<link rel="stylesheet" href="/landing.css?v=3" />
+<link rel="stylesheet" href="/landing.css?v=5" />
 
 <script type="application/ld+json">
 {
@@ -200,68 +200,396 @@
 
 <section class="section" id="tools">
   <div class="wrap">
-    <p class="section-eyebrow">Free calculators</p>
-    <h2>Calculate a split before you even create a group</h2>
-    <p class="lead">Free, instant, no-signup calculators for every shared expense scenario — with one-click export to LedgerMate.</p>
-    <div class="grid-3" style="margin-top:32px;">
-      <a href="/tools/bill-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
-        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-        <h3>Bill &amp; Tip Splitter</h3>
-        <p>Split dinner checks with tax and tip. Toggle 10%, 15%, 18%, 20% or custom tips and divide evenly across diners.</p>
+    <p class="section-eyebrow">Free calculators &amp; tools</p>
+    <h2>45+ Free Calculators for Shared Living, Taxes &amp; Life</h2>
+    <p class="lead">Fast, accurate, 100% free online calculators with no ads and no sign-up required. Built for real-world mathematical accuracy in 2026.</p>
+
+    <!-- Category filter bar -->
+    <div class="chip-group" style="justify-content:center;margin:28px 0 32px;flex-wrap:wrap;">
+      <button type="button" class="chip-btn active" onclick="filterTools('all')">All Calculators (49)</button>
+      <button type="button" class="chip-btn" onclick="filterTools('rent')">Housing &amp; Rent</button>
+      <button type="button" class="chip-btn" onclick="filterTools('salary')">Salary &amp; Taxes (Global)</button>
+      <button type="button" class="chip-btn" onclick="filterTools('finance')">Loans &amp; Finance</button>
+      <button type="button" class="chip-btn" onclick="filterTools('health')">Health &amp; Fitness</button>
+      <button type="button" class="chip-btn" onclick="filterTools('travel')">Travel &amp; Events</button>
+      <button type="button" class="chip-btn" onclick="filterTools('tech')">Tech, Academic &amp; Life</button>
+    </div>
+
+    <div class="grid-3" id="tools-grid">
+
+      <!-- HOUSING & RENT -->
+      <a href="/tools/rent-split-calculator/" class="feature-card tool-item" data-cat="rent" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <h3>Rent Split Calculator (by Sq Ft)</h3>
+        <p>Split apartment rent fairly by bedroom square footage, shared common areas, and private baths.</p>
         <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
       </a>
 
-      <a href="/tools/trip-expense-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+      <a href="/tools/couple-roommate-rent-calculator/" class="feature-card tool-item" data-cat="rent" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Couple &amp; Single Roommate Splitter</h3>
+        <p>Fairly divide rent when a couple shares one bedroom with single roommates. Balances space and headcount.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/prorated-rent-calculator/" class="feature-card tool-item" data-cat="rent" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <h3>Prorated Rent Calculator</h3>
+        <p>Calculate exact mid-month move-in or move-out rent, daily rental rates, utilities, and move-in deposits.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/rent-affordability-calculator/" class="feature-card tool-item" data-cat="rent" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Rent Affordability Calculator</h3>
+        <p>Calculate maximum safe monthly rent using the 30% rule, NYC 40x rule, and 50/30/20 budget framework.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/rent-vs-buy-calculator/" class="feature-card tool-item" data-cat="rent" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+        <h3>Rent vs Buy Calculator</h3>
+        <p>Compare total net wealth over 10 years: home equity appreciation vs renting and investing in stocks.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/bill-split-calculator/" class="feature-card tool-item" data-cat="rent" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <h3>Bill &amp; Tip Splitter</h3>
+        <p>Split dinner checks and group bills with tax and tip. Toggle 10%, 15%, 18%, 20% or custom tip amounts.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <!-- SALARY & TAXES -->
+      <a href="/tools/us-paycheck-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h3>US Paycheck Calculator (2026)</h3>
+        <p>All 50 US states tax profiles, FICA caps, live 401(k) pre-tax contribution slider, and supplemental bonus withholding.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Paycheck →</span>
+      </a>
+
+      <a href="/tools/us-tax-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>US Federal Tax Estimator (2026)</h3>
+        <p>2026 Federal tax brackets, standard deductions, Social Security caps, and effective tax rates.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Estimate Taxes →</span>
+      </a>
+
+      <a href="/tools/germany-salary-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>Germany Gehaltsrechner (Brutto Netto 2026)</h3>
+        <p>Steuerklasse I-VI, Krankenversicherung, Rentenversicherung, and Solidaritätszuschlag calculation.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Netto berechnen (DE/EN) →</span>
+      </a>
+
+      <a href="/tools/russia-salary-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 12h10M7 17h5"/></svg></div>
+        <h3>Russia Salary Calculator (Калькулятор зарплаты 2026)</h3>
+        <p>New 2025/2026 5-tier progressive НДФЛ scale (13% to 22%), employer social insurance, and net pay on hands.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Рассчитать зарплату (RU/EN) →</span>
+      </a>
+
+      <a href="/tools/japan-salary-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 7l3 5 3-5M12 12v5M9 13h6M9 15h6"/></svg></div>
+        <h3>2026年最新 手取り計算機 (Japan)</h3>
+        <p>厚生年金・健康保険・住民税・2026年導入「子ども・子育て支援金」および新社会人2年目住民税ショック対応。</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">手取りを計算する (JA/EN) →</span>
+      </a>
+
+      <a href="/tools/korea-salary-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5H9a2.5 2.5 0 0 0 0 5h6"/></svg></div>
+        <h3>2026 연봉 실수령액 계산기 (Korea)</h3>
+        <p>2026년 국민연금, 건강보험, 소득세 간이세액표 및 프리랜서 3.3% 원천징수를 완벽 반영한 실수령액 계산기.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">계산하기 (KR/EN) →</span>
+      </a>
+
+      <a href="/tools/india-ctc-salary-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12M6 8h12M6 13l7 8M6 13h4a4 4 0 0 0 0-8"/></svg></div>
+        <h3>In-Hand Salary from CTC (India)</h3>
+        <p>Side-by-side Old vs New Tax Regime (Budget 2024-2026) comparison, EPF (12%), and state-wise professional tax.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate In-Hand →</span>
+      </a>
+
+      <a href="/tools/india-income-tax-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12M6 8h12M6 13l7 8M6 13h4a4 4 0 0 0 0-8"/></svg></div>
+        <h3>India Income Tax Calculator (FY 2025-26)</h3>
+        <p>Detailed New vs Old tax slabs, Section 87A rebate, standard deduction ₹75,000, and 80C/80D tax deductions.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Compare Regimes →</span>
+      </a>
+
+      <a href="/tools/vat-calculator/" class="feature-card tool-item" data-cat="salary" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>VAT &amp; Sales Tax Calculator</h3>
+        <p>Add or remove VAT / GST / Consumption tax with one click. Presets for UK, EU, UAE, Australia, and Japan.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate VAT →</span>
+      </a>
+
+      <!-- LOANS & FINANCE -->
+      <a href="/tools/mortgage-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+        <h3>US Mortgage &amp; PITI Calculator</h3>
+        <p>Principal, interest, property taxes, homeowners insurance, PMI, and HOA fees breakdown.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Mortgage →</span>
+      </a>
+
+      <a href="/tools/loan-emi-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v4M12 14v4M16 14v4"/></svg></div>
+        <h3>Home Loan EMI &amp; Prepayment</h3>
+        <p>Calculate monthly EMI, lump-sum part-prepayment interest savings, and annual 5% step-up payoff schedules.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate EMI →</span>
+      </a>
+
+      <a href="/tools/car-loan-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <h3>Car Loan &amp; Auto Financing Calculator</h3>
+        <p>Vehicle purchase price, trade-in equity, down payment, dealer doc fees, sales tax, and monthly payment.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Car Loan →</span>
+      </a>
+
+      <a href="/tools/student-loan-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg></div>
+        <h3>Student Loan Payoff Calculator</h3>
+        <p>Calculate how extra monthly payments shave years off student debt and save thousands in interest.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Payoff →</span>
+      </a>
+
+      <a href="/tools/compound-interest-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Compound Interest &amp; SIP Calculator</h3>
+        <p>Model recurring monthly deposits (SIP / Dollar Cost Averaging), compounding intervals, and inflation.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Compounding →</span>
+      </a>
+
+      <a href="/tools/retirement-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Retirement &amp; 401(k) FIRE Calculator</h3>
+        <p>4% safe withdrawal rule, nest egg target, employer 401(k) match, and FIRE freedom age.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Retirement →</span>
+      </a>
+
+      <a href="/tools/percentage-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+        <h3>3-Way Percentage Calculator</h3>
+        <p>Calculate what is X% of Y, percentage increase or decrease between numbers, and reverse percentage original prices.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Percentage Calc →</span>
+      </a>
+
+      <a href="/tools/discount-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+        <h3>Stacked Discount Calculator</h3>
+        <p>Solve "30% off + extra 20% off" sequential discounts accurately with step-by-step breakdown and sales tax.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Discount →</span>
+      </a>
+
+      <a href="/tools/freelance-rate-calculator/" class="feature-card tool-item" data-cat="finance" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Freelance Hourly &amp; Day Rate Calculator</h3>
+        <p>Factor in self-employment taxes, SaaS overhead, healthcare, and realistic billable utilization.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Rate →</span>
+      </a>
+
+      <!-- HEALTH & FITNESS -->
+      <a href="/tools/tdee-calculator/" class="feature-card tool-item" data-cat="health" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+        <h3>TDEE &amp; Calorie Calculator</h3>
+        <p>Accurate Total Daily Energy Expenditure, BMR, deficit targets for fat loss, and macro splits (Protein, Fats, Carbs).</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate TDEE →</span>
+      </a>
+
+      <a href="/tools/bmr-calculator/" class="feature-card tool-item" data-cat="health" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3>BMR Calculator (Mifflin-St Jeor &amp; Katch)</h3>
+        <p>Calculate basal metabolic calorie burn at total rest using peer-reviewed clinical formulas.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate BMR →</span>
+      </a>
+
+      <a href="/tools/macro-calculator/" class="feature-card tool-item" data-cat="health" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg></div>
+        <h3>Macro Calculator (Protein, Carbs &amp; Fats)</h3>
+        <p>Gram-accurate macronutrient distributions for cutting fat, building muscle, or keto diets.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Macros →</span>
+      </a>
+
+      <a href="/tools/body-fat-calculator/" class="feature-card tool-item" data-cat="health" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <h3>US Navy Body Fat Calculator</h3>
+        <p>Calculate body fat percentage and lean muscle mass using tape measurements (neck, waist, hip).</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Body Fat →</span>
+      </a>
+
+      <a href="/tools/pregnancy-due-date-calculator/" class="feature-card tool-item" data-cat="health" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+        <h3>Pregnancy Due Date &amp; Week Calculator</h3>
+        <p>Calculate estimated date of delivery (EDD) via Naegele's rule, current gestation week, and trimester timeline.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Due Date →</span>
+      </a>
+
+      <a href="/tools/ovulation-calculator/" class="feature-card tool-item" data-cat="health" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg></div>
+        <h3>Ovulation &amp; Fertility Window Calculator</h3>
+        <p>Predict your fertile 6-day window and next 3 menstrual cycles based on luteal phase length.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Fertile Window →</span>
+      </a>
+
+      <!-- TRAVEL & EVENTS -->
+      <a href="/tools/trip-expense-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
         <h3>Trip Expense Calculator</h3>
         <p>Log what everyone paid on vacation, see net balances, and get the minimum number of payments to settle up.</p>
         <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
       </a>
 
-      <a href="/tools/rent-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
-        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <h3>Rent Split Calculator</h3>
-        <p>Weight apartment rent by bedroom size and private bathrooms so the master suite pays a fair, proportional share.</p>
-        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      <a href="/tools/trip-budget-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <h3>Group Trip Budget Planner</h3>
+        <p>Calculate flight, lodging, food, activity, and buffer costs per person and total group expenditure.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Plan Trip Budget →</span>
       </a>
 
-      <a href="/tools/proportional-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
-        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-        <h3>Income-Based Splitter</h3>
-        <p>Equitable bill splitting for couples and partners based on salary ratios. Compare 50/50 vs proportional equity.</p>
-        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      <a href="/tools/wedding-budget-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3>Wedding Budget &amp; Guest Cost Calculator</h3>
+        <p>Calculate realistic cost per guest, venue/catering splits (45%), photography, attire, and contingency buffers.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Wedding Budget →</span>
       </a>
 
-      <a href="/tools/gas-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+      <a href="/tools/gas-split-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
         <h3>Gas &amp; Mileage Splitter</h3>
         <p>Calculate road trip fuel consumption, toll fees, and passenger cost in miles (MPG) or kilometers (L/100km).</p>
         <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
       </a>
 
-      <a href="/tools/airbnb-room-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+      <a href="/tools/airbnb-room-split-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg></div>
         <h3>Vacation Rental Splitter</h3>
         <p>Fairly price Airbnb and cabin rental bedrooms by king beds, ensuites, and couples vs single guests.</p>
         <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
       </a>
 
-      <a href="/tools/bachelorette-expense-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+      <a href="/tools/bachelorette-expense-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
         <h3>Bachelor(ette) Party Splitter</h3>
-        <p>Split weekend party villas, brunches, and decor with the bride or groom covered for $0.</p>
+        <p>Split weekend party villas, brunches, and decor with the VIP bride or groom covered for $0.</p>
         <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
       </a>
 
-      <a href="/tools/multi-currency-split-calculator/" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+      <a href="/tools/multi-currency-split-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
         <h3>Multi-Currency Travel Splitter</h3>
         <p>Log expenses in EUR, USD, GBP, or JPY and convert to a single base currency with zero fees.</p>
         <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
       </a>
+
+      <a href="/tools/proportional-split-calculator/" class="feature-card tool-item" data-cat="travel" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Income-Based Splitter</h3>
+        <p>Equitable bill splitting for couples and partners based on salary ratios. Compare 50/50 vs proportional equity.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <!-- TECH, ACADEMIC & LIFE -->
+      <a href="/tools/gpa-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg></div>
+        <h3>GPA &amp; CGPA Calculator (US &amp; India)</h3>
+        <p>Weighted &amp; unweighted GPA on standard 4.0 scale + India 10-point CGPA to percentage converter.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate GPA →</span>
+      </a>
+
+      <a href="/tools/age-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Exact Age &amp; Birthday Countdown</h3>
+        <p>Exact age in years, months, days, hours, and minutes + traditional Korean age system.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Age →</span>
+      </a>
+
+      <a href="/tools/unit-converter/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M7 7l-5 5 5 5M17 7l5 5-5 5"/></svg></div>
+        <h3>Universal Unit &amp; Land Converter</h3>
+        <p>Length, weight, digital storage, and regional land units (Gaj, Bigha, Guntha, Square Feet, Acres).</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Convert Units →</span>
+      </a>
+
+      <a href="/tools/scientific-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></div>
+        <h3>Scientific Calculator Online</h3>
+        <p>Fast, full-featured scientific calculator with trigonometry, logarithms, exponents, parentheses, and tape history.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Open Calculator →</span>
+      </a>
+
+      <a href="/tools/electricity-cost-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h3>Electricity &amp; Appliance Running Cost</h3>
+        <p>Calculate appliance power consumption in kWh, monthly electricity bills, and standby phantom drain.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Electricity →</span>
+      </a>
+
+      <a href="/tools/dog-cost-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 5.172a2 2 0 0 0-3.414-1.414l-2.828 2.828a2 2 0 0 0 1.414 3.414h4.828z"/><path d="M14 5.172a2 2 0 0 1 3.414-1.414l2.828 2.828a2 2 0 0 1-1.414 3.414H14z"/><rect x="7" y="10" width="10" height="10" rx="3"/></svg></div>
+        <h3>Dog Cost &amp; Lifetime Ownership</h3>
+        <p>Calculate upfront adoption/puppy gear, annual veterinary &amp; food costs, and 12-year lifetime spend by breed size.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Pet Cost →</span>
+      </a>
+
+      <a href="/tools/download-time-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+        <h3>Bandwidth &amp; File Download Time</h3>
+        <p>Convert file size (GB, TB, MB) into hours, minutes, and seconds based on internet speed with network overhead.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Download Time →</span>
+      </a>
+
+      <a href="/tools/cloud-cost-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+        <h3>Cloud &amp; AWS/GCP Cost Estimator</h3>
+        <p>Estimate monthly VM compute, managed database, S3/GCS object storage, and egress bandwidth fees.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Estimate Cloud Costs →</span>
+      </a>
+
+      <a href="/tools/px-to-rem-converter/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div>
+        <h3>PX to REM Converter &amp; Tailwind Helper</h3>
+        <p>Convert pixels to rem/em, copy matching Tailwind CSS utility classes, and build fluid clamp() typography.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Convert PX to REM →</span>
+      </a>
+
+      <a href="/tools/aspect-ratio-calculator/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3>Aspect Ratio &amp; Screen Resolution</h3>
+        <p>Resize images and videos without distortion. Presets for 16:9, 9:16 vertical TikTok/Reels, 4K, and Ultrawide.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Calculate Aspect Ratio →</span>
+      </a>
+
+      <a href="/tools/time-zone-converter/" class="feature-card tool-item" data-cat="tech" style="text-decoration:none;color:inherit;display:block;">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Time Zone Meeting Planner</h3>
+        <p>Coordinate international teams across PST, EST, London GMT, and India IST with a color-coded 24h overlap grid.</p>
+        <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Plan Meeting Time →</span>
+      </a>
+
     </div>
   </div>
 </section>
+
+<script>
+function filterTools(cat) {
+  // Update button classes
+  const btns = document.querySelectorAll('#tools .chip-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  if (event && event.target) {
+    event.target.classList.add('active');
+  }
+
+  // Filter items
+  const items = document.querySelectorAll('.tool-item');
+  items.forEach(it => {
+    if (cat === 'all' || it.getAttribute('data-cat') === cat) {
+      it.style.display = 'block';
+    } else {
+      it.style.display = 'none';
+    }
+  });
+}
+</script>
 
 <section class="section" id="guides" style="background:var(--bg-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
   <div class="wrap">
@@ -270,10 +598,10 @@
     <p class="lead">In-depth guides on etiquette, mathematical formulas, and the best tools for modern expense sharing.</p>
     <div class="grid-3" style="margin-top:32px;">
       <div class="feature-card">
-        <span class="badge-pill badge-free">Comparison · 2026</span>
-        <h3 style="margin-top:8px;"><a href="/blog/best-splitwise-alternatives/" style="color:inherit;text-decoration:none;">5 Best Free Splitwise Alternatives (No Daily Limits)</a></h3>
-        <p>Hit Splitwise's 3-expense cap? Here are the top 5 free apps tested for zero ads and real-time group sync.</p>
-        <a href="/blog/best-splitwise-alternatives/" style="color:var(--accent);font-weight:600;font-size:13.5px;display:inline-block;margin-top:8px;">Read Guide →</a>
+        <span class="badge-pill badge-free">Deep Dive · 2026</span>
+        <h3 style="margin-top:8px;"><a href="/blog/splitwise-free-limit-alternatives/" style="color:inherit;text-decoration:none;">Splitwise 10-Second Wait &amp; 3-Expense Limit: Free Fixes</a></h3>
+        <p>Why Splitwise added artificial timer delays and daily caps, plus how to split expenses with friends for free.</p>
+        <a href="/blog/splitwise-free-limit-alternatives/" style="color:var(--accent);font-weight:600;font-size:13.5px;display:inline-block;margin-top:8px;">Read Guide →</a>
       </div>
 
       <div class="feature-card">
@@ -281,6 +609,13 @@
         <h3 style="margin-top:8px;"><a href="/blog/fair-rent-split-unequal-rooms/" style="color:inherit;text-decoration:none;">How to Split Rent Fairly When Room Sizes Are Unequal</a></h3>
         <p>The 50/50 common space rule and amenity weights to divide apartment rent peacefully without resentment.</p>
         <a href="/blog/fair-rent-split-unequal-rooms/" style="color:var(--accent);font-weight:600;font-size:13.5px;display:inline-block;margin-top:8px;">Read Guide →</a>
+      </div>
+
+      <div class="feature-card">
+        <span class="badge-pill badge-free">Moving &amp; Leases</span>
+        <h3 style="margin-top:8px;"><a href="/blog/how-to-calculate-prorated-rent/" style="color:inherit;text-decoration:none;">How to Calculate Prorated Rent: Formula &amp; Examples</a></h3>
+        <p>Step-by-step rules for mid-month move-ins, calendar day math, and move-in day tenant rights in the US &amp; Canada.</p>
+        <a href="/blog/how-to-calculate-prorated-rent/" style="color:var(--accent);font-weight:600;font-size:13.5px;display:inline-block;margin-top:8px;">Read Guide →</a>
       </div>
 
       <div class="feature-card">
@@ -354,23 +689,25 @@
         </ul>
       </div>
       <div>
-        <h4>Free Tools</h4>
+        <h4>Calculators &amp; Tools</h4>
         <ul>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+          <li><a href="/tools/couple-roommate-rent-calculator/">Couple Rent Splitter</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter (Sq Ft)</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calorie Calculator</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
           <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
           <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
-          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
           <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
-          <li><a href="/tools/gas-split-calculator/">Gas &amp; Mileage Splitter</a></li>
-          <li><a href="/tools/airbnb-room-split-calculator/">Vacation Rental Splitter</a></li>
-          <li><a href="/tools/bachelorette-expense-calculator/">Bachelor(ette) Splitter</a></li>
-          <li><a href="/tools/multi-currency-split-calculator/">Multi-Currency Splitter</a></li>
         </ul>
       </div>
       <div>
         <h4>Guides &amp; Comparisons</h4>
         <ul>
+          <li><a href="/compare/splitwise-alternative/">Vs Splitwise</a></li>
+          <li><a href="/blog/splitwise-free-limit-alternatives/">Splitwise Limits &amp; Timers</a></li>
+          <li><a href="/blog/how-to-calculate-prorated-rent/">How to Prorate Rent</a></li>
           <li><a href="/blog/best-splitwise-alternatives/">Best Splitwise Alternatives</a></li>
-          <li><a href="/blog/how-to-split-trip-expenses/">Trip Splitting Guide</a></li>
           <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
           <li><a href="/blog/how-couples-split-expenses/">Couples Expense Guide</a></li>
         </ul>

@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Couple &amp; Single Roommate Rent Calculator (Fair Split) | LedgerMate</title>
+<meta name="description" content="Free couple vs single roommate rent split calculator. Fairly divide rent when a couple shares one bedroom and a single roommate has another. Balances bedroom space and common area headcount." />
+<link rel="canonical" href="https://tryledgermate.in/tools/couple-roommate-rent-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Couple &amp; Single Roommate Rent Calculator | LedgerMate" />
+<meta property="og:description" content="Calculate fair rent when a couple shares a room with single roommates. Balances bedroom space and shared living areas." />
+<meta property="og:url" content="https://tryledgermate.in/tools/couple-roommate-rent-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Couple & Single Roommate Rent Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate fair rent splits when a couple shares one bedroom in an apartment with single roommates.",
+  "featureList": [
+    "Common space vs bedroom weighted split",
+    "Square footage calculations for couples",
+    "Headcount-based utility splits",
+    "No sign-up or app download required"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How should a couple and a single roommate split rent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The consensus fair formula splits 50% of the rent equally by person (for common areas like kitchen, living room, and fridge space) and the other 50% by bedroom. For a $3,000 2-bedroom apartment with 3 people, the couple typically pays around $1,750 ($875 each) and the single roommate pays around $1,250 (roughly a 58/42 split)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is a 50/50 bedroom split unfair when a couple moves in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 50/50 split treats the apartment as two rooms only. However, two people in one room double the wear on common spaces, use 66% of the kitchen and refrigerator, increase bathroom queues, and use 66% of hot water and utilities. The single person loses private common area freedom."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is an even three-way split (33/33/33) unfair to the couple?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An even split ignores that the couple shares one private bedroom and closet space, whereas the single person enjoys their own exclusive private room. Splitting 33.3% each overcharges the couple for private space they do not get."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How should couples and roommates split utilities?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Utilities (electricity, gas, water, internet) should almost always be split 100% per person (33.3% each for 3 people), because usage scales directly with the number of people living in the home."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  .formula-tabs {
+    display: flex;
+    background: var(--bg);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  .formula-tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .formula-tab-btn.active {
+    background: var(--card);
+    color: var(--accent);
+    box-shadow: 0 1px 4px rgba(30, 20, 70, 0.08);
+  }
+  .room-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .room-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .room-tag {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  .tag-couple { background: #EAE6FE; color: var(--accent); }
+  .tag-single { background: #EBF7EE; color: #1B7A3B; }
+  .couple-callout {
+    background: #F8F7FF;
+    border: 1px solid #E2DDFB;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 24px;
+  }
+  .metric-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(109, 79, 235, 0.08);
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">Tools</a>
+      <a href="/tools/rent-split-calculator/">Rent by Sq Ft</a>
+      <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
+      <a href="/app/" class="btn btn-primary">Open App Free</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Couple vs Single Rent Split
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">Couple &amp; Single Roommate Rent Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">The mathematical fair solution when a couple shares one bedroom in a 2-bed or 3-bed apartment with single roommates.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+    <!-- Formula Switcher -->
+    <div class="formula-tabs" role="tablist">
+      <button class="formula-tab-btn active" id="tab-formula-common" type="button">50/50 Common &amp; Bedroom (Standard)</button>
+      <button class="formula-tab-btn" id="tab-formula-sqft" type="button">By Square Footage</button>
+      <button class="formula-tab-btn" id="tab-formula-percent" type="button">Fixed 60/40 Ratio</button>
+    </div>
+
+    <!-- Base Inputs -->
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$">$ USD / CAD / AUD</option>
+          <option value="€">€ EUR</option>
+          <option value="£">£ GBP</option>
+          <option value="₹">₹ INR</option>
+          <option value="¥">¥ JPY</option>
+          <option value="CHF">CHF</option>
+        </select>
+      </div>
+      <div style="flex:1.5;">
+        <label for="total-rent">Total Monthly Rent</label>
+        <input id="total-rent" type="number" step="25" min="100" value="3000" placeholder="e.g. 3000" />
+      </div>
+      <div style="flex:1.2;">
+        <label for="utilities-est">Monthly Utilities (Optional)</label>
+        <input id="utilities-est" type="number" step="10" min="0" value="240" placeholder="e.g. 240" />
+      </div>
+    </div>
+
+    <!-- Common Area Percentage Control -->
+    <div id="common-ratio-control" style="margin:16px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <label style="margin:0;">Common Area Weight</label>
+        <span id="common-ratio-label" style="font-size:13px;font-weight:700;color:var(--accent);">50% Shared / 50% Bedroom</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 10px;">
+        Common area is split equally per person (headcount). Bedroom portion is split per bedroom or square footage.
+      </p>
+      <div class="chip-group" id="ratio-chips">
+        <button type="button" class="chip-btn active" data-ratio="50">50% Shared (Most Fair)</button>
+        <button type="button" class="chip-btn" data-ratio="40">40% Shared / 60% Bedroom</button>
+        <button type="button" class="chip-btn" data-ratio="33">33% Shared / 67% Bedroom</button>
+      </div>
+    </div>
+
+    <label style="margin-top:16px;">Apartment Layout &amp; Occupants</label>
+
+    <!-- Room 1: The Couple -->
+    <div class="room-box">
+      <div class="room-box-header">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="room-tag tag-couple">Bedroom 1 · Couple</span>
+          <strong style="font-size:15px;">2 Occupants</strong>
+        </div>
+        <span id="couple-label" style="font-size:13px;color:var(--text-muted);font-weight:600;">Shares 1 Master Room</span>
+      </div>
+      <div class="calc-row" style="margin-bottom:0;">
+        <div style="flex:1.5;">
+          <label style="font-size:12px;margin-bottom:4px;">Partner 1 Name</label>
+          <input type="text" id="partner1-name" value="Alex" />
+        </div>
+        <div style="flex:1.5;">
+          <label style="font-size:12px;margin-bottom:4px;">Partner 2 Name</label>
+          <input type="text" id="partner2-name" value="Jordan" />
+        </div>
+        <div class="sqft-field" style="flex:1;display:none;">
+          <label style="font-size:12px;margin-bottom:4px;">Master Room Sq Ft</label>
+          <input type="number" id="couple-sqft" value="220" min="50" step="10" />
+        </div>
+        <div style="flex:1;display:flex;align-items:flex-end;padding-bottom:10px;">
+          <label style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;cursor:pointer;">
+            <input type="checkbox" id="couple-bath" checked />
+            <span>Private Bath (+10%)</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Room 2: Single Roommate 1 -->
+    <div class="room-box">
+      <div class="room-box-header">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="room-tag tag-single">Bedroom 2 · Single</span>
+          <strong style="font-size:15px;">1 Occupant</strong>
+        </div>
+        <span style="font-size:13px;color:var(--text-muted);font-weight:600;">Private Single Room</span>
+      </div>
+      <div class="calc-row" style="margin-bottom:0;">
+        <div style="flex:2;">
+          <label style="font-size:12px;margin-bottom:4px;">Roommate Name</label>
+          <input type="text" id="single1-name" value="Sam" />
+        </div>
+        <div class="sqft-field" style="flex:1;display:none;">
+          <label style="font-size:12px;margin-bottom:4px;">Bedroom Sq Ft</label>
+          <input type="number" id="single1-sqft" value="150" min="50" step="10" />
+        </div>
+        <div style="flex:1;display:flex;align-items:flex-end;padding-bottom:10px;">
+          <label style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;cursor:pointer;">
+            <input type="checkbox" id="single1-bath" />
+            <span>Private Bath</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional Room 3 Container -->
+    <div id="room3-container" style="display:none;" class="room-box">
+      <div class="room-box-header">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="room-tag tag-single">Bedroom 3 · Single</span>
+          <strong style="font-size:15px;">1 Occupant</strong>
+        </div>
+        <button type="button" id="btn-remove-room3" style="border:none;background:none;color:#D9381E;font-size:12.5px;font-weight:700;cursor:pointer;">Remove Room 3 ×</button>
+      </div>
+      <div class="calc-row" style="margin-bottom:0;">
+        <div style="flex:2;">
+          <label style="font-size:12px;margin-bottom:4px;">Roommate Name</label>
+          <input type="text" id="single2-name" value="Taylor" />
+        </div>
+        <div class="sqft-field" style="flex:1;display:none;">
+          <label style="font-size:12px;margin-bottom:4px;">Bedroom Sq Ft</label>
+          <input type="number" id="single2-sqft" value="130" min="50" step="10" />
+        </div>
+        <div style="flex:1;display:flex;align-items:flex-end;padding-bottom:10px;">
+          <label style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;cursor:pointer;">
+            <input type="checkbox" id="single2-bath" />
+            <span>Private Bath</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <button type="button" id="btn-add-room3" class="btn btn-ghost" style="border:1px dashed var(--border);width:100%;font-size:13.5px;padding:8px 0;">+ Add 3rd Bedroom (Single Roommate)</button>
+    </div>
+
+    <!-- Results Section -->
+    <div class="calc-result" id="result-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 style="margin:0;font-size:17px;">Fair Rent &amp; Utilities Split</h3>
+        <span id="ratio-badge" class="metric-pill">Couple: 58.3% · Single: 41.7%</span>
+      </div>
+
+      <div id="couple-summary-card" style="background:var(--card);border:1px solid #D8D2FB;border-radius:10px;padding:14px 16px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <div>
+            <strong style="font-size:15px;color:var(--accent);" id="couple-title">Alex &amp; Jordan (Couple Combined)</strong>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:2px;" id="couple-per-person">Each partner pays half of the couple's total</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:22px;font-weight:800;color:var(--text);" id="couple-total-amt">$1,750.00</div>
+            <div style="font-size:12px;font-weight:600;color:var(--accent);" id="couple-each-amt">$875.00 / partner</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="single-breakdown-list"></div>
+
+      <!-- Utilities Preview Note -->
+      <div id="utilities-preview" style="font-size:12px;color:var(--text-muted);margin-top:12px;padding-top:10px;border-top:1px solid var(--border);"></div>
+
+      <div style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a href="/guides/utility-and-rent-decoupling/" class="concept-inline-link">What does utility and rent decoupling mean? <span class="arrow">→</span></a>
+        <a href="#concept-guide" onclick="switchConcept('cr-dualpool')" class="concept-inline-link">How the 50/50 Dual Pool Model works <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <!-- Comparison Summary -->
+    <div class="metric-grid" style="margin-top:24px;">
+      <div class="metric-box">
+        <div class="metric-val" id="even-comparison-val">$1,000</div>
+        <div class="metric-lbl">If split purely by headcount ($/person)</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="room-comparison-val">$1,500</div>
+        <div class="metric-lbl">If split 50/50 per room ($/room)</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="single-savings-val">+$250</div>
+        <div class="metric-lbl">Single Roommate Fairness Adjustment</div>
+      </div>
+    </div>
+
+    <!-- Export to LedgerMate CTA -->
+    <div class="calc-cta">
+      <div>
+        <p>Want to track monthly rent, utilities, and grocery bills with your flatmates?</p>
+        <span style="font-size:12.5px;color:var(--text-muted);">Instant shared group link. No mandatory app download.</span>
+      </div>
+      <a id="btn-export-group" href="/app/?name=Apartment+Rent&currency=$" class="btn btn-primary">Create Flatmate Group →</a>
+    </div>
+
+    <!-- Educational Context Box -->
+    <div class="couple-callout">
+      <h3 style="margin:0 0 8px;font-size:16px;">Why is this formula fair for both sides?</h3>
+      <p style="font-size:13.5px;color:#373356;margin:0 0 10px;line-height:1.6;">
+        Splitting <strong>50/50 per room</strong> ignores that two people occupy 66% of the common space, kitchen, fridge shelves, and increase noise. Meanwhile, splitting <strong>33.3% per person</strong> treats the couple as if they each get an entire private bedroom. The 50/50 split balances private bedroom rights with shared living space impact.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="/tools/rent-split-calculator/" style="font-size:13px;font-weight:700;color:var(--accent);">Try Full Square Footage Calculator →</a>
+        <span style="color:var(--border);">·</span>
+        <a href="/blog/fair-rent-split-unequal-rooms/" style="font-size:13px;font-weight:700;color:var(--accent);">Read Unequal Rooms Guide →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educational Concept Router -->
+  <section class="concept-router" id="concept-guide">
+    <div class="concept-router-head">
+      <div class="concept-router-title">
+        <span>🎓 Couple vs Single Roommate Concepts &amp; Rules</span>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
+    </div>
+
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('cr-dualpool')">1. The 50/50 Dual Pool Model</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('cr-fallacies')">2. Per-Room vs Per-Person Fallacies</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('cr-utils')">3. Utility Scaling (Headcount Rule)</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('cr-bath')">4. Bathroom Ratio &amp; Rush Hour</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('cr-guests')">5. The 3-Nights Guest Rule</button>
+    </div>
+
+    <!-- Pane 1 -->
+    <div class="concept-pane active" id="pane-cr-dualpool">
+      <h4>The 50/50 Dual Pool Model: Balancing Space and Headcount</h4>
+      <p>When two individuals in a romantic relationship share a master bedroom while living with a single roommate, standard lease division breaks down. The mathematically robust solution accepted by real estate economists is the <strong>Dual-Pool Model</strong>:</p>
+      <div class="concept-formula-box">
+        Total Rent = 50% Common Living Space Pool + 50% Private Bedroom Space Pool<br>
+        Common Pool Share = 50% of Rent ÷ Total Human Headcount (3 or 4 people)<br>
+        Private Pool Share = 50% of Rent ÷ Total Bedrooms (2 or 3 rooms)
+      </div>
+      <div class="concept-example-box">
+        <strong>Result:</strong> On a $3,000 2-bed apartment with 3 occupants, the single roommate pays <strong>$1,250</strong> (41.7%) and the couple pays <strong>$1,750</strong> ($875 each, 58.3% total). Both sides save money: the single roommate saves $250/mo off an equal room split, while each partner pays far less than solo studio rent.
+      </div>
+      <a href="/blog/how-couples-split-expenses/" class="concept-full-guide-link">Read Full Guide: How Couples &amp; Roommates Split Expenses Fairly <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 2 -->
+    <div class="concept-pane" id="pane-cr-fallacies">
+      <h4>The Two Fatal Extremes: Per-Room Fallacy vs Per-Person Fallacy</h4>
+      <p>Roommate negotiations typically collapse when one side champions an extreme heuristic:</p>
+      <ul>
+        <li><strong>The "Per-Room" Fallacy (50% / 50%):</strong> The couple insists that since they occupy one bedroom, they should only pay half the rent ($1,500 total, $750 each). This ignores that two people occupy 66% of the living room, take up double the kitchen cabinet and refrigerator space, produce double the dishware, and double the laundry cycle frequency.</li>
+        <li><strong>The "Per-Person" Fallacy (33.3% each):</strong> The single roommate demands rent be divided strictly by three ($1,000 each). This ignores that the couple shares a single sleeping space and has zero solo private sanctuary.</li>
+      </ul>
+      <p>The 50/50 compromise explicitly weights both realities with mathematical precision.</p>
+    </div>
+
+    <!-- Pane 3 -->
+    <div class="concept-pane" id="pane-cr-utils">
+      <h4>Utility &amp; Consumables Scaling: The 100% Headcount Mandate</h4>
+      <p>While base rent reflects square footage, <strong>utility bills reflect human biological consumption</strong>. Electricity, cooking gas, municipal water, air conditioning, heating, and trash removal scale with every additional person in the apartment.</p>
+      <div class="concept-formula-box">
+        Each Person's Utility Share = Total Monthly Utilities ÷ Total Human Headcount
+      </div>
+      <p>On a $300 monthly utility and Wi-Fi bill with 3 occupants (a couple + 1 single), each person pays exactly <strong>$100</strong>. The couple contributes <strong>$200</strong> combined. Shared household consumables (dish pods, paper towels, cleaning supplies) must follow the exact same 100% headcount rule.</p>
+      <a href="/guides/utility-and-rent-decoupling/" class="concept-full-guide-link">Read Full Guide: What Is Utility and Rent Decoupling? <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Pane 4 -->
+    <div class="concept-pane" id="pane-cr-bath">
+      <h4>Bathroom Ratios and Morning Rush Hour Friction</h4>
+      <p>The number of bathrooms in a rental unit drastically alters living quality. When three adults share a single full bathroom, friction peaks between 7:30 AM and 9:00 AM on weekdays.</p>
+      <ul>
+        <li><strong>1 Bathroom Shared by All 3:</strong> The couple should offer a slight discount (typically 2%–3% of base rent) to the single roommate to offset the inevitable scheduling constraints.</li>
+        <li><strong>2 Bathrooms (Ensuite Master Bath):</strong> If the couple enjoys an attached private bathroom while the single roommate has exclusive use of the hallway bathroom, the ratio is balanced and standard 50/50 splits apply cleanly.</li>
+      </ul>
+    </div>
+
+    <!-- Pane 5 -->
+    <div class="concept-pane" id="pane-cr-guests">
+      <h4>The 3-Nights-a-Week Significant Other Rule</h4>
+      <p>A frequent origin of couple roommate conflict begins innocently: a single roommate's partner starts sleeping over periodically, gradually becoming a permanent unpaid tenant.</p>
+      <div class="concept-example-box">
+        <strong>The Standard Lease Guest Threshold:</strong> If a romantic partner sleeps over <strong>3 or more nights per week for 3 consecutive weeks</strong>, they are legally considered a resident. At this threshold, the household must convene and officially switch from single-roommate pricing to the couple split formula plus a 33% utility contribution.
+      </div>
+    </div>
+  </section>
+
+  <article style="margin-top:48px;">
+    <h2>The Math: How to Split Rent When a Couple Moves In</h2>
+    <p>When a romantic couple moves into a 2-bedroom apartment with a single roommate, roommates often end up fighting over two extreme extremes:</p>
+    
+    <ol>
+      <li><strong>The "Per Room" Fallacy (50% / 50%):</strong> The couple argues, <em>"We only have one bedroom, so we should only pay half the rent ($1,500 total, $750 each), and the single person pays half ($1,500)."</em> The single roommate feels resentful because their living room is crowded, fridge space is cut in half, and bathroom lines doubled.</li>
+      <li><strong>The "Per Person" Fallacy (33.3% / 33.3% / 33.3%):</strong> The single person argues, <em>"There are three people here, so rent must be divided by three ($1,000 each)."</em> The couple feels ripped off because they don't get two private bedrooms, yet they are paying 66.7% of the total lease.</li>
+    </ol>
+
+    <div class="callout-box">
+      <p><strong>The Fair Consensus Formula (50% Shared / 50% Private):</strong><br />
+      • <strong>Common Living Pool (50% of total rent):</strong> Divided equally by total headcount (Alex, Jordan, Sam = 33.3% each).<br />
+      • <strong>Private Bedroom Pool (50% of total rent):</strong> Divided equally among bedrooms (Master bedroom = 50%, Second bedroom = 50%).</p>
+    </div>
+
+    <h3>A Concrete $3,000 Apartment Example</h3>
+    <p>On a $3,000/month two-bedroom lease:</p>
+    <ul>
+      <li><strong>Common Living Pool ($1,500):</strong> $1,500 &divide; 3 people = <strong>$500 per person</strong>.</li>
+      <li><strong>Private Bedroom Pool ($1,500):</strong> $1,500 &divide; 2 bedrooms = <strong>$750 per bedroom</strong>.</li>
+    </ul>
+    <p>Adding the two together:</p>
+    <ul>
+      <li><strong>The Single Roommate:</strong> $500 (common) + $750 (private) = <strong>$1,250</strong> (41.7% of rent).</li>
+      <li><strong>The Couple Combined:</strong> $1,000 (common for 2) + $750 (private) = <strong>$1,750</strong> (58.3% of rent, or <strong>$875 each</strong>).</li>
+    </ul>
+    <p>Under this formula, the single roommate saves $250/month compared to a standard 2-person lease, which compensates for the extra roommate in common spaces. The couple saves $375/month compared to living alone or paying a 50/50 single rate.</p>
+
+    <h2>How to Split Utilities When a Couple Moves In</h2>
+    <p>Unlike rent, <strong>utilities should always be split 100% equally by headcount (33.3% each)</strong>. Electricity, water, Wi-Fi, heating, air conditioning, and household consumables (toilet paper, trash bags, dish soap) scale with each human living in the apartment. Two people take twice as many showers, do twice as much laundry, and charge twice as many electronics.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>How should a couple and a single roommate split rent?</summary>
+      <p>The standard fair formula is the 50/50 rule: half the rent is split per person for common areas, and half is split per bedroom. On a $3,000 2-bed lease with 3 people, the couple pays ~$1,750 ($875 each) and the single roommate pays ~$1,250.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What if the couple has a private ensuite bathroom?</summary>
+      <p>If the couple has an attached private master bathroom and the single roommate uses the hallway bathroom alone, add 5% to 10% to the couple's private room weight. In this calculator, checking "Private Bath" automatically factors this into the split.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What if it is a 3-bedroom apartment with a couple and two singles?</summary>
+      <p>Click "+ Add 3rd Bedroom" in the calculator above. The 50/50 formula will divide 50% across the 4 total occupants (12.5% each) and 50% across the 3 bedrooms (16.7% each), automatically giving the fair split for 4 people across 3 rooms.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is this calculator free?</summary>
+      <p>Yes, 100% free with no sign-up or app download required. When you agree on the split, you can export your group directly into LedgerMate to log monthly rent and utility payments.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction group expense sharing. Free, no mandatory app download, no limits.</p>
+      </div>
+      <div>
+        <h4>Free Tools</h4>
+        <ul>
+          <li><a href="/tools/couple-roommate-rent-calculator/">Couple Rent Splitter</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter (Sq Ft)</a></li>
+          <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
+          <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
+          <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guides &amp; Comparisons</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Vs Splitwise</a></li>
+          <li><a href="/blog/splitwise-free-limit-alternatives/">Splitwise Limits &amp; Timers</a></li>
+          <li><a href="/blog/best-splitwise-alternatives/">Best Alternatives</a></li>
+          <li><a href="/blog/fair-rent-split-unequal-rooms/">Room Size Rent Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+  let formulaMode = "common"; // "common" | "sqft" | "percent"
+  let commonRatio = 50;
+  let hasRoom3 = false;
+
+  const curEl = document.getElementById("currency");
+  const totalRentEl = document.getElementById("total-rent");
+  const utilsEl = document.getElementById("utilities-est");
+
+  const tabCommon = document.getElementById("tab-formula-common");
+  const tabSqft = document.getElementById("tab-formula-sqft");
+  const tabPercent = document.getElementById("tab-formula-percent");
+
+  const commonControl = document.getElementById("common-ratio-control");
+  const ratioChips = document.querySelectorAll("#ratio-chips .chip-btn");
+
+  const p1Name = document.getElementById("partner1-name");
+  const p2Name = document.getElementById("partner2-name");
+  const coupleBath = document.getElementById("couple-bath");
+  const coupleSqft = document.getElementById("couple-sqft");
+
+  const s1Name = document.getElementById("single1-name");
+  const s1Bath = document.getElementById("single1-bath");
+  const s1Sqft = document.getElementById("single1-sqft");
+
+  const room3Box = document.getElementById("room3-container");
+  const btnAddRoom3 = document.getElementById("btn-add-room3");
+  const btnRemoveRoom3 = document.getElementById("btn-remove-room3");
+  const s2Name = document.getElementById("single2-name");
+  const s2Bath = document.getElementById("single2-bath");
+  const s2Sqft = document.getElementById("single2-sqft");
+
+  const sqftFields = document.querySelectorAll(".sqft-field");
+
+  // Formula Tab events
+  tabCommon.addEventListener("click", () => setFormula("common"));
+  tabSqft.addEventListener("click", () => setFormula("sqft"));
+  tabPercent.addEventListener("click", () => setFormula("percent"));
+
+  function setFormula(mode) {
+    formulaMode = mode;
+    [tabCommon, tabSqft, tabPercent].forEach(t => t.classList.remove("active"));
+
+    if (mode === "common") {
+      tabCommon.classList.add("active");
+      commonControl.style.display = "block";
+      sqftFields.forEach(f => f.style.display = "none");
+    } else if (mode === "sqft") {
+      tabSqft.classList.add("active");
+      commonControl.style.display = "block";
+      sqftFields.forEach(f => f.style.display = "block");
+    } else {
+      tabPercent.classList.add("active");
+      commonControl.style.display = "none";
+      sqftFields.forEach(f => f.style.display = "none");
+    }
+    calculate();
+  }
+
+  // Ratio chips
+  ratioChips.forEach(c => {
+    c.addEventListener("click", () => {
+      ratioChips.forEach(x => x.classList.remove("active"));
+      c.classList.add("active");
+      commonRatio = parseInt(c.dataset.ratio, 10);
+      document.getElementById("common-ratio-label").textContent = `${commonRatio}% Shared / ${100 - commonRatio}% Bedroom`;
+      calculate();
+    });
+  });
+
+  // Room 3 toggles
+  btnAddRoom3.addEventListener("click", () => {
+    hasRoom3 = true;
+    room3Box.style.display = "block";
+    btnAddRoom3.style.display = "none";
+    calculate();
+  });
+
+  btnRemoveRoom3.addEventListener("click", () => {
+    hasRoom3 = false;
+    room3Box.style.display = "none";
+    btnAddRoom3.style.display = "block";
+    calculate();
+  });
+
+  // Input listeners
+  [totalRentEl, utilsEl, curEl, p1Name, p2Name, coupleBath, coupleSqft, s1Name, s1Bath, s1Sqft, s2Name, s2Bath, s2Sqft].forEach(el => {
+    el.addEventListener("input", calculate);
+    el.addEventListener("change", calculate);
+  });
+
+  function calculate() {
+    const cur = curEl.value;
+    const rent = parseFloat(totalRentEl.value) || 0;
+    const utils = parseFloat(utilsEl.value) || 0;
+
+    const partner1 = p1Name.value.trim() || "Partner 1";
+    const partner2 = p2Name.value.trim() || "Partner 2";
+    const single1 = s1Name.value.trim() || "Single 1";
+    const single2 = s2Name.value.trim() || "Single 2";
+
+    const numBedrooms = hasRoom3 ? 3 : 2;
+    const numPeople = hasRoom3 ? 4 : 3;
+
+    let coupleRent = 0;
+    let single1Rent = 0;
+    let single2Rent = 0;
+
+    if (formulaMode === "percent") {
+      // 2 bed: 60/40. 3 bed: 46/27/27
+      if (!hasRoom3) {
+        coupleRent = rent * 0.5833;
+        single1Rent = rent * 0.4167;
+      } else {
+        coupleRent = rent * 0.45;
+        single1Rent = rent * 0.275;
+        single2Rent = rent * 0.275;
+      }
+    } else if (formulaMode === "common") {
+      const commonPool = rent * (commonRatio / 100);
+      const privatePool = rent - commonPool;
+
+      const commonPerPerson = commonPool / numPeople;
+      
+      // Bed weights (account for private bath +10%)
+      const coupleBathMultiplier = coupleBath.checked ? 1.10 : 1.0;
+      const s1BathMultiplier = s1Bath.checked ? 1.10 : 1.0;
+      const s2BathMultiplier = (hasRoom3 && s2Bath.checked) ? 1.10 : 1.0;
+
+      const coupleBedScore = 1.0 * coupleBathMultiplier;
+      const s1BedScore = 1.0 * s1BathMultiplier;
+      const s2BedScore = hasRoom3 ? (1.0 * s2BathMultiplier) : 0;
+      const totalBedScore = coupleBedScore + s1BedScore + s2BedScore;
+
+      const couplePrivateShare = (coupleBedScore / totalBedScore) * privatePool;
+      const s1PrivateShare = (s1BedScore / totalBedScore) * privatePool;
+      const s2PrivateShare = hasRoom3 ? ((s2BedScore / totalBedScore) * privatePool) : 0;
+
+      coupleRent = (commonPerPerson * 2) + couplePrivateShare;
+      single1Rent = commonPerPerson + s1PrivateShare;
+      single2Rent = commonPerPerson + s2PrivateShare;
+
+    } else { // "sqft"
+      const commonPool = rent * (commonRatio / 100);
+      const privatePool = rent - commonPool;
+      const commonPerPerson = commonPool / numPeople;
+
+      const cSqft = (parseFloat(coupleSqft.value) || 200) * (coupleBath.checked ? 1.10 : 1.0);
+      const s1SqftVal = (parseFloat(s1Sqft.value) || 150) * (s1Bath.checked ? 1.10 : 1.0);
+      const s2SqftVal = hasRoom3 ? ((parseFloat(s2Sqft.value) || 130) * (s2Bath.checked ? 1.10 : 1.0)) : 0;
+      const totalSqftScore = cSqft + s1SqftVal + s2SqftVal;
+
+      coupleRent = (commonPerPerson * 2) + ((cSqft / totalSqftScore) * privatePool);
+      single1Rent = commonPerPerson + ((s1SqftVal / totalSqftScore) * privatePool);
+      single2Rent = hasRoom3 ? (commonPerPerson + ((s2SqftVal / totalSqftScore) * privatePool)) : 0;
+    }
+
+    // Utilities (split 100% per head)
+    const utilPerPerson = utils > 0 ? (utils / numPeople) : 0;
+    const coupleUtils = utilPerPerson * 2;
+
+    const coupleTotal = coupleRent + coupleUtils;
+    const coupleEach = coupleTotal / 2;
+    const s1Total = single1Rent + utilPerPerson;
+    const s2Total = single2Rent + utilPerPerson;
+
+    const couplePct = (coupleRent / rent) * 100;
+    const s1Pct = (single1Rent / rent) * 100;
+
+    // Update UI elements
+    document.getElementById("couple-title").textContent = `${escapeHtml(partner1)} & ${escapeHtml(partner2)} (Couple Combined)`;
+    document.getElementById("couple-total-amt").textContent = `${cur}${coupleTotal.toFixed(2)}`;
+    document.getElementById("couple-each-amt").textContent = `${cur}${coupleEach.toFixed(2)} / partner (${cur}${ (coupleRent / 2).toFixed(2)} rent + ${cur}${utilPerPerson.toFixed(0)} utils)`;
+    document.getElementById("ratio-badge").textContent = `Couple: ${couplePct.toFixed(1)}% · Single: ${s1Pct.toFixed(1)}%`;
+
+    // Singles list
+    let singleHtml = `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <div>
+            <strong style="font-size:15px;color:var(--text);">${escapeHtml(single1)}</strong>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Private Single Room · ${s1Pct.toFixed(1)}% of base rent</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:20px;font-weight:800;color:var(--text);">${cur}${s1Total.toFixed(2)}</div>
+            ${utils > 0 ? `<div style="font-size:11.5px;color:var(--text-muted);">${cur}${single1Rent.toFixed(2)} rent + ${cur}${utilPerPerson.toFixed(0)} utils</div>` : ""}
+          </div>
+        </div>
+      </div>
+    `;
+
+    if (hasRoom3) {
+      const s2Pct = (single2Rent / rent) * 100;
+      singleHtml += `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <div>
+              <strong style="font-size:15px;color:var(--text);">${escapeHtml(single2)}</strong>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Private Single Room · ${s2Pct.toFixed(1)}% of base rent</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:20px;font-weight:800;color:var(--text);">${cur}${s2Total.toFixed(2)}</div>
+              ${utils > 0 ? `<div style="font-size:11.5px;color:var(--text-muted);">${cur}${single2Rent.toFixed(2)} rent + ${cur}${utilPerPerson.toFixed(0)} utils</div>` : ""}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    document.getElementById("single-breakdown-list").innerHTML = singleHtml;
+
+    if (utils > 0) {
+      document.getElementById("utilities-preview").textContent = `* Utilities (${cur}${utils.toFixed(0)}/mo) are split equally per person (${cur}${utilPerPerson.toFixed(2)} each) and added to monthly totals above.`;
+    } else {
+      document.getElementById("utilities-preview").textContent = `* Add estimated monthly utilities above to include water, power, and Wi-Fi in the split.`;
+    }
+
+    // Comparison stats
+    document.getElementById("even-comparison-val").textContent = `${cur}${Math.round(rent / numPeople)}`;
+    document.getElementById("room-comparison-val").textContent = `${cur}${Math.round(rent / numBedrooms)}`;
+    const savings = Math.round((rent / numBedrooms) - single1Rent);
+    document.getElementById("single-savings-val").textContent = savings >= 0 ? `-${cur}${savings}` : `+${cur}${Math.abs(savings)}`;
+
+    document.getElementById("btn-export-group").href = `/app/?name=Apartment+Rent&currency=${encodeURIComponent(cur)}`;
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  function switchConcept(conceptId) {
+    const tabs = document.querySelectorAll("#concept-tabs .concept-tab-btn");
+    tabs.forEach(t => t.classList.remove("active"));
+    const panes = document.querySelectorAll("#concept-guide .concept-pane");
+    panes.forEach(p => p.classList.remove("active"));
+
+    if (event && event.target) {
+      event.target.classList.add("active");
+    }
+    const targetPane = document.getElementById("pane-" + conceptId);
+    if (targetPane) {
+      targetPane.classList.add("active");
+    }
+  }
+
+  calculate();
+</script>
+</body>
+</html>

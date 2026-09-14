@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Scientific Calculator Online (Free, Fast, Full Screen) | LedgerMate</title>
+<meta name="description" content="Free scientific calculator online. Full trigonometry (sin, cos, tan, Rad/Deg), logarithms (log, ln), exponents, powers, parentheses, calculation tape history, and zero ads." />
+<link rel="canonical" href="https://tryledgermate.in/tools/scientific-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Scientific Calculator Online (Free, Ad-Free) | LedgerMate" />
+<meta property="og:description" content="Fast, ad-free online scientific calculator with full trig, logs, powers, and history tape." />
+<meta property="og:url" content="https://tryledgermate.in/tools/scientific-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=4" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Scientific Calculator Online",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Comprehensive online scientific calculator with trigonometry, logarithms, powers, roots, and calculation tape history.",
+  "featureList": [
+    "Trigonometry in Degrees and Radians",
+    "Logarithms (log10, natural ln)",
+    "Square roots, cube roots, powers (x^y)",
+    "Factorial, Pi, Euler's number",
+    "Keyboard shortcuts support",
+    "History tape with one-tap recall",
+    "Zero ads and instant loading"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I switch between Degrees and Radians?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Click the 'DEG' or 'RAD' toggle button in the top left of the keypad. In degree mode, sin(90°) = 1; in radian mode, sin(π/2) = 1. A visual badge indicates the active mode."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between ln and log?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "'ln' is the natural logarithm with base e (Euler's number ≈ 2.71828), ubiquitous in calculus and biological decay. 'log' is the common logarithm with base 10, commonly used in acoustics (decibels), chemistry (pH), and earthquake Richter scales."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is 0! (zero factorial) equal to 1?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mathematically, n! represents the number of ways to arrange n distinct objects. There is exactly one way to arrange zero objects (the empty set). Formally, since n! = (n+1)! / (n+1), setting n=0 yields 0! = 1! / 1 = 1."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use my physical computer keyboard with this calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! You can type numbers 0-9, arithmetic operators (+, -, *, /), exponents (^), parentheses ( ), Backspace to delete a digit, Enter or '=' to compute, and Escape to clear the display."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this calculator follow PEMDAS / BODMAS order of operations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Expressions respect standard mathematical precedence: Parentheses/Brackets first, followed by Exponents/Powers, then Multiplication & Division (left to right), and finally Addition & Subtraction."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  .calc-container {
+    width: 100%;
+    background: #1B1A24;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 30px rgba(27, 26, 36, 0.25);
+    color: #fff;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+  }
+  .calc-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #9C98B0;
+    font-weight: 600;
+  }
+  .mode-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #272535;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #C4B5FD;
+    border: 1px solid #38344E;
+  }
+  .display-box {
+    background: #111018;
+    border: 1px solid #2B2A36;
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-align: right;
+    margin-bottom: 18px;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-sizing: border-box;
+  }
+  .expr-line {
+    font-size: 15px;
+    color: #8C8A9F;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 22px;
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: right;
+  }
+  .val-line {
+    font-size: clamp(28px, 6vw, 40px);
+    font-weight: 700;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: auto;
+    white-space: nowrap;
+    line-height: 1.15;
+    text-align: right;
+    margin-top: 4px;
+  }
+  .sci-keypad {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .calc-btn {
+    background: #252433;
+    border: 1px solid #333244;
+    color: #E6E4F0;
+    border-radius: 10px;
+    padding: 14px 4px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.12s, transform 0.05s;
+    user-select: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .calc-btn:active {
+    transform: scale(0.96);
+  }
+  .calc-btn:hover {
+    background: #313042;
+  }
+  .btn-num {
+    background: #2E2D3E;
+    color: #FFF;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .btn-num:hover {
+    background: #3B3A50;
+  }
+  .btn-op {
+    background: #3B325E;
+    color: #C3B5FD;
+    font-size: 18px;
+    border-color: #4D4178;
+  }
+  .btn-op:hover {
+    background: #4B4075;
+  }
+  .btn-equals {
+    background: #6D4FEB;
+    color: #FFF;
+    font-weight: 800;
+    font-size: 20px;
+    border-color: #6D4FEB;
+  }
+  .btn-equals:hover {
+    background: #5B3EC9;
+  }
+  .btn-clear {
+    background: #462328;
+    color: #FF8F9B;
+    border-color: #5C2D34;
+    font-weight: 700;
+  }
+  .btn-clear:hover {
+    background: #592B32;
+  }
+  .deg-rad-btn {
+    background: #211F2D;
+    color: #A49FB8;
+    font-size: 13px;
+    font-weight: 700;
+    border-color: #38354A;
+  }
+  .deg-rad-btn.active {
+    color: #C4B5FD;
+    border-color: #6D4FEB;
+    background: #2D264A;
+  }
+  .history-pane {
+    margin-top: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.12s;
+  }
+  .history-item:hover {
+    background: rgba(109,79,235,0.06);
+  }
+  .history-item:last-child {
+    border-bottom: none;
+  }
+  @media (max-width: 480px) {
+    .calc-container {
+      padding: 16px;
+      border-radius: 16px;
+    }
+    .sci-keypad {
+      gap: 6px;
+    }
+    .calc-btn {
+      padding: 12px 2px;
+      font-size: 14px;
+      border-radius: 8px;
+    }
+    .btn-num {
+      font-size: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">Tools</a>
+      <a href="/tools/gpa-calculator/">GPA &amp; CGPA Calc</a>
+      <a href="/tools/percentage-calculator/">Percentage Calc</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> Scientific Calculator
+  </div>
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">Scientific Calculator Online</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Full-featured, responsive scientific calculator with trigonometry (sin, cos, tan), logarithms, exponential powers, parentheses, memory tape history, and zero advertisements.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-container">
+      <div class="calc-topbar">
+        <span class="mode-badge" id="mode-indicator">Mode: DEGREE (360°)</span>
+        <span style="font-size:12px;opacity:0.8;">Keyboard Enabled</span>
+      </div>
+
+      <!-- Screen Display -->
+      <div class="display-box">
+        <div class="expr-line" id="calc-expression"></div>
+        <div class="val-line" id="calc-current">0</div>
+      </div>
+
+      <!-- Keypad Grid -->
+      <div class="sci-keypad">
+        <!-- Row 1: Angle / Special / Clear -->
+        <button class="calc-btn deg-rad-btn active" id="btn-deg-rad" type="button" title="Toggle Degrees and Radians">DEG</button>
+        <button class="calc-btn" data-action="fact" type="button" title="Factorial (n!)">n!</button>
+        <button class="calc-btn" data-insert="(" type="button">(</button>
+        <button class="calc-btn" data-insert=")" type="button">)</button>
+        <button class="calc-btn btn-clear" data-action="all-clear" type="button" title="All Clear (Esc)">AC</button>
+
+        <!-- Row 2: Trig / Memory / Divide -->
+        <button class="calc-btn" data-fn="sin" type="button">sin</button>
+        <button class="calc-btn" data-fn="cos" type="button">cos</button>
+        <button class="calc-btn" data-fn="tan" type="button">tan</button>
+        <button class="calc-btn btn-op" data-action="backspace" type="button" title="Backspace">⌫</button>
+        <button class="calc-btn btn-op" data-op="/" type="button">÷</button>
+
+        <!-- Row 3: Logs / Numbers / Multiply -->
+        <button class="calc-btn" data-fn="ln" type="button" title="Natural Logarithm (base e)">ln</button>
+        <button class="calc-btn" data-fn="log" type="button" title="Common Logarithm (base 10)">log</button>
+        <button class="calc-btn btn-num" data-num="7" type="button">7</button>
+        <button class="calc-btn btn-num" data-num="8" type="button">8</button>
+        <button class="calc-btn btn-num" data-num="9" type="button">9</button>
+
+        <!-- Row 4: Roots / Powers / Multiply -->
+        <button class="calc-btn" data-fn="sqrt" type="button" title="Square Root (√x)">√</button>
+        <button class="calc-btn" data-op="^" type="button" title="Power (x^y)">x^y</button>
+        <button class="calc-btn btn-num" data-num="4" type="button">4</button>
+        <button class="calc-btn btn-num" data-num="5" type="button">5</button>
+        <button class="calc-btn btn-num" data-num="6" type="button">6</button>
+
+        <!-- Row 5: Constants / Square / Subtract -->
+        <button class="calc-btn" data-insert="π" type="button" title="Pi (3.14159...)">π</button>
+        <button class="calc-btn" data-fn="sqr" type="button" title="Square (x²)">x²</button>
+        <button class="calc-btn btn-num" data-num="1" type="button">1</button>
+        <button class="calc-btn btn-num" data-num="2" type="button">2</button>
+        <button class="calc-btn btn-num" data-num="3" type="button">3</button>
+
+        <!-- Row 6: e / Percent / Subtract / Add / Equals -->
+        <button class="calc-btn" data-insert="e" type="button" title="Euler's constant (2.71828...)">e</button>
+        <button class="calc-btn" data-action="pct" type="button" title="Percent (%)">%</button>
+        <button class="calc-btn btn-num" data-num="0" type="button">0</button>
+        <button class="calc-btn btn-num" data-insert="." type="button">.</button>
+        <button class="calc-btn btn-equals" id="btn-calc-equal" type="button" title="Calculate (=)">=</button>
+      </div>
+
+      <!-- Additional operators row for quick access -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+        <button class="calc-btn btn-op" data-op="*" type="button" title="Multiply">×</button>
+        <button class="calc-btn btn-op" data-op="-" type="button" title="Subtract">−</button>
+        <button class="calc-btn btn-op" data-op="+" type="button" title="Add">+</button>
+        <button class="calc-btn" data-fn="inv" type="button" title="Reciprocal (1/x)">1/x</button>
+      </div>
+    </div>
+
+    <!-- Calculation Tape History -->
+    <div class="history-pane">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 style="margin:0;font-size:16px;font-weight:700;">Calculation Tape (Click to Recall)</h3>
+        <button type="button" id="btn-clear-history" style="border:none;background:none;color:var(--text-muted);font-size:12.5px;cursor:pointer;font-weight:600;">Clear Tape</button>
+      </div>
+      <div id="history-items-list">
+        <div style="font-size:13.5px;color:var(--text-muted);padding:8px 0;text-align:center;">No calculations in this session yet. Type an expression and press =.</div>
+      </div>
+    </div>
+
+    <!-- Deep-Dive Reference Guide & Explanations -->
+    <article style="margin-top:44px;line-height:1.7;">
+      <h2>Complete Guide to Scientific Functions &amp; Mathematical Conventions</h2>
+      <p>Scientific calculators bridge the gap between basic arithmetic (+, −, ×, ÷) and complex engineering, physics, and calculus formulas. Below is a comprehensive reference to clarify every key and prevent common calculation errors.</p>
+
+      <h3>1. Degree vs. Radian Mode: When to Use Which?</h3>
+      <p>Angles can be measured in degrees (where a full circle is 360°) or radians (where a full circle is 2π radians ≈ 6.28318 radians). The relationship is defined by:</p>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-family:'JetBrains Mono',monospace;margin:12px 0;">
+        1 Radian = 180° / π ≈ 57.29578°<br />
+        θ(radians) = θ(degrees) × (π / 180)
+      </div>
+      <ul>
+        <li><strong>When to use Degrees:</strong> Architecture, navigation, geometry, and high school algebra. For example, <code>sin(30°) = 0.5</code> and <code>sin(90°) = 1</code>.</li>
+        <li><strong>When to use Radians:</strong> Advanced calculus, physics (harmonic motion, electromagnetic waves), and engineering. Derivatives of trigonometric functions (such as <code>d/dx sin(x) = cos(x)</code>) are only valid when x is expressed in radians.</li>
+      </ul>
+
+      <h3>2. Natural Log (ln) vs. Common Log (log)</h3>
+      <ul>
+        <li><strong>log (Common Logarithm, base 10):</strong> Answers the question: <em>"10 raised to what power equals x?"</em> Used in measuring sound volume (Decibels dB), earthquake intensity (Richter scale), and chemical acidity (pH scale). For example, <code>log(1000) = 3</code> because 10³ = 1000.</li>
+        <li><strong>ln (Natural Logarithm, base e ≈ 2.71828):</strong> Answers: <em>"e raised to what power equals x?"</em> Essential for radioactive decay, continuous compound interest, population growth models, and thermodynamics. For example, <code>ln(e) = 1</code> and <code>ln(1) = 0</code>.</li>
+      </ul>
+
+      <h3>3. Why 0! (Zero Factorial) Equals 1</h3>
+      <p>A factorial (n!) is the product of all positive integers from 1 down to n. For instance, <code>4! = 4 × 3 × 2 × 1 = 24</code>. Why is <code>0! = 1</code> and not 0?</p>
+      <ul>
+        <li><strong>Combinatorial reasoning:</strong> n! represents how many ways you can arrange n distinct objects in a line. How many ways can you arrange zero items? Exactly 1 way: do nothing (the empty set).</li>
+        <li><strong>Algebraic definition:</strong> Notice the pattern: <code>n! = (n+1)! / (n+1)</code>. If n = 0, then <code>0! = 1! / 1 = 1 / 1 = 1</code>.</li>
+      </ul>
+
+      <h3>4. Order of Operations (PEMDAS / BODMAS)</h3>
+      <p>Expressions typed into LedgerMate are evaluated in strict accordance with mathematical precedence rules:</p>
+      <ol>
+        <li><strong>P / B:</strong> Parentheses &amp; Brackets (expressions inside <code>( )</code> take utmost priority)</li>
+        <li><strong>E / O:</strong> Exponents &amp; Orders (powers <code>x^y</code> and square roots <code>√x</code>)</li>
+        <li><strong>MD / DM:</strong> Multiplication and Division (evaluated from left to right)</li>
+        <li><strong>AS:</strong> Addition and Subtraction (evaluated from left to right)</li>
+      </ol>
+      <p>Example: <code>2 + 3 × 4</code> equals <strong>14</strong> (not 20), because multiplication takes precedence over addition. To force addition first, enter <code>(2 + 3) × 4 = 20</code>.</p>
+
+      <h3>5. Keyboard Shortcuts Reference</h3>
+      <div class="table-responsive">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Key on Keyboard</th>
+              <th>Action</th>
+              <th>Example Input</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0 - 9</code></td>
+              <td>Enter numbers</td>
+              <td><code>45.2</code></td>
+            </tr>
+            <tr>
+              <td><code>+ , - , * , /</code></td>
+              <td>Basic arithmetic</td>
+              <td><code>12 * 4</code></td>
+            </tr>
+            <tr>
+              <td><code>^</code></td>
+              <td>Exponents / Powers</td>
+              <td><code>2 ^ 8 = 256</code></td>
+            </tr>
+            <tr>
+              <td><code>( and )</code></td>
+              <td>Parentheses grouping</td>
+              <td><code>(8 + 2) / 5 = 2</code></td>
+            </tr>
+            <tr>
+              <td><code>Enter</code> or <code>=</code></td>
+              <td>Calculate result</td>
+              <td>Shows answer and adds to tape</td>
+            </tr>
+            <tr>
+              <td><code>Backspace</code></td>
+              <td>Delete last character</td>
+              <td>Fixes typographical errors</td>
+            </tr>
+            <tr>
+              <td><code>Escape</code></td>
+              <td>All Clear (AC)</td>
+              <td>Resets display to 0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="calc-cta" style="margin-top:28px;">
+        <div>
+          <p>Sharing college lab equipment or dorm rent?</p>
+          <span style="font-size:12px;color:var(--text-muted);">Split expenses seamlessly with roommates using LedgerMate. 100% free with no limits.</span>
+        </div>
+        <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+      </div>
+
+      <h2 style="margin-top:40px;">Frequently Asked Questions</h2>
+      <details class="faq-item" open>
+        <summary>How do I switch between Degrees and Radians?</summary>
+        <p>Click the <strong>DEG / RAD</strong> toggle button located in the top-left of the keypad. In degree mode, sin(90°) = 1; in radian mode, sin(π/2) = 1. A visual badge at the top confirms your current angle mode.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use this scientific calculator offline?</summary>
+        <p>Yes! Because this application is written in lightweight vanilla JavaScript, all mathematical operations execute client-side directly on your device's CPU. You can calculate even without an active internet connection.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How does the calculation tape history work?</summary>
+        <p>Every time you press the equals button (<code>=</code>), your input expression and calculated result are appended to the calculation tape below. Clicking on any previous line automatically reloads that number into the active display.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Why does 0.1 + 0.2 equal 0.30000000000000004 on computers?</summary>
+        <p>Computers store decimal numbers in binary floating-point format (IEEE 754 standard). Certain decimal fractions like 0.1 have repeating infinite binary representations (like 1/3 in decimal = 0.3333...). LedgerMate automatically rounds floating-point results to 12 decimal places to prevent display artifacts.</p>
+      </details>
+    </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction group expense sharing. Free, no mandatory app download, no limits.</p>
+      </div>
+      <div>
+        <h4>Academic Calculators</h4>
+        <ul>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/gpa-calculator/">GPA &amp; CGPA Calculator</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/unit-converter/">Unit Converter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Financial Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Compound Interest</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Academic &amp; Financial Calculators. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+  let isDeg = true;
+  let expr = "";
+  let currentVal = "0";
+  let shouldResetInput = false;
+  let history = [];
+
+  const exprEl = document.getElementById("calc-expression");
+  const valEl = document.getElementById("calc-current");
+  const degRadBtn = document.getElementById("btn-deg-rad");
+  const modeIndicator = document.getElementById("mode-indicator");
+  const historyList = document.getElementById("history-items-list");
+  const btnClearHist = document.getElementById("btn-clear-history");
+
+  function setDegreeMode(deg) {
+    isDeg = deg;
+    degRadBtn.textContent = isDeg ? "DEG" : "RAD";
+    degRadBtn.classList.toggle("active", isDeg);
+    modeIndicator.textContent = isDeg ? "Mode: DEGREE (360°)" : "Mode: RADIAN (2π)";
+  }
+
+  degRadBtn.addEventListener("click", () => {
+    setDegreeMode(!isDeg);
+  });
+
+  // Numeric buttons
+  document.querySelectorAll("[data-num]").forEach(btn => {
+    btn.addEventListener("click", () => appendNumber(btn.dataset.num));
+  });
+
+  // Operators (+, -, *, /, ^)
+  document.querySelectorAll("[data-op]").forEach(btn => {
+    btn.addEventListener("click", () => appendOperator(btn.dataset.op));
+  });
+
+  // Insert constants / parens / decimal
+  document.querySelectorAll("[data-insert]").forEach(btn => {
+    btn.addEventListener("click", () => insertToken(btn.dataset.insert));
+  });
+
+  // Actions (all-clear, backspace, fact, pct)
+  document.querySelectorAll("[data-action]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const act = btn.dataset.action;
+      if (act === "all-clear") {
+        expr = "";
+        currentVal = "0";
+        updateDisplay();
+      } else if (act === "backspace") {
+        if (currentVal.length > 1) {
+          currentVal = currentVal.slice(0, -1);
+        } else {
+          currentVal = "0";
+        }
+        updateDisplay();
+      } else if (act === "fact") {
+        applyFactorial();
+      } else if (act === "pct") {
+        applyPercent();
+      }
+    });
+  });
+
+  // Math functions (sin, cos, tan, log, ln, sqrt, sqr, inv)
+  document.querySelectorAll("[data-fn]").forEach(btn => {
+    btn.addEventListener("click", () => applyMathFunction(btn.dataset.fn));
+  });
+
+  document.getElementById("btn-calc-equal").addEventListener("click", evaluateExpression);
+
+  function appendNumber(num) {
+    if (currentVal === "0" || shouldResetInput) {
+      currentVal = num;
+      shouldResetInput = false;
+    } else {
+      currentVal += num;
+    }
+    updateDisplay();
+  }
+
+  function insertToken(tok) {
+    if (tok === ".") {
+      if (shouldResetInput) {
+        currentVal = "0.";
+        shouldResetInput = false;
+      } else if (!currentVal.includes(".")) {
+        currentVal += ".";
+      }
+    } else if (tok === "π") {
+      currentVal = Math.PI.toString();
+      shouldResetInput = true;
+    } else if (tok === "e") {
+      currentVal = Math.E.toString();
+      shouldResetInput = true;
+    } else if (tok === "(" || tok === ")") {
+      expr += (expr ? " " : "") + tok;
+    }
+    updateDisplay();
+  }
+
+  function appendOperator(op) {
+    expr += (expr.endsWith(" ") ? "" : " ") + currentVal + " " + op + " ";
+    shouldResetInput = true;
+    updateDisplay();
+  }
+
+  function applyMathFunction(fn) {
+    const val = parseFloat(currentVal) || 0;
+    let res = 0;
+    if (fn === "sin") {
+      res = isDeg ? Math.sin(val * (Math.PI / 180)) : Math.sin(val);
+    } else if (fn === "cos") {
+      res = isDeg ? Math.cos(val * (Math.PI / 180)) : Math.cos(val);
+    } else if (fn === "tan") {
+      res = isDeg ? Math.tan(val * (Math.PI / 180)) : Math.tan(val);
+    } else if (fn === "log") {
+      res = Math.log10(val);
+    } else if (fn === "ln") {
+      res = Math.log(val);
+    } else if (fn === "sqrt") {
+      res = Math.sqrt(val);
+    } else if (fn === "sqr") {
+      res = Math.pow(val, 2);
+    } else if (fn === "inv") {
+      res = val !== 0 ? 1 / val : 0;
+    }
+    currentVal = cleanNumber(res);
+    shouldResetInput = true;
+    updateDisplay();
+  }
+
+  function applyFactorial() {
+    const n = parseInt(currentVal, 10);
+    if (n < 0 || n > 170) {
+      currentVal = "Error";
+    } else {
+      let r = 1;
+      for (let i = 2; i <= n; i++) r *= i;
+      currentVal = r.toString();
+    }
+    shouldResetInput = true;
+    updateDisplay();
+  }
+
+  function applyPercent() {
+    const v = parseFloat(currentVal) || 0;
+    currentVal = cleanNumber(v / 100);
+    updateDisplay();
+  }
+
+  function evaluateExpression() {
+    const fullExpr = (expr + " " + currentVal).trim();
+    if (!fullExpr) return;
+
+    try {
+      let sanitized = fullExpr
+        .replace(/\^/g, "**")
+        .replace(/π/g, Math.PI.toString())
+        .replace(/\be\b/g, Math.E.toString());
+
+      if (!/^[0-9+\-*/().\s*]+$/.test(sanitized)) {
+        throw new Error("Invalid characters");
+      }
+
+      // Safe Function evaluation
+      const computed = Function('"use strict"; return (' + sanitized + ')')();
+      const finalVal = cleanNumber(computed);
+
+      addHistory(fullExpr, finalVal);
+
+      expr = "";
+      currentVal = finalVal;
+      shouldResetInput = true;
+      updateDisplay();
+    } catch (e) {
+      currentVal = "Error";
+      shouldResetInput = true;
+      updateDisplay();
+    }
+  }
+
+  function cleanNumber(num) {
+    if (isNaN(num)) return "Error";
+    if (!isFinite(num)) return "Infinity";
+    // Round to 10 decimal places to eliminate IEEE 754 precision artifacts
+    return (Math.round(num * 1e10) / 1e10).toString();
+  }
+
+  function updateDisplay() {
+    exprEl.textContent = expr;
+    valEl.textContent = currentVal;
+  }
+
+  function addHistory(expression, result) {
+    history.unshift({ expr: expression, res: result });
+    if (history.length > 25) history.pop();
+    renderHistory();
+  }
+
+  function renderHistory() {
+    if (history.length === 0) {
+      historyList.innerHTML = '<div style="font-size:13.5px;color:var(--text-muted);padding:8px 0;text-align:center;">No previous calculations in this session.</div>';
+      return;
+    }
+    historyList.innerHTML = "";
+    history.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "history-item";
+      row.innerHTML = `<span style="color:var(--text-muted);">${item.expr} =</span><strong style="color:var(--accent);">${item.res}</strong>`;
+      row.addEventListener("click", () => {
+        currentVal = item.res;
+        shouldResetInput = true;
+        updateDisplay();
+      });
+      historyList.appendChild(row);
+    });
+  }
+
+  btnClearHist.addEventListener("click", () => {
+    history = [];
+    renderHistory();
+  });
+
+  // Physical Keyboard listener
+  window.addEventListener("keydown", e => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+    if (e.key >= "0" && e.key <= "9") {
+      appendNumber(e.key);
+    } else if (["+", "-", "*", "/"].includes(e.key)) {
+      appendOperator(e.key);
+    } else if (e.key === ".") {
+      insertToken(".");
+    } else if (e.key === "(" || e.key === ")") {
+      insertToken(e.key);
+    } else if (e.key === "^") {
+      appendOperator("^");
+    } else if (e.key === "Enter" || e.key === "=") {
+      e.preventDefault();
+      evaluateExpression();
+    } else if (e.key === "Backspace") {
+      e.preventDefault();
+      if (currentVal.length > 1) {
+        currentVal = currentVal.slice(0, -1);
+      } else {
+        currentVal = "0";
+      }
+      updateDisplay();
+    } else if (e.key === "Escape") {
+      expr = "";
+      currentVal = "0";
+      updateDisplay();
+    }
+  });
+
+  updateDisplay();
+</script>
+
+</body>
+</html>

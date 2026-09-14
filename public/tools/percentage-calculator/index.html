@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Percentage Calculator Online (3-Way: What is % of, % Increase, Reverse %) | LedgerMate</title>
+<meta name="description" content="Free 3-in-1 percentage calculator. Calculate percentage of a number, percentage increase or decrease between two numbers, and find the original value before percentage change (reverse percentage). Fast, responsive, and ad-free." />
+<link rel="canonical" href="https://tryledgermate.in/tools/percentage-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Percentage Calculator (3-in-1) | LedgerMate" />
+<meta property="og:description" content="Calculate what percent is X of Y, percentage increase/decrease, and reverse percentages instantly without ads." />
+<meta property="og:url" content="https://tryledgermate.in/tools/percentage-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Percentage Calculator",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate percentages of numbers, percentage change increase/decrease, and reverse percentages.",
+  "featureList": [
+    "What is X% of Y mode",
+    "X is what percentage of Y mode",
+    "Percentage increase / decrease change mode",
+    "Reverse percentage calculation (original price before discount/tax)"
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/scientific-calculator/">Scientific Calc</a>
+      <a href="/tools/prorated-rent-calculator/">Prorated Rent</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Percentage Calculator
+  </div>
+
+  <h1 id="title-text">Percentage Calculator Online</h1>
+  <p class="sub" id="sub-text">Solve any percentage calculation in seconds: find percentage of a number, calculate percentage increase or decrease, and solve reverse percentages.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+
+  <!-- Mode 1: What is X% of Y -->
+  <div class="calc-card" style="margin-bottom:24px;">
+    <h3 style="margin-top:0;font-size:18px;">1. What is X% of Y?</h3>
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="p1-x">What is</label>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input id="p1-x" type="number" step="any" value="15" />
+          <span style="font-weight:700;color:var(--text-muted);">%</span>
+        </div>
+      </div>
+      <div style="flex:1.5;">
+        <label for="p1-y">of (Number)</label>
+        <input id="p1-y" type="number" step="any" value="240" />
+      </div>
+    </div>
+    <div class="calc-result" style="margin-top:14px;padding-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;color:var(--text-muted);" id="p1-formula">15% of 240 is:</span>
+        <span class="amt" style="font-size:26px;" id="p1-res">36.00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode 2: Percentage Increase / Decrease -->
+  <div class="calc-card" style="margin-bottom:24px;">
+    <h3 style="margin-top:0;font-size:18px;">2. Percentage Change (Increase or Decrease)</h3>
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="p2-from">From (Initial Value)</label>
+        <input id="p2-from" type="number" step="any" value="80" />
+      </div>
+      <div style="flex:1;">
+        <label for="p2-to">To (Final Value)</label>
+        <input id="p2-to" type="number" step="any" value="100" />
+      </div>
+    </div>
+    <div class="calc-result" style="margin-top:14px;padding-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;color:var(--text-muted);" id="p2-text">Difference: +20.00</span>
+        <span class="amt" style="font-size:26px;color:var(--green);" id="p2-res">+25.00%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode 3: Reverse Percentage -->
+  <div class="calc-card" style="margin-bottom:24px;">
+    <h3 style="margin-top:0;font-size:18px;">3. Reverse Percentage (Find Original Price)</h3>
+    <p style="font-size:13px;color:var(--text-muted);margin:0 0 12px;">
+      Find the original cost before a discount was applied or before sales tax was added.
+    </p>
+    <div class="calc-row">
+      <div style="flex:1.5;">
+        <label for="p3-final">Final Discounted Price / Amount ($)</label>
+        <input id="p3-final" type="number" step="any" value="80" />
+      </div>
+      <div style="flex:1;">
+        <label for="p3-pct">Discount Percentage</label>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input id="p3-pct" type="number" step="any" value="20" />
+          <span style="font-weight:700;color:var(--text-muted);">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="calc-result" style="margin-top:14px;padding-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;color:var(--text-muted);">Original price before 20% off:</span>
+        <span class="amt" style="font-size:26px;color:var(--accent);" id="p3-res">$100.00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calc-cta">
+    <div>
+      <p>Need to calculate discounts or group payments without sign-ups?</p>
+      <span style="font-size:12px;color:var(--text-muted);">LedgerMate keeps groups squared up automatically.</span>
+    </div>
+    <a href="/app/" class="btn btn-primary">Try Free App</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Fast everyday mathematical &amp; expense splitting tools.</p>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE Calculator</a></li>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Salaries</h4>
+        <ul>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a></li>
+          <li><a href="/tools/korea-salary-calculator/">Korea 연봉 실수령액</a></li>
+          <li><a href="/tools/japan-salary-calculator/">Japan 手取り計算</a></li>
+          <li><a href="/tools/india-ctc-salary-calculator/">India CTC In-Hand</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guides</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/blog/how-to-calculate-prorated-rent/">Prorated Rent Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function calc1() {
+  const x = parseFloat(document.getElementById('p1-x').value) || 0;
+  const y = parseFloat(document.getElementById('p1-y').value) || 0;
+  const res = (x / 100) * y;
+  document.getElementById('p1-formula').textContent = `${x}% of ${y} is:`;
+  document.getElementById('p1-res').textContent = res.toLocaleString('en-US', { maximumFractionDigits: 4 });
+}
+
+function calc2() {
+  const from = parseFloat(document.getElementById('p2-from').value) || 0;
+  const to = parseFloat(document.getElementById('p2-to').value) || 0;
+  if (from === 0) {
+    document.getElementById('p2-res').textContent = "0.00%";
+    return;
+  }
+  const diff = to - from;
+  const pct = (diff / Math.abs(from)) * 100;
+  const resEl = document.getElementById('p2-res');
+  if (pct >= 0) {
+    resEl.textContent = `+${pct.toFixed(2)}% (Increase)`;
+    resEl.style.color = 'var(--green)';
+  } else {
+    resEl.textContent = `${pct.toFixed(2)}% (Decrease)`;
+    resEl.style.color = '#E0563F';
+  }
+  document.getElementById('p2-text').textContent = `Difference: ${diff >= 0 ? '+' : ''}${diff.toFixed(2)}`;
+}
+
+function calc3() {
+  const finalVal = parseFloat(document.getElementById('p3-final').value) || 0;
+  const discountPct = parseFloat(document.getElementById('p3-pct').value) || 0;
+  if (discountPct >= 100) {
+    document.getElementById('p3-res').textContent = "$0.00";
+    return;
+  }
+  const original = finalVal / (1 - (discountPct / 100));
+  document.getElementById('p3-res').textContent = '$' + original.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+['p1-x', 'p1-y'].forEach(id => document.getElementById(id).addEventListener('input', calc1));
+['p2-from', 'p2-to'].forEach(id => document.getElementById(id).addEventListener('input', calc2));
+['p3-final', 'p3-pct'].forEach(id => document.getElementById(id).addEventListener('input', calc3));
+
+calc1();
+calc2();
+calc3();
+</script>
+
+</body>
+</html>

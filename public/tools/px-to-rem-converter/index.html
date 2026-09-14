@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PX to REM Converter &amp; Tailwind CSS Utility Generator | LedgerMate</title>
+<meta name="description" content="Free PX to REM and EM converter. Convert pixel values into scalable rem units, find matching Tailwind CSS spacing &amp; font classes, and generate responsive CSS clamp() fluid typography. Free." />
+<link rel="canonical" href="https://tryledgermate.in/tools/px-to-rem-converter/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="PX to REM Converter &amp; Tailwind CSS Helper | LedgerMate" />
+<meta property="og:description" content="Convert pixels to rem/em, copy Tailwind CSS utility classes, and build fluid clamp() typography." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate PX to REM Converter",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Converts pixels into rem and em CSS units with Tailwind CSS class equivalents.",
+  "featureList": [
+    "Bidirectional PX to REM and REM to PX conversion",
+    "Tailwind CSS class suggestions (spacing, text size)",
+    "Responsive CSS clamp() fluid typography generator",
+    "Configurable base font size (16px default)"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why should web developers use REM instead of PX?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Using rem ensures accessibility. When users change their default browser font size for vision assistance, designs styled with rem scale proportionally, whereas hardcoded pixels (px) override user preferences and fail accessibility guidelines (WCAG)."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/unit-converter/">Unit Converter</a>
+      <a href="/tools/cloud-cost-calculator/">Cloud Cost</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> PX to REM Converter
+  </div>
+
+  <h1>PX to REM Converter &amp; Tailwind CSS Helper</h1>
+  <p class="sub">Convert pixel values into accessible rem and em units, look up matching Tailwind CSS utility classes, and generate responsive CSS clamp() functions for fluid typography.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.2;">
+        <label for="px-input">Pixels (PX)</label>
+        <input id="px-input" type="number" step="1" min="1" max="2000" value="24" />
+      </div>
+      <div style="flex:1.2;">
+        <label for="rem-input">Root EM (REM)</label>
+        <input id="rem-input" type="number" step="0.0625" min="0.0625" max="100" value="1.5" />
+      </div>
+      <div style="flex:1;">
+        <label for="base-px">Base Font Size</label>
+        <select id="base-px">
+          <option value="16" selected>16px (Browser Default)</option>
+          <option value="14">14px</option>
+          <option value="10">10px (62.5% Trick)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Converted CSS Value</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-rem-val">1.5rem</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-tailwind-sub">Tailwind Spacing: <code>p-6 / m-6 / w-6 / h-6</code> | Font: <code>text-2xl</code></span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-rem">1.5rem</div>
+          <div class="metric-lbl">REM Units</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-em">1.5em</div>
+          <div class="metric-lbl">EM Units</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-tailwind" style="color:#2563EB;">6</div>
+          <div class="metric-lbl">Tailwind Spacing Number</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-pct">150%</div>
+          <div class="metric-lbl">Percentage</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h4 style="margin:0;font-size:14px;">Responsive Fluid Typography CSS Clamp</h4>
+          <button type="button" class="btn btn-sm btn-outline" onclick="copyClamp()">Copy CSS</button>
+        </div>
+        <code id="clamp-code" style="display:block;background:var(--surface);padding:10px 14px;border-radius:8px;font-size:13px;word-break:break-all;color:var(--accent);">font-size: clamp(1rem, 0.8rem + 1vw, 1.5rem);</code>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 Tailwind CSS Spacing Cheat Sheet</h4>
+      <ul class="mindmap-list">
+        <li><strong>Formula:</strong> In Tailwind, 1 spacing unit = <code>0.25rem = 4px</code>. So <code>p-4 = 16px</code>, <code>p-8 = 32px</code>, <code>p-12 = 48px</code>, and <code>p-16 = 64px</code>.</li>
+        <li><strong>REM vs EM:</strong> REM calculates based on the root <code>&lt;html&gt;</code> element, whereas EM calculates relative to the immediate parent container.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Sharing developer tools or software subscriptions with your dev team?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to split API and tooling costs with zero ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>Common PX to REM Conversion Reference Table</h2>
+    <ul>
+      <li><strong>12px</strong> = 0.75rem (Tailwind: <code>text-xs</code>)</li>
+      <li><strong>14px</strong> = 0.875rem (Tailwind: <code>text-sm</code>)</li>
+      <li><strong>16px</strong> = 1.00rem (Tailwind: <code>text-base</code>)</li>
+      <li><strong>18px</strong> = 1.125rem (Tailwind: <code>text-lg</code>)</li>
+      <li><strong>20px</strong> = 1.25rem (Tailwind: <code>text-xl</code>)</li>
+      <li><strong>24px</strong> = 1.50rem (Tailwind: <code>text-2xl</code>)</li>
+      <li><strong>30px</strong> = 1.875rem (Tailwind: <code>text-3xl</code>)</li>
+      <li><strong>36px</strong> = 2.25rem (Tailwind: <code>text-4xl</code>)</li>
+      <li><strong>48px</strong> = 3.00rem (Tailwind: <code>text-5xl</code>)</li>
+    </ul>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mathematical and frontend development utilities.</p>
+      </div>
+      <div>
+        <h4>Developer Tools</h4>
+        <ul>
+          <li><a href="/tools/px-to-rem-converter/">PX to REM Converter</a></li>
+          <li><a href="/tools/cloud-cost-calculator/">Cloud Cost Estimator</a></li>
+          <li><a href="/tools/download-time-calculator/">Download Time</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/unit-converter/">Unit Converter</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Developer Utilities.</p>
+  </div>
+</footer>
+
+<script>
+let lastChanged = 'px';
+
+function getTailwindInfo(px) {
+  const twMap = {
+    12: { size: 'text-xs', space: '3' },
+    14: { size: 'text-sm', space: '3.5' },
+    16: { size: 'text-base', space: '4' },
+    18: { size: 'text-lg', space: '4.5' },
+    20: { size: 'text-xl', space: '5' },
+    24: { size: 'text-2xl', space: '6' },
+    28: { size: 'text-2xl', space: '7' },
+    32: { size: 'text-3xl', space: '8' },
+    36: { size: 'text-4xl', space: '9' },
+    40: { size: 'text-4xl', space: '10' },
+    48: { size: 'text-5xl', space: '12' },
+    56: { size: 'text-5xl', space: '14' },
+    64: { size: 'text-6xl', space: '16' },
+  };
+
+  const spaceNum = (px / 4).toString();
+  if (twMap[px]) {
+    return `Tailwind Spacing: p-${twMap[px].space} | Font: ${twMap[px].size}`;
+  }
+  return `Tailwind Spacing: p-[${px}px] / p-${spaceNum}`;
+}
+
+function updateFromPx() {
+  const px = parseFloat(document.getElementById('px-input').value) || 0;
+  const base = parseFloat(document.getElementById('base-px').value) || 16;
+
+  const rem = px / base;
+  document.getElementById('rem-input').value = rem % 1 === 0 ? rem : rem.toFixed(4);
+
+  render(px, rem, base);
+}
+
+function updateFromRem() {
+  const rem = parseFloat(document.getElementById('rem-input').value) || 0;
+  const base = parseFloat(document.getElementById('base-px').value) || 16;
+
+  const px = rem * base;
+  document.getElementById('px-input').value = Math.round(px * 100) / 100;
+
+  render(px, rem, base);
+}
+
+function render(px, rem, base) {
+  const remFormatted = (rem % 1 === 0 ? rem : rem.toFixed(4)) + 'rem';
+  document.getElementById('res-rem-val').textContent = remFormatted;
+  document.getElementById('res-tailwind-sub').textContent = getTailwindInfo(px);
+
+  document.getElementById('m-rem').textContent = remFormatted;
+  document.getElementById('m-em').textContent = (rem % 1 === 0 ? rem : rem.toFixed(4)) + 'em';
+  document.getElementById('m-tailwind').textContent = (px / 4).toString();
+  document.getElementById('m-pct').textContent = Math.round(rem * 100) + '%';
+
+  // Generate fluid typography clamp
+  const minRem = Math.max(0.75, (rem * 0.75)).toFixed(3);
+  const maxRem = rem.toFixed(3);
+  const clampStr = `font-size: clamp(${minRem}rem, ${(minRem * 0.8).toFixed(2)}rem + 1.2vw, ${maxRem}rem);`;
+  document.getElementById('clamp-code').textContent = clampStr;
+}
+
+function copyClamp() {
+  const text = document.getElementById('clamp-code').textContent;
+  navigator.clipboard.writeText(text);
+  alert('Copied to clipboard!');
+}
+
+document.getElementById('px-input').addEventListener('input', updateFromPx);
+document.getElementById('rem-input').addEventListener('input', updateFromRem);
+document.getElementById('base-px').addEventListener('change', updateFromPx);
+
+updateFromPx();
+</script>
+
+</body>
+</html>

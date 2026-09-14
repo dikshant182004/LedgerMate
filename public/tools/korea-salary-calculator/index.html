@@ -1,0 +1,1372 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2026 연봉 실수령액 계산기 (Korea Net Salary &amp; 4대보험) | LedgerMate</title>
+<meta name="description" content="2026년 최신 4대보험(국민연금 4.75%, 건강보험 3.595%, 장기요양 13.14%, 고용보험 0.9%) 및 국세청 근로소득 간이세액표 기준 월 실수령액 계산기. 비과세 식대 20만원, 부양가족, 이직 비교, 한국어/English 지원." />
+<link rel="canonical" href="https://tryledgermate.in/tools/korea-salary-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="2026 연봉 실수령액 계산기 (Korea Net Salary) | LedgerMate" />
+<meta property="og:description" content="세전 연봉에서 4대보험과 소득세를 제외한 통장 입금 실수령액을 정확하게 계산하세요. 한국어 &amp; English 지원." />
+<meta property="og:url" content="https://tryledgermate.in/tools/korea-salary-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<style>
+.breadcrumb{font-size:13px;color:#000000!important;margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.breadcrumb a{color:#000000!important;text-decoration:none;font-weight:600!important;}
+.breadcrumb a:hover{color:var(--accent)!important;text-decoration:underline!important;}
+.breadcrumb span{color:#000000!important;font-weight:700!important;}
+.breadcrumb .sep, .breadcrumb span.sep{color:#4B5563!important;font-weight:500!important;}
+.breadcrumb span[id], .breadcrumb span.current{color:#000000!important;font-weight:700!important;}
+.concept-router{background:var(--card-bg, #fff);border:1px solid var(--border);border-radius:14px;padding:20px;margin:24px 0;}
+.concept-nav{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px;}
+.concept-tab-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s;}
+.concept-tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.concept-tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.concept-pane{display:none;}
+.concept-pane.active{display:block;animation:fadeIn .2s ease-in-out;}
+.concept-pane h4{margin:0 0 8px;font-size:16px;color:var(--text);}
+.concept-pane p{margin:0 0 10px;font-size:14px;color:var(--text-muted);line-height:1.6;}
+.concept-inline-link{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--accent);background:rgba(99,102,241,0.08);padding:2px 7px;border-radius:10px;margin-left:6px;cursor:pointer;text-decoration:none;vertical-align:middle;transition:all .15s;}
+.concept-inline-link:hover{background:var(--accent);color:#fff;}
+.concept-inline-link .arrow{font-size:12px;}
+.concept-full-guide-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;margin-top:8px;}
+.concept-full-guide-link:hover{text-decoration:underline;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Korea Net Salary Calculator (대한민국 연봉 실수령액)",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "2026 South Korea salary take-home pay calculator reflecting 4 Major Social Insurances, non-taxable meal allowances, and NTS income tax withholding.",
+  "featureList": [
+    "2026 employee 4 major social insurance rates (Pension 4.75%, Health 3.595%, Care 13.14%, Employ 0.9%)",
+    "National Tax Service (NTS) progressive income tax withholding",
+    "Non-taxable meal deduction (up to 200,000 KRW/mo)",
+    "Dependents and child tax credit adjustments",
+    "Freelancer 3.3% withholding mode",
+    "Job offer comparison mode (Offer A vs Offer B)",
+    "Bilingual Korean & English UI"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "2026년 4대보험 근로자 부담 요율은 어떻게 되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2026년 기준 근로자 부담 요율은: 국민연금 4.75%(기준소득월액 상한액 약 617만원 적용), 건강보험 3.595%, 노인장기요양보험 건강보험료의 13.14%(실질 0.472%), 고용보험 0.9%입니다. 총 급여의 약 9.7%가 4대보험으로 공제됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "비과세 식대 20만원은 어떻게 실수령액에 영향을 미치나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "비과세 식대는 근로소득세와 4대 사회보험 산정 기준 소득에서 제외됩니다. 월 20만원(연 240만원)의 식대가 비과세 처리되면, 연간 약 38만~50만원의 세금 및 사회보험료가 실질 절약되어 실수령액이 증가합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "프리랜서 3.3%와 4대보험 정규직의 차이는 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "정규직은 회사가 4대보험료의 50%를 지원하며 퇴직금과 주휴수당이 보장됩니다. 반면 3.3% 사업소득 프리랜서는 4대보험 원천징수 없이 국세 3% + 지방소득세 0.3%만 공제되지만, 5월 종합소득세 신고 및 지역 건강보험료를 전액 본인이 납부해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "중소기업 청년 소득세 감면 제도는 얼마까지 감면되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "중소기업기본법상 중소기업에 취업한 만 15세~34세 청년(군 복무 기간 최대 6년 추가 인정)은 취업일로부터 5년간 발생하는 근로소득세의 90%를 연 200만원 한도 내에서 감면받을 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "외국인 근로자의 19% 단일세율 특례는 누구에게 유리한가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "국내 근무를 시작한 외국인 임직원은 20년간 일반 누진세율(6~45%) 대신 총급여의 19% 단일세율을 선택할 수 있습니다. 비과세나 소득공제는 배제되지만, 연봉 약 1억 2천만원을 초과하는 고연봉 외국인 전문가에게 극적인 절세 효과를 줍니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "연말정산(Year-End Tax Settlement)에서 환급금을 늘리는 핵심 팁은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "총급여의 25% 초과분에 대해 신용카드(15%)보다 체크카드·현금영수증(30%) 및 전통시장·대중교통(40~80%)을 집중 사용하고, 연금저축/IRP 계좌에 연 최대 900만원을 납입하여 최대 148만 5천원의 세액공제를 받는 것이 가장 효과적입니다."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools" id="nav-all-tools">모든 계산기</a>
+      <a href="/tools/japan-salary-calculator/">手取り計算 (日本)</a>
+      <a href="/tools/russia-salary-calculator/">Зарплата (РФ)</a>
+      <a href="/tools/germany-salary-calculator/">Gehalt (DE)</a>
+      <a href="/app/" class="btn btn-primary" id="nav-cta-btn">LedgerMate 정산앱</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;color:#000000;">
+    <a href="/" id="bc-home" style="color:#000000;font-weight:600;">홈</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <a href="/#tools" id="bc-tools" style="color:#000000;font-weight:600;">계산기</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <span id="bc-curr" style="color:#000000;font-weight:700;">대한민국 연봉 실수령액</span>
+  </div>
+
+  <div class="lang-selector-bar">
+    <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Language / 언어:</span>
+    <button class="lang-btn active" id="btn-lang-ko" onclick="setLang('ko')">한국어 (KRW)</button>
+    <button class="lang-btn" id="btn-lang-en" onclick="setLang('en')">English (KRW)</button>
+  </div>
+
+  <h1 id="title-text" style="font-size:36px;margin-bottom:12px;text-align:center;">2026 연봉 실수령액 계산기</h1>
+  <p class="sub" id="sub-text" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">2026년 개정 4대보험 요율 및 국세청 근로소득 간이세액표를 완벽 반영한 실수령액 계산기입니다. 비과세 식대, 부양가족, 이직 제안 비교를 지원합니다.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+
+    <!-- Job Type Toggle -->
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="btn-type-worker">일반 근로자 (4대보험)</button>
+      <button type="button" class="chip-btn" id="btn-type-free">프리랜서 (3.3% 원천징수)</button>
+      <button type="button" class="chip-btn" id="btn-type-compare">이직 연봉 비교 (A vs B)</button>
+    </div>
+
+    <!-- Salary Input Row -->
+    <div class="calc-row">
+      <div style="flex:1.5;">
+        <label for="annual-salary" id="lbl-salary">세전 연봉 (원)</label>
+        <input id="annual-salary" type="number" step="1000000" min="10000000" max="1000000000" value="50000000" />
+      </div>
+      <div style="flex:1;">
+        <label for="nontax-food" id="lbl-food">월 비과세 식대 (원)</label>
+        <select id="nontax-food">
+          <option value="200000" selected id="opt-food-200k">200,000원 (법정 기본)</option>
+          <option value="100000" id="opt-food-100k">100,000원</option>
+          <option value="0" id="opt-food-0">0원 (식대 없음)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Dependents & Children (Worker Mode) -->
+    <div id="worker-options" class="calc-row">
+      <div style="flex:1;">
+        <label for="dependents" id="lbl-dependents">본인 포함 부양가족 수</label>
+        <select id="dependents">
+          <option value="1" selected id="opt-dep-1">1명 (본인 1인 가구)</option>
+          <option value="2" id="opt-dep-2">2명</option>
+          <option value="3" id="opt-dep-3">3명</option>
+          <option value="4" id="opt-dep-4">4명 이상</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="children" id="lbl-children">8세~20세 자녀 수 (자녀세액공제)</label>
+        <select id="children">
+          <option value="0" selected id="opt-chi-0">0명</option>
+          <option value="1" id="opt-chi-1">1명 (월 12,500원 세액공제)</option>
+          <option value="2" id="opt-chi-2">2명 (월 29,160원 세액공제)</option>
+          <option value="3" id="opt-chi-3">3명 이상</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Comparison Inputs (Compare Mode only) -->
+    <div id="compare-options" style="display:none;background:#F6F5FB;border:1px dashed var(--accent);border-radius:12px;padding:16px 20px;margin:16px 0;">
+      <h4 style="margin:0 0 10px;font-size:14px;color:var(--accent);" id="lbl-compare-title">이직 제안 연봉 (Offer B)</h4>
+      <div class="calc-row">
+        <div style="flex:1.5;">
+          <label for="compare-salary" id="lbl-compare-salary">제안 연봉 (원)</label>
+          <input id="compare-salary" type="number" step="1000000" value="62000000" />
+        </div>
+        <div style="flex:1;">
+          <label for="compare-signing" id="lbl-compare-signing">사이닝 보너스 / 일회성 (원)</label>
+          <input id="compare-signing" type="number" step="1000000" value="5000000" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick preset chips -->
+    <label style="margin-top:16px;display:block;" id="lbl-presets">빠른 연봉 선택</label>
+    <div class="chip-group">
+      <button type="button" class="chip-btn" onclick="setSalary(30000000)">3천만원</button>
+      <button type="button" class="chip-btn" onclick="setSalary(40000000)">4천만원</button>
+      <button type="button" class="chip-btn active" onclick="setSalary(50000000)">5천만원</button>
+      <button type="button" class="chip-btn" onclick="setSalary(60000000)">6천만원</button>
+      <button type="button" class="chip-btn" onclick="setSalary(70000000)">7천만원</button>
+      <button type="button" class="chip-btn" onclick="setSalary(80000000)">8천만원</button>
+      <button type="button" class="chip-btn" onclick="setSalary(100000000)">1억원</button>
+    </div>
+
+    <!-- Primary Result Display -->
+    <div class="calc-result" style="margin-top:20px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;" id="res-lbl-main">예상 월 실수령액 (세후)</span>
+        <div style="font-size:clamp(32px,6vw,44px);font-weight:800;color:var(--text);margin:6px 0;" id="res-net-monthly">3,524,820원</div>
+        <span style="font-size:14px;color:var(--text-muted);" id="res-net-annual">연간 실수령액 약 42,297,840원 (공제율 약 15.4%)</span>
+      </div>
+
+      <!-- Key Metrics Breakdown -->
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="res-gross-monthly">4,166,666원</div>
+          <div class="metric-lbl" id="res-lbl-gross">월 세전 총급여</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-total-deduct" style="color:#E0563F;">641,846원</div>
+          <div class="metric-lbl" id="res-lbl-deduct">월 총 공제액</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-insurance-sum">418,290원</div>
+          <div class="metric-lbl" id="res-lbl-insur">4대보험 합계</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-tax-sum">223,556원</div>
+          <div class="metric-lbl" id="res-lbl-tax">소득세·지방소득세</div>
+        </div>
+      </div>
+
+      <!-- Itemized Deductions List -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:16px;">
+        <h4 style="margin:0 0 12px;font-size:15px;color:var(--text);font-weight:700;" id="lbl-itemized-title">월별 세부 공제 내역 (2026년 요율 기준)</h4>
+        <div class="calc-result-row">
+          <span id="lbl-d-pension">국민연금 (4.75%) <span class="concept-inline-link" onclick="switchKrConcept('four-ins')">요율<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-pension">188,410원</span>
+        </div>
+        <div class="calc-result-row">
+          <span id="lbl-d-health">건강보험 (3.595%) <span class="concept-inline-link" onclick="switchKrConcept('four-ins')">요율<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-health">142,600원</span>
+        </div>
+        <div class="calc-result-row">
+          <span id="lbl-d-care">장기요양보험 (건강보험의 13.14%) <span class="concept-inline-link" onclick="switchKrConcept('four-ins')">요율<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-care">18,730원</span>
+        </div>
+        <div class="calc-result-row">
+          <span id="lbl-d-employ">고용보험 (0.9%) <span class="concept-inline-link" onclick="switchKrConcept('four-ins')">요율<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-employ">35,700원</span>
+        </div>
+        <div class="calc-result-row">
+          <span id="lbl-d-income-tax">소득세 (근로소득 간이세액) <span class="concept-inline-link" onclick="switchKrConcept('tax-bracket')">간이세액<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-income-tax">203,230원</span>
+        </div>
+        <div class="calc-result-row">
+          <span id="lbl-d-local-tax">지방소득세 (소득세의 10%) <span class="concept-inline-link" onclick="switchKrConcept('tax-bracket')">10% 부가<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-local-tax">20,320원</span>
+        </div>
+      </div>
+
+      <!-- Compare Mode Result Card -->
+      <div id="compare-result-box" style="display:none;background:#EEF2FF;border-left:4px solid var(--accent);border-radius:10px;padding:16px 20px;margin-top:20px;">
+        <h4 style="margin:0 0 8px;color:#312E81;" id="lbl-compare-result-title">이직 시 월 실수령액 변화 분석</h4>
+        <div style="font-size:15px;color:#1E1B4B;line-height:1.6;" id="compare-summary-text"></div>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router -->
+    <div class="concept-router" style="margin-top:24px;">
+      <!-- Korean Concept Router -->
+      <div id="kr-concept-box-ko">
+        <div class="concept-nav" id="kr-concept-nav">
+          <button type="button" class="concept-tab-btn active" onclick="switchKrConcept('four-ins')">4대 사회보험 요율 (Social Ins.)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('tax-bracket')">근로소득세 누진세율 (Tax Slabs)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('meal')">비과세 식대 20만원 (Meal Allowance)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('foreign')">외국인 19% 단일세율 (Foreign Flat)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('youth')">청년 중소기업 소득세 감면 (Youth SME)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('global')">세계 실수령액 비교 (Global Net)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('vocab')" id="tab-kr-vocab">급여 명세서 영문 용어 (English Vocab)</button>
+        </div>
+
+        <div class="concept-pane active" id="pane-kr-four-ins">
+          <h4>4대 사회보험 법정 요율 및 상한액 구조</h4>
+          <p>대한민국 근로자의 급여에서 원천공제되는 4대 사회보험은 회사와 근로자가 절반씩 부담(노사 절반 부담)합니다. 국민연금은 4.75%(상한선 기준소득월액 약 617만원 적용 시 월 최대 약 29.3만원), 건강보험 3.595%, 노인장기요양보험은 건강보험료의 13.14%(실질 0.472%), 고용보험은 0.9%입니다. 총 급여의 약 9.7%가 4대보험으로 공제됩니다.</p>
+          <div style="margin-top:10px;">
+            <a href="/guides/ctc-vs-in-hand-salary-structure/" class="concept-full-guide-link">전 세계 Gross vs Net 급여 구조 가이드 &rarr;</a>
+          </div>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-tax-bracket">
+          <h4>국세청 근로소득 간이세액표와 종합과세 누진세율</h4>
+          <p>매월 급여 지급 시 국세청의 「근로소득 간이세액표」에 따라 부양가족 수와 자녀 수(8~20세)를 반영하여 원천징수합니다. 연말정산 시 1년간 총소득에 대해 6%~45% 누진세율을 적용하고 세액공제를 반영하여 최종 환급 또는 추가 납부가 결정됩니다. 지방소득세는 국세 소득세액의 10%가 추가됩니다.</p>
+          <div style="margin-top:10px;">
+            <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">한계세율과 실효세율 개념 완벽 해설 &rarr;</a>
+          </div>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-meal">
+          <h4>비과세 식대 20만원 한도와 절세 효과</h4>
+          <p>근로기준법 및 소득세법에 따라 월 20만원까지 지급되는 식사대(식대)는 비과세 근로소득으로 처리됩니다. 비과세 금액은 소득세뿐만 아니라 4대 보험 산정 기준소득에서도 제외되므로, 연봉 5,000만원 기준 연간 약 38만~50만원의 실질 절세 효과가 발생합니다.</p>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-foreign">
+          <h4>외국인 임직원 19% 단일세율 선택 특례 (Flat Tax Rate)</h4>
+          <p>대한민국에서 근무하는 외국인 국적 임직원은 최초 근무 시작일로부터 20년간 일반 누진세율(6%~45%) 대신 총 급여의 19%(지방세 포함 20.9%) 단일세율을 선택 적용받을 수 있습니다. 비과세나 소득공제가 배제되나, 연봉 약 1억 2천만원을 초과하는 고연봉 외국인 기술자 및 임원에게 막대한 절세 혜택을 제공합니다.</p>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-youth">
+          <h4>중소기업 취업 청년 소득세 90% 감면 (Youth SME Tax Relief)</h4>
+          <p>중소기업에 취업한 만 15세~34세 청년(군 복무 기간 최대 6년 연장 인정, 만 40세까지 가능)은 취업일로부터 5년간 발생하는 근로소득세의 90%를 연간 200만원 한도 내에서 감면받을 수 있습니다. 입사 후 회사 인사담당자에게 '중소기업 취업자 소득세 감면신청서'를 제출하면 즉시 적용됩니다.</p>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-global">
+          <h4>세계 주요국 급여 및 실수령액 비율 비교</h4>
+          <p>한국, 미국, 독일, 일본, 인도, 러시아의 평균 급여 대비 실수령액(Take-Home Pay) 비교입니다：</p>
+          <div class="table-responsive" style="margin-top:10px;">
+            <table class="compare-table" style="font-size:12.5px;">
+              <thead>
+                <tr>
+                  <th>국가</th>
+                  <th>통화 및 주요 세제</th>
+                  <th>평균 실수령 비율</th>
+                  <th>주요 공제 항목</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>대한민국 (KR)</strong></td>
+                  <td>KRW (4대보험 + 근로소득세)</td>
+                  <td>82% 〜 88%</td>
+                  <td>국민연금 4.75%, 건강 3.595%, 소득세 6-45%, 지방세 10%</td>
+                </tr>
+                <tr>
+                  <td><strong>일본 (JP)</strong></td>
+                  <td>JPY (社保 + 所得税 + 住民税)</td>
+                  <td>75% 〜 82%</td>
+                  <td>건강보험 5%, 후생연금 9.15%, 소득세 5-45%, 주민세 10%</td>
+                </tr>
+                <tr>
+                  <td><strong>미국 (US)</strong></td>
+                  <td>USD (Federal + State + FICA)</td>
+                  <td>70% 〜 78%</td>
+                  <td>연방세 10-37%, FICA 7.65%, 주소득세 0-13.3%</td>
+                </tr>
+                <tr>
+                  <td><strong>독일 (DE)</strong></td>
+                  <td>EUR (Steuerklasse + Sozialvers.)</td>
+                  <td>58% 〜 68%</td>
+                  <td>소득세 14-45%, 연금 9.3%, 의료 7.3%, 연대세</td>
+                </tr>
+                <tr>
+                  <td><strong>인도 (IN)</strong></td>
+                  <td>INR (New Tax Regime)</td>
+                  <td>85% 〜 92%</td>
+                  <td>EPF 12%, 소득세 0-30%, Cess 4%</td>
+                </tr>
+                <tr>
+                  <td><strong>러시아 (RU)</strong></td>
+                  <td>RUB (НДФЛ 2026)</td>
+                  <td>85% 〜 87%</td>
+                  <td>НДФЛ 13-22% (사회보험 30%는 회사 전액 부담)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-vocab">
+          <h4>Korean Payslip Vocabulary for Foreigners &amp; Expats (영문 급여 용어 사전)</h4>
+          <p>Essential Korean payroll terms translated into plain English to help international hires, English speakers, and expats read their monthly salary statement (급여명세서):</p>
+          <div class="table-responsive" style="margin-top:10px;">
+            <table class="compare-table" style="font-size:12.5px;">
+              <thead>
+                <tr>
+                  <th>Korean Term</th>
+                  <th>Pronunciation</th>
+                  <th>English Meaning</th>
+                  <th>Explanation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>기본급 / 지급총액</strong></td>
+                  <td>Gibon-geup / Jigeup-chong-aek</td>
+                  <td>Base Pay / Gross Total</td>
+                  <td>Contracted monthly compensation before any statutory withholdings.</td>
+                </tr>
+                <tr>
+                  <td><strong>차인지급액 / 실수령액</strong></td>
+                  <td>Chain-jigeup-aek / Sil-suryeong-aek</td>
+                  <td>Net Take-Home Pay</td>
+                  <td>Actual liquid cash wired directly into your bank account after all deductions.</td>
+                </tr>
+                <tr>
+                  <td><strong>비과세 식대</strong></td>
+                  <td>Bikwase Sikdae</td>
+                  <td>Tax-Exempt Meal Allowance</td>
+                  <td>Up to 200,000 KRW/mo completely exempt from social insurances and income tax.</td>
+                </tr>
+                <tr>
+                  <td><strong>국민연금</strong></td>
+                  <td>Gukmin Yeongeum</td>
+                  <td>National Pension (NPS)</td>
+                  <td>4.75% statutory retirement deduction (matched 4.75% by employer).</td>
+                </tr>
+                <tr>
+                  <td><strong>건강보험</strong></td>
+                  <td>Geongang Boheom</td>
+                  <td>National Health Insurance (NHIS)</td>
+                  <td>3.595% employee contribution for universal public healthcare.</td>
+                </tr>
+                <tr>
+                  <td><strong>장기요양보험</strong></td>
+                  <td>Janggi Yoyang Boheom</td>
+                  <td>Long-Term Care Insurance</td>
+                  <td>Senior care levy (13.14% of health insurance fee, approx 0.472% of gross).</td>
+                </tr>
+                <tr>
+                  <td><strong>고용보험</strong></td>
+                  <td>Goyong Boheom</td>
+                  <td>Employment Insurance</td>
+                  <td>0.9% employee levy financing unemployment benefits and training.</td>
+                </tr>
+                <tr>
+                  <td><strong>근로소득세</strong></td>
+                  <td>Geunro Sodeukse</td>
+                  <td>Earned Income Tax</td>
+                  <td>Monthly national withholding tax governed by NTS Simplified Tax Table.</td>
+                </tr>
+                <tr>
+                  <td><strong>지방소득세</strong></td>
+                  <td>Jibang Sodeukse</td>
+                  <td>Local Resident Surtax</td>
+                  <td>Municipal resident surtax equal to exactly 10% of the national income tax.</td>
+                </tr>
+                <tr>
+                  <td><strong>연말정산</strong></td>
+                  <td>Yeonmal Jeongsan</td>
+                  <td>Year-End Tax Settlement</td>
+                  <td>Annual tax reconciliation in January/February determining tax refunds or additional dues.</td>
+                </tr>
+                <tr>
+                  <td><strong>원천징수영수증</strong></td>
+                  <td>Woncheon Jingsoo Receipt</td>
+                  <td>Withholding Tax Certificate</td>
+                  <td>Official annual statement documenting gross income, tax withheld, and deductions.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- English Concept Router -->
+      <div id="kr-concept-box-en" style="display:none;">
+        <div class="concept-nav" id="kr-concept-nav-en">
+          <button type="button" class="concept-tab-btn active" onclick="switchKrConcept('four-ins')">4 Social Insurances (요율)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('tax-bracket')">Tax Slabs &amp; Surtax (누진세율)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('meal')">Meal Allowance (식대 비과세)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('foreign')">Foreign Flat Tax 19% (외국인)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('youth')">Youth SME Relief 90% (청년)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('global')">Global Take-Home (국가별)</button>
+          <button type="button" class="concept-tab-btn" onclick="switchKrConcept('vocab')">Payslip Vocabulary (용어사전)</button>
+        </div>
+
+        <div class="concept-pane active" id="pane-kr-en-four-ins">
+          <h4>The 4 Major Public Social Insurances &amp; 2026 Contribution Ceilings</h4>
+          <p>Under South Korean labor law, 4 mandatory social insurances are withheld at source from employee salaries and matched equally by employers (労使折半 / 50-50 split). National Pension is 4.75% (capped at standard monthly remuneration of ~6.17M KRW, maxing out at approx 293,000 KRW/month). Health Insurance is 3.595%, Long-term Care is 13.14% of health insurance (~0.472% of pay), and Employment Insurance is 0.9%. In total, statutory social insurance withholdings equal approximately 9.7% of monthly gross compensation.</p>
+          <div style="margin-top:10px;">
+            <a href="/guides/ctc-vs-in-hand-salary-structure/" class="concept-full-guide-link">Global Gross CTC vs Net In-Hand Salary Guide &rarr;</a>
+          </div>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-en-tax-bracket">
+          <h4>NTS Simplified Withholding Tables &amp; 8-Tier Progressive Tax Slabs</h4>
+          <p>Monthly payroll withholding is governed by the National Tax Service (NTS) Simplified Tax Table, indexing family size and number of children aged 8–20. During annual Year-End Tax Settlement (연말정산), the 8-bracket progressive income tax schedule (6% to 45%) is applied, itemized tax credits are reconciled, and net refunds or deficits are wired or deducted in February. A 10% Local Residence Surtax is levied on the computed national income tax liability.</p>
+          <div style="margin-top:10px;">
+            <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">Marginal vs Effective Tax Rate Complete Guide &rarr;</a>
+          </div>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-en-meal">
+          <h4>200,000 KRW Monthly Tax-Exempt Meal Allowance</h4>
+          <p>Korean tax law exempts employer-provided meal subsidies up to 200,000 KRW/month from both personal income tax and all four social insurance contributions. For an employee on 50,000,000 KRW gross pay, itemizing this allowance saves 380,000 to 500,000+ KRW in taxes and social contributions every calendar year.</p>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-en-foreign">
+          <h4>19% Flat Tax Rate Privilege for Foreign Nationals &amp; Expats</h4>
+          <p>Expatriates and foreign nationals working in South Korea can elect to pay a flat 19% income tax (20.9% including local surtax) on gross employment earnings for up to 20 years from their initial start date. While non-taxable allowances and standard deductions are forfeited, this election offers enormous net savings for international specialists and executives earning upwards of 120M KRW.</p>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-en-youth">
+          <h4>90% SME Youth Personal Income Tax Reduction</h4>
+          <p>Young workers aged 15 to 34 (extended up to age 40 for recognized mandatory military service) hired by eligible small and medium-sized enterprises receive a 90% reduction on earned income tax, up to 2,000,000 KRW annually, for their first 5 consecutive years. Applying is as simple as submitting an SME Tax Relief form to your company's HR department.</p>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-en-global">
+          <h4>Global Take-Home Pay &amp; Effective Deduction Comparison</h4>
+          <p>Comparison of average net take-home percentages across major economies (KR, JP, US, DE, IN, RU):</p>
+          <div class="table-responsive" style="margin-top:10px;">
+            <table class="compare-table" style="font-size:12.5px;">
+              <thead>
+                <tr>
+                  <th>Country</th>
+                  <th>Currency &amp; System</th>
+                  <th>Avg Take-Home %</th>
+                  <th>Core Deductions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>South Korea (KR)</strong></td>
+                  <td>KRW (4 Insurances + Income Tax)</td>
+                  <td>82% &ndash; 88%</td>
+                  <td>Pension 4.75%, Health 3.595%, Care 0.47%, Tax 6&ndash;45%</td>
+                </tr>
+                <tr>
+                  <td><strong>Japan (JP)</strong></td>
+                  <td>JPY (Social Ins. + Income + Resident)</td>
+                  <td>75% &ndash; 82%</td>
+                  <td>Health 5.0%, Pension 9.15%, Income 5&ndash;45%, Resident 10%</td>
+                </tr>
+                <tr>
+                  <td><strong>United States (US)</strong></td>
+                  <td>USD (Federal + State + FICA)</td>
+                  <td>70% &ndash; 78%</td>
+                  <td>Federal 10&ndash;37%, FICA 7.65%, State 0&ndash;13.3%</td>
+                </tr>
+                <tr>
+                  <td><strong>Germany (DE)</strong></td>
+                  <td>EUR (Steuerklasse + Social)</td>
+                  <td>58% &ndash; 68%</td>
+                  <td>Tax 14&ndash;45%, Pension 9.3%, Health 7.3%, Solidarity 5.5%</td>
+                </tr>
+                <tr>
+                  <td><strong>India (IN)</strong></td>
+                  <td>INR (New Tax Regime)</td>
+                  <td>85% &ndash; 92%</td>
+                  <td>EPF 12%, Slabs 0&ndash;30%, Cess 4%</td>
+                </tr>
+                <tr>
+                  <td><strong>Russia (RU)</strong></td>
+                  <td>RUB (PIT / NDFL 2026)</td>
+                  <td>85% &ndash; 87%</td>
+                  <td>PIT 13&ndash;22% (Employer covers 30% social contributions)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="concept-pane" id="pane-kr-en-vocab">
+          <h4>Korean Payslip Vocabulary for Foreigners &amp; Expats (영문 급여 용어 사전)</h4>
+          <p>Essential Korean payroll terms translated into plain English to help international hires, English speakers, and expats read their monthly salary statement (급여명세서):</p>
+          <div class="table-responsive" style="margin-top:10px;">
+            <table class="compare-table" style="font-size:12.5px;">
+              <thead>
+                <tr>
+                  <th>Korean Term</th>
+                  <th>Pronunciation</th>
+                  <th>English Meaning</th>
+                  <th>Explanation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>기본급 / 지급총액</strong></td>
+                  <td>Gibon-geup / Jigeup-chong-aek</td>
+                  <td>Base Pay / Gross Total</td>
+                  <td>Contracted monthly compensation before any statutory withholdings.</td>
+                </tr>
+                <tr>
+                  <td><strong>차인지급액 / 실수령액</strong></td>
+                  <td>Chain-jigeup-aek / Sil-suryeong-aek</td>
+                  <td>Net Take-Home Pay</td>
+                  <td>Actual liquid cash wired directly into your bank account after all deductions.</td>
+                </tr>
+                <tr>
+                  <td><strong>비과세 식대</strong></td>
+                  <td>Bikwase Sikdae</td>
+                  <td>Tax-Exempt Meal Allowance</td>
+                  <td>Up to 200,000 KRW/mo completely exempt from social insurances and income tax.</td>
+                </tr>
+                <tr>
+                  <td><strong>국민연금</strong></td>
+                  <td>Gukmin Yeongeum</td>
+                  <td>National Pension (NPS)</td>
+                  <td>4.75% statutory retirement deduction (matched 4.75% by employer).</td>
+                </tr>
+                <tr>
+                  <td><strong>건강보험</strong></td>
+                  <td>Geongang Boheom</td>
+                  <td>National Health Insurance (NHIS)</td>
+                  <td>3.595% employee contribution for universal public healthcare.</td>
+                </tr>
+                <tr>
+                  <td><strong>장기요양보험</strong></td>
+                  <td>Janggi Yoyang Boheom</td>
+                  <td>Long-Term Care Insurance</td>
+                  <td>Senior care levy (13.14% of health insurance fee, approx 0.472% of gross).</td>
+                </tr>
+                <tr>
+                  <td><strong>고용보험</strong></td>
+                  <td>Goyong Boheom</td>
+                  <td>Employment Insurance</td>
+                  <td>0.9% employee levy financing unemployment benefits and training.</td>
+                </tr>
+                <tr>
+                  <td><strong>근로소득세</strong></td>
+                  <td>Geunro Sodeukse</td>
+                  <td>Earned Income Tax</td>
+                  <td>Monthly national withholding tax governed by NTS Simplified Tax Table.</td>
+                </tr>
+                <tr>
+                  <td><strong>지방소득세</strong></td>
+                  <td>Jibang Sodeukse</td>
+                  <td>Local Resident Surtax</td>
+                  <td>Municipal resident surtax equal to exactly 10% of the national income tax.</td>
+                </tr>
+                <tr>
+                  <td><strong>연말정산</strong></td>
+                  <td>Yeonmal Jeongsan</td>
+                  <td>Year-End Tax Settlement</td>
+                  <td>Annual tax reconciliation in January/February determining tax refunds or additional dues.</td>
+                </tr>
+                <tr>
+                  <td><strong>원천징수영수증</strong></td>
+                  <td>Woncheon Jingsoo Receipt</td>
+                  <td>Withholding Tax Certificate</td>
+                  <td>Official annual statement documenting gross income, tax withheld, and deductions.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mindmap / How to use box -->
+    <div class="mindmap-box" style="margin-top:24px;">
+      <h4 id="lbl-mindmap-title">💡 연봉 협상 및 실수령액 마인드맵 가이드</h4>
+      <ul class="mindmap-list" id="lbl-mindmap-list">
+        <li><strong>비과세 식대 체크:</strong> 급여 명세서에 비과세 식대 20만원이 분리 표기되어 있는지 확인하세요. 비과세 항목이 클수록 4대보험과 소득세가 절감됩니다.</li>
+        <li><strong>부양가족 공제:</strong> 동거 중인 만 60세 이상 부모님이나 만 20세 이하 자녀가 있다면 간이세액표상 원천징수 소득세가 대폭 낮아집니다.</li>
+        <li><strong>청년소득세 감면:</strong> 중소기업에 취업한 만 15세~34세 청년은 5년간 소득세의 90%(연 200만원 한도) 감면 혜택을 반드시 회사에 신청하세요.</li>
+      </ul>
+    </div>
+
+    <!-- App CTA -->
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p id="lbl-cta-title">팀 회식이나 룸메이트 정산이 필요하신가요?</p>
+        <span style="font-size:12px;color:var(--text-muted);" id="lbl-cta-sub">광고와 가입 제한 없는 LedgerMate로 간편하게 분할 계산하세요.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary" id="lbl-cta-btn">무료 정산 시작</a>
+    </div>
+  </div>
+
+  <!-- Content & FAQ in bilingual mode -->
+  <article style="margin-top:44px;line-height:1.7;" id="article-container">
+    <div id="content-ko">
+      <h2>대한민국 급여 체계 및 2026년 실수령액 완벽 가이드</h2>
+      <p>대한민국 근로자의 급여는 근로계약서 상의 세전 기본급(Gross)에서 4대 사회보험과 소득세, 지방소득세를 공제한 뒤 은행 계좌로 입금(Net)됩니다. 연봉이 높아질수록 누진세율이 적용되어 실수령액 비율은 세전 연봉 3,000만원대의 약 88%에서, 1억원 초과 시 75% 수준으로 점차 감소합니다. 본 가이드에서는 2026년 최신 4대보험 요율과 국세청 간이세액표를 기준으로 급여 공제 메커니즘과 연말정산 절세 전략을 상세히 분석합니다.</p>
+
+      <h3>1. 2026년 4대 사회보험 근로자 부담 요율 및 상한액</h3>
+      <div class="table-responsive">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>보험 종류</th>
+              <th>근로자 부담 요율</th>
+              <th>회사 부담 요율</th>
+              <th>특징 및 상한액</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>국민연금</strong></td>
+              <td>4.75%</td>
+              <td>4.75%</td>
+              <td>기준소득월액 상한액(약 617만원) 적용. 월 최대 약 293,000원 납부 후 추가 부과 없음.</td>
+            </tr>
+            <tr>
+              <td><strong>건강보험</strong></td>
+              <td>3.595%</td>
+              <td>3.595%</td>
+              <td>질병 및 부상 치료 지원. 월 보수월액 상한액 약 1억 1,000만원(월 보험료 약 424만원).</td>
+            </tr>
+            <tr>
+              <td><strong>노인장기요양보험</strong></td>
+              <td>건강보험료의 13.14%</td>
+              <td>건강보험료의 13.14%</td>
+              <td>고령 및 노인성 질환 요양 간병 지원 (실질 총급여의 약 0.472%).</td>
+            </tr>
+            <tr>
+              <td><strong>고용보험</strong></td>
+              <td>0.9%</td>
+              <td>0.9% ~ 1.5%</td>
+              <td>실직 시 실업급여 및 육아휴직 급여 재원. 사업장 규모에 따라 회사 부담율 차등.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2. 비과세 식대(월 20만원) 및 자가운전보조금의 절세 효과</h3>
+      <p>근로기준법 및 소득세법상 월 최대 20만원까지 지급되는 식사대(식대)는 소득세와 4대보험 부과 대상에서 완전 제외됩니다. 연봉 5,000만원 직장인이 비과세 식대 20만원(연 240만원)을 적용받으면, 과세표준이 낮아져 연간 약 38만~50만원 이상의 세금 및 4대보험료를 실질 절감하게 됩니다. 또한 본인 명의 차량을 업무에 사용하는 경우 월 최대 20만원의 자가운전보조금도 비과세 처리될 수 있습니다.</p>
+
+      <h3>3. 근로소득세 계산 구조와 8단계 누진세율표</h3>
+      <p>근로소득세는 총급여에서 근로소득공제(최대 2,000만원 한도) 및 기본 인적공제(본인 및 부양가족 1인당 150만원)를 차감한 뒤 과세표준에 따라 아래 세율이 적용됩니다：</p>
+      <div class="table-responsive">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>과세표준 구간</th>
+              <th>세율</th>
+              <th>누진공제액</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1,400만원 이하</td>
+              <td>6%</td>
+              <td>0원</td>
+            </tr>
+            <tr>
+              <td>1,400만원 초과 ~ 5,000만원 이하</td>
+              <td>15%</td>
+              <td>126만원</td>
+            </tr>
+            <tr>
+              <td>5,000만원 초과 ~ 8,800만원 이하</td>
+              <td>24%</td>
+              <td>576만원</td>
+            </tr>
+            <tr>
+              <td>8,800만원 초과 ~ 1억 5,000만원 이하</td>
+              <td>35%</td>
+              <td>1,544만원</td>
+            </tr>
+            <tr>
+              <td>1억 5,000만원 초과 ~ 3억원 이하</td>
+              <td>38%</td>
+              <td>1,994만원</td>
+            </tr>
+            <tr>
+              <td>3억원 초과 ~ 5억원 이하</td>
+              <td>40%</td>
+              <td>2,594만원</td>
+            </tr>
+            <tr>
+              <td>5억원 초과 ~ 10억원 이하</td>
+              <td>42%</td>
+              <td>3,594만원</td>
+            </tr>
+            <tr>
+              <td>10억원 초과</td>
+              <td>45%</td>
+              <td>6,594만원</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>※ 산출세액에서 근로소득세액공제(최대 50만~74만원) 및 자녀세액공제(1인 15만원, 2인 35만원, 3인 이상 35만원 + 초과 1인당 30만원)가 직접 차감됩니다. 지방소득세는 산출된 소득세의 10%가 부과됩니다.</p>
+
+      <h3>4. 연말정산(Year-End Tax Settlement) 13월의 월급 만들기</h3>
+      <ol>
+        <li><strong>신용카드 vs 체크카드 황금비율：</strong> 총급여의 25%까지는 혜택이 좋은 신용카드를 사용하고, 25% 초과 금액부터는 공제율이 2배 높은 체크카드·현금영수증(30%)이나 대중교통·도서공연비(40~80%)를 집중 사용하세요.</li>
+        <li><strong>연금저축 &amp; IRP 세액공제：</strong> 연간 최대 900만원(연금저축 600만원 한도 포함) 납입 시 총급여 5,500만원 이하 근로자는 16.5%(최대 148만 5천원), 5,500만원 초과 근로자는 13.2%(최대 118만 8천원)를 연말정산 시 전액 환급받습니다.</li>
+        <li><strong>주택청약 및 월세 세액공제：</strong> 무주택 세대주는 주택청약종합저축 납입액(연 300만원 한도의 40%)을 소득공제 받을 수 있으며, 총급여 8,000만원 이하 무주택 근로자는 지급한 월세액의 15%~17%를 세액공제 받습니다.</li>
+      </ol>
+
+      <h2 style="margin-top:40px;">자주 묻는 질문 (FAQ)</h2>
+      <details class="faq-item" open>
+        <summary>2026년 4대보험 근로자 부담 요율은 어떻게 되나요?</summary>
+        <p>2026년 기준 근로자 부담 요율은: 국민연금 4.75%(기준소득월액 상한액 약 617만원 적용), 건강보험 3.595%, 노인장기요양보험 건강보험료의 13.14%(실질 0.472%), 고용보험 0.9%입니다. 총 급여의 약 9.7%가 4대보험으로 공제됩니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>비과세 식대 20만원은 어떻게 실수령액에 영향을 미치나요?</summary>
+        <p>비과세 식대는 근로소득세와 4대 사회보험 산정 기준 소득에서 제외됩니다. 월 20만원(연 240만원)의 식대가 비과세 처리되면, 연간 약 38만~50만원의 세금 및 사회보험료가 실질 절약되어 실수령액이 증가합니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>프리랜서 3.3% 원천징수는 4대보험이 없나요?</summary>
+        <p>네. 사업소득자로 분류되는 3.3% 프리랜서는 급여 지급 시 4대보험을 원천징수하지 않고 소득세 3% + 지방소득세 0.3%만 공제됩니다. 단, 5월 종합소득세 신고 시 실제 경비율과 지역가입자 건강보험료가 부과되므로 사전에 대비해야 합니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>중소기업 청년 소득세 감면 제도는 얼마까지 감면되나요?</summary>
+        <p>중소기업기본법상 중소기업에 취업한 만 15세~34세 청년(군 복무 기간 최대 6년 추가 인정)은 취업일로부터 5년간 발생하는 근로소득세의 90%를 연 200만원 한도 내에서 감면받을 수 있습니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>외국인 근로자의 19% 단일세율 특례는 무엇인가요?</summary>
+        <p>대한민국 내 근무하는 외국인 임직원은 국내 최초 근무 개시일로부터 20년간 일반 누진세율(6~45%) 대신 총 급여의 19% 단일세율을 선택 적용받을 수 있습니다. 고연봉(연봉 1억 2천만원 초과) 외국인 엔지니어 및 경영진에게 매우 유리한 제도입니다.</p>
+      </details>
+      <details class="faq-item">
+        <summary>연말정산(Year-End Tax Settlement)에서 환급금을 늘리는 핵심 팁은?</summary>
+        <p>총급여의 25% 초과분에 대해 신용카드(15%)보다 체크카드·현금영수증(30%) 및 전통시장·대중교통(40~80%)을 집중 사용하고, 연금저축/IRP 계좌에 연 최대 900만원을 납입하여 최대 148만 5천원의 세액공제를 받는 것이 가장 효과적입니다.</p>
+      </details>
+    </div>
+
+    <div id="content-en" style="display:none;">
+      <h2>Complete Guide to South Korea Salary &amp; Take-Home Pay (2026)</h2>
+      <p>In South Korea, your take-home pay (실수령액) is your gross salary minus the 4 Major Social Insurances (4대보험) and progressive personal income tax plus local income tax withheld at source. Higher incomes face progressive income tax brackets, reducing net take-home pay from approximately 88% at 30M KRW to around 75% above 100M KRW. This guide explains statutory deduction formulas, tax-free meal allowances, foreigner flat tax perks, and year-end tax optimization strategies.</p>
+
+      <h3>1. 2026 Employee Social Insurance Rates &amp; Ceilings</h3>
+      <div class="table-responsive">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Insurance Program</th>
+              <th>Employee Share</th>
+              <th>Employer Share</th>
+              <th>Coverage &amp; Monthly Cap</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>National Pension (국민연금)</strong></td>
+              <td>4.75%</td>
+              <td>4.75%</td>
+              <td>Capped at monthly standard income (~6.17M KRW). Maximum employee deduction is ~293,000 KRW/month.</td>
+            </tr>
+            <tr>
+              <td><strong>National Health (건강보험)</strong></td>
+              <td>3.595%</td>
+              <td>3.595%</td>
+              <td>Comprehensive public medical coverage across clinics, hospitals, and pharmacies.</td>
+            </tr>
+            <tr>
+              <td><strong>Long-Term Care (장기요양보험)</strong></td>
+              <td>13.14% of health</td>
+              <td>13.14% of health</td>
+              <td>Supports nursing care for seniors and chronic age-related disabilities (~0.472% effective).</td>
+            </tr>
+            <tr>
+              <td><strong>Employment Insurance (고용보험)</strong></td>
+              <td>0.9%</td>
+              <td>0.9% – 1.5%</td>
+              <td>Funds unemployment benefits, job training allowances, and parental leave pay.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2. Non-Taxable Meal Allowance (비과세 식대 200,000 KRW)</h3>
+      <p>Under Korean tax law, up to 200,000 KRW per month in meal allowance is exempt from both income tax and the 4 social insurances. By itemizing this non-taxable amount, an employee earning 50M KRW saves over 380,000 KRW annually in taxes.</p>
+
+      <h3>3. 19% Flat Tax Option for Foreign Nationals</h3>
+      <p>Foreign executives and engineers working in South Korea can elect to be taxed at a flat rate of 19% (plus local income tax) on their gross employment income for up to 20 years, without itemized deductions. This provides massive tax savings for salaries exceeding 120,000,000 KRW per year.</p>
+
+      <h3>4. SME Youth Income Tax Exemption (90% Relief)</h3>
+      <p>Young workers aged 15 to 34 (extended up to age 40 for military service) who work at small and medium-sized enterprises (SMEs) can receive a 90% reduction on their personal income tax up to 2,000,000 KRW per year for their first 5 years of employment.</p>
+
+      <h2 style="margin-top:40px;">Frequently Asked Questions (FAQ)</h2>
+      <details class="faq-item" open>
+        <summary>What is the 2026 employee social insurance deduction rate in Korea?</summary>
+        <p>Employees pay 4.75% for National Pension (capped at ~293k KRW/mo), 3.595% for Health Insurance, 13.14% of Health for Long-term Care, and 0.9% for Employment Insurance. Total social insurance is approximately 9.7% of monthly gross pay.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How does the non-taxable 200,000 KRW meal allowance save money?</summary>
+        <p>The meal allowance reduces taxable gross pay before computing social insurance and income tax withholding, saving between 380,000 and 500,000 KRW every year for typical earners.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is the difference between 3.3% Freelance and Regular Employment?</summary>
+        <p>A salaried employee has 4 social insurances withheld directly by the employer (who pays an equal matching share). A 3.3% freelancer has 3% national tax and 0.3% local tax deducted, but must file a Global Comprehensive Tax Return in May and pay National Health Insurance as a local subscriber (지역가입자).</p>
+      </details>
+      <details class="faq-item">
+        <summary>How much is the SME Youth Tax Reduction in Korea?</summary>
+        <p>Eligible youth aged 15–34 at recognized SMEs receive 90% off personal income tax up to 2,000,000 KRW annually for 5 consecutive years.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Who qualifies for the 19% Flat Tax for Foreign Employees?</summary>
+        <p>Foreign nationals working in Korea can opt for a flat 19% income tax (plus 1.9% local tax) for up to 20 years. It is particularly beneficial for expatriates earning over 120M KRW annually.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How does the Year-End Tax Settlement (연말정산) maximize refunds?</summary>
+        <p>By shifting spending above 25% of gross pay to debit cards/cash receipts (30% deduction vs 15% for credit cards) and contributing to Pension Savings/IRP accounts (up to 9M KRW per year for a tax credit of 13.2%–16.5%).</p>
+      </details>
+    </div>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">전 세계 사용자를 위한 빠르고 스마트한 무료 계산기 및 정산 도구.</p>
+      </div>
+      <div>
+        <h4>글로벌 급여 계산기</h4>
+        <ul>
+          <li><a href="/tools/korea-salary-calculator/">한국 연봉 실수령액 (2026)</a></li>
+          <li><a href="/tools/japan-salary-calculator/">日本 手取り計算 (2026)</a></li>
+          <li><a href="/tools/russia-salary-calculator/">Зарплата (РФ НДФЛ)</a></li>
+          <li><a href="/tools/germany-salary-calculator/">Gehalt (DE)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>정산 및 생활 도구</h4>
+        <ul>
+          <li><a href="/tools/prorated-rent-calculator/">일할 계산기 (Prorated)</a></li>
+          <li><a href="/tools/rent-split-calculator/">방 크기 월세 분할</a></li>
+          <li><a href="/tools/scientific-calculator/">공학용 계산기</a></li>
+          <li><a href="/tools/gpa-calculator/">학점 계산기 (GPA)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>정보 및 가이드</h4>
+        <ul>
+          <li><a href="/blog/how-to-calculate-prorated-rent/">일할 월세 계산법</a></li>
+          <li><a href="/compare/splitwise-alternative/">Splitwise 대안 비교</a></li>
+          <li><a href="/app/">웹 앱 실행</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — 무료 계산기 &amp; 지출 정산 서비스.</p>
+  </div>
+</footer>
+
+<script>
+let currentMode = 'worker'; // 'worker', 'free', 'compare'
+let currentLang = 'ko';
+
+const translations = {
+  ko: {
+    bcHome: '홈',
+    bcTools: '계산기',
+    bcCurr: '대한민국 연봉 실수령액',
+    title: '2026 연봉 실수령액 계산기',
+    sub: '2026년 개정 4대보험 요율 및 국세청 근로소득 간이세액표를 완벽 반영한 실수령액 계산기입니다. 비과세 식대, 부양가족, 이직 제안 비교를 지원합니다.',
+    btnWorker: '일반 근로자 (4대보험)',
+    btnFree: '프리랜서 (3.3% 원천징수)',
+    btnCompare: '이직 연봉 비교 (A vs B)',
+    salaryLbl: '세전 연봉 (원)',
+    foodLbl: '월 비과세 식대 (원)',
+    depLbl: '본인 포함 부양가족 수',
+    chiLbl: '8세~20세 자녀 수 (자녀세액공제)',
+    optFood200k: '200,000원 (법정 기본)',
+    optFood100k: '100,000원',
+    optFood0: '0원 (식대 없음)',
+    optDep1: '1명 (본인 1인 가구)',
+    optDep2: '2명',
+    optDep3: '3명',
+    optDep4: '4명 이상',
+    optChi0: '0명',
+    optChi1: '1명 (월 12,500원 세액공제)',
+    optChi2: '2명 (월 29,160원 세액공제)',
+    optChi3: '3명 이상',
+    lblCompareTitle: '이직 제안 연봉 (Offer B)',
+    lblCompareSalary: '제안 연봉 (원)',
+    lblCompareSigning: '사이닝 보너스 / 일회성 (원)',
+    presetsLbl: '빠른 연봉 선택',
+    resMain: '예상 월 실수령액 (세후)',
+    grossLbl: '월 세전 총급여',
+    deductLbl: '월 총 공제액',
+    insurLbl: '4대보험 합계',
+    taxLbl: '소득세·지방소득세',
+    itemizedTitle: '월별 세부 공제 내역 (2026년 요율 기준)',
+    lblDPension: '국민연금 (4.75%)',
+    lblDHealth: '건강보험 (3.595%)',
+    lblDCare: '장기요양보험 (건강보험의 13.14%)',
+    lblDEmploy: '고용보험 (0.9%)',
+    lblDIncomeTax: '소득세 (근로소득 간이세액)',
+    lblDLocalTax: '지방소득세 (소득세의 10%)',
+    compareResultTitle: '이직 시 월 실수령액 변화 분석',
+    mindmapTitle: '💡 연봉 협상 및 실수령액 마인드맵 가이드',
+    mindmapList: '<li><strong>비과세 식대 체크:</strong> 급여 명세서에 비과세 식대 20만원이 분리 표기되어 있는지 확인하세요. 비과세 항목이 클수록 4대보험과 소득세가 절감됩니다.</li><li><strong>부양가족 공제:</strong> 동거 중인 만 60세 이상 부모님이나 만 20세 이하 자녀가 있다면 간이세액표상 원천징수 소득세가 대폭 낮아집니다.</li><li><strong>청년소득세 감면:</strong> 중소기업에 취업한 만 15세~34세 청년은 5년간 소득세의 90%(연 200만원 한도) 감면 혜택을 반드시 회사에 신청하세요.</li>',
+    ctaTitle: '팀 회식이나 룸메이트 정산이 필요하신가요?',
+    ctaSub: '광고와 가입 제한 없는 LedgerMate로 간편하게 분할 계산하세요.',
+    ctaBtn: '무료 정산 시작'
+  },
+  en: {
+    bcHome: 'Home',
+    bcTools: 'Calculators',
+    bcCurr: 'South Korea Net Salary Calculator',
+    title: '2026 South Korea Salary & Net Take-Home Calculator',
+    sub: 'Calculate your actual take-home salary in Korea reflecting 2026 4 Social Insurances (Pension 4.75%, Health 3.595%, Care 13.14%, Employment 0.9%) and NTS progressive withholding tables.',
+    btnWorker: 'Salaried Employee (4 Insurances)',
+    btnFree: 'Freelancer (3.3% Withholding)',
+    btnCompare: 'Job Offer Comparison (A vs B)',
+    salaryLbl: 'Annual Gross Salary (KRW)',
+    foodLbl: 'Monthly Non-Taxable Meal Allowance',
+    depLbl: 'Dependents (Including Self)',
+    chiLbl: 'Dependent Children (Aged 8–20)',
+    optFood200k: '200,000 KRW (Statutory Limit)',
+    optFood100k: '100,000 KRW',
+    optFood0: '0 KRW (No meal perk)',
+    optDep1: '1 person (Single household)',
+    optDep2: '2 persons',
+    optDep3: '3 persons',
+    optDep4: '4+ persons',
+    optChi0: '0 children',
+    optChi1: '1 child (12,500 KRW/mo credit)',
+    optChi2: '2 children (29,160 KRW/mo credit)',
+    optChi3: '3+ children',
+    lblCompareTitle: 'New Job Offer (Offer B)',
+    lblCompareSalary: 'Offered Annual Gross (KRW)',
+    lblCompareSigning: 'Signing Bonus / One-time (KRW)',
+    presetsLbl: 'Popular Annual Salaries',
+    resMain: 'Estimated Monthly Take-Home (Net)',
+    grossLbl: 'Monthly Gross Salary',
+    deductLbl: 'Total Monthly Deductions',
+    insurLbl: 'Social Insurances Total',
+    taxLbl: 'Income & Local Taxes',
+    itemizedTitle: 'Itemized Monthly Deductions (2026 Rates)',
+    lblDPension: 'National Pension (4.75%)',
+    lblDHealth: 'National Health Insurance (3.595%)',
+    lblDCare: 'Long-Term Care (13.14% of health)',
+    lblDEmploy: 'Employment Insurance (0.9%)',
+    lblDIncomeTax: 'National Income Tax (NTS Table)',
+    lblDLocalTax: 'Local Residence Tax (10% of tax)',
+    compareResultTitle: 'Offer Comparison & Net Take-Home Delta',
+    mindmapTitle: '💡 Salary Negotiation & Tax Strategy Guide',
+    mindmapList: '<li><strong>Check Tax-Exempt Meal Allowance:</strong> Verify that the 200,000 KRW monthly meal allowance is separated on your payslip. Maximizing tax-exempt items reduces both social insurance and income tax bases.</li><li><strong>Dependent Deductions:</strong> Cohabitating parents aged 60+ or children under 20 significantly reduce monthly withholding under the NTS table.</li><li><strong>SME Youth Tax Reduction:</strong> Workers aged 15–34 at SMEs should submit the 90% income tax reduction form to HR for up to 2M KRW annual tax savings over 5 years.</li>',
+    ctaTitle: 'Sharing dinners or flat rent with colleagues in Korea?',
+    ctaSub: 'Split group expenses smoothly with LedgerMate — zero ads, zero fees, no install required.',
+    ctaBtn: 'Open LedgerMate Free'
+  }
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-lang-ko').classList.toggle('active', lang === 'ko');
+  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang;
+
+  const t = translations[lang];
+  document.getElementById('bc-home').textContent = t.bcHome;
+  document.getElementById('bc-tools').textContent = t.bcTools;
+  document.getElementById('bc-curr').textContent = t.bcCurr;
+  document.getElementById('title-text').textContent = t.title;
+  document.getElementById('sub-text').textContent = t.sub;
+
+  document.getElementById('btn-type-worker').textContent = t.btnWorker;
+  document.getElementById('btn-type-free').textContent = t.btnFree;
+  document.getElementById('btn-type-compare').textContent = t.btnCompare;
+
+  document.getElementById('lbl-salary').textContent = t.salaryLbl;
+  document.getElementById('lbl-food').textContent = t.foodLbl;
+  document.getElementById('lbl-dependents').textContent = t.depLbl;
+  document.getElementById('lbl-children').textContent = t.chiLbl;
+
+  document.getElementById('opt-food-200k').textContent = t.optFood200k;
+  document.getElementById('opt-food-100k').textContent = t.optFood100k;
+  document.getElementById('opt-food-0').textContent = t.optFood0;
+
+  document.getElementById('opt-dep-1').textContent = t.optDep1;
+  document.getElementById('opt-dep-2').textContent = t.optDep2;
+  document.getElementById('opt-dep-3').textContent = t.optDep3;
+  document.getElementById('opt-dep-4').textContent = t.optDep4;
+
+  document.getElementById('opt-chi-0').textContent = t.optChi0;
+  document.getElementById('opt-chi-1').textContent = t.optChi1;
+  document.getElementById('opt-chi-2').textContent = t.optChi2;
+  document.getElementById('opt-chi-3').textContent = t.optChi3;
+
+  document.getElementById('lbl-compare-title').textContent = t.lblCompareTitle;
+  document.getElementById('lbl-compare-salary').textContent = t.lblCompareSalary;
+  document.getElementById('lbl-compare-signing').textContent = t.lblCompareSigning;
+
+  document.getElementById('lbl-presets').textContent = t.presetsLbl;
+  document.getElementById('res-lbl-main').textContent = t.resMain;
+  document.getElementById('res-lbl-gross').textContent = t.grossLbl;
+  document.getElementById('res-lbl-deduct').textContent = t.deductLbl;
+  document.getElementById('res-lbl-insur').textContent = t.insurLbl;
+  document.getElementById('res-lbl-tax').textContent = t.taxLbl;
+
+  document.getElementById('lbl-itemized-title').textContent = t.itemizedTitle;
+  document.getElementById('lbl-d-pension').innerHTML = (lang === 'ko' ? '국민연금 (4.75%)' : 'National Pension (4.75%)') + ' <span class="concept-inline-link" onclick="switchKrConcept(\'four-ins\')">' + (lang === 'ko' ? '요율' : 'Rates') + '<span class="arrow">&rarr;</span></span>';
+  document.getElementById('lbl-d-health').innerHTML = (lang === 'ko' ? '건강보험 (3.595%)' : 'Health Insurance (3.595%)') + ' <span class="concept-inline-link" onclick="switchKrConcept(\'four-ins\')">' + (lang === 'ko' ? '요율' : 'Rates') + '<span class="arrow">&rarr;</span></span>';
+  document.getElementById('lbl-d-care').innerHTML = (lang === 'ko' ? '장기요양보험 (건강보험의 13.14%)' : 'Long-Term Care (13.14% of health)') + ' <span class="concept-inline-link" onclick="switchKrConcept(\'four-ins\')">' + (lang === 'ko' ? '요율' : 'Rates') + '<span class="arrow">&rarr;</span></span>';
+  document.getElementById('lbl-d-employ').innerHTML = (lang === 'ko' ? '고용보험 (0.9%)' : 'Employment Insurance (0.9%)') + ' <span class="concept-inline-link" onclick="switchKrConcept(\'four-ins\')">' + (lang === 'ko' ? '요율' : 'Rates') + '<span class="arrow">&rarr;</span></span>';
+  document.getElementById('lbl-d-income-tax').innerHTML = (lang === 'ko' ? '소득세 (근로소득 간이세액)' : 'National Income Tax (NTS Table)') + ' <span class="concept-inline-link" onclick="switchKrConcept(\'tax-bracket\')">' + (lang === 'ko' ? '간이세액' : 'Slabs') + '<span class="arrow">&rarr;</span></span>';
+  document.getElementById('lbl-d-local-tax').innerHTML = (lang === 'ko' ? '지방소득세 (소득세의 10%)' : 'Local Residence Tax (10% of tax)') + ' <span class="concept-inline-link" onclick="switchKrConcept(\'tax-bracket\')">' + (lang === 'ko' ? '10% 부가' : '10% Surtax') + '<span class="arrow">&rarr;</span></span>';
+
+  document.getElementById('lbl-compare-result-title').textContent = t.compareResultTitle;
+  document.getElementById('lbl-mindmap-title').textContent = t.mindmapTitle;
+  document.getElementById('lbl-mindmap-list').innerHTML = t.mindmapList;
+
+  document.getElementById('lbl-cta-title').textContent = t.ctaTitle;
+  document.getElementById('lbl-cta-sub').textContent = t.ctaSub;
+  document.getElementById('lbl-cta-btn').textContent = t.ctaBtn;
+
+  // Toggle concept routers
+  const cKo = document.getElementById('kr-concept-box-ko');
+  const cEn = document.getElementById('kr-concept-box-en');
+  if (cKo && cEn) {
+    cKo.style.display = lang === 'ko' ? 'block' : 'none';
+    cEn.style.display = lang === 'en' ? 'block' : 'none';
+  }
+
+  // Toggle articles
+  document.getElementById('content-ko').style.display = lang === 'ko' ? 'block' : 'none';
+  document.getElementById('content-en').style.display = lang === 'en' ? 'block' : 'none';
+
+  calculate();
+}
+
+function switchKrConcept(tabId) {
+  const tabs = ['four-ins', 'tax-bracket', 'meal', 'foreign', 'youth', 'global', 'vocab'];
+  tabs.forEach(t => {
+    const paneKo = document.getElementById('pane-kr-' + t);
+    if (paneKo) paneKo.classList.remove('active');
+    const paneEn = document.getElementById('pane-kr-en-' + t);
+    if (paneEn) paneEn.classList.remove('active');
+  });
+
+  const navBtns = document.querySelectorAll('.concept-nav .concept-tab-btn');
+  navBtns.forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const targetPaneKo = document.getElementById('pane-kr-' + tabId);
+  if (targetPaneKo) targetPaneKo.classList.add('active');
+  const targetPaneEn = document.getElementById('pane-kr-en-' + tabId);
+  if (targetPaneEn) targetPaneEn.classList.add('active');
+}
+
+function setSalary(val) {
+  document.getElementById('annual-salary').value = val;
+  calculate();
+}
+
+function calculateOneSalary(annualGross, nontaxFood, dependents, children) {
+  const monthlyGross = Math.round(annualGross / 12);
+
+  if (currentMode === 'free') {
+    // 3.3% Freelancer
+    const incomeTax = Math.floor(monthlyGross * 0.03);
+    const localTax = Math.floor(monthlyGross * 0.003);
+    const totalDeduct = incomeTax + localTax;
+    const net = monthlyGross - totalDeduct;
+    return {
+      monthlyGross,
+      net,
+      totalDeduct,
+      pension: 0,
+      health: 0,
+      care: 0,
+      employ: 0,
+      incomeTax,
+      localTax,
+      insuranceSum: 0,
+      taxSum: totalDeduct
+    };
+  }
+
+  // Taxable monthly base
+  const taxableBase = Math.max(0, monthlyGross - nontaxFood);
+
+  // 1. National Pension: 4.75% capped at ~6,170,000 KRW
+  const pensionCapBase = Math.min(taxableBase, 6170000);
+  const pension = Math.floor((pensionCapBase * 0.0475) / 10) * 10;
+
+  // 2. Health Insurance: 3.595%
+  const health = Math.floor((taxableBase * 0.03595) / 10) * 10;
+
+  // 3. Long-term care: 13.14% of health insurance
+  const care = Math.floor((health * 0.1314) / 10) * 10;
+
+  // 4. Employment: 0.9%
+  const employ = Math.floor((taxableBase * 0.009) / 10) * 10;
+
+  const insuranceSum = pension + health + care + employ;
+
+  // 5. Income Tax (Simplified Withholding simulation)
+  const annualTaxable = taxableBase * 12;
+  let earnedIncomeDeduction = 0;
+  if (annualTaxable <= 5000000) {
+    earnedIncomeDeduction = annualTaxable * 0.7;
+  } else if (annualTaxable <= 15000000) {
+    earnedIncomeDeduction = 3500000 + (annualTaxable - 5000000) * 0.4;
+  } else if (annualTaxable <= 45000000) {
+    earnedIncomeDeduction = 7500000 + (annualTaxable - 15000000) * 0.15;
+  } else if (annualTaxable <= 100000000) {
+    earnedIncomeDeduction = 12000000 + (annualTaxable - 45000000) * 0.05;
+  } else {
+    earnedIncomeDeduction = 14750000 + (annualTaxable - 100000000) * 0.02;
+  }
+
+  // Personal deduction: 1,500,000 KRW per dependent
+  const personalDeduction = dependents * 1500000;
+  const annualInsurance = insuranceSum * 12;
+
+  const taxBase = Math.max(0, annualTaxable - earnedIncomeDeduction - personalDeduction - annualInsurance);
+
+  // Progressive Tax Brackets
+  let rawTax = 0;
+  if (taxBase <= 14000000) {
+    rawTax = taxBase * 0.06;
+  } else if (taxBase <= 50000000) {
+    rawTax = 840000 + (taxBase - 14000000) * 0.15;
+  } else if (taxBase <= 88000000) {
+    rawTax = 6240000 + (taxBase - 50000000) * 0.24;
+  } else if (taxBase <= 150000000) {
+    rawTax = 15360000 + (taxBase - 88000000) * 0.35;
+  } else if (taxBase <= 300000000) {
+    rawTax = 37060000 + (taxBase - 150000000) * 0.38;
+  } else if (taxBase <= 500000000) {
+    rawTax = 94060000 + (taxBase - 300000000) * 0.40;
+  } else if (taxBase <= 1000000000) {
+    rawTax = 174060000 + (taxBase - 500000000) * 0.42;
+  } else {
+    rawTax = 384060000 + (taxBase - 1000000000) * 0.45;
+  }
+
+  // Earned income tax credit
+  let taxCredit = 0;
+  if (rawTax <= 1300000) {
+    taxCredit = rawTax * 0.55;
+  } else {
+    taxCredit = 715000 + (rawTax - 1300000) * 0.30;
+  }
+  const maxCredit = annualTaxable <= 33000000 ? 740000 : (annualTaxable <= 70000000 ? 660000 : 500000);
+  taxCredit = Math.min(taxCredit, maxCredit);
+
+  let netAnnualTax = Math.max(0, rawTax - taxCredit);
+
+  // Child tax credit
+  let childCredit = 0;
+  if (children === 1) childCredit = 150000;
+  else if (children === 2) childCredit = 350000;
+  else if (children >= 3) childCredit = 350000 + (children - 2) * 300000;
+  netAnnualTax = Math.max(0, netAnnualTax - childCredit);
+
+  let monthlyIncomeTax = Math.round(netAnnualTax / 12);
+  monthlyIncomeTax = Math.floor(monthlyIncomeTax / 10) * 10;
+  const localTax = Math.floor((monthlyIncomeTax * 0.1) / 10) * 10;
+  const taxSum = monthlyIncomeTax + localTax;
+
+  const totalDeduct = insuranceSum + taxSum;
+  const net = monthlyGross - totalDeduct;
+
+  return {
+    monthlyGross,
+    net,
+    totalDeduct,
+    pension,
+    health,
+    care,
+    employ,
+    incomeTax: monthlyIncomeTax,
+    localTax,
+    insuranceSum,
+    taxSum
+  };
+}
+
+function fmt(n) {
+  return Number(n || 0).toLocaleString(currentLang === 'ko' ? 'ko-KR' : 'en-US') + (currentLang === 'ko' ? '원' : ' KRW');
+}
+
+function calculate() {
+  const annualGross = parseFloat(document.getElementById('annual-salary').value) || 0;
+  const nontaxFood = parseFloat(document.getElementById('nontax-food').value) || 0;
+  const dependents = parseInt(document.getElementById('dependents').value, 10) || 1;
+  const children = parseInt(document.getElementById('children').value, 10) || 0;
+
+  const res = calculateOneSalary(annualGross, nontaxFood, dependents, children);
+
+  document.getElementById('res-net-monthly').textContent = fmt(res.net);
+  const annualNet = res.net * 12;
+  const deductPct = ((res.totalDeduct / (res.monthlyGross || 1)) * 100).toFixed(1);
+
+  if (currentLang === 'ko') {
+    document.getElementById('res-net-annual').textContent = `연간 실수령액 약 ${fmt(annualNet)} (공제율 약 ${deductPct}%)`;
+  } else {
+    document.getElementById('res-net-annual').textContent = `Annual Take-Home: approx ${fmt(annualNet)} (Effective deduction: ${deductPct}%)`;
+  }
+
+  document.getElementById('res-gross-monthly').textContent = fmt(res.monthlyGross);
+  document.getElementById('res-total-deduct').textContent = fmt(res.totalDeduct);
+  document.getElementById('res-insurance-sum').textContent = fmt(res.insuranceSum);
+  document.getElementById('res-tax-sum').textContent = fmt(res.taxSum);
+
+  document.getElementById('d-pension').textContent = fmt(res.pension);
+  document.getElementById('d-health').textContent = fmt(res.health);
+  document.getElementById('d-care').textContent = fmt(res.care);
+  document.getElementById('d-employ').textContent = fmt(res.employ);
+  document.getElementById('d-income-tax').textContent = fmt(res.incomeTax);
+  document.getElementById('d-local-tax').textContent = fmt(res.localTax);
+
+  if (currentMode === 'compare') {
+    const compareGross = parseFloat(document.getElementById('compare-salary').value) || 0;
+    const signing = parseFloat(document.getElementById('compare-signing').value) || 0;
+    const resB = calculateOneSalary(compareGross, nontaxFood, dependents, children);
+    const diffNetMonthly = resB.net - res.net;
+    const signNet = Math.round(signing * 0.78);
+
+    if (currentLang === 'ko') {
+      const signText = signing > 0 ? `<br />• 일회성 사이닝 보너스(${fmt(signing)}): 세후 약 <strong>+${fmt(signNet)}</strong> 예상.` : '';
+      document.getElementById('compare-summary-text').innerHTML = `
+        • 제안 연봉(${fmt(compareGross)}): 세후 월 <strong>${fmt(resB.net)}</strong><br />
+        • 현재 연봉 대비 월 실수령액 차이: <strong style="color:${diffNetMonthly >= 0 ? 'var(--accent)' : '#E0563F'}">${diffNetMonthly >= 0 ? '+' : ''}${fmt(diffNetMonthly)} / 월</strong> (연 약 ${fmt(diffNetMonthly * 12)})${signText}
+      `;
+    } else {
+      const signText = signing > 0 ? `<br />• One-time Signing Bonus (${fmt(signing)}): approx <strong>+${fmt(signNet)}</strong> net.` : '';
+      document.getElementById('compare-summary-text').innerHTML = `
+        • Offered Salary (${fmt(compareGross)}): Monthly net <strong>${fmt(resB.net)}</strong><br />
+        • Net monthly delta vs current: <strong style="color:${diffNetMonthly >= 0 ? 'var(--accent)' : '#E0563F'}">${diffNetMonthly >= 0 ? '+' : ''}${fmt(diffNetMonthly)} / mo</strong> (~${fmt(diffNetMonthly * 12)} / yr)${signText}
+      `;
+    }
+    document.getElementById('compare-result-box').style.display = 'block';
+  } else {
+    document.getElementById('compare-result-box').style.display = 'none';
+  }
+}
+
+// Mode handlers
+document.getElementById('btn-type-worker').addEventListener('click', () => {
+  currentMode = 'worker';
+  updateModeUI();
+});
+document.getElementById('btn-type-free').addEventListener('click', () => {
+  currentMode = 'free';
+  updateModeUI();
+});
+document.getElementById('btn-type-compare').addEventListener('click', () => {
+  currentMode = 'compare';
+  updateModeUI();
+});
+
+function updateModeUI() {
+  document.getElementById('btn-type-worker').classList.toggle('active', currentMode === 'worker');
+  document.getElementById('btn-type-free').classList.toggle('active', currentMode === 'free');
+  document.getElementById('btn-type-compare').classList.toggle('active', currentMode === 'compare');
+
+  document.getElementById('worker-options').style.display = currentMode === 'free' ? 'none' : 'flex';
+  document.getElementById('compare-options').style.display = currentMode === 'compare' ? 'block' : 'none';
+  calculate();
+}
+
+['annual-salary', 'nontax-food', 'dependents', 'children', 'compare-salary', 'compare-signing'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calculate);
+    el.addEventListener('change', calculate);
+  }
+});
+
+calculate();
+</script>
+
+</body>
+</html>

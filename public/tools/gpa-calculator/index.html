@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GPA &amp; CGPA Calculator (US, India 10.0, UK, Germany, Canada, Australia, Nigeria) | LedgerMate</title>
+<meta name="description" content="Calculate semester GPA, cumulative CGPA, and degree classifications across 7 international education systems: US 4.0/5.0, India 10-point to %, UK Honours, German Bavarian formula, Canada 4.33, Australia 7.0 & WAM, and Nigeria 5.0 scale." />
+<link rel="canonical" href="https://tryledgermate.in/tools/gpa-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Global GPA &amp; CGPA Calculator (US, India, UK, Germany, Canada, Australia) | LedgerMate" />
+<meta property="og:description" content="Calculate semester GPA, cumulative CGPA, and grade conversions across 7 international grading systems with zero ads." />
+<meta property="og:url" content="https://tryledgermate.in/tools/gpa-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Global GPA & CGPA Calculator",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Multi-country GPA, CGPA, and percentage conversion calculator for US, India, UK, Germany, Canada, Australia, and Nigeria.",
+  "featureList": [
+    "US 4.0 unweighted and 5.0 AP/IB weighted GPA",
+    "India 10-point CGPA to Percentage (CBSE 9.5x, AICTE/VTU, Mumbai University, KTU)",
+    "UK Honours Degree Classification (First, 2:1, 2:2, 3rd) and CATS credit weighting",
+    "German Bavarian Formula (Bayerische Formel) for uni-assist and master's admissions",
+    "Canada 4.33 and 4.0 OLSAS scales",
+    "Australia 7-point scale and WAM (Weighted Average Mark)",
+    "Nigeria 5-point university CGPA scale"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do you convert Indian 10-point CGPA to Percentage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For CBSE board and most central institutions, Percentage = CGPA × 9.5. For technical universities following AICTE/VTU regulations, Percentage = (CGPA - 0.75) × 10. Mumbai University Engineering uses (7.1 × CGPA) + 11. Always check your university transcript guidelines."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the German Bavarian Formula for university admissions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Bavarian Formula (Bayerische Formel) is used by uni-assist, TUM, and German public universities to convert international degrees to the German 1.0–5.0 scale: German Grade = 1 + 3 × [(Nmax - Nd) / (Nmax - Nmin)], where Nmax is maximum grade, Nmin is minimum passing grade, and Nd is your obtained grade. 1.0 is the best possible score; 4.0 is passing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between weighted and unweighted GPA in the US?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Unweighted GPA measures academic performance on a standard 4.0 scale regardless of course difficulty (an A in standard English counts the same 4.0 as an A in Advanced Placement Physics). Weighted GPA awards bonus points (+0.5 for Honors, +1.0 for AP/IB courses, scaling up to 5.0) to recognize course rigor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What UK degree classification corresponds to a 2:1 (Upper Second)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In the British system, an overall average of 60% to 69% earns an Upper Second-Class Honours (2:1). This is the minimum qualification required by most UK corporate graduate schemes and competitive master's programs. A score of 70%+ earns a First-Class (1st)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is WAM in Australian universities?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WAM stands for Weighted Average Mark, calculated as the sum of (each course grade mark × credit points) divided by total credit points. Unlike GPA which groups scores into letter brackets, WAM reflects your exact numeric percentage average across all enrolled subjects."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  .country-tab-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .country-tab {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .country-tab:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .country-tab.active {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+  }
+  .course-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.2fr 40px;
+    gap: 10px;
+    align-items: center;
+    background: var(--bg);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .course-row input, .course-row select {
+    margin: 0;
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+  @media (max-width: 600px) {
+    .course-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 12px;
+    }
+    .course-row input:first-child {
+      grid-column: span 2;
+    }
+    .course-delete-btn {
+      grid-column: span 2;
+      justify-self: end;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/scientific-calculator/">Scientific Calc</a>
+      <a href="/tools/percentage-calculator/">Percentage Calc</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> GPA &amp; CGPA Calculator
+  </div>
+
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">Global GPA, CGPA &amp; Grade Calculator</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Calculate semester and cumulative grades across 7 international education systems. Supports US 4.0/5.0, Indian 10-point CGPA to %, UK Honours classifications, German Bavarian formula, Canada 4.33, Australia WAM, and Nigeria 5.0 scale.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+
+    <!-- Country / Standard Selector -->
+    <div class="country-tab-group" id="country-tabs">
+      <button type="button" class="country-tab active" data-country="us">🇺🇸 United States (4.0 / 5.0)</button>
+      <button type="button" class="country-tab" data-country="india">🇮🇳 India (10.0 CGPA to %)</button>
+      <button type="button" class="country-tab" data-country="uk">🇬🇧 United Kingdom (Honours)</button>
+      <button type="button" data-country="germany" class="country-tab">🇩🇪 Germany (Bavarian Formula)</button>
+      <button type="button" data-country="canada" class="country-tab">🇨🇦 Canada (4.33 Scale)</button>
+      <button type="button" data-country="australia" class="country-tab">🇦🇺 Australia (7.0 &amp; WAM)</button>
+      <button type="button" data-country="nigeria" class="country-tab">🇳🇬 Nigeria (5.0 Scale)</button>
+    </div>
+
+    <!-- Country 1: US Mode -->
+    <div id="panel-us" class="edu-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="font-weight:700;font-size:15px;">US Course List &amp; Credit Weights</span>
+          <span style="font-size:12.5px;color:var(--text-muted);display:block;">Standard unweighted (4.0) or AP/Honors weighted (5.0)</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline" onclick="addUsCourse()">+ Add Subject</button>
+      </div>
+      <div id="us-courses-container"></div>
+    </div>
+
+    <!-- Country 2: India Mode -->
+    <div id="panel-india" class="edu-panel" style="display:none;">
+      <div class="calc-row">
+        <div style="flex:1.2;">
+          <label for="india-cgpa">Enter 10-Point CGPA (e.g. 8.4)</label>
+          <input id="india-cgpa" type="number" step="0.01" min="0" max="10" value="8.40" />
+        </div>
+        <div style="flex:1.4;">
+          <label for="india-formula">University / Board Standard</label>
+          <select id="india-formula">
+            <option value="cbse" selected>CBSE / Standard (CGPA × 9.5)</option>
+            <option value="aicte">AICTE / VTU / Engineering ((CGPA - 0.75) × 10)</option>
+            <option value="mumbai">Mumbai University Engineering ((CGPA × 7.1) + 11)</option>
+            <option value="anna">Anna University / KTU / Direct (CGPA × 10)</option>
+            <option value="calcutta">University of Calcutta ((CGPA × 10) - 4.5)</option>
+          </select>
+        </div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-top:10px;font-size:13.5px;color:var(--text-muted);">
+        <strong>US 4.0 WES Mapping:</strong> An Indian 10.0 CGPA of 8.0+ generally evaluates to a 3.5–3.8 US GPA; 6.5–7.9 evaluates to 3.0–3.4 GPA for MS/MBA admissions.
+      </div>
+    </div>
+
+    <!-- Country 3: UK Mode -->
+    <div id="panel-uk" class="edu-panel" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="font-weight:700;font-size:15px;">UK Modules &amp; CATS Credit Hours</span>
+          <span style="font-size:12.5px;color:var(--text-muted);display:block;">Standard undergraduate modules are typically 15 or 30 credits (120 per academic year)</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline" onclick="addUkModule()">+ Add Module</button>
+      </div>
+      <div id="uk-modules-container"></div>
+    </div>
+
+    <!-- Country 4: Germany Mode (Bavarian Formula) -->
+    <div id="panel-germany" class="edu-panel" style="display:none;">
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:12px 16px;margin-bottom:16px;">
+        <strong style="color:#166534;font-size:14px;">Official German Bavarian Formula (Bayerische Formel)</strong>
+        <p style="margin:4px 0 0;font-size:13px;color:#15803D;">Standard mathematical formula enforced by <em>uni-assist</em>, TU Munich (TUM), and German public universities to convert international bachelor grades to the German 1.0–5.0 grading scale.</p>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="de-obtained">Your Obtained Grade / CGPA (Nd)</label>
+          <input id="de-obtained" type="number" step="0.01" value="8.6" />
+        </div>
+        <div style="flex:1;">
+          <label for="de-max">Maximum Possible Grade (Nmax)</label>
+          <input id="de-max" type="number" step="0.01" value="10.0" />
+        </div>
+        <div style="flex:1;">
+          <label for="de-min">Minimum Passing Grade (Nmin)</label>
+          <input id="de-min" type="number" step="0.01" value="4.0" />
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center;">
+        <button type="button" class="chip-btn" onclick="presetGermany('india')">Preset: India (Max 10, Pass 4.0)</button>
+        <button type="button" class="chip-btn" onclick="presetGermany('us')">Preset: US (Max 4.0, Pass 2.0)</button>
+        <button type="button" class="chip-btn" onclick="presetGermany('uk')">Preset: UK / % (Max 100, Pass 40)</button>
+      </div>
+    </div>
+
+    <!-- Country 5: Canada Mode -->
+    <div id="panel-canada" class="edu-panel" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="font-weight:700;font-size:15px;">Canadian University Courses (4.33 Scale)</span>
+          <span style="font-size:12.5px;color:var(--text-muted);display:block;">Standard scale used by UBC, SFU, Ryerson, Dalhousie, and Canadian colleges</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline" onclick="addCanadaCourse()">+ Add Course</button>
+      </div>
+      <div id="canada-courses-container"></div>
+    </div>
+
+    <!-- Country 6: Australia Mode -->
+    <div id="panel-australia" class="edu-panel" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="font-weight:700;font-size:15px;">Australian Subjects (7-Point Scale &amp; WAM)</span>
+          <span style="font-size:12.5px;color:var(--text-muted);display:block;">Calculates both 7.0 GPA and Weighted Average Mark (0–100%)</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline" onclick="addAusSubject()">+ Add Subject</button>
+      </div>
+      <div id="aus-subjects-container"></div>
+    </div>
+
+    <!-- Country 7: Nigeria Mode -->
+    <div id="panel-nigeria" class="edu-panel" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span style="font-weight:700;font-size:15px;">Nigerian University Courses (5.0 CGPA Scale)</span>
+          <span style="font-size:12.5px;color:var(--text-muted);display:block;">Used across UNILAG, UI, OAU, ABU, UNN, and NUC-accredited tertiary institutions</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline" onclick="addNigeriaCourse()">+ Add Course</button>
+      </div>
+      <div id="nigeria-courses-container"></div>
+    </div>
+
+    <!-- Live Unified Results Banner -->
+    <div class="calc-result" style="margin-top:24px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;" id="res-country-label">United States Cumulative GPA</span>
+        <div style="font-size:clamp(36px,7vw,48px);font-weight:800;color:var(--text);margin:6px 0;" id="res-main-score">3.75</div>
+        <span style="font-size:14px;color:var(--text-muted);" id="res-classification-sub">Total Credits: 16 | Quality Points: 60.0 | Standing: Honors / Dean's List</span>
+      </div>
+
+      <!-- 4 Quick Metric Boxes -->
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="metric-1-val">16</div>
+          <div class="metric-lbl" id="metric-1-lbl">Credit Hours</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="metric-2-val">60.0</div>
+          <div class="metric-lbl" id="metric-2-lbl">Grade Points</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="metric-3-val" style="color:#10B981;">A</div>
+          <div class="metric-lbl" id="metric-3-lbl">Letter Grade</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="metric-4-val">93.8%</div>
+          <div class="metric-lbl" id="metric-4-lbl">Approx % / WAM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Practical Educational Advice Box -->
+    <div class="mindmap-box" style="margin-top:24px;">
+      <h4 id="guide-tip-title">💡 International Academic Grading Insights</h4>
+      <ul class="mindmap-list" id="guide-tip-list">
+        <li><strong>Credit Hour Weighting:</strong> Multiplying each course grade by its credit hours ensures a 4-credit calculus lecture correctly carries four times the mathematical influence of a 1-credit laboratory section.</li>
+        <li><strong>Study Abroad Conversion (WES):</strong> World Education Services (WES) evaluates degree equivalencies. An Indian First Class with Distinction (75%+) or UK First Class typically translates to a 3.70 to 4.00 US GPA.</li>
+        <li><strong>German Master's Admissions:</strong> Most top German universities (TUM, RWTH Aachen) require an applicant to score at least <strong>2.5 or better</strong> on the Bavarian scale (where 1.0 is highest and 4.0 is pass).</li>
+      </ul>
+    </div>
+
+    <!-- App CTA -->
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p>Sharing dorm rent or university textbook bills?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Split flat utilities, group projects, and college trips with LedgerMate — 100% free with no ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Open LedgerMate</a>
+    </div>
+
+  </div>
+
+  <!-- Deep Comprehensive SEO / Educational Article -->
+  <article style="margin-top:44px;line-height:1.7;">
+    <h2>Understanding Global Academic Grading Systems &amp; Conversion Rules</h2>
+    <p>International higher education relies on distinct mathematical scales to quantify academic performance. When applying to graduate schools abroad, submitting scholarship applications (Fulbright, DAAD, Commonwealth), or seeking multinational employment, understanding how your grades map across borders is crucial.</p>
+
+    <h3>1. United States: Unweighted (4.0) vs. Weighted (5.0) GPA</h3>
+    <p>In the US college system, Grade Point Average (GPA) is computed by multiplying course quality points by credit hours, summing them, and dividing by total attempted credits:</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-family:'JetBrains Mono',monospace;margin:12px 0;">
+      GPA = Σ(Grade Points × Credits) / Σ(Credits)
+    </div>
+    <p>Standard letter mappings: <strong>A (4.0)</strong> = 93–100%, <strong>A- (3.7)</strong> = 90–92%, <strong>B+ (3.3)</strong> = 87–89%, <strong>B (3.0)</strong> = 83–86%, <strong>B- (2.7)</strong> = 80–82%, <strong>C+ (2.3)</strong> = 77–79%, <strong>C (2.0)</strong> = 73–76%, <strong>D (1.0)</strong> = 65–72%, <strong>F (0.0)</strong> = Below 65%. In high school, Honors courses add +0.5 points and Advanced Placement (AP) / International Baccalaureate (IB) courses add +1.0 points (max 5.0 scale).</p>
+
+    <h3>2. India: 10-Point CGPA to Percentage Formulas</h3>
+    <p>Indian universities and boards calculate Cumulative Grade Point Average on a 10.0 scale. However, job placements, civil service exams (UPSC), and international applications require percentages. Different authorities enforce distinct conversion formulas:</p>
+    <ul>
+      <li><strong>CBSE Standard:</strong> <code>Percentage = CGPA × 9.5</code>. Developed by analyzing board exam data where 95% was the empirical mean of the top 91% cohort.</li>
+      <li><strong>AICTE / VTU (Technical Universities):</strong> <code>Percentage = (CGPA - 0.75) × 10</code>. Used across engineering and polytechnic colleges.</li>
+      <li><strong>Mumbai University (BE Engineering):</strong> <code>Percentage = (7.1 × CGPA) + 11</code> for CGPA between 7.0 and 10.0.</li>
+      <li><strong>Anna University &amp; KTU:</strong> <code>Percentage = CGPA × 10</code>.</li>
+    </ul>
+
+    <h3>3. Germany: The Official Bavarian Formula (Bayerische Formel)</h3>
+    <p>Germany uses an inverted grading system where <strong>1.0 is the best possible grade (Sehr Gut)</strong>, and <strong>4.0 is the minimum passing score (Ausreichend)</strong>. Scores of 4.1 to 5.0 represent a failing grade (Nicht Bestanden).</p>
+    <p>For international applicants, German universities and uni-assist use the Modified Bavarian Formula:</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-family:'JetBrains Mono',monospace;margin:12px 0;">
+      German Grade = 1 + 3 × [(Nmax - Nd) / (Nmax - Nmin)]
+    </div>
+    <p>Where <em>Nmax</em> is the highest possible grade in your home system (e.g. 10.0 in India, 4.0 in US, 100% in UK), <em>Nmin</em> is the lowest passing grade (e.g. 4.0 in India, 2.0 in US, 40% in UK), and <em>Nd</em> is your actual obtained score. If calculated grade is less than 1.0, it is recorded as 1.0.</p>
+
+    <h3>4. United Kingdom: Degree Honours Classifications</h3>
+    <p>Undergraduate degrees in England, Wales, and Northern Ireland are classified into four primary Honours divisions based on weighted percentages across Year 2 and Year 3 modules (CATS credits):</p>
+    <ul>
+      <li><strong>First-Class Honours (1st, 70%+):</strong> Exceptional achievement. Opens doors to top consulting, investment banking, and Oxford/Cambridge graduate programs.</li>
+      <li><strong>Upper Second-Class Honours (2:1, 60–69%):</strong> The standard benchmark required by over 80% of UK graduate employer schemes.</li>
+      <li><strong>Lower Second-Class Honours (2:2, 50–59%):</strong> Satisfactory pass.</li>
+      <li><strong>Third-Class Honours (3rd, 40–49%):</strong> Minimum passing honours degree.</li>
+    </ul>
+
+    <h3>5. Canada: The 4.33 Scale vs. OLSAS</h3>
+    <p>Many prominent Canadian institutions (University of British Columbia UBC, Simon Fraser University SFU, Dalhousie University) utilize a 4.33 scale where an A+ is rewarded with 4.33 grade points, A is 4.0, and A- is 3.67. Ontario Law Schools (OLSAS) and medical schools (OMSAS) use specialized conversion tables to standardize transcripts from across the provinces.</p>
+
+    <h3>6. Australia: 7-Point Scale &amp; WAM (Weighted Average Mark)</h3>
+    <p>Australian tertiary institutions (Go8 - University of Melbourne, USYD, UNSW, ANU) classify subjects into:</p>
+    <ul>
+      <li><strong>High Distinction (HD):</strong> 85–100% (Grade point 7.0)</li>
+      <li><strong>Distinction (D):</strong> 75–84% (Grade point 6.0)</li>
+      <li><strong>Credit (C):</strong> 65–74% (Grade point 5.0)</li>
+      <li><strong>Pass (P):</strong> 50–64% (Grade point 4.0)</li>
+      <li><strong>Fail (F):</strong> Below 50% (Grade point 0)</li>
+    </ul>
+    <p>Instead of relying solely on GPA, Australian universities prioritize <strong>WAM (Weighted Average Mark)</strong>, which computes the precise credit-weighted numeric percentage average.</p>
+
+    <h3>7. Nigeria: 5.0 CGPA Scale</h3>
+    <p>The National Universities Commission (NUC) in Nigeria standardizes tertiary grading on a 5.00 point scale:</p>
+    <ul>
+      <li><strong>First Class:</strong> 4.50 – 5.00 CGPA</li>
+      <li><strong>Second Class Upper (2:1):</strong> 3.50 – 4.49 CGPA</li>
+      <li><strong>Second Class Lower (2:2):</strong> 2.40 – 3.49 CGPA</li>
+      <li><strong>Third Class:</strong> 1.50 – 2.39 CGPA</li>
+      <li><strong>Pass:</strong> 1.00 – 1.49 CGPA</li>
+    </ul>
+
+    <h2 style="margin-top:40px;">Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Do failing grades (F) count towards your cumulative GPA?</summary>
+      <p>Yes. An F earns 0.0 grade points, but the credit hours for that course are still included in the denominator of your GPA calculation, substantially lowering your cumulative average. If your institution offers a grade replacement or forgiveness policy upon retaking the course, the earlier F may be replaced on your transcript.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How does a 10-point Indian CGPA convert to US 4.0 GPA for WES?</summary>
+      <p>World Education Services (WES) evaluates Indian credentials on a subject-by-subject basis rather than applying a flat multiplier. Typically, marks above 60% (First Division) equate to 3.0 to 3.3; marks above 70% equate to 3.5 to 3.8; marks above 80% equate to 4.0. An 8.5+ CGPA from an accredited Indian institution generally provides a competitive profile for top 50 US universities.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is a good German grade for DAAD scholarships?</summary>
+      <p>For DAAD scholarships and admission to high-demand Master of Science programs in Germany, an applicant should aim for a Bavarian score of <strong>2.0 or better</strong> (closer to 1.0). A score between 2.1 and 2.5 is considered satisfactory for non-restricted programs (zulassungsfrei).</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the difference between SGPA and CGPA?</summary>
+      <p><strong>SGPA (Semester Grade Point Average)</strong> reflects your performance across courses taken in a single academic semester or term. <strong>CGPA (Cumulative Grade Point Average)</strong> is the cumulative weighted average of all semesters completed to date.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction group expense sharing. Free, no mandatory app download, no limits.</p>
+      </div>
+      <div>
+        <h4>Academic Calculators</h4>
+        <ul>
+          <li><a href="/tools/gpa-calculator/">Global GPA &amp; CGPA Calculator</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/unit-converter/">Unit Converter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Financial Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Compound Interest</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Academic &amp; Financial Calculators. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+let currentCountry = 'us';
+
+// Initial course records per country
+let usCourses = [
+  { name: 'Calculus I', credits: 4, grade: 4.0, type: 'regular' },
+  { name: 'Computer Science', credits: 4, grade: 4.0, type: 'regular' },
+  { name: 'Physics Mechanics', credits: 4, grade: 3.3, type: 'regular' },
+  { name: 'Academic Writing', credits: 4, grade: 3.7, type: 'regular' }
+];
+
+let ukModules = [
+  { name: 'Core Microeconomics', credits: 30, mark: 72 },
+  { name: 'Econometrics & Statistics', credits: 30, mark: 68 },
+  { name: 'Macroeconomic Principles', credits: 30, mark: 64 },
+  { name: 'Corporate Finance', credits: 30, mark: 75 }
+];
+
+let canadaCourses = [
+  { name: 'Algorithms & Data Structures', credits: 3, grade: 4.33 },
+  { name: 'Linear Algebra', credits: 3, grade: 4.0 },
+  { name: 'Technical Communications', credits: 3, grade: 3.67 },
+  { name: 'Database Systems', credits: 3, grade: 4.0 }
+];
+
+let ausSubjects = [
+  { name: 'Engineering Dynamics', credits: 6, mark: 82, gradePoint: 6 },
+  { name: 'Thermodynamics', credits: 6, mark: 78, gradePoint: 6 },
+  { name: 'Circuit Analysis', credits: 6, mark: 88, gradePoint: 7 },
+  { name: 'Design Project', credits: 6, mark: 74, gradePoint: 5 }
+];
+
+let nigeriaCourses = [
+  { name: 'MTH 101 Elementary Math', credits: 3, grade: 5.0 },
+  { name: 'CSC 101 Intro to Computing', credits: 3, grade: 5.0 },
+  { name: 'PHY 101 General Physics', credits: 3, grade: 4.0 },
+  { name: 'GST 101 Use of English', credits: 2, grade: 4.0 }
+];
+
+// Country tab click handler
+document.querySelectorAll('.country-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.country-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentCountry = tab.dataset.country;
+
+    document.querySelectorAll('.edu-panel').forEach(p => p.style.display = 'none');
+    const targetPanel = document.getElementById('panel-' + currentCountry);
+    if (targetPanel) targetPanel.style.display = 'block';
+
+    calculateAll();
+  });
+});
+
+// Render US Courses
+function renderUsCourses() {
+  const container = document.getElementById('us-courses-container');
+  container.innerHTML = '';
+  usCourses.forEach((c, idx) => {
+    const row = document.createElement('div');
+    row.className = 'course-row';
+    row.innerHTML = `
+      <input type="text" value="${c.name}" placeholder="Course Name" oninput="usCourses[${idx}].name=this.value" />
+      <input type="number" value="${c.credits}" min="1" max="12" placeholder="Credits" oninput="usCourses[${idx}].credits=parseFloat(this.value)||0; calculateAll()" />
+      <select onchange="usCourses[${idx}].grade=parseFloat(this.value); calculateAll()">
+        <option value="4.0" ${c.grade===4.0?'selected':''}>A (4.0)</option>
+        <option value="3.7" ${c.grade===3.7?'selected':''}>A- (3.7)</option>
+        <option value="3.3" ${c.grade===3.3?'selected':''}>B+ (3.3)</option>
+        <option value="3.0" ${c.grade===3.0?'selected':''}>B (3.0)</option>
+        <option value="2.7" ${c.grade===2.7?'selected':''}>B- (2.7)</option>
+        <option value="2.3" ${c.grade===2.3?'selected':''}>C+ (2.3)</option>
+        <option value="2.0" ${c.grade===2.0?'selected':''}>C (2.0)</option>
+        <option value="1.0" ${c.grade===1.0?'selected':''}>D (1.0)</option>
+        <option value="0.0" ${c.grade===0.0?'selected':''}>F (0.0)</option>
+      </select>
+      <button type="button" class="chip-btn course-delete-btn" style="color:#E0563F;padding:6px 10px;" onclick="removeUsCourse(${idx})">✕</button>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function addUsCourse() {
+  usCourses.push({ name: 'Elective Course', credits: 3, grade: 4.0 });
+  renderUsCourses();
+  calculateAll();
+}
+
+function removeUsCourse(idx) {
+  if (usCourses.length > 1) {
+    usCourses.splice(idx, 1);
+    renderUsCourses();
+    calculateAll();
+  }
+}
+
+// Render UK Modules
+function renderUkModules() {
+  const container = document.getElementById('uk-modules-container');
+  container.innerHTML = '';
+  ukModules.forEach((m, idx) => {
+    const row = document.createElement('div');
+    row.className = 'course-row';
+    row.innerHTML = `
+      <input type="text" value="${m.name}" placeholder="Module Name" oninput="ukModules[${idx}].name=this.value" />
+      <input type="number" value="${m.credits}" min="5" max="60" placeholder="CATS Credits" oninput="ukModules[${idx}].credits=parseFloat(this.value)||0; calculateAll()" />
+      <input type="number" value="${m.mark}" min="0" max="100" placeholder="Mark %" oninput="ukModules[${idx}].mark=parseFloat(this.value)||0; calculateAll()" />
+      <button type="button" class="chip-btn course-delete-btn" style="color:#E0563F;padding:6px 10px;" onclick="removeUkModule(${idx})">✕</button>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function addUkModule() {
+  ukModules.push({ name: 'Specialist Module', credits: 15, mark: 70 });
+  renderUkModules();
+  calculateAll();
+}
+
+function removeUkModule(idx) {
+  if (ukModules.length > 1) {
+    ukModules.splice(idx, 1);
+    renderUkModules();
+    calculateAll();
+  }
+}
+
+// Render Canada Courses
+function renderCanadaCourses() {
+  const container = document.getElementById('canada-courses-container');
+  container.innerHTML = '';
+  canadaCourses.forEach((c, idx) => {
+    const row = document.createElement('div');
+    row.className = 'course-row';
+    row.innerHTML = `
+      <input type="text" value="${c.name}" placeholder="Course Name" oninput="canadaCourses[${idx}].name=this.value" />
+      <input type="number" value="${c.credits}" min="1" max="6" placeholder="Credits" oninput="canadaCourses[${idx}].credits=parseFloat(this.value)||0; calculateAll()" />
+      <select onchange="canadaCourses[${idx}].grade=parseFloat(this.value); calculateAll()">
+        <option value="4.33" ${c.grade===4.33?'selected':''}>A+ (4.33)</option>
+        <option value="4.00" ${c.grade===4.00?'selected':''}>A (4.00)</option>
+        <option value="3.67" ${c.grade===3.67?'selected':''}>A- (3.67)</option>
+        <option value="3.33" ${c.grade===3.33?'selected':''}>B+ (3.33)</option>
+        <option value="3.00" ${c.grade===3.00?'selected':''}>B (3.00)</option>
+        <option value="2.67" ${c.grade===2.67?'selected':''}>B- (2.67)</option>
+        <option value="2.33" ${c.grade===2.33?'selected':''}>C+ (2.33)</option>
+        <option value="2.00" ${c.grade===2.00?'selected':''}>C (2.00)</option>
+        <option value="1.00" ${c.grade===1.00?'selected':''}>D (1.00)</option>
+        <option value="0.00" ${c.grade===0.00?'selected':''}>F (0.00)</option>
+      </select>
+      <button type="button" class="chip-btn course-delete-btn" style="color:#E0563F;padding:6px 10px;" onclick="removeCanadaCourse(${idx})">✕</button>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function addCanadaCourse() {
+  canadaCourses.push({ name: 'Elective Course', credits: 3, grade: 4.0 });
+  renderCanadaCourses();
+  calculateAll();
+}
+
+function removeCanadaCourse(idx) {
+  if (canadaCourses.length > 1) {
+    canadaCourses.splice(idx, 1);
+    renderCanadaCourses();
+    calculateAll();
+  }
+}
+
+// Render Australia Subjects
+function renderAusSubjects() {
+  const container = document.getElementById('aus-subjects-container');
+  container.innerHTML = '';
+  ausSubjects.forEach((s, idx) => {
+    const row = document.createElement('div');
+    row.className = 'course-row';
+    row.innerHTML = `
+      <input type="text" value="${s.name}" placeholder="Subject Name" oninput="ausSubjects[${idx}].name=this.value" />
+      <input type="number" value="${s.credits}" min="1" max="12" placeholder="Credit Pts" oninput="ausSubjects[${idx}].credits=parseFloat(this.value)||0; calculateAll()" />
+      <input type="number" value="${s.mark}" min="0" max="100" placeholder="Mark %" oninput="updateAusMark(${idx}, parseFloat(this.value)||0)" />
+      <button type="button" class="chip-btn course-delete-btn" style="color:#E0563F;padding:6px 10px;" onclick="removeAusSubject(${idx})">✕</button>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function updateAusMark(idx, mark) {
+  ausSubjects[idx].mark = mark;
+  if (mark >= 85) ausSubjects[idx].gradePoint = 7;
+  else if (mark >= 75) ausSubjects[idx].gradePoint = 6;
+  else if (mark >= 65) ausSubjects[idx].gradePoint = 5;
+  else if (mark >= 50) ausSubjects[idx].gradePoint = 4;
+  else ausSubjects[idx].gradePoint = 0;
+  calculateAll();
+}
+
+function addAusSubject() {
+  ausSubjects.push({ name: 'Unit of Study', credits: 6, mark: 75, gradePoint: 6 });
+  renderAusSubjects();
+  calculateAll();
+}
+
+function removeAusSubject(idx) {
+  if (ausSubjects.length > 1) {
+    ausSubjects.splice(idx, 1);
+    renderAusSubjects();
+    calculateAll();
+  }
+}
+
+// Render Nigeria Courses
+function renderNigeriaCourses() {
+  const container = document.getElementById('nigeria-courses-container');
+  container.innerHTML = '';
+  nigeriaCourses.forEach((c, idx) => {
+    const row = document.createElement('div');
+    row.className = 'course-row';
+    row.innerHTML = `
+      <input type="text" value="${c.name}" placeholder="Course Code" oninput="nigeriaCourses[${idx}].name=this.value" />
+      <input type="number" value="${c.credits}" min="1" max="6" placeholder="Credit Units" oninput="nigeriaCourses[${idx}].credits=parseFloat(this.value)||0; calculateAll()" />
+      <select onchange="nigeriaCourses[${idx}].grade=parseFloat(this.value); calculateAll()">
+        <option value="5.0" ${c.grade===5.0?'selected':''}>A (5.0, 70%+)</option>
+        <option value="4.0" ${c.grade===4.0?'selected':''}>B (4.0, 60-69%)</option>
+        <option value="3.0" ${c.grade===3.0?'selected':''}>C (3.0, 50-59%)</option>
+        <option value="2.0" ${c.grade===2.0?'selected':''}>D (2.0, 45-49%)</option>
+        <option value="1.0" ${c.grade===1.0?'selected':''}>E (1.0, 40-44%)</option>
+        <option value="0.0" ${c.grade===0.0?'selected':''}>F (0.0, &lt;40%)</option>
+      </select>
+      <button type="button" class="chip-btn course-delete-btn" style="color:#E0563F;padding:6px 10px;" onclick="removeNigeriaCourse(${idx})">✕</button>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function addNigeriaCourse() {
+  nigeriaCourses.push({ name: 'Elective 101', credits: 2, grade: 5.0 });
+  renderNigeriaCourses();
+  calculateAll();
+}
+
+function removeNigeriaCourse(idx) {
+  if (nigeriaCourses.length > 1) {
+    nigeriaCourses.splice(idx, 1);
+    renderNigeriaCourses();
+    calculateAll();
+  }
+}
+
+function presetGermany(preset) {
+  if (preset === 'india') {
+    document.getElementById('de-obtained').value = '8.6';
+    document.getElementById('de-max').value = '10.0';
+    document.getElementById('de-min').value = '4.0';
+  } else if (preset === 'us') {
+    document.getElementById('de-obtained').value = '3.7';
+    document.getElementById('de-max').value = '4.0';
+    document.getElementById('de-min').value = '2.0';
+  } else if (preset === 'uk') {
+    document.getElementById('de-obtained').value = '74';
+    document.getElementById('de-max').value = '100';
+    document.getElementById('de-min').value = '40';
+  }
+  calculateAll();
+}
+
+// Master calculation router
+function calculateAll() {
+  if (currentCountry === 'us') {
+    let totCredits = 0;
+    let totPoints = 0;
+    usCourses.forEach(c => {
+      totCredits += c.credits;
+      totPoints += c.credits * c.grade;
+    });
+    const gpa = totCredits > 0 ? (totPoints / totCredits) : 0;
+    const gpaStr = gpa.toFixed(2);
+
+    let letter = 'A';
+    if (gpa < 2.0) letter = 'F';
+    else if (gpa < 2.3) letter = 'C';
+    else if (gpa < 2.7) letter = 'C+';
+    else if (gpa < 3.0) letter = 'B-';
+    else if (gpa < 3.3) letter = 'B';
+    else if (gpa < 3.7) letter = 'B+';
+    else if (gpa < 3.9) letter = 'A-';
+
+    document.getElementById('res-country-label').textContent = 'United States Cumulative GPA (4.0 Scale)';
+    document.getElementById('res-main-score').textContent = gpaStr;
+    document.getElementById('res-classification-sub').textContent = `Total Credits: ${totCredits} | Quality Points: ${totPoints.toFixed(1)} | Academic Standing: ${gpa >= 3.5 ? "Dean's List / Honors" : "Good Standing"}`;
+
+    document.getElementById('metric-1-val').textContent = totCredits;
+    document.getElementById('metric-1-lbl').textContent = 'Credit Hours';
+    document.getElementById('metric-2-val').textContent = totPoints.toFixed(1);
+    document.getElementById('metric-2-lbl').textContent = 'Quality Points';
+    document.getElementById('metric-3-val').textContent = letter;
+    document.getElementById('metric-3-lbl').textContent = 'Letter Grade';
+    document.getElementById('metric-4-val').textContent = (gpa * 25).toFixed(1) + '%';
+    document.getElementById('metric-4-lbl').textContent = 'Approx Percentage';
+
+  } else if (currentCountry === 'india') {
+    const cgpa = parseFloat(document.getElementById('india-cgpa').value) || 0;
+    const formula = document.getElementById('india-formula').value;
+    let pct = 0;
+
+    if (formula === 'cbse') {
+      pct = cgpa * 9.5;
+    } else if (formula === 'aicte') {
+      pct = Math.max(0, (cgpa - 0.75) * 10);
+    } else if (formula === 'mumbai') {
+      pct = (cgpa * 7.1) + 11;
+    } else if (formula === 'anna') {
+      pct = cgpa * 10;
+    } else if (formula === 'calcutta') {
+      pct = (cgpa * 10) - 4.5;
+    }
+
+    const pctStr = pct.toFixed(1) + '%';
+    let divClass = 'First Class with Distinction';
+    if (pct < 40) divClass = 'Fail';
+    else if (pct < 50) divClass = 'Pass Class';
+    else if (pct < 60) divClass = 'Second Class';
+    else if (pct < 70) divClass = 'First Class';
+
+    document.getElementById('res-country-label').textContent = 'India CGPA to Board / University Percentage';
+    document.getElementById('res-main-score').textContent = pctStr;
+    document.getElementById('res-classification-sub').textContent = `Entered CGPA: ${cgpa.toFixed(2)} / 10.0 | Division: ${divClass}`;
+
+    document.getElementById('metric-1-val').textContent = cgpa.toFixed(2);
+    document.getElementById('metric-1-lbl').textContent = '10-Point CGPA';
+    document.getElementById('metric-2-val').textContent = pctStr;
+    document.getElementById('metric-2-lbl').textContent = 'Converted Marks';
+    document.getElementById('metric-3-val').textContent = (cgpa >= 8.5 ? 'A+' : cgpa >= 7.5 ? 'A' : 'B');
+    document.getElementById('metric-3-lbl').textContent = 'Grade Band';
+    document.getElementById('metric-4-val').textContent = (cgpa * 0.4).toFixed(2);
+    document.getElementById('metric-4-lbl').textContent = 'Est. US 4.0 GPA';
+
+  } else if (currentCountry === 'uk') {
+    let totCredits = 0;
+    let weightedMarks = 0;
+    ukModules.forEach(m => {
+      totCredits += m.credits;
+      weightedMarks += m.credits * m.mark;
+    });
+    const avg = totCredits > 0 ? (weightedMarks / totCredits) : 0;
+    const avgStr = avg.toFixed(1) + '%';
+
+    let honours = 'First-Class Honours (1st)';
+    if (avg < 40) honours = 'Fail / No Degree';
+    else if (avg < 50) honours = 'Third-Class Honours (3rd)';
+    else if (avg < 60) honours = 'Lower Second-Class Honours (2:2)';
+    else if (avg < 70) honours = 'Upper Second-Class Honours (2:1)';
+
+    document.getElementById('res-country-label').textContent = 'United Kingdom Degree Honours Classification';
+    document.getElementById('res-main-score').textContent = honours;
+    document.getElementById('res-classification-sub').textContent = `Overall Weighted Average: ${avgStr} across ${totCredits} CATS credits`;
+
+    document.getElementById('metric-1-val').textContent = totCredits;
+    document.getElementById('metric-1-lbl').textContent = 'CATS Credits';
+    document.getElementById('metric-2-val').textContent = avgStr;
+    document.getElementById('metric-2-lbl').textContent = 'Weighted Mark';
+    document.getElementById('metric-3-val').textContent = avg >= 70 ? '1st' : avg >= 60 ? '2:1' : avg >= 50 ? '2:2' : '3rd';
+    document.getElementById('metric-3-lbl').textContent = 'Honours Tier';
+    document.getElementById('metric-4-val').textContent = avg >= 70 ? '4.00' : avg >= 60 ? '3.33' : '3.00';
+    document.getElementById('metric-4-lbl').textContent = 'Est. US 4.0 GPA';
+
+  } else if (currentCountry === 'germany') {
+    const nd = parseFloat(document.getElementById('de-obtained').value) || 0;
+    const nmax = parseFloat(document.getElementById('de-max').value) || 10;
+    const nmin = parseFloat(document.getElementById('de-min').value) || 4;
+
+    let germanGrade = 1 + 3 * ((nmax - nd) / (nmax - nmin));
+    if (germanGrade < 1.0) germanGrade = 1.0;
+    if (germanGrade > 5.0) germanGrade = 5.0;
+
+    const gStr = germanGrade.toFixed(2);
+    let desc = 'Sehr Gut (Very Good / Excellent)';
+    if (germanGrade > 4.0) desc = 'Nicht Ausreichend (Fail)';
+    else if (germanGrade > 3.0) desc = 'Ausreichend (Sufficient / Pass)';
+    else if (germanGrade > 2.5) desc = 'Befriedigend (Satisfactory)';
+    else if (germanGrade > 1.5) desc = 'Gut (Good)';
+
+    document.getElementById('res-country-label').textContent = 'German Grade (Bavarian Formula / uni-assist)';
+    document.getElementById('res-main-score').textContent = gStr;
+    document.getElementById('res-classification-sub').textContent = `German Rating: ${desc} (Scale: 1.0 best, 4.0 pass, 5.0 fail)`;
+
+    document.getElementById('metric-1-val').textContent = gStr;
+    document.getElementById('metric-1-lbl').textContent = 'German Grade';
+    document.getElementById('metric-2-val').textContent = germanGrade <= 2.5 ? 'Eligible' : 'Check Criteria';
+    document.getElementById('metric-2-lbl').textContent = "German Master's";
+    document.getElementById('metric-3-val').textContent = desc.split(' ')[0];
+    document.getElementById('metric-3-lbl').textContent = 'German Verdict';
+    document.getElementById('metric-4-val').textContent = nd.toFixed(2);
+    document.getElementById('metric-4-lbl').textContent = 'Home Country Mark';
+
+  } else if (currentCountry === 'canada') {
+    let totCredits = 0;
+    let totPoints = 0;
+    canadaCourses.forEach(c => {
+      totCredits += c.credits;
+      totPoints += c.credits * c.grade;
+    });
+    const gpa = totCredits > 0 ? (totPoints / totCredits) : 0;
+
+    document.getElementById('res-country-label').textContent = 'Canada Cumulative GPA (4.33 Scale)';
+    document.getElementById('res-main-score').textContent = gpa.toFixed(2);
+    document.getElementById('res-classification-sub').textContent = `Total Credits: ${totCredits} | Quality Points: ${totPoints.toFixed(2)} | Scale: UBC / SFU 4.33 Standard`;
+
+    document.getElementById('metric-1-val').textContent = totCredits;
+    document.getElementById('metric-1-lbl').textContent = 'Credits';
+    document.getElementById('metric-2-val').textContent = totPoints.toFixed(1);
+    document.getElementById('metric-2-lbl').textContent = 'Quality Points';
+    document.getElementById('metric-3-val').textContent = gpa >= 4.0 ? 'A+' : gpa >= 3.67 ? 'A' : 'B+';
+    document.getElementById('metric-3-lbl').textContent = 'Letter Grade';
+    document.getElementById('metric-4-val').textContent = ((gpa / 4.33) * 100).toFixed(1) + '%';
+    document.getElementById('metric-4-lbl').textContent = 'Approx Percentage';
+
+  } else if (currentCountry === 'australia') {
+    let totCredits = 0;
+    let weightedMarks = 0;
+    let totalGradePoints = 0;
+    ausSubjects.forEach(s => {
+      totCredits += s.credits;
+      weightedMarks += s.credits * s.mark;
+      totalGradePoints += s.credits * s.gradePoint;
+    });
+    const wam = totCredits > 0 ? (weightedMarks / totCredits) : 0;
+    const gpa = totCredits > 0 ? (totalGradePoints / totCredits) : 0;
+
+    let tier = 'High Distinction (HD)';
+    if (wam < 50) tier = 'Fail (F)';
+    else if (wam < 65) tier = 'Pass (P)';
+    else if (wam < 75) tier = 'Credit (C)';
+    else if (wam < 85) tier = 'Distinction (D)';
+
+    document.getElementById('res-country-label').textContent = 'Australia Weighted Average Mark (WAM) & 7.0 GPA';
+    document.getElementById('res-main-score').textContent = wam.toFixed(1) + ' WAM';
+    document.getElementById('res-classification-sub').textContent = `7-Point GPA: ${gpa.toFixed(2)} | Standing: ${tier}`;
+
+    document.getElementById('metric-1-val').textContent = totCredits;
+    document.getElementById('metric-1-lbl').textContent = 'Credit Points';
+    document.getElementById('metric-2-val').textContent = wam.toFixed(1) + '%';
+    document.getElementById('metric-2-lbl').textContent = 'WAM Score';
+    document.getElementById('metric-3-val').textContent = gpa.toFixed(2);
+    document.getElementById('metric-3-lbl').textContent = '7.0 GPA';
+    document.getElementById('metric-4-val').textContent = tier.split(' ')[0];
+    document.getElementById('metric-4-lbl').textContent = 'Go8 Tier';
+
+  } else if (currentCountry === 'nigeria') {
+    let totUnits = 0;
+    let totalPoints = 0;
+    nigeriaCourses.forEach(c => {
+      totUnits += c.credits;
+      totalPoints += c.credits * c.grade;
+    });
+    const cgpa = totUnits > 0 ? (totalPoints / totUnits) : 0;
+
+    let cls = 'First Class Honours (4.50 - 5.00)';
+    if (cgpa < 1.00) cls = 'Fail';
+    else if (cgpa < 1.50) cls = 'Pass';
+    else if (cgpa < 2.40) cls = 'Third Class';
+    else if (cgpa < 3.50) cls = 'Second Class Lower (2:2)';
+    else if (cgpa < 4.50) cls = 'Second Class Upper (2:1)';
+
+    document.getElementById('res-country-label').textContent = 'Nigeria Cumulative GPA (5.00 Scale / NUC)';
+    document.getElementById('res-main-score').textContent = cgpa.toFixed(2);
+    document.getElementById('res-classification-sub').textContent = `Total Credit Units: ${totUnits} | Standing: ${cls}`;
+
+    document.getElementById('metric-1-val').textContent = totUnits;
+    document.getElementById('metric-1-lbl').textContent = 'Credit Units';
+    document.getElementById('metric-2-val').textContent = totalPoints.toFixed(1);
+    document.getElementById('metric-2-lbl').textContent = 'Weighted Points';
+    document.getElementById('metric-3-val').textContent = cgpa >= 4.5 ? '1st Class' : cgpa >= 3.5 ? '2:1 Upper' : '2:2 Lower';
+    document.getElementById('metric-3-lbl').textContent = 'Degree Class';
+    document.getElementById('metric-4-val').textContent = (cgpa * 20).toFixed(1) + '%';
+    document.getElementById('metric-4-lbl').textContent = 'Equivalent %';
+  }
+}
+
+// Attach input listeners
+['india-cgpa', 'india-formula', 'de-obtained', 'de-max', 'de-min'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calculateAll);
+    el.addEventListener('change', calculateAll);
+  }
+});
+
+// Initialize tables
+renderUsCourses();
+renderUkModules();
+renderCanadaCourses();
+renderAusSubjects();
+renderNigeriaCourses();
+calculateAll();
+</script>
+
+</body>
+</html>

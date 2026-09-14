@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BMR Calculator (Mifflin-St Jeor, Katch-McArdle &amp; Harris-Benedict) | LedgerMate</title>
+<meta name="description" content="Calculate your true Basal Metabolic Rate (BMR) across 3 clinical formulas: Mifflin-St Jeor, Katch-McArdle (lean mass), and Revised Harris-Benedict. Comprehensive guide to resting organ energy expenditure." />
+<link rel="canonical" href="https://tryledgermate.in/tools/bmr-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="BMR Calculator (Multi-Formula Comparison) | LedgerMate" />
+<meta property="og:description" content="Find the calories your body burns strictly at rest. Compare Mifflin-St Jeor, Katch-McArdle, and Harris-Benedict formulas." />
+<meta property="og:url" content="https://tryledgermate.in/tools/bmr-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Multi-Formula BMR Calculator",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web, iOS, Android, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Basal Metabolic Rate (BMR) multi-formula calculator comparing Mifflin-St Jeor, Revised Harris-Benedict, and lean-body-mass Katch-McArdle equations.",
+  "featureList": [
+    "Mifflin-St Jeor gold-standard BMR calculation",
+    "Revised Harris-Benedict (1984 Roza & Shizgal) formula",
+    "Katch-McArdle formula based on Lean Body Mass (LBM)",
+    "Metric (kg/cm) and Imperial (lbs/inches) unit toggles",
+    "Activity level projections from sedentary to very active"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Basal Metabolic Rate (BMR)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Basal Metabolic Rate is the minimum amount of energy (in calories) required by your body to sustain vital functions—including breathing, blood circulation, cellular repair, protein synthesis, and ion transport across cell membranes—while at complete rest in a neutrally temperate environment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do BMR formulas give different results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Different formulas were derived from different historical cohorts. The Harris-Benedict formula (1919, revised 1984) was modeled on younger, leaner individuals and tends to overestimate BMR by about 5% in modern populations. The Mifflin-St Jeor formula (1990) is more accurate for contemporary lifestyles, while Katch-McArdle utilizes measured body fat percentage to calculate BMR exclusively from lean body mass."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which organs burn the most calories at rest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The liver is the most metabolically active organ, consuming approximately 27% of your BMR, followed by the brain (19%), skeletal muscle at rest (18%), kidneys (10%), heart (7%), and remaining organs (19%)."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/tdee-calculator/">TDEE Calculator</a>
+      <a href="/tools/ovulation-calculator/">Ovulation Calculator</a>
+      <a href="/tools/scientific-calculator/">Scientific Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Tools</a> <span>/</span> BMR Calculator
+  </div>
+
+  <h1 style="font-size:36px;margin-bottom:12px;text-align:center;">BMR Calculator (Multi-Formula)</h1>
+  <p class="sub" style="font-size:16px;max-width:640px;margin:0 auto;text-align:center;">Find your true Basal Metabolic Rate — the calories your body burns strictly staying alive at complete rest. Compares Mifflin-St Jeor, Harris-Benedict, and lean-mass Katch-McArdle.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:56px;">
+  <div class="calc-card">
+
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="btn-gender-male">Male</button>
+      <button type="button" class="chip-btn" id="btn-gender-female">Female</button>
+      <button type="button" class="chip-btn active" id="btn-unit-metric">Metric (kg / cm)</button>
+      <button type="button" class="chip-btn" id="btn-unit-imperial">Imperial (lbs / ft)</button>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="age-input">Age (Years)</label>
+        <input id="age-input" type="number" step="1" min="15" max="100" value="28" />
+      </div>
+      <div style="flex:1;">
+        <label for="weight-input" id="lbl-weight">Weight (kg)</label>
+        <input id="weight-input" type="number" step="0.5" min="30" max="250" value="75" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="height-input" id="lbl-height">Height (cm)</label>
+        <input id="height-input" type="number" step="1" min="100" max="230" value="178" />
+      </div>
+      <div style="flex:1;">
+        <label for="bodyfat-input">Body Fat % (Optional for Katch-McArdle)</label>
+        <input id="bodyfat-input" type="number" step="0.5" min="4" max="55" value="18" />
+      </div>
+    </div>
+
+    <div class="calc-result" style="margin-top:20px;">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Mifflin-St Jeor BMR (Gold Standard)</span>
+        <div style="font-size:clamp(32px,6vw,44px);font-weight:800;color:var(--text);margin:6px 0;" id="res-bmr-primary">1,732 kcal / day</div>
+        <span style="font-size:14px;color:var(--text-muted);" id="res-bmr-sub">Approx. 72 kcal/hour burned while sleeping or resting.</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-mifflin">1,732 kcal</div>
+          <div class="metric-lbl">Mifflin-St Jeor</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-harris">1,795 kcal</div>
+          <div class="metric-lbl">Revised Harris-Benedict</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-katch">1,755 kcal</div>
+          <div class="metric-lbl">Katch-McArdle (Lean Mass)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-sedentary">2,078 kcal</div>
+          <div class="metric-lbl">Sedentary TDEE (×1.2)</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:18px;">
+        <h4 style="margin:0 0 12px;font-size:15px;color:var(--text);font-weight:700;">Estimated Maintenance Calories by Daily Activity Level</h4>
+        <div class="calc-result-row">
+          <span>Sedentary (Desk job, little to no exercise × 1.2)</span>
+          <span class="amt" id="d-sedentary">2,078 kcal</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Lightly Active (1–3 workouts/week × 1.375)</span>
+          <span class="amt" id="d-light">2,382 kcal</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Moderately Active (3–5 workouts/week × 1.55)</span>
+          <span class="amt" id="d-mod">2,685 kcal</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Very Active (6–7 hard workouts/week × 1.725)</span>
+          <span class="amt" id="d-very">2,988 kcal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box" style="margin-top:24px;">
+      <h4>💡 Clinical Insight: Why BMR Formulas Differ by 100+ Calories</h4>
+      <ul class="mindmap-list">
+        <li><strong>Mifflin-St Jeor vs. Harris-Benedict:</strong> Harris-Benedict was formulated in 1919 and revised in 1984. It tends to overestimate metabolic rates in modern sedentary populations by roughly 5%. The Mifflin-St Jeor formula (1990) is considered the most accurate baseline by the Academy of Nutrition and Dietetics.</li>
+        <li><strong>Muscular Athletes:</strong> If you carry substantial muscle mass, standard formulas underestimate your BMR because they treat weight as generic mass. The Katch-McArdle formula computes BMR strictly from Fat-Free Mass (FFM), providing the most accurate figure for strength athletes.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta" style="margin-top:24px;">
+      <div>
+        <p>Planning group meal prep or gym split expenses?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to split grocery runs and meal subscriptions effortlessly — 100% free with no ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Open LedgerMate</a>
+    </div>
+
+  </div>
+
+  <!-- Deep Clinical Reference Article -->
+  <article style="margin-top:44px;line-height:1.7;">
+    <h2>The Complete Medical Guide to Basal Metabolic Rate (BMR)</h2>
+    <p>Your <strong>Basal Metabolic Rate (BMR)</strong> represents the absolute floor of energy expenditure required to sustain biological existence in a post-absorptive, thermoneutral state without any physical movement. It accounts for 60% to 75% of all daily calorie expenditure in non-athletes.</p>
+
+    <h3>1. Which Organs Consume Your BMR Calories?</h3>
+    <p>While many people assume skeletal muscle burns the vast majority of resting calories, internal organs are far more metabolically demanding gram-for-gram:</p>
+    <div class="table-responsive">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Organ / Tissue</th>
+            <th>% of Total BMR</th>
+            <th>Metabolic Rate per kg</th>
+            <th>Primary Physiological Functions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Liver</strong></td>
+            <td>~27%</td>
+            <td>200 kcal/kg/day</td>
+            <td>Gluconeogenesis, protein synthesis, bile production, detoxification.</td>
+          </tr>
+          <tr>
+            <td><strong>Brain</strong></td>
+            <td>~19%</td>
+            <td>240 kcal/kg/day</td>
+            <td>Synaptic transmission, ion gradient maintenance (Na+/K+ ATPase).</td>
+          </tr>
+          <tr>
+            <td><strong>Skeletal Muscle (at rest)</strong></td>
+            <td>~18%</td>
+            <td>13 kcal/kg/day</td>
+            <td>Basal tone, protein turnover, glycogen storage.</td>
+          </tr>
+          <tr>
+            <td><strong>Kidneys</strong></td>
+            <td>~10%</td>
+            <td>440 kcal/kg/day</td>
+            <td>Glomerular filtration, electrolyte reabsorption against chemical gradients.</td>
+          </tr>
+          <tr>
+            <td><strong>Heart</strong></td>
+            <td>~7%</td>
+            <td>440 kcal/kg/day</td>
+            <td>Continuous mechanical myocardium pumping (~100,000 beats daily).</td>
+          </tr>
+          <tr>
+            <td><strong>Adipose Tissue (Fat)</strong></td>
+            <td>~5%</td>
+            <td>4.5 kcal/kg/day</td>
+            <td>Endocrine leptin/adiponectin secretion, lipid storage turnover.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2. The Three Primary BMR Formulas Explained</h3>
+    <ul>
+      <li><strong>Mifflin-St Jeor (1990):</strong>
+        <br /><code>Men: 10 × weight(kg) + 6.25 × height(cm) - 5 × age(y) + 5</code>
+        <br /><code>Women: 10 × weight(kg) + 6.25 × height(cm) - 5 × age(y) - 161</code>
+        <br />Validated in extensive clinical trials to predict resting metabolic rate within 10% for over 82% of individuals.
+      </li>
+      <li><strong>Revised Harris-Benedict (1984 Roza &amp; Shizgal):</strong>
+        <br /><code>Men: 88.362 + (13.397 × weight) + (4.799 × height) - (5.677 × age)</code>
+        <br /><code>Women: 447.593 + (9.247 × weight) + (3.098 × height) - (4.330 × age)</code>
+      </li>
+      <li><strong>Katch-McArdle:</strong>
+        <br /><code>BMR = 370 + 21.6 × Lean Body Mass(kg)</code>
+        <br />Because fat tissue is relatively inert (~4.5 kcal/kg) compared to muscle and organs, factoring out body fat yields the highest precision for lean and muscular physiques.
+      </li>
+    </ul>
+
+    <h2 style="margin-top:40px;">Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Can you increase your BMR permanently?</summary>
+      <p>Yes, primarily by increasing lean skeletal muscle mass through progressive resistance training. Gaining 10 pounds (4.5 kg) of functional muscle increases your 24-hour resting expenditure both at rest (~60–100 kcal/day) and significantly increases exercise energy expenditure due to greater mechanical work.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Does drinking cold water increase BMR?</summary>
+      <p>Drinking ice-cold water requires the body to expend a negligible amount of thermal energy to warm the liquid from 0°C to core body temperature (37°C). Drinking 500 mL of ice water expends only approximately 17 kilocalories—a negligible factor for real-world fat loss.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why does BMR decline as we age?</summary>
+      <p>BMR decreases by roughly 1% to 2% per decade after age 30, primarily due to age-related sarcopenia (loss of skeletal muscle mass), reductions in organ mass, and lowered mitochondrial oxidative enzyme activity. Resistance training substantially prevents this decline.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mathematical and fitness calculators.</p>
+      </div>
+      <div>
+        <h4>Health &amp; Fitness</h4>
+        <ul>
+          <li><a href="/tools/bmr-calculator/">BMR Calculator</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calorie Calculator</a></li>
+          <li><a href="/tools/ovulation-calculator/">Ovulation Calculator</a></li>
+          <li><a href="/tools/pregnancy-due-date-calculator/">Pregnancy Due Date</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Finance Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Home Loan EMI</a></li>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck</a></li>
+          <li><a href="/tools/compound-interest-calculator/">Compound Interest</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Fast &amp; Ad-Free Health Utilities. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+  </div>
+</footer>
+
+<script>
+let gender = 'male';
+let unit = 'metric';
+
+document.getElementById('btn-gender-male').addEventListener('click', () => {
+  gender = 'male';
+  document.getElementById('btn-gender-male').classList.add('active');
+  document.getElementById('btn-gender-female').classList.remove('active');
+  calc();
+});
+
+document.getElementById('btn-gender-female').addEventListener('click', () => {
+  gender = 'female';
+  document.getElementById('btn-gender-female').classList.add('active');
+  document.getElementById('btn-gender-male').classList.remove('active');
+  calc();
+});
+
+document.getElementById('btn-unit-metric').addEventListener('click', () => {
+  unit = 'metric';
+  document.getElementById('btn-unit-metric').classList.add('active');
+  document.getElementById('btn-unit-imperial').classList.remove('active');
+  document.getElementById('lbl-weight').textContent = "Weight (kg)";
+  document.getElementById('lbl-height').textContent = "Height (cm)";
+  calc();
+});
+
+document.getElementById('btn-unit-imperial').addEventListener('click', () => {
+  unit = 'imperial';
+  document.getElementById('btn-unit-imperial').classList.add('active');
+  document.getElementById('btn-unit-metric').classList.remove('active');
+  document.getElementById('lbl-weight').textContent = "Weight (lbs)";
+  document.getElementById('lbl-height').textContent = "Height (inches)";
+  calc();
+});
+
+function calc() {
+  const age = parseFloat(document.getElementById('age-input').value) || 28;
+  let rawWeight = parseFloat(document.getElementById('weight-input').value) || 75;
+  let rawHeight = parseFloat(document.getElementById('height-input').value) || 178;
+  const bf = parseFloat(document.getElementById('bodyfat-input').value) || 18;
+
+  const weightKg = unit === 'metric' ? rawWeight : rawWeight * 0.453592;
+  const heightCm = unit === 'metric' ? rawHeight : rawHeight * 2.54;
+
+  // Mifflin-St Jeor
+  const s = gender === 'male' ? 5 : -161;
+  const bmrMifflin = Math.round(10 * weightKg + 6.25 * heightCm - 5 * age + s);
+
+  // Revised Harris-Benedict
+  let bmrHarris = 0;
+  if (gender === 'male') {
+    bmrHarris = Math.round(88.362 + (13.397 * weightKg) + (4.799 * heightCm) - (5.677 * age));
+  } else {
+    bmrHarris = Math.round(447.593 + (9.247 * weightKg) + (3.098 * heightCm) - (4.330 * age));
+  }
+
+  // Katch-McArdle (needs lean body mass)
+  const lbm = weightKg * (1 - (bf / 100));
+  const bmrKatch = Math.round(370 + (21.6 * lbm));
+
+  const sed = Math.round(bmrMifflin * 1.2);
+  const light = Math.round(bmrMifflin * 1.375);
+  const mod = Math.round(bmrMifflin * 1.55);
+  const very = Math.round(bmrMifflin * 1.725);
+
+  document.getElementById('res-bmr-primary').textContent = `${bmrMifflin.toLocaleString()} kcal / day`;
+  document.getElementById('res-bmr-sub').textContent = `Burns approx ${Math.round(bmrMifflin / 24)} kcal per hour strictly at rest.`;
+
+  document.getElementById('m-mifflin').textContent = `${bmrMifflin.toLocaleString()} kcal`;
+  document.getElementById('m-harris').textContent = `${bmrHarris.toLocaleString()} kcal`;
+  document.getElementById('m-katch').textContent = `${bmrKatch.toLocaleString()} kcal`;
+  document.getElementById('m-sedentary').textContent = `${sed.toLocaleString()} kcal`;
+
+  document.getElementById('d-sedentary').textContent = `${sed.toLocaleString()} kcal`;
+  document.getElementById('d-light').textContent = `${light.toLocaleString()} kcal`;
+  document.getElementById('d-mod').textContent = `${mod.toLocaleString()} kcal`;
+  document.getElementById('d-very').textContent = `${very.toLocaleString()} kcal`;
+}
+
+['age-input', 'weight-input', 'height-input', 'bodyfat-input'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

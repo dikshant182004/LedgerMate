@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aspect Ratio &amp; Screen Resolution Calculator | LedgerMate</title>
+<meta name="description" content="Free Aspect Ratio Calculator. Calculate dimensions for 16:9, 16:10, 4:3, 21:9, and 9:16 vertical video. Includes presets for 1080p, 1440p, 4K, TikTok, and Instagram." />
+<link rel="canonical" href="https://tryledgermate.in/tools/aspect-ratio-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Aspect Ratio &amp; Resolution Calculator | LedgerMate" />
+<meta property="og:description" content="Calculate width and height while maintaining aspect ratios for video, photography, and monitors." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Aspect Ratio Calculator",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates proportional display resolutions and simplifies aspect ratios using GCD.",
+  "featureList": [
+    "Presets for 16:9, 16:10, 4:3, 21:9 Ultrawide, and 9:16 Vertical Video",
+    "Screen resolutions: 1080p, 1440p, 4K UHD, 8K",
+    "GCD-based custom aspect ratio simplifier",
+    "Interactive visual aspect ratio preview canvas"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the aspect ratio of 1920x1080?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1920x1080 has an aspect ratio of 16:9. Dividing 1920 and 1080 by their greatest common divisor (120) yields 16 and 9."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/px-to-rem-converter/">PX to REM</a>
+      <a href="/tools/download-time-calculator/">Download Time</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Aspect Ratio Calculator
+  </div>
+
+  <h1>Aspect Ratio &amp; Screen Resolution Calculator</h1>
+  <p class="sub">Resize images and videos without distortion. Calculate proportional widths and heights for standard displays (16:9, 16:10, 21:9) and social video (9:16, 4:5, 1:1).</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" onclick="setRatioPreset(16, 9)">16:9 (Widescreen)</button>
+      <button type="button" class="chip-btn" onclick="setRatioPreset(9, 16)">9:16 (TikTok / Reels)</button>
+      <button type="button" class="chip-btn" onclick="setRatioPreset(16, 10)">16:10 (MacBook / PC)</button>
+      <button type="button" class="chip-btn" onclick="setRatioPreset(21, 9)">21:9 (Ultrawide)</button>
+      <button type="button" class="chip-btn" onclick="setRatioPreset(4, 3)">4:3 (Classic)</button>
+      <button type="button" class="chip-btn" onclick="setRatioPreset(1, 1)">1:1 (Square)</button>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="ratio-w">Ratio Width</label>
+        <input id="ratio-w" type="number" step="1" min="1" max="100" value="16" />
+      </div>
+      <div style="flex:1;">
+        <label for="ratio-h">Ratio Height</label>
+        <input id="ratio-h" type="number" step="1" min="1" max="100" value="9" />
+      </div>
+      <div style="flex:1.4;">
+        <label for="resolution-preset">Resolution Presets</label>
+        <select id="resolution-preset" onchange="applyResolutionPreset(this.value)">
+          <option value="1920x1080" selected>1080p FHD (1920 × 1080)</option>
+          <option value="2560x1440">1440p QHD (2560 × 1440)</option>
+          <option value="3840x2160">4K UHD (3840 × 2160)</option>
+          <option value="1080x1920">TikTok / Reels (1080 × 1920)</option>
+          <option value="1080x1350">Instagram Portrait (1080 × 1350)</option>
+          <option value="3440x1440">Ultrawide (3440 × 1440)</option>
+          <option value="1280x720">720p HD (1280 × 720)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="dim-w">Width (px)</label>
+        <input id="dim-w" type="number" step="10" min="1" max="50000" value="1920" />
+      </div>
+      <div style="flex:1;">
+        <label for="dim-h">Height (px)</label>
+        <input id="dim-h" type="number" step="10" min="1" max="50000" value="1080" />
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Calculated Aspect Ratio</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-ratio-headline">16:9</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-total-pixels">Resolution: 1920 × 1080 | 2.07 Megapixels</span>
+      </div>
+
+      <!-- Proportional visual box preview -->
+      <div style="display:flex;justify-content:center;align-items:center;padding:16px 0;">
+        <div id="aspect-box" style="background:rgba(37,99,235,0.12);border:2px solid var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:700;font-size:13px;transition:all 0.2s ease;">
+          16:9 Preview
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-ratio-str">16:9</div>
+          <div class="metric-lbl">Aspect Ratio</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-ratio-dec">1.78 : 1</div>
+          <div class="metric-lbl">Decimal Ratio</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-megapixels" style="color:#2563EB;">2.07 MP</div>
+          <div class="metric-lbl">Total Megapixels</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-orientation">Landscape</div>
+          <div class="metric-lbl">Orientation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 Common Aspect Ratios in Modern Media</h4>
+      <ul class="mindmap-list">
+        <li><strong>16:9 (1.78:1):</strong> Standard for YouTube, HDTV, PC monitors, and television broadcasting.</li>
+        <li><strong>9:16 (0.56:1):</strong> Inverted widescreen format for TikTok, Instagram Reels, and YouTube Shorts.</li>
+        <li><strong>21:9 (2.39:1):</strong> Anamorphic widescreen for cinematic movies and ultrawide gaming monitors.</li>
+        <li><strong>4:5 (0.80:1):</strong> Maximizes feed real estate in Instagram vertical posts (1080 × 1350).</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Sharing studio equipment, cameras, or creative production bills?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to split creative production expenses with zero ads.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>How to Calculate Aspect Ratios (Greatest Common Divisor)</h2>
+    <p>To reduce any pixel resolution to its simplest aspect ratio, divide both the width and height by their greatest common divisor (GCD). For example, with 1920 and 1080, the GCD is 120, yielding 16:9.</p>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free mathematical and design utilities.</p>
+      </div>
+      <div>
+        <h4>Design &amp; Media Tools</h4>
+        <ul>
+          <li><a href="/tools/aspect-ratio-calculator/">Aspect Ratio Calculator</a></li>
+          <li><a href="/tools/px-to-rem-converter/">PX to REM Converter</a></li>
+          <li><a href="/tools/download-time-calculator/">Download Time</a></li>
+          <li><a href="/tools/unit-converter/">Unit Converter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Aspect Ratio &amp; Display Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function gcd(a, b) {
+  return b === 0 ? a : gcd(b, a % b);
+}
+
+function setRatioPreset(w, h) {
+  document.getElementById('ratio-w').value = w;
+  document.getElementById('ratio-h').value = h;
+  const currentW = parseFloat(document.getElementById('dim-w').value) || 1920;
+  const newH = Math.round(currentW * (h / w));
+  document.getElementById('dim-h').value = newH;
+  update();
+}
+
+function applyResolutionPreset(val) {
+  const parts = val.split('x');
+  const w = parseInt(parts[0], 10);
+  const h = parseInt(parts[1], 10);
+  document.getElementById('dim-w').value = w;
+  document.getElementById('dim-h').value = h;
+  const g = gcd(w, h);
+  document.getElementById('ratio-w').value = w / g;
+  document.getElementById('ratio-h').value = h / g;
+  update();
+}
+
+function onWidthChange() {
+  const rw = parseFloat(document.getElementById('ratio-w').value) || 16;
+  const rh = parseFloat(document.getElementById('ratio-h').value) || 9;
+  const w = parseFloat(document.getElementById('dim-w').value) || 0;
+  if (rw > 0) {
+    document.getElementById('dim-h').value = Math.round(w * (rh / rw));
+  }
+  update();
+}
+
+function onHeightChange() {
+  const rw = parseFloat(document.getElementById('ratio-w').value) || 16;
+  const rh = parseFloat(document.getElementById('ratio-h').value) || 9;
+  const h = parseFloat(document.getElementById('dim-h').value) || 0;
+  if (rh > 0) {
+    document.getElementById('dim-w').value = Math.round(h * (rw / rh));
+  }
+  update();
+}
+
+function onRatioChange() {
+  const rw = parseFloat(document.getElementById('ratio-w').value) || 16;
+  const rh = parseFloat(document.getElementById('ratio-h').value) || 9;
+  const w = parseFloat(document.getElementById('dim-w').value) || 1920;
+  document.getElementById('dim-h').value = Math.round(w * (rh / rw));
+  update();
+}
+
+function update() {
+  const w = Math.round(parseFloat(document.getElementById('dim-w').value) || 0);
+  const h = Math.round(parseFloat(document.getElementById('dim-h').value) || 0);
+
+  if (w <= 0 || h <= 0) return;
+
+  const g = gcd(w, h);
+  const rw = w / g;
+  const rh = h / g;
+  const dec = (w / h).toFixed(2);
+  const mp = ((w * h) / 1000000).toFixed(2);
+  const orientation = w > h ? 'Landscape' : (w < h ? 'Portrait' : 'Square');
+
+  document.getElementById('res-ratio-headline').textContent = `${rw}:${rh}`;
+  document.getElementById('res-total-pixels').textContent = `Resolution: ${w} × ${h} | ${mp} Megapixels`;
+
+  document.getElementById('m-ratio-str').textContent = `${rw}:${rh}`;
+  document.getElementById('m-ratio-dec').textContent = `${dec} : 1`;
+  document.getElementById('m-megapixels').textContent = `${mp} MP`;
+  document.getElementById('m-orientation').textContent = orientation;
+
+  // Visual aspect box
+  const box = document.getElementById('aspect-box');
+  const maxDim = 160;
+  if (w >= h) {
+    box.style.width = maxDim + 'px';
+    box.style.height = Math.max(24, Math.round(maxDim * (h / w))) + 'px';
+  } else {
+    box.style.height = maxDim + 'px';
+    box.style.width = Math.max(24, Math.round(maxDim * (w / h))) + 'px';
+  }
+  box.textContent = `${rw}:${rh}`;
+}
+
+document.getElementById('dim-w').addEventListener('input', onWidthChange);
+document.getElementById('dim-h').addEventListener('input', onHeightChange);
+document.getElementById('ratio-w').addEventListener('input', onRatioChange);
+document.getElementById('ratio-h').addEventListener('input', onRatioChange);
+
+update();
+</script>
+
+</body>
+</html>

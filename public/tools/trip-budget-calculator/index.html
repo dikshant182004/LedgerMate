@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trip Budget &amp; Group Travel Cost Calculator | LedgerMate</title>
+<meta name="description" content="Plan and split vacation and group travel budgets. Calculate flights, hotels/Airbnbs, daily food, tours, emergency buffer, and per-person cost breakdown. 100% free." />
+<link rel="canonical" href="https://tryledgermate.in/tools/trip-budget-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Trip Budget &amp; Group Travel Cost Calculator | LedgerMate" />
+<meta property="og:description" content="Calculate total vacation budgets, flight costs, hotel stays, food, and per-person group splits." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=3" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Trip Budget Calculator",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculates complete group travel expenses and per-traveler cost shares.",
+  "featureList": [
+    "Flights, trains, and transportation cost estimation",
+    "Lodging (hotels & Airbnbs) and daily dining allowances",
+    "Emergency 10% trip buffer contingency",
+    "Even per-person group cost splitting"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much contingency buffer should I budget for travel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Seasoned travel planners recommend a 10% to 15% contingency buffer above your primary expenses to cover unexpected baggage fees, surge pricing, ride shares, and medical or transit delays."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/gas-split-calculator/">Gas Split</a>
+      <a href="/tools/tip-calculator/">Tip Calculator</a>
+      <a href="/app/" class="btn btn-primary">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Trip Budget Calculator
+  </div>
+
+  <h1>Trip Budget &amp; Group Travel Calculator</h1>
+  <p class="sub">Accurately plan your vacation expenses. Model flights, lodging, daily meals, activities, and emergency buffers to see the exact cost per person.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="num-travelers">Number of Travelers</label>
+        <input id="num-travelers" type="number" step="1" min="1" max="50" value="4" />
+      </div>
+      <div style="flex:1;">
+        <label for="trip-days">Trip Duration (Days)</label>
+        <input id="trip-days" type="number" step="1" min="1" max="60" value="7" />
+      </div>
+      <div style="flex:1;">
+        <label for="currency-select">Currency</label>
+        <select id="currency-select">
+          <option value="$" selected>$ (USD)</option>
+          <option value="€">€ (EUR)</option>
+          <option value="£">£ (GBP)</option>
+          <option value="₹">₹ (INR)</option>
+          <option value="¥">¥ (JPY)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="flights-total">Total Flights / Transport</label>
+        <input id="flights-total" type="number" step="50" min="0" max="50000" value="1400" />
+      </div>
+      <div style="flex:1;">
+        <label for="lodging-daily">Lodging / Night (Total Hotel / Villa)</label>
+        <input id="lodging-daily" type="number" step="25" min="0" max="10000" value="220" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="food-daily-per-person">Meals &amp; Drinks / Day (Per Person)</label>
+        <input id="food-daily-per-person" type="number" step="5" min="0" max="1000" value="50" />
+      </div>
+      <div style="flex:1;">
+        <label for="activities-total">Activities, Tours &amp; Tickets (Total)</label>
+        <input id="activities-total" type="number" step="50" min="0" max="25000" value="600" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="buffer-pct">Contingency Buffer (%)</label>
+        <select id="buffer-pct">
+          <option value="0">0% (Strict)</option>
+          <option value="10" selected>10% (Recommended)</option>
+          <option value="15">15% (Safe)</option>
+          <option value="20">20% (Adventure / Remote)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Cost Per Traveler</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-per-person">$1,359 / person</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-total-trip-sub">Total Trip Budget: $5,434 (Including $494 Buffer)</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-flights">$1,400</div>
+          <div class="metric-lbl">Transportation Total</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-lodging">$1,540</div>
+          <div class="metric-lbl">Total Lodging (7 Nights)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-food">$1,400</div>
+          <div class="metric-lbl">Food &amp; Drinks Total</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-daily-cost">$194</div>
+          <div class="metric-lbl">Daily Spend / Person</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;">Expense Breakdown</h4>
+        <div class="calc-result-row">
+          <span>Lodging (${document.getElementById('trip-days').value} Nights)</span>
+          <span class="amt" id="d-lodging">$1,540</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Food &amp; Dining (Total Group)</span>
+          <span class="amt" id="d-food">$1,400</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Sightseeing &amp; Activities</span>
+          <span class="amt" id="d-act">$600</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Contingency Buffer</span>
+          <span class="amt" id="d-buffer">$494</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4>💡 3 Tips for Stress-Free Group Vacations</h4>
+      <ul class="mindmap-list">
+        <li><strong>Settle as You Go:</strong> Don't wait until the end of the trip to figure out who paid for what. Use LedgerMate during dinners, Uber rides, and ticket bookings to keep running balances clean.</li>
+        <li><strong>Agree on Daily Budgets Ahead:</strong> Having an upfront consensus on casual lunch vs fancy dinners prevents friction between luxury and budget travelers in the group.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Planning a group trip with friends right now?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Use LedgerMate to split group trip expenses in real time — 100% free with no 3-expense limits.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try LedgerMate Free</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;">
+    <h2>Why Travel Budgets Fail</h2>
+    <p>The three most commonly forgotten travel costs are airport ground transit, foreign transaction ATM fees, and tipping. Adding a 10% contingency buffer cushions your vacation against unexpected luggage fees and weather changes.</p>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Free travel and group budgeting utilities.</p>
+      </div>
+      <div>
+        <h4>Travel &amp; Splitting</h4>
+        <ul>
+          <li><a href="/tools/trip-budget-calculator/">Trip Budget Calculator</a></li>
+          <li><a href="/tools/gas-split-calculator/">Road Trip Gas Split</a></li>
+          <li><a href="/tools/tip-calculator/">Tip &amp; Bill Split</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Split (Sq Ft)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/discount-calculator/">Discount Calculator</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Travel Budget Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmt(sym, n) {
+  return sym + Math.round(n || 0).toLocaleString('en-US');
+}
+
+function calc() {
+  const travelers = Math.max(1, parseInt(document.getElementById('num-travelers').value, 10) || 1);
+  const days = Math.max(1, parseInt(document.getElementById('trip-days').value, 10) || 1);
+  const flights = parseFloat(document.getElementById('flights-total').value) || 0;
+  const lodgingDaily = parseFloat(document.getElementById('lodging-daily').value) || 0;
+  const foodDailyPerson = parseFloat(document.getElementById('food-daily-per-person').value) || 0;
+  const activities = parseFloat(document.getElementById('activities-total').value) || 0;
+  const bufferPct = (parseFloat(document.getElementById('buffer-pct').value) || 0) / 100;
+  const sym = document.getElementById('currency-select').value;
+
+  const totalLodging = lodgingDaily * days;
+  const totalFood = foodDailyPerson * days * travelers;
+  const baseCost = flights + totalLodging + totalFood + activities;
+  const bufferAmt = baseCost * bufferPct;
+  const totalTripCost = baseCost + bufferAmt;
+  const perPersonCost = totalTripCost / travelers;
+  const dailySpendPerPerson = perPersonCost / days;
+
+  document.getElementById('res-per-person').textContent = `${fmt(sym, perPersonCost)} / person`;
+  document.getElementById('res-total-trip-sub').textContent = `Total Trip Budget: ${fmt(sym, totalTripCost)} (Including ${fmt(sym, bufferAmt)} Buffer)`;
+
+  document.getElementById('m-flights').textContent = fmt(sym, flights);
+  document.getElementById('m-lodging').textContent = fmt(sym, totalLodging);
+  document.getElementById('m-food').textContent = fmt(sym, totalFood);
+  document.getElementById('m-daily-cost').textContent = `${fmt(sym, dailySpendPerPerson)} / day`;
+
+  document.getElementById('d-lodging').textContent = `${fmt(sym, totalLodging)} (${days} Nights)`;
+  document.getElementById('d-food').textContent = `${fmt(sym, totalFood)} (${travelers} People)`;
+  document.getElementById('d-act').textContent = fmt(sym, activities);
+  document.getElementById('d-buffer').textContent = fmt(sym, bufferAmt);
+}
+
+['num-travelers', 'trip-days', 'flights-total', 'lodging-daily', 'food-daily-per-person', 'activities-total', 'buffer-pct', 'currency-select'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

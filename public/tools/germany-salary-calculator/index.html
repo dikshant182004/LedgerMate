@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gehaltsrechner 2026: Brutto-Netto-Rechner für Deutschland | LedgerMate</title>
+<meta name="description" content="Kostenloser Brutto-Netto-Rechner 2026 für Deutschland. Berechne dein Nettoeinkommen nach Steuerklasse (I bis VI), Krankenversicherung, Rentenversicherung, Kirchensteuer und Pflegeversicherung." />
+<link rel="canonical" href="https://tryledgermate.in/tools/germany-salary-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Gehaltsrechner 2026: Brutto Netto Rechner | LedgerMate" />
+<meta property="og:description" content="Wie viel Netto bleibt vom Brutto? Steuerklassen I bis VI, Zusatzbeitrag, Renten- & Pflegeversicherung 2026 sofort berechnen." />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<style>
+.breadcrumb{font-size:13px;color:#000000!important;margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.breadcrumb a{color:#000000!important;text-decoration:none;font-weight:600!important;}
+.breadcrumb a:hover{color:var(--accent)!important;text-decoration:underline!important;}
+.breadcrumb span{color:#000000!important;font-weight:700!important;}
+.breadcrumb .sep, .breadcrumb span.sep{color:#4B5563!important;font-weight:500!important;}
+.breadcrumb span[id], .breadcrumb span.current{color:#000000!important;font-weight:700!important;}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Gehaltsrechner 2026 (Brutto-Netto)",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "description": "Präziser Brutto-Netto-Rechner für Deutschland mit Steuerklassen I-VI, Kirchensteuer, Krankenversicherung und Beitragsbemessungsgrenzen 2026.",
+  "featureList": [
+    "Steuerklassen I bis VI mit Erläuterung (German & English)",
+    "Krankenkassen-Zusatzbeitrag individuell einstellbar",
+    "Pflegeversicherung mit Kinderlosenzuschlag",
+    "Kirchensteuer nach Bundesland (8% oder 9%)",
+    "Monatliche und jährliche Netto-Aufschlüsselung"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Welche Steuerklasse gehört zu mir? / Which German tax class applies to me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Steuerklasse I gilt für Ledige/Alleinstehende. Steuerklasse II für Alleinerziehende. Steuerklasse III & V bzw. IV/IV für verheiratete Paare. Steuerklasse VI für Nebenjobs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie hoch sind die Sozialabgaben in Deutschland 2026? / What are German social security contributions in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Arbeitnehmer zahlen circa 9,3% Rentenversicherung, 1,3% Arbeitslosenversicherung, ca. 7,3% Krankenversicherung zzgl. Zusatzbeitrag (~0,85%) und 2,2% bis 2,8% Pflegeversicherung."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Steuerklasse 1 and Steuerklasse 4?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The monthly tax withholding for Class 1 and Class 4 is identical. Class 1 is for singles, while Class 4 is the automatic assignment for married couples with equal incomes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are Beitragsbemessungsgrenzen (Contribution Ceilings)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They are statutory income caps above which no further social security is deducted (~€5,175/month for public healthcare and ~€7,550/month for pension in 2026)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I opt out of German Church Tax (Kirchensteuer)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Church tax is 8% in Bavaria/Baden-Württemberg and 9% elsewhere. You can opt out by formally declaring church exit (Kirchenaustritt) at your local Standesamt or Amtsgericht."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can expats claim back German pension contributions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non-EU citizens who contributed to the German pension for under 60 months can request a full refund of their employee share (9.3%) 24 months after permanently relocating outside the EU."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools" id="nav-tools">Alle Rechner</a>
+      <a href="/tools/us-paycheck-calculator/">US Paycheck</a>
+      <a href="/guides/german-salary-tax-classes-guide/">Steuerklassen Guide</a>
+      <a href="/app/" class="btn btn-primary" id="nav-app">LedgerMate App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;color:#000000;">
+    <a href="/" id="bc-home" style="color:#000000;font-weight:600;">Home</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <a href="/#tools" id="bc-tools" style="color:#000000;font-weight:600;">Rechner</a> <span class="sep" style="color:#4B5563;font-weight:500;">/</span> <span id="bc-current" style="color:#000000;font-weight:700;">Gehaltsrechner Deutschland (Brutto-Netto)</span>
+  </div>
+
+  <div class="lang-selector-bar">
+    <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Language / Sprache:</span>
+    <button type="button" class="lang-btn active" id="btn-lang-de" onclick="setLang('de')">Deutsch (DE)</button>
+    <button type="button" class="lang-btn" id="btn-lang-en" onclick="setLang('en')">English (EN)</button>
+  </div>
+
+  <h1 id="title-text" style="font-size:clamp(28px, 4vw, 40px);margin-bottom:12px;text-align:center;">Gehaltsrechner 2026 (Brutto-Netto)</h1>
+  <p class="sub" id="sub-text" style="font-size:16px;max-width:680px;margin:0 auto;text-align:center;">Berechne sekundenschnell dein monatliches und jährliches Nettoeinkommen unter Berücksichtigung von Steuerklasse, Krankenversicherung, Kirchensteuer und 2026 Beitragsbemessungsgrenzen.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="gross-salary" id="lbl-gross-salary">Bruttogehalt (€)</label>
+        <div style="display:flex;gap:8px;">
+          <input id="gross-salary" type="number" step="100" min="500" max="500000" value="4500" style="flex:2;" />
+          <select id="period-select" style="flex:1;">
+            <option value="month" id="opt-month" selected>pro Monat</option>
+            <option value="year" id="opt-year">pro Jahr</option>
+          </select>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <label for="tax-class" id="lbl-tax-class">Steuerklasse</label>
+        <select id="tax-class">
+          <option value="1" id="opt-tc-1" selected>Klasse I (Ledig / Single)</option>
+          <option value="2" id="opt-tc-2">Klasse II (Alleinerziehend)</option>
+          <option value="3" id="opt-tc-3">Klasse III (Verheiratet - Alleinverdiener)</option>
+          <option value="4" id="opt-tc-4">Klasse IV (Verheiratet - Gleiches Gehalt)</option>
+          <option value="5" id="opt-tc-5">Klasse V (Verheiratet - Zweitverdiener)</option>
+          <option value="6" id="opt-tc-6">Klasse VI (Zweitjob / Nebenbeschäftigung)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="church-tax" id="lbl-church-tax">Kirchensteuer</label>
+        <select id="church-tax">
+          <option value="0" id="opt-church-0" selected>Keine Kirchensteuer (0%)</option>
+          <option value="9" id="opt-church-9">Kirchensteuer 9% (Die meisten Bundesländer)</option>
+          <option value="8" id="opt-church-8">Kirchensteuer 8% (Bayern / Baden-Württemberg)</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="has-children" id="lbl-has-children">Kinder / Pflegeversicherung</label>
+        <select id="has-children">
+          <option value="no" id="opt-child-no" selected>Keine Kinder (Kinderlosenzuschlag +0,6%)</option>
+          <option value="yes" id="opt-child-yes">Mit Kind(ern) (Normaler Satz ~2,2%)</option>
+        </select>
+      </div>
+    </div>
+
+    <label style="margin-top:14px;" id="lbl-freq-salaries">Häufige Bruttogehälter</label>
+    <div class="chip-group">
+      <button type="button" class="chip-btn" onclick="setGross(3000)">3.000 €</button>
+      <button type="button" class="chip-btn" onclick="setGross(3800)">3.800 €</button>
+      <button type="button" class="chip-btn active" onclick="setGross(4500)">4.500 €</button>
+      <button type="button" class="chip-btn" onclick="setGross(5500)">5.500 €</button>
+      <button type="button" class="chip-btn" onclick="setGross(7000)">7.000 €</button>
+    </div>
+
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;" id="lbl-net-headline">Nettogehalt (Auszahlung)</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-net-primary">2.840 €</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-net-sub">Nettoquote ca. 63,1 % des Bruttogehalts</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-gross">4.500 €</div>
+          <div class="metric-lbl" id="lbl-m-gross">Brutto (Monat)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-tax" style="color:#E0563F;">710 €</div>
+          <div class="metric-lbl" id="lbl-m-tax">Lohnsteuer &amp; Soli</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-social">950 €</div>
+          <div class="metric-lbl" id="lbl-m-social">Sozialabgaben</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-annual-net">34.080 €</div>
+          <div class="metric-lbl" id="lbl-m-annual-net">Netto (Jahr)</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;" id="lbl-itemized-title">Detaillierte monatliche Abzüge</h4>
+        <div class="calc-result-row">
+          <span><span id="lbl-d-wage">Lohnsteuer</span> <a href="/guides/german-salary-tax-classes-guide/" class="concept-inline-link"><span id="lbl-guide-link">Steuerklassen Guide</span><span class="arrow">&rarr;</span></a></span>
+          <span class="amt" id="d-wage-tax">675 €</span>
+        </div>
+        <div class="calc-result-row">
+          <span><span id="lbl-d-church">Solidaritätszuschlag &amp; Kirchensteuer</span> <span class="concept-inline-link" onclick="switchDeConcept('church')" style="cursor:pointer;"><span id="lbl-link-church">8% vs 9%</span><span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-church-soli">0 €</span>
+        </div>
+        <div class="calc-result-row">
+          <span><span id="lbl-d-pension">Rentenversicherung (9,3 %)</span> <span class="concept-inline-link" onclick="switchDeConcept('limits')" style="cursor:pointer;"><span id="lbl-link-limits">Grenzen</span><span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-pension">418 €</span>
+        </div>
+        <div class="calc-result-row">
+          <span><span id="lbl-d-health">Krankenversicherung (7,3 % + Zusatz)</span> <span class="concept-inline-link" onclick="switchDeConcept('social')" style="cursor:pointer;"><span id="lbl-link-gkv">GKV Info</span><span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-health">367 €</span>
+        </div>
+        <div class="calc-result-row">
+          <span><span id="lbl-d-care">Pflegeversicherung (2,2 % zzgl. Zuschlag)</span></span>
+          <span class="amt" id="d-care">106 €</span>
+        </div>
+        <div class="calc-result-row">
+          <span><span id="lbl-d-unemploy">Arbeitslosenversicherung (1,3 %)</span></span>
+          <span class="amt" id="d-unemploy">59 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router -->
+    <div class="concept-router" style="margin-top:24px;">
+      <div class="concept-nav" id="de-concept-nav">
+        <button type="button" class="concept-tab-btn active" onclick="switchDeConcept('classes')" id="tab-classes">Steuerklassen 1-6</button>
+        <button type="button" class="concept-tab-btn" onclick="switchDeConcept('social')" id="tab-social">Sozialabgaben 2026</button>
+        <button type="button" class="concept-tab-btn" onclick="switchDeConcept('limits')" id="tab-limits">Beitragsgrenzen</button>
+        <button type="button" class="concept-tab-btn" onclick="switchDeConcept('church')" id="tab-church">Kirchensteuer</button>
+        <button type="button" class="concept-tab-btn" onclick="switchDeConcept('glossary')" id="tab-glossary">English Expat Glossary</button>
+      </div>
+
+      <div class="concept-pane active" id="pane-de-classes">
+        <h4 id="pane-title-classes">Steuerklassen I bis VI im Überblick</h4>
+        <p id="pane-desc-classes">In Deutschland richtet sich der monatliche Lohnsteuerabzug nach deiner Steuerklasse. Klasse I gilt für Ledige, Klasse II für Alleinerziehende (mit Entlastungsbetrag), Klasse III/V oder IV/IV für Ehepaare und Klasse VI für einen zweiten Job.</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/german-salary-tax-classes-guide/" class="concept-full-guide-link" id="link-guide-classes">Vollständigen Leitfaden zu Steuerklassen lesen &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-de-social">
+        <h4 id="pane-title-social">Gesetzliche Sozialversicherungen 2026</h4>
+        <p id="pane-desc-social">Arbeitnehmer und Arbeitgeber teilen sich die Sozialabgaben paritätisch zu je 50%: Rentenversicherung (9,3% Arbeitnehmeranteil), Krankenversicherung (7,3% + halber Zusatzbeitrag ca. 0,85%), Arbeitslosenversicherung (1,3%) und Pflegeversicherung (2,2% bzw. 2,8% für kinderlose Personen ab 23 Jahren).</p>
+      </div>
+
+      <div class="concept-pane" id="pane-de-limits">
+        <h4 id="pane-title-limits">Beitragsbemessungsgrenzen (Social Contribution Ceilings)</h4>
+        <p id="pane-desc-limits">Einkommen über den gesetzlichen Beitragsbemessungsgrenzen ist sozialabgabenfrei. 2026 liegt die Grenze für die Kranken- und Pflegeversicherung bei ca. 5.175 € pro Monat (62.100 €/Jahr) und für die Rentenversicherung bei ca. 7.550 € pro Monat (90.600 €/Jahr). Jeder Euro darüber wird nur noch mit Lohnsteuer belastet.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-de-church">
+        <h4 id="pane-title-church">Kirchensteuer &amp; Kirchenaustritt</h4>
+        <p id="pane-desc-church">Die Kirchensteuer beträgt 8% der Lohnsteuer in Bayern und Baden-Württemberg, und 9% in allen anderen Bundesländern. Wer keiner staatlich anerkannten Religionsgemeinschaft angehört, zahlt 0%. Ein Kirchenaustritt ist beim örtlichen Standesamt oder Amtsgericht möglich.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-de-glossary">
+        <h4>German Payslip Vocabulary for Expats (English Glossary)</h4>
+        <p>Key German payroll terms translated into plain English:</p>
+        <div class="table-responsive" style="margin-top:10px;">
+          <table class="calc-table">
+            <thead>
+              <tr><th>German Term</th><th>English Meaning</th><th>Simple Explanation</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Bruttogehalt</strong></td><td>Gross Salary</td><td>Total contract earnings before statutory tax &amp; social insurance deductions.</td></tr>
+              <tr><td><strong>Nettogehalt</strong></td><td>Net In-Hand Pay</td><td>The actual liquid euros deposited into your German bank account (IBAN).</td></tr>
+              <tr><td><strong>Lohnsteuer</strong></td><td>Wage Tax / Income Tax</td><td>Progressive income tax forwarded directly to the tax office (Finanzamt).</td></tr>
+              <tr><td><strong>Rentenversicherung (RV)</strong></td><td>Pension Insurance</td><td>Mandatory state retirement savings (9.3% employee share).</td></tr>
+              <tr><td><strong>Krankenversicherung (KV)</strong></td><td>Health Insurance</td><td>Public health coverage (7.3% base + half of insurer Zusatzbeitrag).</td></tr>
+              <tr><td><strong>Pflegeversicherung (PV)</strong></td><td>Long-Term Care</td><td>Nursing care insurance (2.2% base, plus 0.6% childless surcharge).</td></tr>
+              <tr><td><strong>Arbeitslosenversicherung (AV)</strong></td><td>Unemployment Cover</td><td>1.3% insurance paying 60%-67% of net wage if involuntarily laid off.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindmap-box">
+      <h4 id="box-mindmap-title">💡 Steuerklasse erklärt: Welche Klasse spart am meisten?</h4>
+      <ul class="mindmap-list" id="box-mindmap-list">
+        <li><strong>Steuerklassen III und V:</strong> Geeignet für Ehepaare mit stark unterschiedlichem Einkommen (z. B. 60/40 oder mehr). Der Hauptverdiener in Klasse III profitiert von geringeren Abzügen, der Partner in V zahlt mehr. Bei der jährlichen Steuererklärung gleicht sich dies wieder aus.</li>
+        <li><strong>Steuerklasse IV mit Faktor:</strong> Die faire Alternative zur Kombination III/V: Vermeidet hohe Steuernachzahlungen nach der Steuererklärung.</li>
+        <li><strong>Werbungskosten &amp; Pendlerpauschale:</strong> Übersteigen deine berufsbedingten Ausgaben 1.230 € im Jahr, kannst du jeden weiteren Euro steuermindernd geltend machen.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p id="cta-headline">WG-Miete oder Gruppenreise fair aufteilen?</p>
+        <span style="font-size:12px;color:var(--text-muted);" id="cta-sub">Teste LedgerMate: 100% kostenlos, ohne Werbung, sofort im Browser teilen.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary" id="cta-btn">LedgerMate starten</a>
+    </div>
+  </div>
+
+  <article style="margin-top:40px;" id="main-article">
+    <div id="content-de">
+      <h2>Brutto vs. Netto in Deutschland: So setzen sich die Abzüge 2026 zusammen</h2>
+      <p>Wer in Deutschland eine Gehaltserhöhung oder einen neuen Arbeitsvertrag unterschreibt, stellt häufig fest, dass nur etwa 55 % bis 65 % des vereinbarten Bruttogehalts auf dem Girokonto ankommen. Der Grund hierfür ist das zweigeteilte deutsche Abgabensystem, bestehend aus der progressiven Einkommensteuer (Lohnsteuer) und den gesetzlichen Sozialversicherungsbeiträgen.</p>
+
+      <h2>1. Die 6 Steuerklassen in Deutschland im Detail</h2>
+      <p>Das deutsche Steuersystem unterteilt alle Arbeitnehmer anhand ihres Familienstands in sechs Steuerklassen:</p>
+      <ul>
+        <li><strong>Steuerklasse I:</strong> Für Ledige, Singles, Geschiedene oder getrennt lebende Ehepartner ohne kindergeldberechtigte Kinder. Hier gilt der normale Grundfreibetrag (ca. 11.784 € steuerfrei pro Jahr).</li>
+        <li><strong>Steuerklasse II:</strong> Speziell für Alleinerziehende. Beinhaltet einen zusätzlichen Entlastungsbetrag für Alleinerziehende von 4.260 € pro Jahr, wodurch die monatliche Lohnsteuer spürbar sinkt.</li>
+        <li><strong>Steuerklasse III:</strong> Für Verheiratete, wenn ein Partner Alleinverdiener ist oder deutlich mehr verdient (mindestens 60 % des Haushaltseinkommens). Steuerklasse III verdoppelt den Grundfreibetrag und minimiert die monatlichen Abzüge. Voraussetzung: Der andere Partner wird in Steuerklasse V eingestuft.</li>
+        <li><strong>Steuerklasse IV:</strong> Die automatische Standardeinstufung für alle verheirateten Paare nach der Eheschließung. Entspricht bei beiden Partnern den Abzügen der Steuerklasse I. Ideal bei annähernd gleichem Einkommen.</li>
+        <li><strong>Steuerklasse V:</strong> Das Gegenstück zu Steuerklasse III für den geringer verdienenden Ehepartner. In Klasse V gibt es keinen Grundfreibetrag, weshalb die Steuerabzüge prozentual sehr hoch sind.</li>
+        <li><strong>Steuerklasse VI:</strong> Für jede zweite oder weitere Beschäftigung (Zweitjob / Nebenjob), sofern es sich nicht um einen steuerfreien Minijob bis 538 € handelt. Es gelten keinerlei Freibeträge.</li>
+      </ul>
+
+      <h2>2. Die Sozialversicherungsbeiträge 2026</h2>
+      <p>Die Sozialabgaben finanzieren das deutsche Solidarsystem. Die Beiträge werden grundsätzlich hälftig zwischen Arbeitgeber und Arbeitnehmer aufgeteilt:</p>
+      <div class="table-responsive">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>Versicherungszweig</th>
+              <th>Gesamtsatz</th>
+              <th>Arbeitnehmeranteil</th>
+              <th>Beitragsbemessungsgrenze 2026</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Gesetzliche Rentenversicherung (GRV)</strong></td>
+              <td>18,6 %</td>
+              <td><strong>9,30 %</strong></td>
+              <td>ca. 7.550 € / Monat (90.600 € / Jahr)</td>
+            </tr>
+            <tr>
+              <td><strong>Gesetzliche Krankenversicherung (GKV)</strong></td>
+              <td>14,6 % + Zusatzbeitrag</td>
+              <td><strong>7,30 % + ca. 0,85 %</strong></td>
+              <td>ca. 5.175 € / Monat (62.100 € / Jahr)</td>
+            </tr>
+            <tr>
+              <td><strong>Soziale Pflegeversicherung (SPV)</strong></td>
+              <td>4,00 % – 4,60 %</td>
+              <td><strong>2,20 % (2,80 % ohne Kinder)</strong></td>
+              <td>ca. 5.175 € / Monat (62.100 € / Jahr)</td>
+            </tr>
+            <tr>
+              <td><strong>Arbeitslosenversicherung (ALV)</strong></td>
+              <td>2,60 %</td>
+              <td><strong>1,30 %</strong></td>
+              <td>ca. 7.550 € / Monat (90.600 € / Jahr)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. Die Beitragsbemessungsgrenzen: Entlastung für höhere Gehälter</h2>
+      <p>Wer mehr verdient als die Beitragsbemessungsgrenze, zahlt für den darüberliegenden Betrag keine weiteren Sozialabgaben. Verdienst du beispielsweise 8.000 € brutto im Monat, werden Kranken- und Pflegeversicherungsbeiträge nur bis 5.175 € berechnet. Die restlichen 2.825 € sind komplett frei von Krankenkassenbeiträgen, was deine relative Nettoquote bei Spitzengehältern wieder ansteigen lässt.</p>
+
+      <h2>4. Kirchensteuer &amp; Solidaritätszuschlag</h2>
+      <p>In Deutschland erheben die katholische und die evangelische Kirche über das Finanzamt Kirchensteuer. In Bayern und Baden-Württemberg beträgt diese 8 % der berechneten Lohnsteuer, in allen anderen Bundesländern 9 %. Konfessionslose Personen zahlen keine Kirchensteuer. Der Solidaritätszuschlag (5,5 %) wurde für über 90 % der Arbeitnehmer abgeschafft und fällt erst ab einem jährlichen zu versteuernden Einkommen von rund 65.000 € (Alleinstehende) bzw. 130.000 € (Verheiratete) an.</p>
+
+      <h2>Häufig gestellte Fragen (FAQ)</h2>
+      <details class="faq-item" open>
+        <summary>Was ist der Unterschied zwischen Steuerklasse 1 und 4?</summary>
+        <p>Die monatliche steuerliche Belastung in Steuerklasse 1 und Steuerklasse 4 ist exakt identisch. Steuerklasse 1 ist für Ledige/Alleinstehende, während Steuerklasse 4 die automatische Einstufung für verheiratete Paare ist, wenn beide Partner berufstätig sind. Durch eine gemeinsame Steuererklärung am Jahresende können Ehepaare in Klasse 4 zudem vom Ehegattensplitting profitieren.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Wann lohnt sich der Wechsel von Steuerklasse 4/4 zu 3/5?</summary>
+        <p>Die Kombination 3/5 lohnt sich dann, wenn ein Ehepartner mindestens 60 % des gesamten Haushaltseinkommens erwirtschaftet. Der Besserverdiener hat in Klasse 3 deutlich höhere monatliche Nettoauszahlungen. Beachte jedoch: Mit Steuerklasse 3/5 ist die Abgabe einer jährlichen Einkommensteuererklärung gesetzlich verpflichtend.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Was sind die Beitragsbemessungsgrenzen 2026?</summary>
+        <p>Die Beitragsbemessungsgrenzen deckeln das Einkommen, auf das Sozialversicherungen anfallen. 2026 liegt die Grenze für die gesetzliche Kranken- und Pflegeversicherung bei ca. 5.175 € monatlich und für die Renten- und Arbeitslosenversicherung bei ca. 7.550 € monatlich.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Wie kann ich aus der Kirche austreten, um Kirchensteuer zu sparen?</summary>
+        <p>Um die Kirchensteuer (8% bis 9% der Lohnsteuer) einzusparen, musst du deinen Kirchenaustritt persönlich beim zuständigen Standesamt (in den meisten Bundesländern) oder beim Amtsgericht erklären. Die Gebühr liegt je nach Bundesland zwischen 10 € und 35 €. Nach Vorlage der Austrittsbescheinigung entfällt der Abzug automatisch im Folgemonat.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Können Expats ihre Rentenbeiträge bei Ausreise zurückfordern?</summary>
+        <p>Bürger aus Nicht-EU-Ländern (wie Indien oder USA), die weniger als 60 Monate (5 Jahre) in die Deutsche Rentenversicherung eingezahlt haben, können 24 Monate nach ihrem dauerhaften Verlassen der Europäischen Union einen Antrag auf Erstattung ihrer gezahlten Arbeitnehmerbeiträge (9,3%) stellen.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Was ist die Werbungskostenpauschale?</summary>
+        <p>Jedem Arbeitnehmer in Deutschland wird automatisch ein jährlicher Pauschbetrag für berufsbedingte Aufwendungen (Werbungskostenpauschale) in Höhe von 1.230 € steuermindernd angerechnet. Wer höhere Kosten für Pendelfahrten, Fachliteratur oder Arbeitsmittel nachweisen kann, erhält über die Steuererklärung eine zusätzliche Steuererstattung.</p>
+      </details>
+    </div>
+
+    <div id="content-en" style="display:none;">
+      <h2>Germany Gross to Net Salary Guide: Understanding Your German Payslip (2026)</h2>
+      <p>When you receive a job offer or salary in Germany, the difference between your gross pay (Bruttogehalt) and the actual liquid sum transferred to your German bank account (Nettogehalt) is often surprising. German employees take home between 55% and 68% of their gross compensation, depending on their marital tax class, health insurance provider, parenthood status, and church membership. This guide provides an in-depth breakdown of statutory German payroll deductions, contribution ceilings, and expat tax-saving strategies.</p>
+
+      <h2>1. The 6 German Tax Classes (Steuerklassen) Explained</h2>
+      <p>Germany assigns every registered worker to one of six official tax categories based on family and marital status:</p>
+      <ul>
+        <li><strong>Tax Class I (Steuerklasse 1):</strong> For single, unmarried, divorced, or civilly separated individuals without eligible dependent children. Benefits from the standard annual basic personal tax allowance (Grundfreibetrag of ~€11,784).</li>
+        <li><strong>Tax Class II (Steuerklasse 2):</strong> Reserved for single parents living with dependent children. Grants an additional single-parent relief allowance (Entlastungsbetrag für Alleinerziehende) of €4,260 per year, noticeably reducing monthly wage tax withholding.</li>
+        <li><strong>Tax Class III (Steuerklasse 3):</strong> For married couples where one spouse is the sole earner or earns substantially more (60%+ of joint household income). Class III doubles the basic personal tax allowance to minimize monthly deductions. The other spouse must be assigned to Class V.</li>
+        <li><strong>Tax Class IV (Steuerklasse 4):</strong> The automatic default status for married couples upon registration of marriage. Deductions match Tax Class I for both spouses. Ideal when both partners earn similar incomes. Couples can also opt for Class IV with Factor (Faktorverfahren) to avoid year-end tax repayment surprises.</li>
+        <li><strong>Tax Class V (Steuerklasse 5):</strong> The counterpart to Class III for the lower-earning spouse. No basic personal tax allowance is applied in Class V, resulting in higher monthly percentage withholdings that balance out during joint annual tax filing (Ehegattensplitting).</li>
+        <li><strong>Tax Class VI (Steuerklasse 6):</strong> Applied to any second or secondary job held concurrently (excluding tax-free Minijobs up to €538/month). Absolutely no tax-free allowances apply, subjecting earnings to immediate high progressive rates.</li>
+      </ul>
+
+      <h2>2. Statutory Social Security Contributions (Sozialversicherungen 2026)</h2>
+      <p>Social security in Germany is universally shared 50/50 between employee and employer (paritätische Finanzierung). The four compulsory insurance pillars are:</p>
+      <div class="table-responsive">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>Insurance Branch</th>
+              <th>Total Legal Rate</th>
+              <th>Employee Share (You Pay)</th>
+              <th>Monthly Contribution Ceiling</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pension Insurance (Rentenversicherung - RV)</strong></td>
+              <td>18.60%</td>
+              <td><strong>9.30%</strong></td>
+              <td>approx. €7,550 / month (€90,600 / year)</td>
+            </tr>
+            <tr>
+              <td><strong>Statutory Health (Krankenversicherung - GKV)</strong></td>
+              <td>14.60% + ~1.70% add-on</td>
+              <td><strong>7.30% + ~0.85%</strong></td>
+              <td>approx. €5,175 / month (€62,100 / year)</td>
+            </tr>
+            <tr>
+              <td><strong>Long-Term Nursing Care (Pflegeversicherung - PV)</strong></td>
+              <td>4.00% – 4.60%</td>
+              <td><strong>2.20% (2.80% childless 23+)</strong></td>
+              <td>approx. €5,175 / month (€62,100 / year)</td>
+            </tr>
+            <tr>
+              <td><strong>Unemployment Insurance (Arbeitslosenversicherung - AV)</strong></td>
+              <td>2.60%</td>
+              <td><strong>1.30%</strong></td>
+              <td>approx. €7,550 / month (€90,600 / year)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. Social Security Contribution Ceilings (Beitragsbemessungsgrenzen)</h2>
+      <p>German social contributions are capped by annual statutory thresholds known as <em>Beitragsbemessungsgrenzen</em>. Any gross compensation earned beyond these ceilings is 100% exempt from social security deductions:</p>
+      <ul>
+        <li><strong>Health &amp; Nursing Care Ceiling:</strong> Capped at €5,175 per month (€62,100 annually). If your gross monthly salary is €8,000, you only pay health and care contributions on the first €5,175. The remaining €2,825 incurs zero health insurance charges.</li>
+        <li><strong>Pension &amp; Unemployment Ceiling:</strong> Capped at €7,550 per month (€90,600 annually). Gross pay exceeding €7,550 is exempt from statutory pension and unemployment levies.</li>
+      </ul>
+
+      <h2>4. Church Tax (Kirchensteuer) &amp; How to Opt Out (Kirchenaustritt)</h2>
+      <p>If you register as Catholic or Protestant when completing your municipal registration (Anmeldung), the German tax office (Finanzamt) automatically withholds Church Tax on behalf of religious communities. Church tax is 8% of your calculated income tax in Bavaria and Baden-Württemberg, and 9% in all other federal states. If you are not affiliated or wish to stop paying, you can formally declare your exit (<em>Kirchenaustritt</em>) at the local registry office (Standesamt) or district court (Amtsgericht) for a one-off administrative fee of €10–€35.</p>
+
+      <h2>5. Expat Pension Refunds: Reclaiming Contributions When Leaving Germany</h2>
+      <p>Non-EU citizens (e.g., from the United States, India, Canada, Australia) who work in Germany and contribute to the statutory pension system (DRV) for fewer than 60 months (5 years) can apply for a full refund of their 9.3% employee pension contributions once 24 months have elapsed following their permanent departure from the European Union.</p>
+
+      <h2>6. Smart Deductions: Werbungskosten &amp; Commuter Allowance (Pendlerpauschale)</h2>
+      <p>Every employee automatically receives a lump-sum €1,230 work expense deduction (Werbungskostenpauschale). If your actual work-related outlays—including home office days, vocational training, work laptops, and daily transit commute (deductible at €0.30/km for the first 20km and €0.38/km thereafter)—exceed €1,230, filing an annual tax return (Steuererklärung) yields substantial cash refunds.</p>
+
+      <h2>Frequently Asked Questions (FAQ)</h2>
+      <details class="faq-item" open>
+        <summary>What is the difference between German Tax Class 1 and Tax Class 4?</summary>
+        <p>The monthly tax withholding for Class 1 and Class 4 is identical. Class 1 is assigned to unmarried individuals, while Class 4 is the automatic assignment for married couples where both spouses work. By filing an annual joint tax return, married couples in Class 4 benefit from income splitting (Ehegattensplitting).</p>
+      </details>
+      <details class="faq-item">
+        <summary>When is switching from Class 4/4 to 3/5 worthwhile?</summary>
+        <p>The 3/5 combination is advantageous when one partner earns at least 60% of total household income. The higher earner in Class 3 enjoys significantly lower monthly tax withholdings. However, choosing Class 3/5 makes filing an annual German tax return mandatory by law.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What are the 2026 German social security contribution limits?</summary>
+        <p>In 2026, the statutory contribution ceiling is approximately €5,175/month for public healthcare and long-term care insurance, and approximately €7,550/month for pension and unemployment insurance. Income above these amounts is exempt from social contributions.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How can I stop paying German church tax?</summary>
+        <p>To stop the 8%–9% church tax deduction, make an in-person appointment for Kirchenaustritt (church departure) at your local municipal registry office (Standesamt) or district court (Amtsgericht). After presenting the confirmation certificate, deductions cease starting the following month.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can expats claim a refund of their German pension contributions?</summary>
+        <p>Non-EU citizens who contributed to the German state pension system for fewer than 60 months can request a complete refund of their 9.3% employee share 24 months after permanently moving outside the EU.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is the German work expense allowance (Werbungskosten)?</summary>
+        <p>Every German employee receives an automatic €1,230 annual work expenses deduction. If your actual professional expenses (commuting distance, work equipment, work-related phone and internet) exceed €1,230, you receive a direct refund by filing a tax return.</p>
+      </details>
+    </div>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Kostenlose Rechner und intelligente Ausgabenteilung für Reisen, WGs und Paare.</p>
+      </div>
+      <div>
+        <h4>Gehaltsrechner</h4>
+        <ul>
+          <li><a href="/tools/germany-salary-calculator/">Deutschland (Brutto-Netto)</a></li>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck</a></li>
+          <li><a href="/tools/japan-salary-calculator/">Japan 手取り計算</a></li>
+          <li><a href="/tools/korea-salary-calculator/">Korea 연봉 실수령액</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Finanz-Tools</h4>
+        <ul>
+          <li><a href="/tools/loan-emi-calculator/">Kredit- &amp; Tilgungsrechner</a></li>
+          <li><a href="/tools/discount-calculator/">Rabatt- &amp; Prozentrechner</a></li>
+          <li><a href="/tools/scientific-calculator/">Wissenschaftlicher Taschenrechner</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Über LedgerMate</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/app/">Kostenlose Web App</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Kostenlose Rechner-Suite ohne Werbung.</p>
+  </div>
+</footer>
+
+<script>
+let currentLang = 'de';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-lang-de').classList.toggle('active', lang === 'de');
+  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+
+  const isEn = lang === 'en';
+
+  document.getElementById('bc-current').textContent = isEn ? 'Germany Salary Calculator (Gross to Net)' : 'Gehaltsrechner Deutschland (Brutto-Netto)';
+  document.getElementById('title-text').textContent = isEn ? 'Germany Salary Calculator 2026 (Gross to Net)' : 'Gehaltsrechner 2026 (Brutto-Netto)';
+  document.getElementById('sub-text').textContent = isEn 
+    ? 'Calculate your monthly and annual take-home pay in Germany based on tax classes I–VI, statutory health insurance, church tax, and 2026 social security contribution limits.'
+    : 'Berechne sekundenschnell dein monatliches und jährliches Nettoeinkommen unter Berücksichtigung von Steuerklasse, Krankenversicherung, Kirchensteuer und 2026 Beitragsbemessungsgrenzen.';
+
+  // Form labels & options
+  document.getElementById('lbl-gross-salary').textContent = isEn ? 'Gross Salary (€)' : 'Bruttogehalt (€)';
+  document.getElementById('opt-month').textContent = isEn ? 'per month' : 'pro Monat';
+  document.getElementById('opt-year').textContent = isEn ? 'per year' : 'pro Jahr';
+
+  document.getElementById('lbl-tax-class').textContent = isEn ? 'Tax Class (Steuerklasse)' : 'Steuerklasse';
+  document.getElementById('opt-tc-1').textContent = isEn ? 'Class I (Single / Unmarried)' : 'Klasse I (Ledig / Single)';
+  document.getElementById('opt-tc-2').textContent = isEn ? 'Class II (Single Parent)' : 'Klasse II (Alleinerziehend)';
+  document.getElementById('opt-tc-3').textContent = isEn ? 'Class III (Married - Higher Earner)' : 'Klasse III (Verheiratet - Alleinverdiener)';
+  document.getElementById('opt-tc-4').textContent = isEn ? 'Class IV (Married - Equal Earners)' : 'Klasse IV (Verheiratet - Gleiches Gehalt)';
+  document.getElementById('opt-tc-5').textContent = isEn ? 'Class V (Married - Secondary Earner)' : 'Klasse V (Verheiratet - Zweitverdiener)';
+  document.getElementById('opt-tc-6').textContent = isEn ? 'Class VI (Second / Additional Job)' : 'Klasse VI (Zweitjob / Nebenbeschäftigung)';
+
+  document.getElementById('lbl-church-tax').textContent = isEn ? 'Church Tax (Kirchensteuer)' : 'Kirchensteuer';
+  document.getElementById('opt-church-0').textContent = isEn ? 'No Church Tax (0%)' : 'Keine Kirchensteuer (0%)';
+  document.getElementById('opt-church-9').textContent = isEn ? 'Church Tax 9% (Most States)' : 'Kirchensteuer 9% (Die meisten Bundesländer)';
+  document.getElementById('opt-church-8').textContent = isEn ? 'Church Tax 8% (Bavaria / Baden-Württ.)' : 'Kirchensteuer 8% (Bayern / Baden-Württemberg)';
+
+  document.getElementById('lbl-has-children').textContent = isEn ? 'Children / Nursing Care (PV)' : 'Kinder / Pflegeversicherung';
+  document.getElementById('opt-child-no').textContent = isEn ? 'No Children (+0.6% Childless Surcharge)' : 'Keine Kinder (Kinderlosenzuschlag +0,6%)';
+  document.getElementById('opt-child-yes').textContent = isEn ? 'With Children (Standard ~2.2%)' : 'Mit Kind(ern) (Normaler Satz ~2,2%)';
+
+  document.getElementById('lbl-freq-salaries').textContent = isEn ? 'Quick Salary Presets' : 'Häufige Bruttogehälter';
+  document.getElementById('lbl-net-headline').textContent = isEn ? 'Net Take-Home Pay (Payout)' : 'Nettogehalt (Auszahlung)';
+
+  document.getElementById('lbl-m-gross').textContent = isEn ? 'Gross (Month)' : 'Brutto (Monat)';
+  document.getElementById('lbl-m-tax').textContent = isEn ? 'Wage Tax & Soli' : 'Lohnsteuer & Soli';
+  document.getElementById('lbl-m-social').textContent = isEn ? 'Social Security' : 'Sozialabgaben';
+  document.getElementById('lbl-m-annual-net').textContent = isEn ? 'Net (Annual)' : 'Netto (Jahr)';
+
+  document.getElementById('lbl-itemized-title').textContent = isEn ? 'Itemized Monthly Deductions' : 'Detaillierte monatliche Abzüge';
+  document.getElementById('lbl-d-wage').textContent = isEn ? 'Wage Tax (Lohnsteuer)' : 'Lohnsteuer';
+  document.getElementById('lbl-guide-link').textContent = isEn ? 'Tax Classes Guide' : 'Steuerklassen Guide';
+  document.getElementById('lbl-d-church').textContent = isEn ? 'Church Tax & Soli' : 'Solidaritätszuschlag & Kirchensteuer';
+  document.getElementById('lbl-d-pension').textContent = isEn ? 'Pension Insurance (9.3%)' : 'Rentenversicherung (9,3 %)';
+  document.getElementById('lbl-d-health').textContent = isEn ? 'Health Insurance (7.3% + Add-on)' : 'Krankenversicherung (7,3 % + Zusatz)';
+  document.getElementById('lbl-d-care').textContent = isEn ? 'Care Insurance (2.2% + Surcharge)' : 'Pflegeversicherung (2,2 % zzgl. Zuschlag)';
+  document.getElementById('lbl-d-unemploy').textContent = isEn ? 'Unemployment Insurance (1.3%)' : 'Arbeitslosenversicherung (1,3 %)';
+
+  // Tabs
+  document.getElementById('tab-classes').textContent = isEn ? 'Tax Classes 1-6' : 'Steuerklassen 1-6';
+  document.getElementById('tab-social').textContent = isEn ? 'Social Insurance 2026' : 'Sozialabgaben 2026';
+  document.getElementById('tab-limits').textContent = isEn ? 'Contribution Caps' : 'Beitragsgrenzen';
+  document.getElementById('tab-church').textContent = isEn ? 'Church Tax' : 'Kirchensteuer';
+
+  document.getElementById('pane-title-classes').textContent = isEn ? 'German Tax Classes I to VI Overview' : 'Steuerklassen I bis VI im Überblick';
+  document.getElementById('pane-desc-classes').textContent = isEn
+    ? 'In Germany, monthly payroll tax deductions depend on your marital tax class (Steuerklasse). Class I is for single individuals, Class II for single parents, Class III/V or IV/IV for married couples, and Class VI for a secondary concurrent job.'
+    : 'In Deutschland richtet sich der monatliche Lohnsteuerabzug nach deiner Steuerklasse. Klasse I gilt für Ledige, Klasse II für Alleinerziehende (mit Entlastungsbetrag), Klasse III/V oder IV/IV für Ehepaare und Klasse VI für einen zweiten Job.';
+  document.getElementById('link-guide-classes').textContent = isEn ? 'Read Full German Tax Classes Guide →' : 'Vollständigen Leitfaden zu Steuerklassen lesen →';
+
+  document.getElementById('pane-title-social').textContent = isEn ? 'Statutory Social Security Contributions 2026' : 'Gesetzliche Sozialversicherungen 2026';
+  document.getElementById('pane-desc-social').textContent = isEn
+    ? 'German statutory social security is shared roughly 50/50 between employee and employer: Pension (9.3% employee), Health Insurance (7.3% + half provider surcharge ~0.85%), Unemployment (1.3%), and Nursing Care (2.2%, or 2.8% for childless adults 23+).'
+    : 'Arbeitnehmer und Arbeitgeber teilen sich die Sozialabgaben paritätisch zu je 50%: Rentenversicherung (9,3% Arbeitnehmeranteil), Krankenversicherung (7,3% + halber Zusatzbeitrag ca. 0,85%), Arbeitslosenversicherung (1,3%) und Pflegeversicherung (2,2% bzw. 2,8% für kinderlose Personen ab 23 Jahren).';
+
+  document.getElementById('pane-title-limits').textContent = isEn ? 'Contribution Ceilings (Beitragsbemessungsgrenzen)' : 'Beitragsbemessungsgrenzen (Social Contribution Ceilings)';
+  document.getElementById('pane-desc-limits').textContent = isEn
+    ? 'Income above statutory contribution ceilings is free from social security deductions. In 2026, the ceiling for public health & nursing care is ~€5,175/month (€62,100/yr), and for pension it is ~€7,550/month (€90,600/yr). Any income above these thresholds is subject only to income tax.'
+    : 'Einkommen über den gesetzlichen Beitragsbemessungsgrenzen ist sozialabgabenfrei. 2026 liegt die Grenze für die Kranken- und Pflegeversicherung bei ca. 5.175 € pro Monat (62.100 €/Jahr) und für die Rentenversicherung bei ca. 7.550 € pro Monat (90.600 €/Jahr). Jeder Euro darüber wird nur noch mit Lohnsteuer belastet.';
+
+  document.getElementById('pane-title-church').textContent = isEn ? 'Church Tax (Kirchensteuer) & Opting Out' : 'Kirchensteuer & Kirchenaustritt';
+  document.getElementById('pane-desc-church').textContent = isEn
+    ? 'Church tax is 8% of wage tax in Bavaria and Baden-Württemberg, and 9% in other states. If you are not affiliated with an official state-recognized church, you pay 0%. You can formally opt out (Kirchenaustritt) at your local Standesamt or Amtsgericht.'
+    : 'Die Kirchensteuer beträgt 8% der Lohnsteuer in Bayern und Baden-Württemberg, und 9% in allen anderen Bundesländern. Wer keiner staatlich anerkannten Religionsgemeinschaft angehört, zahlt 0%. Ein Kirchenaustritt ist beim örtlichen Standesamt oder Amtsgericht möglich.';
+
+  // Mindmap
+  document.getElementById('box-mindmap-title').textContent = isEn ? '💡 Tax Class Strategy: Which Option Maximizes In-Hand Pay?' : '💡 Steuerklasse erklärt: Welche Klasse spart am meisten?';
+  const mmList = document.getElementById('box-mindmap-list');
+  if (mmList) {
+    mmList.innerHTML = isEn
+      ? `<li><strong>Classes III & V:</strong> Ideal for married couples with unequal incomes (e.g. 60/40 or greater). The higher earner in Class III enjoys minimal tax withholding, while the lower earner in Class V pays higher rates. An annual tax return reconciles any difference.</li>
+         <li><strong>Class IV with Factor:</strong> A balanced alternative to III/V that prevents surprise tax liabilities during year-end filing.</li>
+         <li><strong>Lump-sum Work Expenses (Werbungskosten):</strong> Every employee receives an automatic €1,230 annual work deduction. If your actual commuting or equipment expenses exceed this, you can deduct every additional euro.</li>`
+      : `<li><strong>Steuerklassen III und V:</strong> Geeignet für Ehepaare mit stark unterschiedlichem Einkommen (z. B. 60/40 oder mehr). Der Hauptverdiener in Klasse III profitiert von geringeren Abzügen, der Partner in V zahlt mehr. Bei der jährlichen Steuererklärung gleicht sich dies wieder aus.</li>
+         <li><strong>Steuerklasse IV mit Faktor:</strong> Die faire Alternative zur Kombination III/V: Vermeidet hohe Steuernachzahlungen nach der Steuererklärung.</li>
+         <li><strong>Werbungskosten &amp; Pendlerpauschale:</strong> Übersteigen deine berufsbedingten Ausgaben 1.230 € im Jahr, kannst du jeden weiteren Euro steuermindernd geltend machen.</li>`;
+  }
+
+  // CTA
+  document.getElementById('cta-headline').textContent = isEn ? 'Splitting apartment rent or group trip expenses?' : 'WG-Miete oder Gruppenreise fair aufteilen?';
+  document.getElementById('cta-sub').textContent = isEn ? 'Try LedgerMate: 100% free, zero ads, instant browser sharing.' : 'Teste LedgerMate: 100% kostenlos, ohne Werbung, sofort im Browser teilen.';
+  document.getElementById('cta-btn').textContent = isEn ? 'Launch LedgerMate App' : 'LedgerMate starten';
+
+  // Article visibility
+  const cDe = document.getElementById('content-de');
+  const cEn = document.getElementById('content-en');
+  if (cDe && cEn) {
+    cDe.style.display = isEn ? 'none' : 'block';
+    cEn.style.display = isEn ? 'block' : 'none';
+  }
+
+  calc();
+}
+
+function switchDeConcept(tabId) {
+  const tabs = ['classes', 'social', 'limits', 'church', 'glossary'];
+  tabs.forEach(t => {
+    const pane = document.getElementById('pane-de-' + t);
+    if (pane) pane.classList.remove('active');
+  });
+  const activePane = document.getElementById('pane-de-' + tabId);
+  if (activePane) activePane.classList.add('active');
+
+  const navBtns = document.querySelectorAll('#de-concept-nav .concept-tab-btn');
+  navBtns.forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const router = document.querySelector('.concept-router');
+  if (router) {
+    router.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function fmtEur(n) {
+  return Math.round(n || 0).toLocaleString('de-DE') + ' €';
+}
+
+function setGross(v) {
+  document.getElementById('gross-salary').value = v;
+  document.getElementById('period-select').value = 'month';
+  calc();
+}
+
+function calc() {
+  const rawInput = parseFloat(document.getElementById('gross-salary').value) || 0;
+  const period = document.getElementById('period-select').value;
+  const taxClass = document.getElementById('tax-class').value;
+  const churchTaxRate = parseFloat(document.getElementById('church-tax').value) / 100;
+  const hasChildren = document.getElementById('has-children').value === 'yes';
+
+  const monthlyGross = period === 'year' ? rawInput / 12 : rawInput;
+  const annualGross = monthlyGross * 12;
+
+  // Social contributions (capped at Beitragsbemessungsgrenze ~7,550/mo pension, ~5,175/mo health)
+  const healthGross = Math.min(monthlyGross, 5175);
+  const pensionGross = Math.min(monthlyGross, 7550);
+
+  const pension = pensionGross * 0.093; // 9.3% employee
+  const health = healthGross * (0.073 + 0.0085); // 7.3% base + ~0.85% half add-on
+  const careRate = hasChildren ? 0.022 : 0.028; // 2.2% vs 2.8% (+0.6% childless)
+  const care = healthGross * careRate;
+  const unemploy = pensionGross * 0.013; // 1.3%
+
+  const totalSocial = pension + health + care + unemploy;
+
+  // Tax brackets estimation based on Steuerklasse
+  // Grundfreibetrag ~11,784 EUR / year
+  let taxMultiplier = 1.0;
+  if (taxClass === '2') taxMultiplier = 0.88; // Alleinerziehend
+  if (taxClass === '3') taxMultiplier = 0.65; // Splitting advantage
+  if (taxClass === '5') taxMultiplier = 1.45; // High bracket
+  if (taxClass === '6') taxMultiplier = 1.60; // Second job (no basic allowance)
+
+  // Progressive wage tax formula approx
+  const taxableAnnual = Math.max(0, annualGross - (totalSocial * 12) - 1230); // 1230 Werbungskosten
+  let baseTax = 0;
+  if (taxableAnnual <= 11784) {
+    baseTax = 0;
+  } else if (taxableAnnual <= 17005) {
+    const y = (taxableAnnual - 11784) / 10000;
+    baseTax = (995.21 * y + 1400) * y;
+  } else if (taxableAnnual <= 66760) {
+    const z = (taxableAnnual - 17005) / 10000;
+    baseTax = (208.85 * z + 2397) * z + 1015.51;
+  } else if (taxableAnnual <= 277825) {
+    baseTax = 0.42 * taxableAnnual - 10636.31;
+  } else {
+    baseTax = 0.45 * taxableAnnual - 18971.06;
+  }
+
+  const annualTax = Math.max(0, baseTax * taxMultiplier);
+  const monthlyWageTax = annualTax / 12;
+
+  // Church tax
+  const churchTax = monthlyWageTax * churchTaxRate;
+  const totalTax = monthlyWageTax + churchTax;
+
+  const totalDeduct = totalSocial + totalTax;
+  const monthlyNet = Math.max(0, monthlyGross - totalDeduct);
+  const annualNet = monthlyNet * 12;
+  const netRatio = monthlyGross > 0 ? ((monthlyNet / monthlyGross) * 100).toFixed(1) : 0;
+
+  document.getElementById('res-net-primary').textContent = fmtEur(monthlyNet);
+  if (currentLang === 'en') {
+    document.getElementById('res-net-sub').textContent = `Net take-home is approx ${netRatio} % of gross salary (${fmtEur(annualNet)} / year)`;
+  } else {
+    document.getElementById('res-net-sub').textContent = `Nettoquote ca. ${netRatio} % des Bruttogehalts (${fmtEur(annualNet)} / Jahr)`;
+  }
+
+  document.getElementById('m-gross').textContent = fmtEur(monthlyGross);
+  document.getElementById('m-tax').textContent = fmtEur(totalTax);
+  document.getElementById('m-social').textContent = fmtEur(totalSocial);
+  document.getElementById('m-annual-net').textContent = fmtEur(annualNet);
+
+  document.getElementById('d-wage-tax').textContent = fmtEur(monthlyWageTax);
+  document.getElementById('d-church-soli').textContent = fmtEur(churchTax);
+  document.getElementById('d-pension').textContent = fmtEur(pension);
+  document.getElementById('d-health').textContent = fmtEur(health);
+  document.getElementById('d-care').textContent = fmtEur(care);
+  document.getElementById('d-unemploy').textContent = fmtEur(unemploy);
+}
+
+['gross-salary', 'period-select', 'tax-class', 'church-tax', 'has-children'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

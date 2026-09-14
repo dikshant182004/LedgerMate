@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stacked Discount &amp; Double Sale Price Calculator | LedgerMate</title>
+<meta name="description" content="Calculate stacked sequential discounts correctly. Solve '30% off then extra 20% off' to see why sequential discounts do not equal 50% off. Fast, clear, and ad-free." />
+<link rel="canonical" href="https://tryledgermate.in/tools/discount-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Stacked Discount Calculator | LedgerMate" />
+<meta property="og:description" content="Why 30% off + 20% off is not 50% off. Calculate stacked discounts, coupons, and sales tax instantly." />
+<meta property="og:url" content="https://tryledgermate.in/tools/discount-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Stacked Discount Calculator",
+  "applicationCategory": "ShoppingApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate sequential stacked discounts, multi-tier promo codes, and effective percentage off.",
+  "featureList": [
+    "Stacked sequential discounts (e.g. 30% off + extra 20% off)",
+    "Effective total discount % explanation",
+    "Optional local sales tax addition",
+    "Dollar savings breakdown"
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/percentage-calculator/">Percentage Calc</a>
+      <a href="/tools/prorated-rent-calculator/">Prorated Rent</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> Stacked Discount Calculator
+  </div>
+
+  <h1 id="title-text">Stacked Discount &amp; Sale Price Calculator</h1>
+  <p class="sub" id="sub-text">Calculate consecutive sales discounts accurately. Discover the true final price and effective discount when stacking coupons and clearance markdowns.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.5;">
+        <label for="original-price">Original Item Price ($)</label>
+        <input id="original-price" type="number" step="0.5" min="0" value="120" />
+      </div>
+      <div style="flex:1;">
+        <label for="primary-discount">Primary Store Discount (%)</label>
+        <input id="primary-discount" type="number" step="1" min="0" max="100" value="30" />
+      </div>
+    </div>
+
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="stacked-discount">Stacked Promo / Coupon (%)</label>
+        <input id="stacked-discount" type="number" step="1" min="0" max="100" value="20" />
+      </div>
+      <div style="flex:1;">
+        <label for="sales-tax">Sales Tax (% optional)</label>
+        <input id="sales-tax" type="number" step="0.25" min="0" max="25" value="8" />
+      </div>
+    </div>
+
+    <!-- Quick Preset Chips -->
+    <label style="margin-top:14px;">Common Retail Sales</label>
+    <div class="chip-group">
+      <button type="button" class="chip-btn" onclick="setSale(100, 20, 10)">20% + 10%</button>
+      <button type="button" class="chip-btn active" onclick="setSale(120, 30, 20)">30% + 20%</button>
+      <button type="button" class="chip-btn" onclick="setSale(150, 40, 15)">40% + 15%</button>
+      <button type="button" class="chip-btn" onclick="setSale(200, 50, 20)">50% + 20%</button>
+    </div>
+
+    <!-- Results Display -->
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Final Out-of-Pocket Price</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-final-price">$72.58</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-effective-sub">Effective Total Discount: 44.0% (Not 50.0%)</span>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="res-orig-stat">$120.00</div>
+          <div class="metric-lbl">Original Price</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-saved-stat" style="color:var(--green);">$52.80</div>
+          <div class="metric-lbl">Total Discount Saved</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-pretax-stat">$67.20</div>
+          <div class="metric-lbl">Pre-Tax Sale Price</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-tax-stat">$5.38</div>
+          <div class="metric-lbl">Sales Tax Amount</div>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Explanation Box -->
+      <div style="background:#F6F5FB;border-radius:12px;padding:16px;margin-top:18px;">
+        <h4 style="margin:0 0 8px;font-size:14px;color:var(--text);">Mathematical Step-by-Step Breakdown</h4>
+        <ol style="margin:0;padding-left:20px;font-size:13.5px;color:var(--text-muted);line-height:1.6;" id="math-steps-list">
+          <li>Original starting price: $120.00</li>
+          <li>First discount (30% off $120.00): -$36.00 → Intermediate price: $84.00</li>
+          <li>Second discount (20% off remaining $84.00): -$16.80 → Pre-tax price: $67.20</li>
+          <li>Notice: 20% was deducted from $84.00, NOT the original $120.00. That's why your total discount is 44%, not 50%!</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Mindmap -->
+    <div class="mindmap-box">
+      <h4>💡 Shopping &amp; Sale Stacking Mindmap</h4>
+      <ul class="mindmap-list">
+        <li><strong>Order Doesn't Matter:</strong> Whether the store applies 30% first and then 20%, or 20% first and then 30%, multiplication is commutative: <code>Price × 0.70 × 0.80 = Price × 0.56</code>. The final price is identical either way!</li>
+        <li><strong>Store Exclusions:</strong> Always check whether coupons apply to clearance items or if manufacturers enforce Minimum Advertised Price (MAP) exclusions.</li>
+      </ul>
+    </div>
+
+    <div class="calc-cta">
+      <div>
+        <p>Splitting a restaurant bill or group purchase?</p>
+        <span style="font-size:12px;color:var(--text-muted);">LedgerMate calculates unequal splits, tips, and shared group balances without sign-up.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try Free App</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction math and expense splitting tools.</p>
+      </div>
+      <div>
+        <h4>Shopping &amp; Money</h4>
+        <ul>
+          <li><a href="/tools/discount-calculator/">Stacked Discount Calculator</a></li>
+          <li><a href="/tools/percentage-calculator/">Percentage Calculator</a></li>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Salaries</h4>
+        <ul>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a></li>
+          <li><a href="/tools/india-ctc-salary-calculator/">India CTC In-Hand</a></li>
+          <li><a href="/tools/japan-salary-calculator/">Japan 手取り計算</a></li>
+          <li><a href="/tools/korea-salary-calculator/">Korea 연봉 실수령액</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guides</h4>
+        <ul>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/blog/how-to-calculate-prorated-rent/">Prorated Rent Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Calculators.</p>
+  </div>
+</footer>
+
+<script>
+function fmtUSD(n) {
+  return '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function setSale(price, d1, d2) {
+  document.getElementById('original-price').value = price;
+  document.getElementById('primary-discount').value = d1;
+  document.getElementById('stacked-discount').value = d2;
+  calc();
+}
+
+function calc() {
+  const orig = parseFloat(document.getElementById('original-price').value) || 0;
+  const d1 = parseFloat(document.getElementById('primary-discount').value) || 0;
+  const d2 = parseFloat(document.getElementById('stacked-discount').value) || 0;
+  const taxPct = parseFloat(document.getElementById('sales-tax').value) || 0;
+
+  const d1Amt = orig * (d1 / 100);
+  const priceAfterD1 = Math.max(0, orig - d1Amt);
+
+  const d2Amt = priceAfterD1 * (d2 / 100);
+  const preTaxPrice = Math.max(0, priceAfterD1 - d2Amt);
+
+  const totalDiscountDollars = orig - preTaxPrice;
+  const effectivePct = orig > 0 ? (totalDiscountDollars / orig) * 100 : 0;
+  const intuitiveSum = d1 + d2;
+
+  const taxAmt = preTaxPrice * (taxPct / 100);
+  const finalPrice = preTaxPrice + taxAmt;
+
+  document.getElementById('res-final-price').textContent = fmtUSD(finalPrice);
+  document.getElementById('res-effective-sub').textContent = `Effective Total Discount: ${effectivePct.toFixed(1)}% (Not ${intuitiveSum.toFixed(0)}%)`;
+
+  document.getElementById('res-orig-stat').textContent = fmtUSD(orig);
+  document.getElementById('res-saved-stat').textContent = fmtUSD(totalDiscountDollars);
+  document.getElementById('res-pretax-stat').textContent = fmtUSD(preTaxPrice);
+  document.getElementById('res-tax-stat').textContent = fmtUSD(taxAmt);
+
+  document.getElementById('math-steps-list').innerHTML = `
+    <li>Original starting price: ${fmtUSD(orig)}</li>
+    <li>First discount (${d1}% off ${fmtUSD(orig)}): -${fmtUSD(d1Amt)} → Intermediate price: ${fmtUSD(priceAfterD1)}</li>
+    <li>Second discount (${d2}% off remaining ${fmtUSD(priceAfterD1)}): -${fmtUSD(d2Amt)} → Pre-tax price: ${fmtUSD(preTaxPrice)}</li>
+    <li>Sales tax (${taxPct}% on ${fmtUSD(preTaxPrice)}): +${fmtUSD(taxAmt)} → Final price: <strong>${fmtUSD(finalPrice)}</strong></li>
+    <li><strong>Why not ${intuitiveSum}%?</strong> The extra ${d2}% is applied to the already-reduced ${fmtUSD(priceAfterD1)}, saving you ${fmtUSD(d2Amt)} instead of ${fmtUSD(orig * (d2/100))}.</li>
+  `;
+}
+
+['original-price', 'primary-discount', 'stacked-discount', 'sales-tax'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+calc();
+</script>
+
+</body>
+</html>

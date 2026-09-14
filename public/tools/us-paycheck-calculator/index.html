@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>US Paycheck Calculator 2026 (Federal, State &amp; 401k Slider) | LedgerMate</title>
+<meta name="description" content="Free 2026 US Paycheck &amp; Net Pay Calculator. Calculate federal income tax, state income tax (all 50 states), FICA (Social Security &amp; Medicare), real-time 401(k) pre-tax contribution slider, and bonus flat withholding (22%)." />
+<link rel="canonical" href="https://tryledgermate.in/tools/us-paycheck-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="US Paycheck Calculator 2026 | LedgerMate" />
+<meta property="og:description" content="Calculate your exact take-home pay per paycheck across all 50 states. Features live 401(k) sliders, FICA, and supplemental bonus tax modes." />
+<meta property="og:url" content="https://tryledgermate.in/tools/us-paycheck-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=3" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate US Paycheck Calculator 2026",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate biweekly, semi-monthly, or monthly take-home pay with 2026 Federal tax brackets, state taxes, FICA, and 401(k) modeling.",
+  "featureList": [
+    "2026 Federal tax brackets & Standard Deduction",
+    "All 50 US States + DC tax profiles (including 0% income tax states)",
+    "FICA breakdown: Social Security (6.2% up to $176,100 wage base) & Medicare (1.45%)",
+    "Live interactive 401(k) contribution slider",
+    "Paycheck frequencies: Biweekly, Semi-Monthly, Monthly, Weekly",
+    "Supplemental bonus flat 22% tax mode"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is FICA tax on my paycheck?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FICA (Federal Insurance Contributions Act) consists of Social Security tax (6.2% on wages up to the annual wage base of $176,100 in 2026) and Medicare tax (1.45% on all earnings, plus an additional 0.9% on earnings above $200,000 for single filers or $250,000 for married couples)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does contributing to a traditional 401(k) increase my take-home efficiency?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Traditional 401(k) contributions are deducted pre-tax from your gross salary. If you contribute $100 in the 22% federal tax bracket with a 5% state tax rate, your actual paycheck is only reduced by roughly $73 because you save $27 in federal and state income taxes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are bonuses taxed at 22% on paychecks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The IRS categorizes bonuses as supplemental wages and permits employers to withhold a flat statutory 22% for federal income tax. However, if your regular income places you in the 24%, 32%, or 35% tax bracket, you will owe the difference when filing your annual Form 1040."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which US states have 0% income tax on paychecks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nine US states have no individual earned wage income tax: Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between biweekly and semi-monthly paychecks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Biweekly employees receive 26 paychecks per year (paid every two weeks, resulting in two months each year with three paychecks). Semi-monthly employees receive exactly 24 paychecks per year (paid twice a month, typically on the 15th and last day of each month)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my effective tax rate always lower than my marginal tax bracket?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the US uses progressive tax brackets. Your first $15,000 is tax-free due to the standard deduction, and subsequent dollars are taxed sequentially at 10%, 12%, 22%, etc. Only the highest dollars are taxed at your marginal rate, keeping your overall effective rate significantly lower."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/#tools">All Tools</a>
+      <a href="/tools/us-tax-calculator/">US Tax Estimator</a>
+      <a href="/guides/what-is-a-401k-how-it-works/">401(k) Guide</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" style="padding-top:40px;padding-bottom:24px;">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/#tools">Calculators</a> <span>/</span> US Paycheck Calculator
+  </div>
+
+  <h1 id="title-text" style="font-size:clamp(28px, 4vw, 40px);margin-bottom:12px;text-align:center;">US Paycheck &amp; Net Pay Calculator (2026)</h1>
+  <p class="sub" id="sub-text" style="font-size:16px;max-width:680px;margin:0 auto;text-align:center;">Calculate your exact net take-home pay per paycheck across all 50 US states. Features interactive 401(k) contribution sliders, FICA caps, and supplemental bonus withholding.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <!-- Mode Selector -->
+    <div class="chip-group" style="justify-content:center;margin-bottom:20px;">
+      <button type="button" class="chip-btn active" id="mode-regular">Regular Paycheck</button>
+      <button type="button" class="chip-btn" id="mode-bonus">Bonus / Supplemental Wage</button>
+    </div>
+
+    <!-- Salary & Frequency -->
+    <div class="calc-row">
+      <div style="flex:1.5;">
+        <label for="gross-salary" id="lbl-salary">Gross Annual Salary ($)</label>
+        <input id="gross-salary" type="number" step="1000" min="10000" max="5000000" value="85000" />
+      </div>
+      <div style="flex:1;">
+        <label for="pay-frequency">Pay Frequency</label>
+        <select id="pay-frequency">
+          <option value="26" selected>Biweekly (26 paychecks/yr)</option>
+          <option value="24">Semi-Monthly (24 paychecks/yr)</option>
+          <option value="12">Monthly (12 paychecks/yr)</option>
+          <option value="52">Weekly (52 paychecks/yr)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- State & Filing Status -->
+    <div class="calc-row">
+      <div style="flex:1;">
+        <label for="us-state">State / Location</label>
+        <select id="us-state">
+          <option value="CA">California (CA) — Progressive 1% to 12.3%</option>
+          <option value="NY">New York (NY) — 4% to 8.82%</option>
+          <option value="TX" selected>Texas (TX) — 0% No State Income Tax</option>
+          <option value="FL">Florida (FL) — 0% No State Income Tax</option>
+          <option value="WA">Washington (WA) — 0% Income Tax</option>
+          <option value="IL">Illinois (IL) — Flat 4.95%</option>
+          <option value="PA">Pennsylvania (PA) — Flat 3.07%</option>
+          <option value="NJ">New Jersey (NJ) — 1.4% to 10.75%</option>
+          <option value="MA">Massachusetts (MA) — Flat 5.0%</option>
+          <option value="NC">North Carolina (NC) — Flat 4.5%</option>
+          <option value="GA">Georgia (GA) — Flat 5.39%</option>
+          <option value="CO">Colorado (CO) — Flat 4.4%</option>
+          <option value="OTHER">Other State (Avg ~4.5%)</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <label for="filing-status">Filing Status</label>
+        <select id="filing-status">
+          <option value="single" selected>Single / Married Filing Separately</option>
+          <option value="married">Married Filing Jointly</option>
+          <option value="hoh">Head of Household</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Live 401(k) Pre-tax Slider -->
+    <div style="background:#F6F5FB;border:1px solid var(--border);border-radius:12px;padding:16px;margin:16px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <label style="margin:0;font-size:13.5px;color:var(--text);">Pre-Tax 401(k) Contribution</label>
+        <span id="label-401k-pct" style="font-weight:800;color:var(--accent);font-size:15px;">6% ($5,100 / yr)</span>
+      </div>
+      <input id="slider-401k" type="range" min="0" max="25" step="1" value="6" style="accent-color:var(--accent);cursor:pointer;" />
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-top:4px;">
+        <span>0% (No match)</span>
+        <span>6% (Standard employer match)</span>
+        <span>15%</span>
+        <span>25% ($23,500 IRS Cap)</span>
+      </div>
+    </div>
+
+    <!-- Results Display -->
+    <div class="calc-result">
+      <div style="text-align:center;padding:12px 0 20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;">Estimated Net Pay Per Paycheck</span>
+        <div style="font-size:44px;font-weight:800;color:var(--text);margin:6px 0;" id="res-paycheck-net">$2,418.52</div>
+        <span style="font-size:13.5px;color:var(--text-muted);" id="res-annual-net">Annual Take-Home: $62,881.52 (Effective tax rate: 19.8%)</span>
+      </div>
+
+      <!-- Metric Grid -->
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="res-gross-pay">$3,269.23</div>
+          <div class="metric-lbl">Gross Paycheck</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-total-deduct" style="color:#E0563F;">$850.71</div>
+          <div class="metric-lbl">Total Deductions</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-fed-tax">$384.10</div>
+          <div class="metric-lbl">Federal Income Tax</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="res-fica-tax">$250.10</div>
+          <div class="metric-lbl">FICA (OASDI + Med)</div>
+        </div>
+      </div>
+
+      <!-- Itemized Per-Paycheck Breakdown -->
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-top:16px;">
+        <h4 style="margin:0 0 10px;font-size:14px;color:var(--text);">Paycheck Deductions Itemized</h4>
+        <div class="calc-result-row">
+          <span>Pre-Tax 401(k) Retirement <a href="/guides/what-is-a-401k-how-it-works/" class="concept-inline-link">What is a 401(k)?<span class="arrow">&rarr;</span></a></span>
+          <span class="amt" id="d-401k">$196.15</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Federal Income Tax Withholding <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-inline-link">Brackets<span class="arrow">&rarr;</span></a></span>
+          <span class="amt" id="d-fed">$384.10</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Social Security (OASDI 6.2%) <span class="concept-inline-link" onclick="switchConceptTab('fica')" style="cursor:pointer;">$176.1k Cap<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-ss">$202.69</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Medicare (1.45%) <span class="concept-inline-link" onclick="switchConceptTab('fica')" style="cursor:pointer;">+0.9% Surtax<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-med">$47.40</span>
+        </div>
+        <div class="calc-result-row">
+          <span>State Income Tax <span class="concept-inline-link" onclick="switchConceptTab('states')" style="cursor:pointer;">0% States<span class="arrow">&rarr;</span></span></span>
+          <span class="amt" id="d-state">$0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Concept Router -->
+    <div class="concept-router" style="margin-top:24px;">
+      <div class="concept-nav" id="concept-nav">
+        <button type="button" class="concept-tab-btn active" onclick="switchConceptTab('k401')">401(k) Pre-Tax Shield</button>
+        <button type="button" class="concept-tab-btn" onclick="switchConceptTab('fica')">FICA &amp; Medicare Surtax</button>
+        <button type="button" class="concept-tab-btn" onclick="switchConceptTab('bonus')">Bonus 22% Flat Rule</button>
+        <button type="button" class="concept-tab-btn" onclick="switchConceptTab('marginal')">Marginal vs Effective</button>
+        <button type="button" class="concept-tab-btn" onclick="switchConceptTab('states')">0% Tax States</button>
+      </div>
+
+      <div class="concept-pane active" id="pane-k401">
+        <h4>How Pre-Tax 401(k) Saves You More Than It Costs</h4>
+        <p>A Traditional 401(k) deduction occurs <em>before</em> federal and state income taxes are calculated on your gross pay. When you contribute $100 in the 22% federal tax bracket with 5% state tax, you save $27 in taxes. Your paycheck take-home only declines by $73, while a full $100 builds compounding returns inside your retirement nest egg.</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/what-is-a-401k-how-it-works/" class="concept-full-guide-link">Read Full 401(k) &amp; Employer Match Guide &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-fica">
+        <h4>FICA Taxes: Social Security Cap &amp; Additional Medicare</h4>
+        <p>FICA is mandatory for all W-2 employees. In 2026, <strong>Social Security (OASDI)</strong> is 6.2% up to the wage base cap of <strong>$176,100</strong>. Once your cumulative earnings exceed this cap during the calendar year, Social Security withholding drops to $0.00 for the remainder of the year. <strong>Medicare</strong> is 1.45% on all earnings with no ceiling, plus an <strong>Additional Medicare Tax of 0.9%</strong> on earnings exceeding $200,000 (Single) or $250,000 (Married).</p>
+      </div>
+
+      <div class="concept-pane" id="pane-bonus">
+        <h4>Why Bonuses Are Withheld at a Flat 22%</h4>
+        <p>IRS regulations classify annual performance bonuses, commissions, and sign-on incentives as "supplemental wages". Employers typically apply the statutory flat 22% federal withholding rate. If your regular salary puts you in the 24%, 32%, or 35% tax bracket, this withholding is too low, and you will owe the difference at tax time. If you are in the 12% bracket, you will receive a refund.</p>
+      </div>
+
+      <div class="concept-pane" id="pane-marginal">
+        <h4>Marginal vs Effective Tax Rate (No, a Raise Never Lowers Your Pay)</h4>
+        <p>In a progressive tax system, higher tax rates only apply to the specific dollars earned above each threshold. Moving from the 12% bracket to the 22% bracket does <em>not</em> retroactively tax your first $48,475 at 22%. Your effective tax rate is your total tax paid divided by gross income, which is always substantially lower than your top marginal rate.</p>
+        <div style="margin-top:12px;">
+          <a href="/guides/marginal-vs-effective-tax-rate/" class="concept-full-guide-link">Read Marginal vs Effective Tax Rate Guide &rarr;</a>
+        </div>
+      </div>
+
+      <div class="concept-pane" id="pane-states">
+        <h4>The 9 States With 0% Wage Income Tax</h4>
+        <p>Where you live dramatically affects your net take-home pay. Nine US states levy <strong>0% individual state income tax</strong> on wages: <strong>Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming</strong>. On a $100,000 salary, living in Texas or Florida instead of California or New York can save $4,500 to $7,000 annually in take-home pay.</p>
+      </div>
+    </div>
+
+    <!-- Mindmap -->
+    <div class="mindmap-box">
+      <h4>💡 401(k) &amp; W-4 Optimization Mindmap</h4>
+      <ul class="mindmap-list">
+        <li><strong>Capture 100% of Employer Match:</strong> Never contribute less than your company's matching formula (commonly 4% to 6%). That is an immediate, risk-free 100% return on your capital.</li>
+        <li><strong>Pre-tax Tax Shield:</strong> Contributing to a traditional 401(k) reduces Box 1 taxable wages, lowering your marginal tax bracket liability.</li>
+        <li><strong>Supplemental Bonus 22% Rule:</strong> By IRS regulations, one-off bonuses are withheld at a flat statutory 22% federal rate. High earners should prepare for a tax balance when filing.</li>
+      </ul>
+    </div>
+
+    <!-- App CTA -->
+    <div class="calc-cta">
+      <div>
+        <p>Splitting rent or household bills with roommates?</p>
+        <span style="font-size:12px;color:var(--text-muted);">Try LedgerMate: zero ads, no 3-expense daily limits, and instant shared calculation.</span>
+      </div>
+      <a href="/app/" class="btn btn-primary">Try Free App</a>
+    </div>
+  </div>
+
+  <article style="margin-top:48px;">
+    <h2>The Complete Guide to Calculating Your US Paycheck in 2026</h2>
+    <p>For most American workers, the figure stated in an offer letter—such as $85,000 per year—bears little resemblance to the actual amount deposited into their checking account on payday. Between federal income tax brackets, mandatory FICA payroll contributions, state income taxes, and pre-tax employee benefit deductions, approximately 18% to 35% of gross earnings is subtracted before your paycheck clears.</p>
+    <p>Understanding how payroll software calculates each deduction enables you to optimize your Form W-4, maximize your pre-tax retirement savings, and prevent unpleasant tax-day surprises.</p>
+
+    <h2>Step 1: The Step-by-Step Gross-to-Net Paycheck Formula</h2>
+    <p>The mathematical pathway from gross salary to your net take-home pay follows an exact sequence mandated by federal and state revenue codes:</p>
+    <div style="background:#F6F5FB;border-radius:10px;padding:16px 20px;margin:16px 0;font-family:monospace;font-size:14px;color:var(--text);border-left:4px solid var(--accent);">
+      1. Gross Pay per Period = Annual Salary / Pay Frequency (e.g. $85,000 / 26 = $3,269.23)<br/>
+      2. Taxable Federal Wages = Gross Pay - Pre-Tax Deductions (401k, HSA, FSA)<br/>
+      3. Federal Income Tax Withheld = Progressive Bracket Function(Taxable Wages &times; Frequency)<br/>
+      4. FICA Social Security = Min(Cumulative Gross, $176,100) &times; 6.2%<br/>
+      5. FICA Medicare = Gross &times; 1.45% (+ 0.9% if Year-to-Date Gross &gt; $200,000)<br/>
+      6. State &amp; Local Tax = State Progressive/Flat Rate(Taxable Wages)<br/>
+      7. Net Take-Home Pay = Gross Pay - (Pre-Tax + Fed Tax + FICA + State Tax + Post-Tax)
+    </div>
+
+    <h2>Step 2: 2026 Federal Income Tax Brackets (Projected IRS Slabs)</h2>
+    <p>The United States uses an inflation-adjusted progressive tax bracket system. In 2026, the standard deduction is estimated at <strong>$15,000 for single filers</strong> and <strong>$30,000 for married couples filing jointly</strong>. This means your first $15,000 of income incurs exactly $0 in federal income tax.</p>
+
+    <div class="table-responsive">
+      <table class="calc-table">
+        <thead>
+          <tr>
+            <th>Tax Rate</th>
+            <th>Single Filers (Taxable Income)</th>
+            <th>Married Filing Jointly</th>
+            <th>Head of Household</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>10%</strong></td>
+            <td>$0 to $11,925</td>
+            <td>$0 to $23,850</td>
+            <td>$0 to $17,000</td>
+          </tr>
+          <tr>
+            <td><strong>12%</strong></td>
+            <td>$11,925 to $48,475</td>
+            <td>$23,850 to $96,950</td>
+            <td>$17,000 to $64,850</td>
+          </tr>
+          <tr>
+            <td><strong>22%</strong></td>
+            <td>$48,475 to $103,350</td>
+            <td>$96,950 to $206,700</td>
+            <td>$64,850 to $103,350</td>
+          </tr>
+          <tr>
+            <td><strong>24%</strong></td>
+            <td>$103,350 to $197,300</td>
+            <td>$206,700 to $394,600</td>
+            <td>$103,350 to $197,300</td>
+          </tr>
+          <tr>
+            <td><strong>32%</strong></td>
+            <td>$197,300 to $250,525</td>
+            <td>$394,600 to $501,050</td>
+            <td>$197,300 to $250,500</td>
+          </tr>
+          <tr>
+            <td><strong>35%</strong></td>
+            <td>$250,525 to $626,350</td>
+            <td>$501,050 to $751,600</td>
+            <td>$250,500 to $626,350</td>
+          </tr>
+          <tr>
+            <td><strong>37%</strong></td>
+            <td>Over $626,350</td>
+            <td>Over $751,600</td>
+            <td>Over $626,350</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Step 3: FICA Payroll Taxes (Social Security &amp; Medicare)</h2>
+    <p>Unlike federal income taxes—which account for deductions and family credits—FICA taxes are deducted from the very first dollar earned:</p>
+    <ul>
+      <li><strong>Social Security (OASDI):</strong> Levied at 6.2% for the employee (and matched 6.2% by the employer) up to the statutory wage base limit of <strong>$176,100</strong>. Earnings above this cap are 100% exempt from Social Security tax for the rest of the calendar year. High earners often notice their paychecks increase in autumn as this cap is crossed.</li>
+      <li><strong>Medicare:</strong> Levied at 1.45% for the employee (and matched 1.45% by the employer) on all earnings with no ceiling.</li>
+      <li><strong>Additional Medicare Tax:</strong> The Affordable Care Act mandates an additional 0.9% employee Medicare tax on wages exceeding $200,000 for single filers ($250,000 for married couples), bringing the top Medicare employee rate to 2.35%.</li>
+    </ul>
+
+    <h2>Step 4: Pre-Tax Deductions (401k, HSA, FSA)</h2>
+    <p>Pre-tax deductions are the most powerful legal mechanism available to W-2 employees to increase financial wealth:</p>
+    <ul>
+      <li><strong>Traditional 401(k) / 403(b):</strong> Deducted prior to federal and state tax calculations. For 2026, the individual limit is $23,500 ($31,000 for workers 50+). Because it shields income at your highest marginal rate, a $100 contribution costs only $70 to $78 in take-home reduction.</li>
+      <li><strong>Health Savings Account (HSA):</strong> The only "triple tax-advantaged" vehicle. HSA contributions via payroll reduce federal income tax, state income tax (in 48 states), and FICA taxes. 2026 limits are $4,300 (self-only) and $8,550 (family).</li>
+      <li><strong>Flexible Spending Accounts (FSA):</strong> Pre-tax payroll deductions for qualified medical and dependent care costs up to $3,200/year.</li>
+    </ul>
+
+    <h2>Step 5: Paycheck Frequencies Compared (Biweekly vs Semi-Monthly)</h2>
+    <p>How often you are paid determines the size of each check and dictates cash flow budgeting:</p>
+    <ul>
+      <li><strong>Biweekly (26 paychecks per year):</strong> Paid every two weeks, typically on alternate Fridays. Because 52 weeks / 2 = 26, you receive two "magic" months each year with three paychecks instead of two. Many savvy budgeters base their monthly expenses on two paychecks and allocate the two extra paychecks entirely toward debt payoff or savings.</li>
+      <li><strong>Semi-Monthly (24 paychecks per year):</strong> Paid twice per month, commonly on the 15th and last day of the month. Each individual paycheck is slightly larger than a biweekly check (Annual Salary / 24 vs Annual Salary / 26), and every month has an identical cash flow pattern.</li>
+      <li><strong>Weekly (52 paychecks per year):</strong> Common in hourly and construction trades. Gross pay is divided by 52.</li>
+      <li><strong>Monthly (12 paychecks per year):</strong> Common in government and academic positions. One large deposit per month.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>What is FICA tax on my paycheck?</summary>
+      <p>FICA (Federal Insurance Contributions Act) consists of Social Security tax (6.2% on wages up to the annual wage base of $176,100 in 2026) and Medicare tax (1.45% on all earnings, plus an additional 0.9% on earnings above $200,000 for single filers or $250,000 for married couples).</p>
+    </details>
+    <details class="faq-item">
+      <summary>How does contributing to a traditional 401(k) increase my take-home efficiency?</summary>
+      <p>Traditional 401(k) contributions are deducted pre-tax from your gross salary. If you contribute $100 in the 22% federal tax bracket with a 5% state tax rate, your actual paycheck is only reduced by roughly $73 because you save $27 in federal and state income taxes.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why are bonuses taxed at 22% on paychecks?</summary>
+      <p>The IRS categorizes bonuses as supplemental wages and permits employers to withhold a flat statutory 22% for federal income tax. However, if your regular income places you in the 24%, 32%, or 35% tax bracket, you will owe the difference when filing your annual Form 1040.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Which US states have 0% income tax on paychecks?</summary>
+      <p>Nine US states have no individual earned wage income tax: Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the difference between biweekly and semi-monthly paychecks?</summary>
+      <p>Biweekly employees receive 26 paychecks per year (paid every two weeks, resulting in two months each year with three paychecks). Semi-monthly employees receive exactly 24 paychecks per year (paid twice a month, typically on the 15th and last day of each month).</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why is my effective tax rate always lower than my marginal tax bracket?</summary>
+      <p>Because the US uses progressive tax brackets. Your first $15,000 is tax-free due to the standard deduction, and subsequent dollars are taxed sequentially at 10%, 12%, 22%, etc. Only the highest dollars are taxed at your marginal rate, keeping your overall effective rate significantly lower.</p>
+    </details>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Zero-friction calculations and shared expense tracking worldwide.</p>
+      </div>
+      <div>
+        <h4>Salary Calculators</h4>
+        <ul>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck Calculator</a></li>
+          <li><a href="/tools/korea-salary-calculator/">Korea 연봉 실수령액</a></li>
+          <li><a href="/tools/japan-salary-calculator/">Japan 手取り計算</a></li>
+          <li><a href="/tools/india-ctc-salary-calculator/">India CTC In-Hand</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Rent &amp; Math</h4>
+        <ul>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter (Sq Ft)</a></li>
+          <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
+          <li><a href="/tools/tdee-calculator/">TDEE &amp; Calorie Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guides</h4>
+        <ul>
+          <li><a href="/blog/how-to-calculate-prorated-rent/">Prorated Rent Guide</a></li>
+          <li><a href="/compare/splitwise-alternative/">Vs Splitwise</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Calculations.</p>
+  </div>
+</footer>
+
+<script>
+let mode = 'regular'; // 'regular', 'bonus'
+
+function fmtUSD(n) {
+  return '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function calcFedTax(annualTaxable, status) {
+  // 2026 Estimated Federal Brackets (Single):
+  // 10%: $0 - $11,925
+  // 12%: $11,925 - $48,475
+  // 22%: $48,475 - $103,350
+  // 24%: $103,350 - $197,300
+  // 32%: $197,300 - $250,525
+  // 35%: $250,525 - $626,350
+  // 37%: > $626,350
+  let stdDeduct = 15000;
+  let mult = 1.0;
+  if (status === 'married') {
+    stdDeduct = 30000;
+    mult = 2.0;
+  } else if (status === 'hoh') {
+    stdDeduct = 22500;
+    mult = 1.5;
+  }
+
+  const taxable = Math.max(0, annualTaxable - stdDeduct);
+  let tax = 0;
+  const b1 = 11925 * mult;
+  const b2 = 48475 * mult;
+  const b3 = 103350 * mult;
+  const b4 = 197300 * mult;
+  const b5 = 250525 * mult;
+  const b6 = 626350 * mult;
+
+  if (taxable > b6) {
+    tax += (taxable - b6) * 0.37;
+    tax += (b6 - b5) * 0.35;
+    tax += (b5 - b4) * 0.32;
+    tax += (b4 - b3) * 0.24;
+    tax += (b3 - b2) * 0.22;
+    tax += (b2 - b1) * 0.12;
+    tax += b1 * 0.10;
+  } else if (taxable > b5) {
+    tax += (taxable - b5) * 0.35;
+    tax += (b5 - b4) * 0.32;
+    tax += (b4 - b3) * 0.24;
+    tax += (b3 - b2) * 0.22;
+    tax += (b2 - b1) * 0.12;
+    tax += b1 * 0.10;
+  } else if (taxable > b4) {
+    tax += (taxable - b4) * 0.32;
+    tax += (b4 - b3) * 0.24;
+    tax += (b3 - b2) * 0.22;
+    tax += (b2 - b1) * 0.12;
+    tax += b1 * 0.10;
+  } else if (taxable > b3) {
+    tax += (taxable - b3) * 0.24;
+    tax += (b3 - b2) * 0.22;
+    tax += (b2 - b1) * 0.12;
+    tax += b1 * 0.10;
+  } else if (taxable > b2) {
+    tax += (taxable - b2) * 0.22;
+    tax += (b2 - b1) * 0.12;
+    tax += b1 * 0.10;
+  } else if (taxable > b1) {
+    tax += (taxable - b1) * 0.12;
+    tax += b1 * 0.10;
+  } else {
+    tax += taxable * 0.10;
+  }
+  return tax;
+}
+
+function calcStateTax(annualTaxable, state) {
+  if (['TX', 'FL', 'WA'].includes(state)) return 0;
+  if (state === 'IL') return annualTaxable * 0.0495;
+  if (state === 'PA') return annualTaxable * 0.0307;
+  if (state === 'MA') return annualTaxable * 0.0500;
+  if (state === 'NC') return annualTaxable * 0.0450;
+  if (state === 'CO') return annualTaxable * 0.0440;
+  if (state === 'CA') {
+    // CA progressive approx ~6% effective for average
+    if (annualTaxable < 40000) return annualTaxable * 0.02;
+    if (annualTaxable < 80000) return annualTaxable * 0.045;
+    if (annualTaxable < 150000) return annualTaxable * 0.07;
+    return annualTaxable * 0.093;
+  }
+  if (state === 'NY') {
+    return annualTaxable * 0.055;
+  }
+  if (state === 'NJ') {
+    return annualTaxable * 0.052;
+  }
+  return annualTaxable * 0.045; // Other states approx 4.5%
+}
+
+function calc() {
+  const grossAnnual = parseFloat(document.getElementById('gross-salary').value) || 0;
+  const payFreq = parseInt(document.getElementById('pay-frequency').value, 10) || 26;
+  const state = document.getElementById('us-state').value;
+  const status = document.getElementById('filing-status').value;
+  const k401Pct = parseInt(document.getElementById('slider-401k').value, 10) || 0;
+
+  const annual401k = Math.min(23500, grossAnnual * (k401Pct / 100));
+  document.getElementById('label-401k-pct').textContent = `${k401Pct}% (${fmtUSD(annual401k)} / yr)`;
+
+  const paycheckGross = grossAnnual / payFreq;
+  const paycheck401k = annual401k / payFreq;
+
+  // FICA Social Security: 6.2% capped at $176,100
+  const ssCapped = Math.min(grossAnnual, 176100);
+  const annualSS = ssCapped * 0.062;
+  const paycheckSS = annualSS / payFreq;
+
+  // Medicare: 1.45% uncapped
+  const annualMed = grossAnnual * 0.0145;
+  const paycheckMed = annualMed / payFreq;
+
+  const annualTaxableFed = Math.max(0, grossAnnual - annual401k);
+
+  let annualFed = 0;
+  if (mode === 'bonus') {
+    // Flat 22% supplemental withholding
+    annualFed = annualTaxableFed * 0.22;
+  } else {
+    annualFed = calcFedTax(annualTaxableFed, status);
+  }
+  const paycheckFed = annualFed / payFreq;
+
+  const annualState = calcStateTax(annualTaxableFed, state);
+  const paycheckState = annualState / payFreq;
+
+  const paycheckTotalDeduct = paycheck401k + paycheckSS + paycheckMed + paycheckFed + paycheckState;
+  const paycheckNet = Math.max(0, paycheckGross - paycheckTotalDeduct);
+  const annualNet = paycheckNet * payFreq;
+  const effTaxRate = (( (paycheckFed + paycheckState + paycheckSS + paycheckMed) / (paycheckGross || 1) ) * 100).toFixed(1);
+
+  document.getElementById('res-paycheck-net').textContent = fmtUSD(paycheckNet);
+  document.getElementById('res-annual-net').textContent = `Annual Take-Home: ${fmtUSD(annualNet)} (Effective tax & FICA: ${effTaxRate}%)`;
+
+  document.getElementById('res-gross-pay').textContent = fmtUSD(paycheckGross);
+  document.getElementById('res-total-deduct').textContent = fmtUSD(paycheckTotalDeduct);
+  document.getElementById('res-fed-tax').textContent = fmtUSD(paycheckFed);
+  document.getElementById('res-fica-tax').textContent = fmtUSD(paycheckSS + paycheckMed);
+
+  document.getElementById('d-401k').textContent = fmtUSD(paycheck401k);
+  document.getElementById('d-fed').textContent = fmtUSD(paycheckFed);
+  document.getElementById('d-ss').textContent = fmtUSD(paycheckSS);
+  document.getElementById('d-med').textContent = fmtUSD(paycheckMed);
+  document.getElementById('d-state').textContent = fmtUSD(paycheckState);
+}
+
+document.getElementById('mode-regular').addEventListener('click', () => {
+  mode = 'regular';
+  document.getElementById('mode-regular').classList.add('active');
+  document.getElementById('mode-bonus').classList.remove('active');
+  document.getElementById('lbl-salary').textContent = "Gross Annual Salary ($)";
+  calc();
+});
+
+document.getElementById('mode-bonus').addEventListener('click', () => {
+  mode = 'bonus';
+  document.getElementById('mode-bonus').classList.add('active');
+  document.getElementById('mode-regular').classList.remove('active');
+  document.getElementById('lbl-salary').textContent = "Bonus / Supplemental Amount ($)";
+  calc();
+});
+
+['gross-salary', 'pay-frequency', 'us-state', 'filing-status', 'slider-401k'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  }
+});
+
+function switchConceptTab(tabId) {
+  const tabs = ['k401', 'fica', 'bonus', 'marginal', 'states'];
+  tabs.forEach(t => {
+    const pane = document.getElementById('pane-' + t);
+    if (pane) pane.classList.remove('active');
+  });
+  const activePane = document.getElementById('pane-' + tabId);
+  if (activePane) activePane.classList.add('active');
+
+  const navBtns = document.querySelectorAll('.concept-tab-btn');
+  navBtns.forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const router = document.querySelector('.concept-router');
+  if (router) {
+    router.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+calc();
+</script>
+
+</body>
+</html>
