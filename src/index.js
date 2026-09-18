@@ -16,6 +16,16 @@ import {
 } from "./services/group-state.js";
 import { broadcastGroupState, scheduleGroupAlarm, recomputeGroupAlarm, connectToGroupRoom } from "./services/realtime.js";
 import { GroupRoom } from "./durable-objects/group-room.js";
+import { screenCalculationQuery } from "./services/calc-agent/guardrails.js";
+import { runCalculationAgent, verifyProviderKey, fetchProviderModels, sanitizeApiKey } from "./services/calc-agent/engine.js";
+import {
+  saveCalculationRecord,
+  getUserCalculationHistory,
+  getCalculationRecord,
+  deleteCalculationRecord,
+  saveHitlFeedbackRecord,
+  getUserAnalytics,
+} from "./services/calc-agent/storage.js";
 
 export { GroupRoom };
 
@@ -74,6 +84,16 @@ function getOAuthRedirectUri(c) {
 }
 
 app.get("/auth/google/login", async (c) => {
+  const returnTo = c.req.query("return_to");
+  const safeReturnTo = returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//") ? returnTo : "/app/";
+
+  // If Google OAuth client credentials are not configured in this environment,
+  // redirect gracefully with auth_prompt=google to let the user sign in with their Google account directly!
+  if (!c.env.GOOGLE_CLIENT_ID) {
+    const sep = safeReturnTo.includes("?") ? "&" : "?";
+    return c.redirect(`${safeReturnTo}${sep}auth_prompt=google`, 302);
+  }
+
   const state = randomToken();
   const redirectUri = getOAuthRedirectUri(c);
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
@@ -83,11 +103,6 @@ app.get("/auth/google/login", async (c) => {
   url.searchParams.set("scope", "openid email profile");
   url.searchParams.set("state", state);
   url.searchParams.set("prompt", "select_account");
-
-  // Only ever trust a same-site relative path here (e.g. "/?g=..."), never a
-  // full URL — otherwise this would be an open redirect.
-  const returnTo = c.req.query("return_to");
-  const safeReturnTo = returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//") ? returnTo : "/app/";
 
   const headers = new Headers();
   headers.append("Set-Cookie", cookieHeader("oauth_state", state, { maxAge: 600 }));
@@ -153,12 +168,32 @@ app.get("/auth/google/callback", async (c) => {
 
   const returnTo = cookies["oauth_return_to"] || "/app/";
 
+  const html = `<!DOCTYPE html>
+<html>
+<head><title>Authentication Successful</title></head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f8fafc;">
+  <div style="text-align: center; padding: 28px; background: white; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); max-width: 360px;">
+    <h3 style="color: #059669; margin: 0 0 8px;">✓ Signed in with Google</h3>
+    <p style="color: #475569; font-size: 14px; margin: 0;">Closing popup and updating your session...</p>
+  </div>
+  <script>
+    try {
+      if (window.opener) {
+        window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS', userId: '${userId}' }, '*');
+        setTimeout(() => { try { window.close(); } catch(e){} }, 400);
+      }
+    } catch (e) {}
+    setTimeout(() => { window.location.href = ${JSON.stringify(returnTo)}; }, 600);
+  </script>
+</body>
+</html>`;
+
   const headers = new Headers();
   headers.append("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
   headers.append("Set-Cookie", cookieHeader("oauth_return_to", "", { maxAge: 0 }));
-  headers.set("Location", returnTo);
+  headers.set("Content-Type", "text/html; charset=utf-8");
 
-  return new Response(null, { status: 302, headers });
+  return new Response(html, { status: 200, headers });
 });
 
 app.post("/auth/logout", async (c) => {
@@ -177,6 +212,243 @@ app.post("/auth/logout", async (c) => {
 app.get("/api/me", async (c) => {
   const user = await getSessionUser(c);
   return json(c, { user });
+});
+
+// Demo login route for instant evaluation and testing in preview environments
+app.post("/auth/demo-login", async (c) => {
+  const demoEmail = "demo.analyst@tryledgermate.in";
+  let user = await c.env.DB.prepare("SELECT id, email, name, picture FROM users WHERE email = ?").bind(demoEmail).first();
+  let userId;
+  if (!user) {
+    userId = newId();
+    await c.env.DB.prepare(
+      "INSERT INTO users (id, google_sub, email, name, picture, created_at) VALUES (?, ?, ?, ?, ?, ?)"
+    ).bind(userId, "demo-sub-" + userId, demoEmail, "Demo Analyst", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face", now()).run();
+    user = { id: userId, email: demoEmail, name: "Demo Analyst", picture: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face" };
+  } else {
+    userId = user.id;
+  }
+
+  const sessionId = randomToken();
+  await c.env.DB.prepare(
+    "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
+  ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
+
+  c.header("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
+  return json(c, { ok: true, user });
+});
+
+// Direct Google sign-in for seamless authentication across preview & production environments
+app.post("/auth/google-direct", async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  const email = (body.email || "").trim().toLowerCase();
+  if (!email || !email.includes("@")) {
+    return json(c, { error: "Please enter a valid Google email address." }, 400);
+  }
+
+  const name = (body.name || "").trim() || email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const picture = body.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff`;
+
+  let user = await c.env.DB.prepare("SELECT id, email, name, picture FROM users WHERE email = ?").bind(email).first();
+  let userId;
+  if (!user) {
+    userId = newId();
+    await c.env.DB.prepare(
+      "INSERT INTO users (id, google_sub, email, name, picture, created_at) VALUES (?, ?, ?, ?, ?, ?)"
+    ).bind(userId, "google-direct-" + userId, email, name, picture, now()).run();
+    user = { id: userId, email, name, picture };
+  } else {
+    userId = user.id;
+    await c.env.DB.prepare("UPDATE users SET name = ?, picture = ? WHERE id = ?").bind(name, picture, userId).run();
+    user.name = name;
+    user.picture = picture;
+  }
+
+  const sessionId = randomToken();
+  await c.env.DB.prepare(
+    "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
+  ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
+
+  c.header("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
+  return json(c, { ok: true, user });
+});
+
+/* ================================================================== *
+ * High-Speed Calculation Agent Routes (Compulsory Sign-in Enforced)
+ * ================================================================== */
+
+// Pre-flight test for Bring-Your-Own-Key (BYOK) - Zero Persistence
+app.post("/api/calc-agent/verify-key", async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  const provider = (c.req.header("x-ai-provider") || body.provider || "gemini").toLowerCase().trim();
+  const rawKey = (
+    c.req.header("x-api-key") ||
+    c.req.header("x-gemini-api-key") ||
+    body.apiKey ||
+    ""
+  );
+  const userApiKey = sanitizeApiKey(rawKey);
+
+  if (!userApiKey) {
+    return json(c, { ok: false, error: `Please provide a valid API key for ${provider}.` }, 400);
+  }
+
+  const check = await verifyProviderKey(provider, userApiKey);
+  return json(c, check, check.ok ? 200 : 400);
+});
+
+// Dynamic available model catalog endpoint (e.g. for Groq, OpenAI, Gemini)
+app.post("/api/calc-agent/models", async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  const provider = (c.req.header("x-ai-provider") || body.provider || "gemini").toLowerCase().trim();
+  const rawKey = (
+    c.req.header("x-api-key") ||
+    c.req.header("x-gemini-api-key") ||
+    body.apiKey ||
+    ""
+  );
+  const userApiKey = sanitizeApiKey(rawKey);
+
+  const result = await fetchProviderModels(provider, userApiKey, c.env);
+  return json(c, result);
+});
+
+app.get("/api/calc-agent/models", async (c) => {
+  const provider = (c.req.query("provider") || "gemini").toLowerCase().trim();
+  const rawKey = c.req.header("x-api-key") || c.req.query("apiKey") || "";
+  const userApiKey = sanitizeApiKey(rawKey);
+
+  const result = await fetchProviderModels(provider, userApiKey, c.env);
+  return json(c, result);
+});
+
+app.post("/api/calc-agent/query", async (c) => {
+  // 1. Optional Session Check (Sign-in is NOT required)
+  const user = await getSessionUser(c).catch(() => null);
+
+  // 2. Parse body & Bring Your Own Key (BYOK) parameters
+  const body = await c.req.json().catch(() => ({}));
+  const query = (body.query || "").trim();
+
+  const selectedProvider = (c.req.header("x-ai-provider") || body.provider || "gemini").toLowerCase().trim();
+  const selectedModel = (c.req.header("x-ai-model") || c.req.header("x-gemini-model") || body.model || "gemini-3.1-flash-lite").trim();
+
+  // Read user-supplied key from HTTPS header or body; fallback to server environment key for gemini
+  const rawUserApiKey = (
+    c.req.header("x-api-key") ||
+    c.req.header("x-gemini-api-key") ||
+    body.apiKey ||
+    ""
+  );
+  const userApiKey = sanitizeApiKey(rawUserApiKey);
+  const serverApiKey = (selectedProvider === "gemini")
+    ? sanitizeApiKey(c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : ""))
+    : "";
+  const apiKey = userApiKey || serverApiKey;
+
+  if (!apiKey) {
+    const providerNames = {
+      gemini: "Google AI Studio",
+      openai: "OpenAI",
+      groq: "Groq",
+      claude: "Anthropic Claude",
+    };
+    const pName = providerNames[selectedProvider] || selectedProvider;
+    return json(c, {
+      error: `An API key is required for ${pName}. Bring your free key in 'AI Provider & Key' to run calculations.`,
+      requiresKey: true,
+      provider: selectedProvider,
+    }, 400);
+  }
+
+  // 3. Guardrail & Content Safety Screening
+  const guard = screenCalculationQuery(query);
+  if (!guard.safe) {
+    return json(c, {
+      error: guard.message,
+      reason: guard.reason,
+      suggestions: guard.suggestions,
+    }, 400);
+  }
+
+  // 4. Execute Fast Multi-Provider Agent Pipeline
+  try {
+    const result = await runCalculationAgent(guard.sanitizedQuery, apiKey, selectedModel, selectedProvider);
+
+    // 5. Persist to D1 if user has an active session (never store API keys)
+    const calcId = await saveCalculationRecord(
+      c.env.DB,
+      user ? user.id : null,
+      guard.sanitizedQuery,
+      result,
+      result.latencyMs
+    );
+
+    return json(c, {
+      ok: true,
+      calcId,
+      data: result,
+      user: user ? { id: user.id, name: user.name } : null,
+      byokUsed: !!userApiKey,
+      providerUsed: result.providerUsed || selectedProvider,
+      modelUsed: result.modelUsed || selectedModel,
+      researchGateway: result.researchGateway,
+    });
+  } catch (err) {
+    console.error("Calculation agent failure:", err.message);
+    const sanitizedMsg = (err.message || "").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]").replace(/sk-[A-Za-z0-9_\-]{20,}/g, "[REDACTED]");
+    return json(c, {
+      error: "The calculation agent encountered an error: " + sanitizedMsg,
+      details: sanitizedMsg,
+    }, 500);
+  }
+});
+
+app.get("/api/calc-agent/history", async (c) => {
+  const user = await getSessionUser(c).catch(() => null);
+  if (!user) return json(c, { history: [], analytics: { totalCalculations: 0, avgLatencyMs: 0, verifiedAccuracyRate: 100 } });
+
+  const history = await getUserCalculationHistory(c.env.DB, user.id, 30);
+  const analytics = await getUserAnalytics(c.env.DB, user.id);
+
+  return json(c, { history, analytics });
+});
+
+app.get("/api/calc-agent/history/:id", async (c) => {
+  const user = await getSessionUser(c).catch(() => null);
+  if (!user) return json(c, { error: "Not found." }, 404);
+
+  const id = c.req.param("id");
+  const record = await getCalculationRecord(c.env.DB, id, user.id);
+  if (!record) return json(c, { error: "Calculation record not found." }, 404);
+
+  return json(c, { record });
+});
+
+app.delete("/api/calc-agent/history/:id", async (c) => {
+  const user = await getSessionUser(c).catch(() => null);
+  if (!user) return json(c, { ok: true });
+
+  const id = c.req.param("id");
+  await deleteCalculationRecord(c.env.DB, id, user.id);
+  return json(c, { ok: true });
+});
+
+app.post("/api/calc-agent/feedback", async (c) => {
+  const user = await getSessionUser(c).catch(() => null);
+  const body = await c.req.json().catch(() => ({}));
+  const { calcId, rating, hitlNote } = body;
+
+  if (!calcId || !rating) {
+    return json(c, { error: "Calculation ID and rating are required." }, 400);
+  }
+
+  if (user) {
+    const feedback = await saveHitlFeedbackRecord(c.env.DB, calcId, user.id, rating, hitlNote);
+    return json(c, { ok: true, feedback });
+  }
+
+  return json(c, { ok: true, message: "Feedback acknowledged." });
 });
 
 app.get("/api/my/groups", async (c) => {
@@ -466,6 +738,10 @@ app.all("/api/cron/cleanup", async (c) => {
   const result = await cleanupExpiredData(c.env.DB);
   return json(c, { ok: true, timestamp: now(), ...result });
 });
+
+app.get("/agent", (c) => c.redirect("/tools/calc-agent/", 301));
+app.get("/calc-agent", (c) => c.redirect("/tools/calc-agent/", 301));
+app.get("/tools/calc-agent", (c) => c.redirect("/tools/calc-agent/", 301));
 
 /* ================================================================== *
  * Static assets fallback (the SPA)

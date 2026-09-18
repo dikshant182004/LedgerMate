@@ -338,10 +338,69 @@
       </div>
     </div>
 
-    <!-- 5. Networking, Egress & Hidden Costs -->
+    <!-- 5. Serverless & Microservices (AWS Lambda, Cloud Functions) -->
     <div class="cfg-section">
       <div class="cfg-title">
-        <span>🌐 5. Networking, Egress &amp; Hidden Gotchas</span>
+        <span>⚡ 5. Serverless Execution (Lambda / Cloud Functions / Cloud Run)</span>
+        <span class="cfg-badge" id="badge-serverless-total">$0.00 / mo</span>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="serverless-invocations">Monthly Invocations (Millions)</label>
+          <input id="serverless-invocations" type="number" min="0" max="500" step="1" value="5" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.20 per 1M requests (1M free tier)</span>
+        </div>
+        <div style="flex:1;">
+          <label for="serverless-memory">Function Allocated Memory (MB)</label>
+          <select id="serverless-memory" onchange="recalc()">
+            <option value="128">128 MB (Micro Webhooks / API Gateways)</option>
+            <option value="256">256 MB (Standard JSON REST Endpoints)</option>
+            <option value="512" selected>512 MB (SSR / Web Rendering)</option>
+            <option value="1024">1,024 MB (1 GB - Image Processing / PDF)</option>
+            <option value="2048">2,048 MB (2 GB - Heavy Analytics / ML)</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="serverless-duration">Average Execution Duration (ms)</label>
+          <input id="serverless-duration" type="number" min="10" max="15000" step="25" value="150" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">Billed per 1ms increment ($0.0000166667 / GB-sec)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Managed Containers, Load Balancers & Observability -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>☸️ 6. Managed Kubernetes, Load Balancers &amp; Observability</span>
+        <span class="cfg-badge" id="badge-platform-total">$0.00 / mo</span>
+      </div>
+      <div class="calc-row">
+        <div style="flex:1;">
+          <label for="k8s-clusters">Managed Kubernetes Clusters (EKS / GKE)</label>
+          <select id="k8s-clusters" onchange="recalc()">
+            <option value="0" selected>0 Clusters (None / Standard VMs)</option>
+            <option value="1">1 Cluster ($73.00/mo Control Plane Fee)</option>
+            <option value="2">2 Clusters (Prod + Staging - $146.00/mo)</option>
+            <option value="3">3 Clusters (Multi-Region / Multi-Env - $219.00/mo)</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label for="alb-count">Application Load Balancers (ALB / NLB)</label>
+          <input id="alb-count" type="number" min="0" max="20" value="1" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.0225/hr (~$16.43/mo) + $0.008/LCU-hr</span>
+        </div>
+        <div style="flex:1;">
+          <label for="logs-ingestion-gb">Log &amp; Metric Ingestion (CloudWatch/Datadog GB)</label>
+          <input id="logs-ingestion-gb" type="number" min="0" max="5000" step="50" value="100" oninput="recalc()" />
+          <span style="font-size:11.5px;color:var(--text-muted);">$0.50 / GB ingested + retention</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Networking, Egress & Hidden Costs -->
+    <div class="cfg-section">
+      <div class="cfg-title">
+        <span>🌐 7. Networking, Egress &amp; Hidden Gotchas</span>
         <span class="cfg-badge" id="badge-network-total">$0.00 / mo</span>
       </div>
       <div class="calc-row">
@@ -378,7 +437,7 @@
     <!-- 6. Enterprise Commit & FinOps Discounts -->
     <div class="cfg-section">
       <div class="cfg-title">
-        <span>🏷️ 6. FinOps Discounts &amp; Free Tier</span>
+        <span>🏷️ 8. FinOps Discounts &amp; Free Tier</span>
         <span class="cfg-badge">Discounts Applied</span>
       </div>
       <div class="calc-row">
@@ -447,6 +506,18 @@
         <div class="calc-result-row">
           <span>Object Storage (S3 Standard &amp; Glacier)</span>
           <span class="amt" id="row-s3-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Serverless Compute (Lambda / Cloud Functions)</span>
+          <span class="amt" id="row-serverless-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Kubernetes Control Plane &amp; Load Balancers</span>
+          <span class="amt" id="row-platform-val">$0.00</span>
+        </div>
+        <div class="calc-result-row">
+          <span>Log &amp; Metric Observability Ingestion</span>
+          <span class="amt" id="row-logs-val">$0.00</span>
         </div>
         <div class="calc-result-row">
           <span>Net Outbound Egress (After CDN Offload)</span>
@@ -640,36 +711,36 @@
     <h2 style="font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px;">Frequently Asked Questions (FAQ)</h2>
     <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">Expert answers to complex cloud billing and architectural questions.</p>
 
-    <div class="faq-grid">
-      <div class="faq-card">
-        <h3><span>❓</span> Why is cloud egress bandwidth so much more expensive than server compute?</h3>
+    <div class="faq-grid" style="display:grid;grid-template-columns:1fr;gap:14px;">
+      <details class="faq-item">
+        <summary>Why is cloud egress bandwidth so much more expensive than server compute?</summary>
         <p>Major cloud providers enforce asymmetrical pricing: uploading data into their cloud is free, but transmitting data out to the internet costs $0.08 to $0.09 per GB. This structure creates an ecosystem barrier to multi-cloud setups. For bandwidth-heavy applications, routing traffic through a CDN with high cache hit ratios is the single most effective way to eliminate egress fees.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> How do AWS NAT Gateways become an unexpected cost center?</h3>
+      <details class="faq-item">
+        <summary>How do AWS NAT Gateways become an unexpected cost center?</summary>
         <p>An AWS Managed NAT Gateway charges a baseline hourly rate of $0.045/hour ($32.85 per month per gateway), PLUS $0.045 per gigabyte of processed data. If an engineering team provisions 3 NAT Gateways across 3 Availability Zones for high availability, they incur nearly $100 per month in idle fees before handling any traffic. Utilizing VPC Gateway Endpoints for S3 and DynamoDB allows instances to bypass the NAT Gateway entirely at zero cost.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> What is the difference between Compute Savings Plans and Reserved Instances?</h3>
+      <details class="faq-item">
+        <summary>What is the difference between Compute Savings Plans and Reserved Instances?</summary>
         <p>Standard Reserved Instances require committing to a specific instance type, operating system, and region for 1 or 3 years. Compute Savings Plans, introduced by AWS, require committing to an hourly spend ($/hour) and automatically apply across EC2 instances, AWS Fargate, and AWS Lambda, regardless of instance family, operating system, or geographical region, offering up to 66% discounts with maximum flexibility.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> Why did AWS begin charging for public IPv4 addresses in 2024?</h3>
+      <details class="faq-item">
+        <summary>Why did AWS begin charging for public IPv4 addresses in 2024?</summary>
         <p>Due to the global exhaustion of available IPv4 address space, AWS implemented a charge of $0.005 per hour per public IPv4 address ($3.65/month per IP) in February 2024. This applies to all running EC2 instances, load balancers, and NAT gateways. Organizations can audit their public IP inventory and migrate internal workloads to dual-stack IPv6 or private subnets to eliminate unnecessary IP fees.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> When does a Multi-AZ database setup become necessary?</h3>
+      <details class="faq-item">
+        <summary>When does a Multi-AZ database setup become necessary?</summary>
         <p>Multi-AZ replication synchronously copies database transactions to a standby instance in a physically separate availability zone. It is essential for revenue-critical production systems where unplanned downtime must be resolved via automated failover in under 60 seconds. For development, staging, or internal analytics databases, Single-AZ deployments save 50% on database costs.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> How can scheduled instance automation save 65% on non-production cloud spend?</h3>
+      <details class="faq-item">
+        <summary>How can scheduled instance automation save 65% on non-production cloud spend?</summary>
         <p>A full month consists of 730 hours. Development, testing, and staging environments are typically only utilized during standard business hours (approx. 40 hours per week, or 160-180 hours per month). Using AWS EventBridge and Lambda or GCP Cloud Scheduler to stop non-production instances on weeknights and weekends immediately slashes their compute and database spend by ~70% to 75%.</p>
-      </div>
+      </details>
     </div>
   </section>
 </div>
@@ -808,8 +879,37 @@ function recalc() {
 
   let networkMonthly = egressMonthly + natMonthly + ipv4Monthly;
 
+  // 5. Serverless Execution Pricing
+  const invocationsM = parseFloat(document.getElementById('serverless-invocations').value) || 0;
+  const memMb = parseInt(document.getElementById('serverless-memory').value, 10) || 512;
+  const durationMs = parseFloat(document.getElementById('serverless-duration').value) || 100;
+
+  // Compute invocation requests cost ($0.20 per 1M beyond 1M free tier)
+  let billableInvocationsM = freeTier ? Math.max(0, invocationsM - 1) : invocationsM;
+  let serverlessRequestsCost = billableInvocationsM * 0.20;
+
+  // Compute GB-seconds: (duration in seconds) * (memory in GB) * total requests
+  let durationSec = durationMs / 1000;
+  let memGb = memMb / 1024;
+  let totalGbSec = (invocationsM * 1000000) * durationSec * memGb;
+  let billableGbSec = freeTier ? Math.max(0, totalGbSec - 400000) : totalGbSec; // 400k free tier GB-s
+  let serverlessComputeCost = billableGbSec * 0.0000166667;
+  let serverlessMonthly = (serverlessRequestsCost + serverlessComputeCost) * regionMultiplier;
+
+  // 6. Containers, Load Balancers & Observability
+  const k8sClusterCount = parseInt(document.getElementById('k8s-clusters').value, 10) || 0;
+  const k8sMonthly = k8sClusterCount * 73.00; // $0.10/hr EKS/GKE cluster fee
+
+  const albCount = parseInt(document.getElementById('alb-count').value, 10) || 0;
+  let albMonthly = albCount * (730 * 0.0225 + 15.00); // Hourly ALB fee + estimated LCU baseline
+
+  const logsIngestionGb = parseFloat(document.getElementById('logs-ingestion-gb').value) || 0;
+  let logsMonthly = logsIngestionGb * 0.50; // $0.50 per GB CloudWatch/Datadog ingestion
+
+  let platformMonthly = k8sMonthly + albMonthly + logsMonthly;
+
   // Gross total before enterprise discount
-  let grossMonthly = computeMonthly + dbMonthly + storageMonthly + networkMonthly;
+  let grossMonthly = computeMonthly + dbMonthly + storageMonthly + networkMonthly + serverlessMonthly + platformMonthly;
 
   // Enterprise commitment discount
   const edpDiscount = parseFloat(document.getElementById('enterprise-discount').value) || 0;
@@ -822,6 +922,8 @@ function recalc() {
   document.getElementById('badge-db-total').textContent = fmt(dbMonthly) + ' / mo';
   document.getElementById('badge-storage-total').textContent = fmt(storageMonthly) + ' / mo';
   document.getElementById('badge-network-total').textContent = fmt(networkMonthly) + ' / mo';
+  document.getElementById('badge-serverless-total').textContent = fmt(serverlessMonthly) + ' / mo';
+  document.getElementById('badge-platform-total').textContent = fmt(platformMonthly) + ' / mo';
 
   document.getElementById('res-monthly-total').textContent = fmt(netMonthly) + ' / mo';
   document.getElementById('res-annual-summary').textContent = `Annual Projected Spend: ${fmt(annualTotal)} / year | Pricing Model: ${((1 - computePricing)*100).toFixed(0)}% Compute Savings applied`;
@@ -841,6 +943,9 @@ function recalc() {
 
   document.getElementById('row-ebs-val').textContent = fmt(ebsMonthly);
   document.getElementById('row-s3-val').textContent = fmt(s3StandardMonthly + s3ArchiveMonthly);
+  document.getElementById('row-serverless-val').textContent = fmt(serverlessMonthly);
+  document.getElementById('row-platform-val').textContent = fmt(k8sMonthly + albMonthly);
+  document.getElementById('row-logs-val').textContent = fmt(logsMonthly);
   document.getElementById('row-egress-val').textContent = `${fmt(egressMonthly)} (${netEgressGb.toFixed(0)} GB net)`;
   document.getElementById('row-nat-desc').textContent = `${natCount} NAT + ${ipv4Count} IPv4`;
   document.getElementById('row-nat-val').textContent = fmt(natMonthly + ipv4Monthly);

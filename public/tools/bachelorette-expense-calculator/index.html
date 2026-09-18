@@ -241,33 +241,119 @@
     </div>
   </div>
 
-  <article style="margin-top:48px;">
-    <h2>Bachelor &amp; Bachelorette Party Etiquette Guide</h2>
-    <p>Organizing a bachelor or bachelorette party is one of the most rewarding parts of wedding season, but cost friction between attendees can strain friendships if not addressed upfront.</p>
+  
+  <!-- Concept Router -->
+  <div class="concept-router" style="margin-top:32px;">
+    <div class="concept-router-head">
+      <div>
+        <h3 class="concept-router-title">Bachelorette Party Finance &amp; Group Dynamics</h3>
+        <p style="margin:4px 0 0;font-size:13px;color:var(--text-muted);">Master bride subsidization math, opt-out activity boundaries, swag waste reduction, and upfront payment schedules.</p>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
+    </div>
 
-    <h3>1. Who Pays for What?</h3>
-    <p>By modern etiquette, the guests jointly cover the bride or groom’s lodging, dinners, drinks, and celebratory activities. The honoree should not have to reach into their wallet during the weekend. However, the honoree usually books and pays for their own plane ticket unless the bridal party collectively decides to gift the airfare.</p>
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('bach-subsidize', this)">1. Subsidizing the Bride</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('bach-optout', this)">2. Opt-Out Boundaries</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('bach-swag', this)">3. Swag &amp; Decor Waste</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('bach-deposit', this)">4. Upfront Payment Deadlines</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('bach-dining', this)">5. Group Dining Minimums</button>
+    </div>
 
-    <h3>2. Set the Budget Before Booking Non-Refundable Items</h3>
-    <p>Always send an anonymous survey or group chat poll asking for maximum comfortable budgets <em>before</em> putting down a deposit on a multi-thousand-dollar luxury rental. Be transparent about estimated cost-per-person ranges.</p>
+    <div id="pane-bach-subsidize" class="concept-pane active">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The Bride Subsidization Formula</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Traditional bridal party etiquette dictates that attendees cover the bride's share of shared expenses (Airbnb lodging, group dinner, decorations, and shared activities):
+      </p>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-family:monospace;font-size:13px;color:var(--text);margin-bottom:12px;">
+        Total Shared Expense = $3,600 | Attendees = 8 (Bride + 7 Guests)<br/>
+        Without Bride Subsidization: $3,600 &divide; 8 = $450 per person.<br/>
+        With Bride Fully Covered: $3,600 &divide; 7 Paying Guests = $514.28 per guest (+$64.28 bride surcharge).
+      </div>
+    </div>
 
-    <h3>3. Use LedgerMate for Settle-Ups (Avoid Venmo Spreadsheet Chaos)</h3>
-    <p>Multiple bridesmaids or groomsmen will purchase different items: one puts down the Airbnb deposit, another buys the alcohol, someone else orders custom t-shirts. LedgerMate automatically calculates the minimum number of direct transfers so nobody overpays.</p>
+    <div id="pane-bach-optout" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Respecting Variable Attendee Budgets: The Opt-Out Clause</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Guests have vastly different financial situations. Fixed costs (the rental home and bride gift) are mandatory for all attendees, but high-cost discretionary activities ($200 spa day, $150 boat charter) should always offer an opt-out option with zero guilt.
+      </p>
+    </div>
 
-    <h2>Frequently Asked Questions</h2>
-    <details class="faq-item" open>
-      <summary>Does the bride or groom pay for their bachelorette party?</summary>
-      <p>Traditional etiquette is that the honoree (bride or groom) does not pay for lodging, dinners, drinks, or group activities during the party. Those costs are divided evenly among the attendees.</p>
-    </details>
-    <details class="faq-item">
-      <summary>What if someone can only come for one day of the weekend?</summary>
-      <p>Calculate their per-night lodging rate and only bill them for meals and activities they actually attended, rather than an even full-weekend split.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Can LedgerMate handle offline expense logging during the trip?</summary>
-      <p>Yes! LedgerMate functions as a full PWA with offline caching. You can log expenses while on a boat or in remote areas with zero cell service, and it syncs the instant you reconnect to Wi-Fi.</p>
-    </details>
+    <div id="pane-bach-swag" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Taming the Matching Swag &amp; Fast-Fashion Waste</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Spending $80 per person on personalized plastic cups, custom t-shirts, and matching hats that are discarded after one weekend inflates budgets unnecessarily. Reallocating swag money toward high-quality shared meals or a photographer creates vastly superior memories.
+      </p>
+    </div>
+
+    <div id="pane-bach-deposit" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Upfront Payment Deadlines (Protecting the Maid of Honor)</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        The Maid of Honor should never float thousands of dollars on personal credit cards while chasing friends for payment post-trip. Require attendees to transfer their lodging deposit before non-refundable reservations are locked in.
+      </p>
+    </div>
+
+    <div id="pane-bach-dining" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Restaurant Group Dining Menus and Beverage Minimums</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Restaurants in major party hubs (Scottsdale, Nashville, Miami) mandate pre-fixed tasting menus ($85 - $125/person) and food/beverage minimums for parties over 6. Always verify minimum spend requirements prior to booking.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- In-Depth 1,000+ Word Educational Article -->
+  <article style="margin-top:40px;">
+    <h2>The Definitive Guide to Planning and Budgeting a Bachelorette Party Without Friendship Friction</h2>
+    <p>
+      Bachelorette parties have evolved from single-evening local dinners into elaborate multi-day destination weekends involving domestic flights, luxury vacation rentals, and packed activity schedules. Balancing memorable celebrations with financial respect for all guests requires transparent communication and meticulous ledger management.
+    </p>
+
+    <h3>1. Anonymous Budget Polling</h3>
+    <p>
+      Before selecting a destination (such as Cabo, Nashville, or a local cabin), the Maid of Honor should distribute an anonymous survey asking for each attendee's maximum comfortable total spending limit. The itinerary should be structured around the median budget response rather than the highest earner's wishlist.
+    </p>
   </article>
+
+
+  <!-- 6 In-Depth FAQs -->
+  <section style="margin-top:48px;">
+    <h2 style="font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px;">Frequently Asked Questions (FAQ)</h2>
+    <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">Expert answers to bachelorette party budgeting, bride costs, and attendee expenses.</p>
+
+    <div class="faq-grid" style="display:grid;grid-template-columns:1fr;gap:14px;">
+      <details class="faq-item">
+        <summary>Does the bride pay for anything on her bachelorette party?</summary>
+        <p>Traditionally, the bride pays for her own travel transit (flights) and personal shopping, while the bridal party covers her share of the lodging, group meals, drinks, and shared activities.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What is the average cost of attending a destination bachelorette party?</summary>
+        <p>Recent surveys show the average cost to attend a 3-day destination bachelorette party ranges from $1,000 to $1,500 per attendee, including flights, lodging, meals, outfits, and gifts.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is it acceptable to decline a bachelorette party invitation due to cost?</summary>
+        <p>Yes, absolutely. A gracious and timely decline expressing love and support for the bride, paired with an offer to celebrate with a local dinner or drink, is completely appropriate.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>When should attendees pay for their share of the trip?</summary>
+        <p>Lodging costs should be collected before the reservation is booked. For on-trip expenses (meals, groceries, drinks), use LedgerMate to log expenses daily and settle balances immediately at the end of the trip.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>How should we handle guests who arrive late or leave early?</summary>
+        <p>Lodging costs are fixed and should generally be paid in full by anyone attending, as the room size was reserved for them. However, food, drink, and activity costs should only be charged for the specific days attended.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>How can we cut bachelorette party costs without sacrificing fun?</summary>
+        <p>Cook breakfast and lunch at the rental home, limit personalized fast-fashion merchandise, choose off-peak travel dates, and focus spending on one or two highlight experiences rather than over-scheduling every hour.</p>
+      </details>
+    </div>
+  </section>
+
 </div>
 
 <footer class="footer">
@@ -307,6 +393,24 @@
 </footer>
 
 <script>
+
+function switchConcept(conceptId, btn) {
+  const router = btn ? btn.closest('.concept-router') : document.querySelector('.concept-router');
+  if (!router) return;
+  const tabs = router.querySelectorAll('.concept-tab-btn');
+  tabs.forEach(t => t.classList.remove('active'));
+  const panes = router.querySelectorAll('.concept-pane');
+  panes.forEach(p => p.classList.remove('active'));
+  const targetPane = router.querySelector('#pane-' + conceptId);
+  if (targetPane) targetPane.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const activeBtn = Array.from(tabs).find(t => t.getAttribute('onclick') && t.getAttribute('onclick').includes(conceptId));
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+}
+
   const curEl = document.getElementById("currency");
   const guestsEl = document.getElementById("paying-guests");
   const vipStatusEl = document.getElementById("vip-status");

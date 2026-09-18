@@ -241,6 +241,24 @@ async function fetchMe() {
   renderAuthArea(el("auth-area-group"));
 }
 
+function initiateGoogleSignIn() {
+  const returnTo = location.pathname + location.search;
+  const authUrl = `/auth/google/login?return_to=${encodeURIComponent(returnTo)}`;
+  const popup = window.open(authUrl, "google_oauth_popup", "width=520,height=640,menubar=no,toolbar=no,status=no");
+  if (!popup || popup.closed || typeof popup.closed === "undefined") {
+    // If popup was blocked by browser, redirect top-level or show direct prompt
+    window.location.href = authUrl;
+  }
+}
+
+window.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "OAUTH_AUTH_SUCCESS") {
+    fetchMe().then(() => {
+      try { toast("Signed in with Google!"); } catch {}
+    });
+  }
+});
+
 function renderAuthArea(container) {
   if (!container) return;
   container.innerHTML = "";
@@ -252,7 +270,7 @@ function renderAuthArea(container) {
       <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.5-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.4 26.7 36 24 36c-5.3 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C40.2 36.5 44 30.9 44 24c0-1.3-.1-2.5-.4-3.5z"/></svg>
       Sign in`;
     btn.addEventListener("click", () => {
-      location.href = `/auth/google/login?return_to=${encodeURIComponent(location.pathname + location.search)}`;
+      initiateGoogleSignIn();
     });
     container.appendChild(btn);
     return;
@@ -679,7 +697,7 @@ function bindSheets() {
       openSheet("claim-overlay");
     } else {
       try { sessionStorage.setItem(`ledgermate_pending_extend_${groupId}`, "1"); } catch {}
-      location.href = `/auth/google/login?return_to=${encodeURIComponent(location.pathname + location.search)}`;
+      initiateGoogleSignIn();
     }
   });
 

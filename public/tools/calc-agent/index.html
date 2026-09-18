@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Multi-Provider Calculation Agent • Bring Your Own Key (Gemini, OpenAI, Groq, Claude)</title>
+<meta name="description" content="Fast multi-provider AI calculation orchestrator with dynamic research gateway, live web search grounding, deterministic math verification, and reactive sliders.">
+<link rel="canonical" href="https://splitmate.online/tools/calc-agent/">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #eff6ff;
+  --border: #e2e8f0;
+  --border-focus: #93c5fd;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+  --radius: 12px;
+  --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono-font: 'JetBrains Mono', monospace;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Announcement Top Banner */
+.top-announcement {
+  background: #0f172a;
+  color: #f8fafc;
+  font-size: 12.5px;
+  padding: 7px 16px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.top-announcement a {
+  color: #60a5fa;
+  text-decoration: underline;
+  font-weight: 600;
+}
+.top-announcement a:hover {
+  color: #93c5fd;
+}
+
+/* Global Nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #0f172a;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.logo span {
+  color: var(--accent);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.nav-links a {
+  color: #475569;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.nav-links a:hover {
+  color: var(--accent);
+}
+.btn-primary-sm {
+  background: var(--accent);
+  color: #fff !important;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px !important;
+  font-weight: 600;
+}
+
+/* Main Studio Layout */
+.agent-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+.agent-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.badge-sla {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.badge-sla .dot {
+  width: 7px;
+  height: 7px;
+  background: var(--success);
+  border-radius: 50%;
+}
+.agent-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+.agent-subtitle {
+  font-size: 15.5px;
+  color: var(--text-muted);
+  max-width: 780px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Provider & Orchestrator Toolbar */
+.orchestrator-toolbar {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.toolbar-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.provider-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.model-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.research-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.btn-manage-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-manage-ai:hover {
+  background: #1e293b;
+}
+
+/* Tabs */
+.tab-navigation {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+  overflow-x: auto;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.tab-btn:hover {
+  color: var(--text);
+}
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Omnibar Card */
+.studio-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+}
+.omnibar-wrapper {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.omnibar-wrapper:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+.omnibar-textarea {
+  width: 100%;
+  min-height: 84px;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 16px;
+  resize: vertical;
+  color: #0f172a;
+  line-height: 1.5;
+  background: transparent;
+}
+.omnibar-textarea::placeholder {
+  color: #94a3b8;
+}
+.omnibar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.char-counter {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.btn-calc {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.05s;
+  min-height: 42px;
+}
+.btn-calc:hover {
+  background: var(--accent-hover);
+}
+.btn-calc:active {
+  transform: translateY(1px);
+}
+.btn-calc:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Quick Chips */
+.chips-section {
+  margin-top: 18px;
+}
+.chips-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip-btn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #334155;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.chip-btn:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: var(--accent);
+}
+
+/* Results Card */
+.results-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  margin-top: 24px;
+}
+.results-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 18px;
+}
+.latency-badge {
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid #bbf7d0;
+}
+.category-badge {
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid #bfdbfe;
+}
+.headline-result-box {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.headline-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.headline-val {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(26px, 5.5vw, 36px);
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+/* Research Gateway Result Card */
+.gateway-card {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.gateway-card-researched {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #14532d;
+}
+.gateway-card-bypassed {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+}
+.sources-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.source-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px solid #86efac;
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 12px;
+  color: #15803d;
+  text-decoration: none;
+  font-weight: 600;
+}
+.source-chip:hover {
+  background: #dcfce7;
+}
+
+/* 4 Pillars Layout */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.pillar-panel {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+}
+.pillar-panel h4 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.assumption-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 13px;
+  gap: 8px;
+}
+.assumption-item:last-child {
+  border-bottom: none;
+}
+.assumption-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.tag-explicit { background: #e0e7ff; color: #3730a3; }
+.tag-assumed { background: #fef3c7; color: #92400e; }
+
+/* Step-by-Step Derivation */
+.step-item {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #cbd5e1;
+}
+.step-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.step-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 3px;
+}
+.step-formula {
+  font-family: var(--mono-font);
+  font-size: 12px;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  word-break: break-all;
+}
+
+/* Sliders */
+.slider-group {
+  margin-bottom: 14px;
+}
+.slider-group:last-child { margin-bottom: 0; }
+.slider-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.slider-var-name {
+  font-weight: 600;
+  color: #334155;
+}
+.slider-val-display {
+  font-family: var(--mono-font);
+  font-weight: 700;
+  color: var(--accent);
+}
+.interactive-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 4px;
+  background: #cbd5e1;
+  outline: none;
+  accent-color: var(--accent);
+}
+
+/* Table */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 8px;
+}
+.sensitivity-table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.sensitivity-table th,
+.sensitivity-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+.sensitivity-table th {
+  background: #f1f5f9;
+  font-weight: 700;
+  color: #475569;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.delta-pos { color: #16a34a; font-weight: 700; }
+.delta-neg { color: #dc2626; font-weight: 700; }
+
+/* HITL Card */
+.hitl-feedback-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.btn-hitl {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  transition: background 0.15s;
+}
+.btn-hitl:hover { background: #f1f5f9; }
+
+/* Analytics Grid */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.stat-card .label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.stat-card .num {
+  font-family: 'Manrope', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+}
+.history-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Modals */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.modal-overlay.active { display: flex; }
+.modal-dialog {
+  background: #ffffff;
+  border-radius: var(--radius);
+  max-width: 540px;
+  width: 100%;
+  padding: 22px;
+  box-shadow: var(--shadow-lg);
+  box-sizing: border-box;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Spinner */
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .pillars-grid { grid-template-columns: 1fr; }
+  .analytics-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .agent-container { padding: 16px 12px 50px; }
+  .orchestrator-toolbar { flex-direction: column; align-items: stretch; }
+  .btn-manage-ai { width: 100%; justify-content: center; }
+  .omnibar-controls { flex-direction: column; align-items: stretch; }
+  .btn-calc { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-announcement">
+  <span>⚡ AI Calculation Agent • Bring Your Own API Key (Gemini Free Tier, OpenAI, Groq, Claude)</span>
+  <a href="#studio">Launch Studio →</a>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/tools/calc-agent/" style="color:var(--accent);font-weight:700;">⚡ AI Calc Agent</a>
+      <a href="/#tools">Tools Hub</a>
+      <a href="/tools/rent-split-calculator/">Rent Split</a>
+      <a href="/tools/germany-salary-calculator/">Germany Salary</a>
+      <a href="/app/" class="btn-primary-sm">Open Split App</a>
+    </div>
+  </div>
+</nav>
+
+<main class="agent-container" id="studio">
+  <!-- Header -->
+  <header class="agent-header">
+    <div class="badge-sla">
+      <span class="dot"></span>
+      <span>Zero Sign-In Barrier • Bring Your Own Key • 100% Deterministic Math</span>
+    </div>
+    <h1 class="agent-title">AI Calculation &amp; Dynamic Research Agent</h1>
+    <p class="agent-subtitle">
+      Bring your own API key to orchestrate calculations from trip splits to chemistry, US/global taxes, and mortgage prepayments.
+      The built-in research gateway auto-grounds changing statutory rules in real time, executing arithmetic deterministically without hallucination.
+    </p>
+  </header>
+
+  <!-- Provider & Orchestrator Toolbar -->
+  <div class="orchestrator-toolbar" id="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-label">Active Provider:</span>
+      <span class="provider-pill" id="tb-provider-pill">⚡ Google Gemini</span>
+      <span class="model-pill" id="tb-model-pill">Gemini 3.1 Flash-Lite</span>
+      <span class="research-status-pill" id="tb-research-pill">🌐 Research Tool: Search Grounding Active</span>
+    </div>
+    <button class="btn-manage-ai" id="btn-open-settings-modal">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>AI Provider &amp; Key Settings</span>
+    </button>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <button class="tab-btn active" data-tab="studio-tab">⚡ Agent Studio</button>
+    <button class="tab-btn" data-tab="dashboard-tab">📊 History &amp; Analytics</button>
+    <button class="tab-btn" data-tab="privacy-tab">🛡️ Zero-Storage &amp; Privacy Policy</button>
+  </div>
+
+  <!-- TAB 1: AGENT STUDIO -->
+  <section id="studio-tab" class="tab-content active">
+    <!-- Query Studio Box -->
+    <div class="studio-card">
+      <div class="omnibar-wrapper">
+        <textarea
+          id="query-input"
+          class="omnibar-textarea"
+          placeholder="Ask any calculation in plain English... e.g. '2026 tax calculation in India on ₹18 LPA under new regime', 'Germany tax class 1 on €85,000 gross', 'Molarity of 5g NaCl dissolved in 500ml water', '4 friends split $2,400 road trip with flights and gas', '120 Gaj to square feet'..."
+          maxlength="500"
+        ></textarea>
+        <div class="omnibar-controls">
+          <span class="char-counter" id="char-counter">0 / 500 characters</span>
+          <button class="btn-calc" id="btn-submit-calc">
+            <span id="btn-calc-text">Calculate Now</span>
+            <span class="spinner" id="btn-calc-spinner" style="display:none;"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Template Chips -->
+      <div class="chips-section">
+        <div class="chips-label">Quick Scenarios &amp; Dynamic Grounding</div>
+        <div class="chips-container">
+          <button class="chip-btn" data-query="Calculate 2026 take-home pay and tax on ₹18 Lakh CTC in India under Section 115BAC new tax regime.">🇮🇳 India 2026 Tax Regime</button>
+          <button class="chip-btn" data-query="Calculate take-home pay on €85,000 gross salary in Germany for single tax class 1 with statutory health insurance.">🇩🇪 Germany €85k Salary</button>
+          <button class="chip-btn" data-query="What is the molarity of 5.85g of NaCl dissolved in 500 mL of water?">🧪 Chemistry Solution Molarity</button>
+          <button class="chip-btn" data-query="4 friends split $2,800 trip: Flight $1,200 equal, Hotel $1,000 split by 2 couples, food $600 equal.">✈️ 4-Person Trip Expense</button>
+          <button class="chip-btn" data-query="Mortgage payment on $420,000 loan at 6.75% for 30 years with an extra $350 monthly principal prepayment.">🏦 Mortgage Prepayment</button>
+          <button class="chip-btn" data-query="Convert 180 Gaj to Square Feet and Square Meters.">📐 Gaj to Sq Ft / Metric</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Execution Status Banner (During Compute) -->
+    <div id="live-timer-banner" style="display:none; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:14px; color:#1e40af;">
+      <span class="spinner" style="vertical-align:middle; margin-right:8px; border-top-color:#2563eb; border-color:#93c5fd;"></span>
+      <span>Orchestrating Research Gateway &amp; Deterministic Engine... (<span id="elapsed-counter">0</span>ms elapsed)</span>
+    </div>
+
+    <!-- Error Banner -->
+    <div id="error-banner" style="display:none; background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px; margin-bottom:20px; color:#991b1b;">
+      <strong id="error-title">Calculation Notice</strong>
+      <p id="error-desc" style="margin:4px 0 8px; font-size:14px;"></p>
+      <div id="error-suggestions" style="font-size:13px; color:#b91c1c;"></div>
+    </div>
+
+    <!-- Results Display Panel -->
+    <div id="results-panel" class="results-card" style="display:none;">
+      <div class="results-meta-bar">
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <span class="latency-badge" id="res-latency-badge">⚡ Computed in 620ms</span>
+          <span class="category-badge" id="res-category-badge">General Calculation</span>
+          <span class="category-badge" id="res-model-badge" style="background:#f1f5f9; color:#475569; border-color:#cbd5e1;">Gemini 3.1 Flash-Lite</span>
+        </div>
+        <button class="btn-hitl" id="btn-copy-summary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>Copy Summary</span>
+        </button>
+      </div>
+
+      <!-- Headline Outcome -->
+      <div class="headline-result-box">
+        <div class="headline-label">Exact Calculated Outcome (100% Deterministic Math)</div>
+        <div class="headline-val" id="res-headline-value">$0.00</div>
+      </div>
+
+      <!-- Research Gateway Status Card -->
+      <div id="res-gateway-card" class="gateway-card gateway-card-researched">
+        <div id="res-gateway-title" style="font-weight:700; margin-bottom:4px;">🌐 Dynamic Research Grounding</div>
+        <div id="res-gateway-desc" style="font-size:13px;"></div>
+        <div id="res-sources-container" class="sources-list"></div>
+      </div>
+
+      <!-- 4 Pillars Breakdown -->
+      <div class="pillars-grid">
+        <!-- Pillar 1: Extracted Assumptions & Inputs -->
+        <div class="pillar-panel">
+          <h4>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            1. Inputs &amp; Extracted Parameters
+          </h4>
+          <div id="res-assumptions-list"></div>
+        </div>
+
+        <!-- Pillar 2: Step-by-Step Derivation -->
+        <div class="pillar-panel">
+          <h4>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            2. Step-by-Step Derivation
+          </h4>
+          <div id="res-steps-list"></div>
+        </div>
+      </div>
+
+      <!-- Dynamic Reactive Sliders (Pillar 3) -->
+      <div class="pillar-panel" style="margin-bottom:20px;">
+        <h4>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          3. Live Reactive Parameter Tuning (Instant Client-Side Evaluation)
+        </h4>
+        <div id="res-sliders-container"></div>
+      </div>
+
+      <!-- Sensitivity Analysis Matrix (Pillar 4) -->
+      <div class="pillar-panel" style="margin-bottom:20px;">
+        <h4>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          4. Sensitivity &amp; What-If Scenario Matrix
+        </h4>
+        <div class="table-responsive">
+          <table class="sensitivity-table">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Parameter Value</th>
+                <th>Calculated Result</th>
+                <th>Variance (%)</th>
+              </tr>
+            </thead>
+            <tbody id="res-sensitivity-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HITL Review Card -->
+      <div class="hitl-feedback-card">
+        <div>
+          <div style="font-weight:700; font-size:13.5px; color:#1e293b;">Human-in-the-Loop Review</div>
+          <div style="font-size:12px; color:var(--text-muted);">Confirm this calculation or submit a correction note.</div>
+        </div>
+        <div class="hitl-actions">
+          <button class="btn-hitl" id="btn-rate-accurate">👍 Accurate</button>
+          <button class="btn-hitl" id="btn-rate-inaccurate">👎 Inaccurate</button>
+          <button class="btn-hitl" id="btn-open-hitl-modal">📝 Review Note</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: MY CALCULATIONS & CHARTS -->
+  <section id="dashboard-tab" class="tab-content" style="display:none;">
+    <div class="analytics-grid">
+      <div class="stat-card">
+        <div class="label">Total Queries Computed</div>
+        <div class="num" id="stat-total-queries">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Avg Inference Latency</div>
+        <div class="num" id="stat-avg-latency">0 ms</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Math Verification</div>
+        <div class="num" style="color:var(--success);">100% Exact</div>
+      </div>
+    </div>
+
+    <!-- Category Distribution Chart Card -->
+    <div class="studio-card">
+      <h3 style="margin:0 0 12px; font-family:'Manrope',sans-serif; font-size:17px;">Query Distribution by Category</h3>
+      <div id="categories-chart-container" style="display:flex; flex-direction:column; gap:10px;">
+        <div style="color:var(--text-muted); font-size:13px;">Loading analytics...</div>
+      </div>
+    </div>
+
+    <!-- Past Calculation History Table -->
+    <div class="studio-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="margin:0; font-family:'Manrope',sans-serif; font-size:17px;">Saved Calculation History</h3>
+        <button class="btn-hitl" id="btn-refresh-history">🔄 Refresh</button>
+      </div>
+      <div id="history-items-container">
+        <div style="color:var(--text-muted); font-size:13.5px;">No calculations logged yet. Run your first calculation in the Studio!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: PRIVACY POLICY & ZERO STORAGE -->
+  <section id="privacy-tab" class="tab-content" style="display:none;">
+    <div class="studio-card">
+      <h2 style="font-family:'Manrope',sans-serif; font-size:22px; margin-top:0;">Zero-Storage Guarantee &amp; Multi-Provider Privacy</h2>
+      <p style="color:var(--text-muted); line-height:1.6; font-size:14.5px;">
+        Financial scenarios, company payrolls, mortgage metrics, and calculations deserve absolute confidentiality:
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:14px; margin-top:20px;">
+        <div class="pillar-panel" style="background:#fff;">
+          <h4 style="margin:0 0 6px;">🛡️ 1. Zero API Key Server Persistence</h4>
+          <p style="font-size:13px; color:#475569; margin:0; line-height:1.5;">
+            Your API keys (Gemini, OpenAI, Groq, or Claude) are <strong>NEVER stored in our database, files, or server logs</strong>. Keys live solely in your browser's ephemeral <code style="background:#f1f5f9; padding:2px 4px; border-radius:4px;">sessionStorage</code> and are transmitted via encrypted HTTPS headers. You can purge them at any second.
+          </p>
+        </div>
+        <div class="pillar-panel" style="background:#fff;">
+          <h4 style="margin:0 0 6px;">🌐 2. Dynamic Research Gateway &amp; Grounding</h4>
+          <p style="font-size:13px; color:#475569; margin:0; line-height:1.5;">
+            Instead of brittle pre-indexed data, the agent routes queries through an intelligent classifier. Pure arithmetic bypasses external search entirely; statutory and empirical queries invoke real-time search grounding with live citation links.
+          </p>
+        </div>
+        <div class="pillar-panel" style="background:#fff;">
+          <h4 style="margin:0 0 6px;">🧮 3. Deterministic Arithmetic Integrity</h4>
+          <p style="font-size:13px; color:#475569; margin:0; line-height:1.5;">
+            All numbers are verified in a deterministic JavaScript evaluation runtime. The AI reasons about relationships and rules, while the evaluator guarantees 100% arithmetic accuracy without hallucination.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BYOK Multi-Provider AI Settings Modal -->
+<div class="modal-overlay" id="byok-modal">
+  <div class="modal-dialog">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="font-family:'Manrope',sans-serif; margin:0; font-size:19px;">AI Provider &amp; Key Settings</h3>
+      <button class="btn-hitl" id="btn-close-byok-modal" style="padding:4px 8px; font-size:12px;">✕</button>
+    </div>
+
+    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px; font-size:12.5px; color:#1e40af; margin-bottom:16px; line-height:1.5;">
+      <strong>🛡️ Zero-Storage Guarantee:</strong> Your API key is stored strictly in your browser session (<code style="background:#fff; padding:1px 4px; border-radius:3px;">sessionStorage</code>) and sent encrypted over HTTPS. <strong>It is never saved to any database, file, or server disk.</strong>
+    </div>
+
+    <!-- Provider Selection -->
+    <div style="margin-bottom:14px;">
+      <label style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;">Select AI Provider</label>
+      <select id="byok-provider-select" style="width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:13.5px; background:#fff;">
+        <option value="gemini">⚡ Google Gemini (Free Tier • Search Grounding Enabled)</option>
+        <option value="openai">🧠 OpenAI (GPT-4o, GPT-4o Mini, o3-mini)</option>
+        <option value="groq">⚡ Groq (Ultra-Low Latency ~300 tokens/sec)</option>
+        <option value="claude">🔮 Anthropic Claude (Claude 3.5 Sonnet / Haiku)</option>
+      </select>
+    </div>
+
+    <!-- Provider Guidance Banner -->
+    <div id="provider-guidance-box" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:13px; margin-bottom:16px;">
+      <!-- Dynamic per provider -->
+    </div>
+
+    <!-- Model Selector with Dynamic Live Sync -->
+    <div style="margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <label style="font-size:13px; font-weight:700;">Select Reasoning Model</label>
+        <button type="button" class="btn-hitl" id="btn-sync-models" style="padding:2px 8px; font-size:11.5px; display:inline-flex; align-items:center; gap:4px; border-radius:5px; background:#fff; cursor:pointer;" title="Fetch latest models from provider API">
+          🔄 Sync Live Models
+        </button>
+      </div>
+      <select id="byok-model-select" style="width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:13.5px; background:#fff;">
+        <!-- Populated dynamically based on provider -->
+      </select>
+      <div id="model-sync-status" style="font-size:11.5px; color:#64748b; margin-top:4px; min-height:16px;"></div>
+
+      <!-- Custom Model ID Toggle -->
+      <div style="margin-top:6px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="color:#64748b;">Future or custom model?</span>
+        <button type="button" id="btn-toggle-custom-model" style="background:none; border:none; color:var(--accent); font-weight:600; cursor:pointer; padding:0 2px; text-decoration:underline;">+ Enter Custom Model ID</button>
+      </div>
+      <div id="custom-model-container" style="display:none; margin-top:8px;">
+        <input type="text" id="byok-custom-model-input" placeholder="e.g. llama-4-scout or newly announced model ID" style="width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; font-family:var(--mono-font); box-sizing:border-box;" />
+        <div style="font-size:11px; color:#64748b; margin-top:3px;">Tip: Enter any newly released model ID supported by your provider.</div>
+      </div>
+    </div>
+
+    <!-- Research Tool Capability Tag for Selected Model -->
+    <div id="model-capability-badge" style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; padding:4px 10px; border-radius:6px; margin-bottom:14px; background:#f0fdf4; color:#166534; border:1px solid #bbf7d0;">
+      🌐 Research Tool: Live Google Search Grounding Enabled
+    </div>
+
+    <!-- API Key Input -->
+    <div style="margin-bottom:16px;">
+      <label id="byok-key-label" style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;">API Key</label>
+      <div style="position:relative;">
+        <input
+          type="password"
+          id="byok-key-input"
+          placeholder="Paste API key..."
+          style="width:100%; padding:10px 42px 10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; font-family:var(--mono-font); box-sizing:border-box;"
+        />
+        <button type="button" id="btn-toggle-key-visibility" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:12px; font-weight:600;">Show</button>
+      </div>
+      <div id="byok-test-status" style="font-size:12.5px; margin-top:6px; min-height:18px;"></div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+      <button class="btn-hitl" id="btn-wipe-key" style="color:#ef4444; border-color:#fecaca;">
+        🗑️ Wipe Key
+      </button>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-hitl" id="btn-test-key">
+          🧪 Test Connection
+        </button>
+        <button class="btn-calc" id="btn-save-byok" style="min-height:38px; padding:6px 16px;">
+          Save &amp; Connect
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HITL Feedback Modal -->
+<div class="modal-overlay" id="hitl-modal">
+  <div class="modal-dialog">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <h3 style="font-family:'Manrope',sans-serif; margin:0; font-size:18px;">Human-in-the-Loop Feedback</h3>
+      <button class="btn-hitl" id="btn-close-hitl-modal" style="padding:4px 8px; font-size:12px;">✕</button>
+    </div>
+    <p style="font-size:13px; color:var(--text-muted); margin:0 0 14px; line-height:1.5;">
+      Did this calculation miss a newly announced statutory shift or parameter? Submit a note to review.
+    </p>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:12.5px; font-weight:700; display:block; margin-bottom:4px;">Your Rating</label>
+      <select id="hitl-rating-select" style="width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13.5px; background:#fff;">
+        <option value="accurate">Accurate calculation</option>
+        <option value="inaccurate">Needs statutory adjustment</option>
+      </select>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="font-size:12.5px; font-weight:700; display:block; margin-bottom:4px;">Correction / Review Note</label>
+      <textarea id="hitl-note-text" placeholder="Detail any regional tax bracket shift, formula tweak, or statutory citation..." style="width:100%; height:80px; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; box-sizing:border-box; font-family:inherit;"></textarea>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <button class="btn-hitl" id="btn-cancel-hitl">Cancel</button>
+      <button class="btn-calc" id="btn-submit-hitl" style="min-height:38px; padding:6px 18px;">Submit Feedback</button>
+    </div>
+  </div>
+</div>
+
+<!-- Canonical LedgerMate Footer -->
+<footer class="footer" style="margin-top:50px; border-top:1px solid #e2e8f0; padding-top:30px; padding-bottom:30px;">
+  <div style="max-width:1040px; margin:0 auto; padding:0 20px; text-align:center; font-size:13px; color:var(--text-muted);">
+    &copy; 2026 LedgerMate. Multi-provider neuro-symbolic calculations with dynamic research grounding and zero key persistence.
+  </div>
+</footer>
+
+<script>
+/**
+ * Multi-Provider AI Calculation Agent Client Controller
+ * Orchestrates:
+ * 1. BYOK for Gemini, OpenAI, Groq, Anthropic Claude
+ * 2. Dynamic Research Gateway & Google Search Grounding
+ * 3. Client-Side Reactive Sliders & Sensitivity Matrix
+ * 4. Zero Sign-In Barrier
+ */
+(function() {
+  let currentCalcData = null;
+  let currentCalcId = null;
+  let timerInterval = null;
+
+  // Provider Configurations
+  const PROVIDERS = {
+    gemini: {
+      name: "Google Gemini",
+      icon: "⚡",
+      defaultModel: "gemini-3.1-flash-lite",
+      keyPlaceholder: "AIzaSy...",
+      keyStoragePrefix: "calc_key_gemini",
+      guidanceHtml: `
+        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">🎁 Free with every Google Account:</div>
+        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
+          Google AI Studio provides <strong>15 requests per minute free</strong> with native Google Search Grounding.
+        </div>
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+          <span>Get Free Key at Google AI Studio →</span>
+        </a>
+      `,
+      models: [
+        { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash-Lite (Fastest <600ms)", searchEnabled: true },
+        { id: "gemini-3.8-flash", label: "🚀 Gemini 3.8 Flash (Deep Search Grounding)", searchEnabled: true },
+        { id: "gemini-2.5-flash", label: "🏎️ Gemini 2.5 Flash (Stable & Grounded)", searchEnabled: true },
+        { id: "gemini-3.1-pro", label: "🧠 Gemini 3.1 Pro (Complex Multi-Step Math)", searchEnabled: true },
+      ]
+    },
+    openai: {
+      name: "OpenAI",
+      icon: "🧠",
+      defaultModel: "gpt-4o-mini",
+      keyPlaceholder: "sk-proj-...",
+      keyStoragePrefix: "calc_key_openai",
+      guidanceHtml: `
+        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">OpenAI Developer API:</div>
+        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
+          Use your standard OpenAI API key with GPT-4o Mini, GPT-4o, or o3-mini.
+        </div>
+        <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none;">
+          <span>OpenAI Platform Keys →</span>
+        </a>
+      `,
+      models: [
+        { id: "gpt-4o-mini", label: "⚡ GPT-4o Mini (Fast & Cost-Efficient)", searchEnabled: false },
+        { id: "gpt-4o", label: "🧠 GPT-4o (Flagship Multimodal Reasoning)", searchEnabled: false },
+        { id: "o3-mini", label: "🔬 o3-mini (Advanced STEM Reasoning)", searchEnabled: false },
+      ]
+    },
+    groq: {
+      name: "Groq",
+      icon: "⚡",
+      defaultModel: "llama-3.3-70b-versatile",
+      keyPlaceholder: "gsk_...",
+      keyStoragePrefix: "calc_key_groq",
+      guidanceHtml: `
+        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">Groq LPUs:</div>
+        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
+          Ultra-low latency inference (~300 tokens/sec) for instant mathematical models.
+        </div>
+        <a href="https://console.groq.com/keys" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none;">
+          <span>Get Free Groq Console Key →</span>
+        </a>
+      `,
+      models: [
+        { id: "llama-3.3-70b-versatile", label: "⚡ Llama 3.3 70B Versatile (128k • Recommended)", searchEnabled: false },
+        { id: "llama-3.1-8b-instant", label: "⚡ Llama 3.1 8B Instant (Ultra-fast ~600 tok/s)", searchEnabled: false },
+        { id: "deepseek-r1-distill-llama-70b", label: "🧠 DeepSeek R1 Distill 70B (Math Specialist)", searchEnabled: false },
+        { id: "qwen-qwq-32b", label: "🧠 Qwen QwQ 32B (Reasoning Model)", searchEnabled: false },
+        { id: "mixtral-8x7b-32768", label: "⚡ Mixtral 8x7B (MoE Architecture)", searchEnabled: false },
+        { id: "gemma2-9b-it", label: "⚡ Google Gemma 2 9B IT", searchEnabled: false },
+      ]
+    },
+    claude: {
+      name: "Anthropic Claude",
+      icon: "🔮",
+      defaultModel: "claude-3-5-haiku-latest",
+      keyPlaceholder: "sk-ant-...",
+      keyStoragePrefix: "calc_key_claude",
+      guidanceHtml: `
+        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">Anthropic Claude API:</div>
+        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
+          High-precision algebraic logic and benchmark-leading reasoning.
+        </div>
+        <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none;">
+          <span>Anthropic Console Keys →</span>
+        </a>
+      `,
+      models: [
+        { id: "claude-3-5-haiku-latest", label: "⚡ Claude 3.5 Haiku (Fast & Precise)", searchEnabled: false },
+        { id: "claude-3-5-sonnet-latest", label: "🧠 Claude 3.5 Sonnet (State-of-the-Art Logic)", searchEnabled: false },
+      ]
+    }
+  };
+
+  // Restore cached models from previous live syncs
+  ["groq", "openai"].forEach(p => {
+    try {
+      const cached = localStorage.getItem("calc_cached_models_" + p);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          PROVIDERS[p].models = parsed;
+        }
+      }
+    } catch(e) {}
+  });
+
+  // DOM Elements
+  const tbProviderPill = document.getElementById("tb-provider-pill");
+  const tbModelPill = document.getElementById("tb-model-pill");
+  const tbResearchPill = document.getElementById("tb-research-pill");
+  const btnOpenSettingsModal = document.getElementById("btn-open-settings-modal");
+  const byokModal = document.getElementById("byok-modal");
+  const btnCloseByokModal = document.getElementById("btn-close-byok-modal");
+  const byokProviderSelect = document.getElementById("byok-provider-select");
+  const byokModelSelect = document.getElementById("byok-model-select");
+  const btnSyncModels = document.getElementById("btn-sync-models");
+  const modelSyncStatus = document.getElementById("model-sync-status");
+  const btnToggleCustomModel = document.getElementById("btn-toggle-custom-model");
+  const customModelContainer = document.getElementById("custom-model-container");
+  const byokCustomModelInput = document.getElementById("byok-custom-model-input");
+  const providerGuidanceBox = document.getElementById("provider-guidance-box");
+  const modelCapabilityBadge = document.getElementById("model-capability-badge");
+  const byokKeyLabel = document.getElementById("byok-key-label");
+  const byokKeyInput = document.getElementById("byok-key-input");
+  const btnToggleKeyVisibility = document.getElementById("btn-toggle-key-visibility");
+  const byokTestStatus = document.getElementById("byok-test-status");
+  const btnTestKey = document.getElementById("btn-test-key");
+  const btnSaveByok = document.getElementById("btn-save-byok");
+  const btnWipeKey = document.getElementById("btn-wipe-key");
+
+  const queryInput = document.getElementById("query-input");
+  const charCounter = document.getElementById("char-counter");
+  const btnSubmitCalc = document.getElementById("btn-submit-calc");
+  const btnCalcText = document.getElementById("btn-calc-text");
+  const btnCalcSpinner = document.getElementById("btn-calc-spinner");
+
+  const liveTimerBanner = document.getElementById("live-timer-banner");
+  const elapsedCounter = document.getElementById("elapsed-counter");
+  const errorBanner = document.getElementById("error-banner");
+  const errorTitle = document.getElementById("error-title");
+  const errorDesc = document.getElementById("error-desc");
+  const errorSuggestions = document.getElementById("error-suggestions");
+
+  const resultsPanel = document.getElementById("results-panel");
+  const resLatencyBadge = document.getElementById("res-latency-badge");
+  const resCategoryBadge = document.getElementById("res-category-badge");
+  const resModelBadge = document.getElementById("res-model-badge");
+  const resHeadlineValue = document.getElementById("res-headline-value");
+  const resGatewayCard = document.getElementById("res-gateway-card");
+  const resGatewayTitle = document.getElementById("res-gateway-title");
+  const resGatewayDesc = document.getElementById("res-gateway-desc");
+  const resSourcesContainer = document.getElementById("res-sources-container");
+  const resAssumptionsList = document.getElementById("res-assumptions-list");
+  const resStepsList = document.getElementById("res-steps-list");
+  const resSlidersContainer = document.getElementById("res-sliders-container");
+  const resSensitivityBody = document.getElementById("res-sensitivity-body");
+
+  // Character Counter
+  queryInput.addEventListener("input", () => {
+    charCounter.textContent = `${queryInput.value.length} / 500 characters`;
+  });
+
+  // Suggestion Chips
+  document.querySelectorAll(".chip-btn").forEach(chip => {
+    chip.addEventListener("click", () => {
+      queryInput.value = chip.getAttribute("data-query");
+      charCounter.textContent = `${queryInput.value.length} / 500 characters`;
+      queryInput.focus();
+    });
+  });
+
+  // Tabs
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+  tabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabBtns.forEach(b => b.classList.remove("active"));
+      tabContents.forEach(c => c.style.display = "none");
+      btn.classList.add("active");
+      const targetId = btn.getAttribute("data-tab");
+      const targetContent = document.getElementById(targetId);
+      if (targetContent) targetContent.style.display = "block";
+      if (targetId === "dashboard-tab") loadHistoryAndAnalytics();
+    });
+  });
+
+  // -------------------------------------------------------------
+  // Provider & BYOK State Management
+  // -------------------------------------------------------------
+  function getActiveProvider() {
+    return localStorage.getItem("calc_active_provider") || "gemini";
+  }
+
+  function setActiveProvider(prov) {
+    localStorage.setItem("calc_active_provider", prov);
+  }
+
+  function getActiveModel(prov) {
+    const defaultModel = PROVIDERS[prov]?.defaultModel || "gemini-3.1-flash-lite";
+    return localStorage.getItem(`calc_model_${prov}`) || defaultModel;
+  }
+
+  function setActiveModel(prov, model) {
+    localStorage.setItem(`calc_model_${prov}`, model);
+  }
+
+  function getProviderKey(prov) {
+    const prefix = PROVIDERS[prov]?.keyStoragePrefix || "calc_key_gemini";
+    return sessionStorage.getItem(prefix) || "";
+  }
+
+  function setProviderKey(prov, key) {
+    const prefix = PROVIDERS[prov]?.keyStoragePrefix || "calc_key_gemini";
+    if (key) {
+      sessionStorage.setItem(prefix, key);
+    } else {
+      sessionStorage.removeItem(prefix);
+    }
+  }
+
+  function updateToolbarUI() {
+    const prov = getActiveProvider();
+    const model = getActiveModel(prov);
+    const key = getProviderKey(prov);
+    const provConfig = PROVIDERS[prov] || PROVIDERS.gemini;
+
+    tbProviderPill.textContent = `${provConfig.icon} ${provConfig.name}`;
+    const modelObj = provConfig.models.find(m => m.id === model);
+    tbModelPill.textContent = modelObj ? modelObj.label.split(" (")[0] : model;
+
+    if (prov === "gemini") {
+      tbResearchPill.className = "research-status-pill";
+      tbResearchPill.innerHTML = `🌐 Google Search Grounding: Active ${key ? '🟢' : '🔑'}`;
+    } else {
+      tbResearchPill.className = "research-status-pill";
+      tbResearchPill.style.background = "#f8fafc";
+      tbResearchPill.style.color = "#334155";
+      tbResearchPill.style.borderColor = "#cbd5e1";
+      tbResearchPill.innerHTML = `⚡ High-Speed Direct Math ${key ? '🟢' : '🔑'}`;
+    }
+  }
+
+  function cleanApiKey(raw) {
+    if (!raw || typeof raw !== "string") return "";
+    return raw.trim().replace(/[^\x20-\x7E]/g, "");
+  }
+
+  function populateModelSelect(prov, preferredModelId) {
+    const provConfig = PROVIDERS[prov] || PROVIDERS.gemini;
+    const activeModel = preferredModelId || getActiveModel(prov);
+    
+    // Check if preferred model is in list
+    const hasModel = provConfig.models.some(m => m.id === activeModel);
+    let optionsHtml = provConfig.models.map(m => `
+      <option value="${m.id}" ${m.id === activeModel ? 'selected' : ''}>${m.label}</option>
+    `).join("");
+
+    if (!hasModel && activeModel) {
+      optionsHtml = `<option value="${activeModel}" selected>⚙️ Custom Model: ${activeModel}</option>` + optionsHtml;
+    }
+
+    byokModelSelect.innerHTML = optionsHtml;
+    updateModelCapabilityBadge();
+  }
+
+  async function syncLiveModels(prov, key, silent = false) {
+    const provConfig = PROVIDERS[prov];
+    const sanitizedKey = cleanApiKey(key || getProviderKey(prov));
+
+    if (!silent) {
+      modelSyncStatus.innerHTML = `<span style="color:#2563eb;">Fetching live models from ${provConfig.name} API...</span>`;
+      btnSyncModels.disabled = true;
+    }
+
+    try {
+      const res = await fetch("/api/calc-agent/models", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: prov, apiKey: sanitizedKey }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (data.ok && Array.isArray(data.models) && data.models.length > 0) {
+        PROVIDERS[prov].models = data.models;
+        try {
+          localStorage.setItem("calc_cached_models_" + prov, JSON.stringify(data.models));
+        } catch(e) {}
+
+        const currentSelected = byokModelSelect.value || getActiveModel(prov);
+        populateModelSelect(prov, currentSelected);
+
+        if (data.isLive) {
+          modelSyncStatus.innerHTML = `<span style="color:#16a34a; font-weight:600;">✓ Synchronized ${data.models.length} live models directly from ${provConfig.name}</span>`;
+        } else {
+          modelSyncStatus.innerHTML = `<span style="color:#64748b;">Loaded ${data.models.length} standard models (Paste API key to fetch live models)</span>`;
+        }
+      } else if (!silent) {
+        modelSyncStatus.innerHTML = `<span style="color:#ef4444;">${data.error || "Could not fetch live models. Using defaults."}</span>`;
+      }
+    } catch (err) {
+      if (!silent) {
+        modelSyncStatus.innerHTML = `<span style="color:#ef4444;">Live sync error: ${err.message || "Network issue"}</span>`;
+      }
+    } finally {
+      btnSyncModels.disabled = false;
+    }
+  }
+
+  function populateModalFields(selectedProv) {
+    const prov = selectedProv || getActiveProvider();
+    const provConfig = PROVIDERS[prov] || PROVIDERS.gemini;
+    byokProviderSelect.value = prov;
+    providerGuidanceBox.innerHTML = provConfig.guidanceHtml;
+    byokKeyLabel.textContent = `${provConfig.name} API Key`;
+    byokKeyInput.placeholder = provConfig.keyPlaceholder;
+    
+    const key = getProviderKey(prov);
+    byokKeyInput.value = key;
+    byokTestStatus.textContent = "";
+
+    // Populate models
+    const activeModel = getActiveModel(prov);
+    populateModelSelect(prov, activeModel);
+
+    // Reset or show custom model input if activeModel isn't in default list
+    const isCustom = !provConfig.models.some(m => m.id === activeModel);
+    if (isCustom && activeModel) {
+      customModelContainer.style.display = "block";
+      byokCustomModelInput.value = activeModel;
+      btnToggleCustomModel.textContent = "- Use List Selection";
+    } else {
+      customModelContainer.style.display = "none";
+      byokCustomModelInput.value = "";
+      btnToggleCustomModel.textContent = "+ Enter Custom Model ID";
+    }
+
+    // Auto-sync in background if Groq or OpenAI has a key
+    if ((prov === "groq" || prov === "openai") && key) {
+      syncLiveModels(prov, key, true);
+    } else {
+      modelSyncStatus.textContent = "";
+    }
+  }
+
+  function updateModelCapabilityBadge() {
+    const prov = byokProviderSelect.value;
+    const modelId = byokModelSelect.value;
+    const provConfig = PROVIDERS[prov];
+    const modelObj = provConfig?.models.find(m => m.id === modelId);
+
+    if (modelObj?.searchEnabled || prov === "gemini") {
+      modelCapabilityBadge.style.display = "inline-flex";
+      modelCapabilityBadge.style.background = "#f0fdf4";
+      modelCapabilityBadge.style.color = "#166534";
+      modelCapabilityBadge.style.borderColor = "#bbf7d0";
+      modelCapabilityBadge.innerHTML = "🌐 Research Tool: Live Google Search Grounding Active";
+    } else {
+      modelCapabilityBadge.style.display = "inline-flex";
+      modelCapabilityBadge.style.background = "#f8fafc";
+      modelCapabilityBadge.style.color = "#475569";
+      modelCapabilityBadge.style.borderColor = "#cbd5e1";
+      modelCapabilityBadge.innerHTML = "⚡ Pure Inference: Ultra-Fast Reasoning Engine";
+    }
+  }
+
+  byokProviderSelect.addEventListener("change", () => {
+    populateModalFields(byokProviderSelect.value);
+    byokTestStatus.textContent = "";
+  });
+
+  byokModelSelect.addEventListener("change", () => {
+    updateModelCapabilityBadge();
+  });
+
+  // Toggle custom model input container
+  btnToggleCustomModel.addEventListener("click", () => {
+    if (customModelContainer.style.display === "none") {
+      customModelContainer.style.display = "block";
+      btnToggleCustomModel.textContent = "- Use List Selection";
+      byokCustomModelInput.focus();
+    } else {
+      customModelContainer.style.display = "none";
+      btnToggleCustomModel.textContent = "+ Enter Custom Model ID";
+      byokCustomModelInput.value = "";
+    }
+  });
+
+  // Sync Live Models Button
+  btnSyncModels.addEventListener("click", () => {
+    const prov = byokProviderSelect.value;
+    const key = byokKeyInput.value.trim();
+    syncLiveModels(prov, key, false);
+  });
+
+  // Open & Close Settings Modal
+  btnOpenSettingsModal.addEventListener("click", () => {
+    byokModal.classList.add("active");
+    populateModalFields();
+  });
+
+  btnCloseByokModal.addEventListener("click", () => {
+    byokModal.classList.remove("active");
+  });
+
+  // Toggle Key Visibility
+  btnToggleKeyVisibility.addEventListener("click", () => {
+    if (byokKeyInput.type === "password") {
+      byokKeyInput.type = "text";
+      btnToggleKeyVisibility.textContent = "Hide";
+    } else {
+      byokKeyInput.type = "password";
+      btnToggleKeyVisibility.textContent = "Show";
+    }
+  });
+
+  // Test Key
+  btnTestKey.addEventListener("click", async () => {
+    const prov = byokProviderSelect.value;
+    const key = cleanApiKey(byokKeyInput.value);
+    if (!key) {
+      byokTestStatus.innerHTML = '<span style="color:#ef4444;">Please paste an API key to test.</span>';
+      return;
+    }
+
+    byokTestStatus.innerHTML = '<span style="color:#2563eb;">Validating connection with ' + PROVIDERS[prov].name + '...</span>';
+    btnTestKey.disabled = true;
+
+    try {
+      const res = await fetch("/api/calc-agent/verify-key", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: prov, apiKey: key }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (data.ok) {
+        byokTestStatus.innerHTML = '<span style="color:#16a34a; font-weight:700;">✓ ' + data.message + '</span>';
+        
+        // If server returned live models, update models dropdown directly
+        if (Array.isArray(data.models) && data.models.length > 0) {
+          PROVIDERS[prov].models = data.models;
+          try {
+            localStorage.setItem("calc_cached_models_" + prov, JSON.stringify(data.models));
+          } catch(e) {}
+          populateModelSelect(prov);
+          modelSyncStatus.innerHTML = `<span style="color:#16a34a; font-weight:600;">✓ Synchronized ${data.models.length} live models from ${PROVIDERS[prov].name}</span>`;
+        }
+      } else {
+        byokTestStatus.innerHTML = '<span style="color:#ef4444;">✕ Error: ' + (data.error || "Key validation failed") + '</span>';
+      }
+    } catch (err) {
+      byokTestStatus.innerHTML = '<span style="color:#ef4444;">✕ Network error while validating key: ' + (err.message || "") + '</span>';
+    } finally {
+      btnTestKey.disabled = false;
+    }
+  });
+
+  // Save Settings
+  btnSaveByok.addEventListener("click", () => {
+    const prov = byokProviderSelect.value;
+    let model = byokModelSelect.value;
+    
+    // Check if custom model was typed
+    const customModel = cleanApiKey(byokCustomModelInput.value);
+    if (customModelContainer.style.display !== "none" && customModel) {
+      model = customModel;
+    }
+
+    const key = cleanApiKey(byokKeyInput.value);
+
+    setActiveProvider(prov);
+    setActiveModel(prov, model);
+    setProviderKey(prov, key);
+
+    updateToolbarUI();
+    byokModal.classList.remove("active");
+  });
+
+  // Wipe Key
+  btnWipeKey.addEventListener("click", () => {
+    const prov = byokProviderSelect.value;
+    if (confirm(`Disconnect and wipe your ${PROVIDERS[prov].name} API key from this browser session?`)) {
+      setProviderKey(prov, "");
+      byokKeyInput.value = "";
+      byokTestStatus.innerHTML = '<span style="color:#64748b;">Key purged from session.</span>';
+      modelSyncStatus.textContent = "";
+      updateToolbarUI();
+    }
+  });
+
+  // -------------------------------------------------------------
+  // Calculation Execution Pipeline (No Sign-in Wall)
+  // -------------------------------------------------------------
+  btnSubmitCalc.addEventListener("click", handleCalculate);
+  queryInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleCalculate();
+    }
+  });
+
+  async function handleCalculate() {
+    const query = queryInput.value.trim();
+    if (!query) {
+      alert("Please enter a calculation query.");
+      return;
+    }
+
+    const provider = getActiveProvider();
+    const model = getActiveModel(provider);
+    const rawApiKey = getProviderKey(provider);
+    const apiKey = cleanApiKey(rawApiKey);
+
+    // Hide previous results & errors
+    errorBanner.style.display = "none";
+    resultsPanel.style.display = "none";
+
+    // Start timer & spinner
+    btnSubmitCalc.disabled = true;
+    btnCalcText.textContent = "Computing...";
+    btnCalcSpinner.style.display = "inline-block";
+    liveTimerBanner.style.display = "block";
+
+    const startTime = Date.now();
+    elapsedCounter.textContent = "0";
+    timerInterval = setInterval(() => {
+      elapsedCounter.textContent = Date.now() - startTime;
+    }, 40);
+
+    const headers = {
+      "Content-Type": "application/json",
+      "x-ai-provider": provider,
+      "x-ai-model": model,
+    };
+    if (apiKey) {
+      headers["x-api-key"] = apiKey;
+    }
+
+    try {
+      const response = await fetch("/api/calc-agent/query", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ query, provider, model, apiKey }),
+      });
+
+      let resData;
+      try {
+        resData = await response.json();
+      } catch (jsonErr) {
+        const rawText = await response.text().catch(() => "");
+        resData = { error: rawText || `Server returned HTTP ${response.status}` };
+      }
+
+      clearInterval(timerInterval);
+      liveTimerBanner.style.display = "none";
+
+      if (!response.ok) {
+        if (resData.requiresKey) {
+          byokModal.classList.add("active");
+          populateModalFields(resData.provider || provider);
+          byokTestStatus.innerHTML = `<span style="color:#ef4444;">${resData.error}</span>`;
+        }
+        showError(
+          resData.error || `Calculation failed (HTTP ${response.status})`,
+          resData.reason,
+          resData.suggestions || [
+            "Verify your API key in the 'AI Provider & Key' modal.",
+            "Click 'Test Connection' to ensure your key is valid.",
+            "Use 'Sync Live Models' to ensure your selected model is active."
+          ]
+        );
+        return;
+      }
+
+      currentCalcData = resData.data;
+      currentCalcId = resData.calcId;
+      renderCalculationResult(currentCalcData, currentCalcId, resData.providerUsed, resData.modelUsed);
+    } catch (err) {
+      clearInterval(timerInterval);
+      liveTimerBanner.style.display = "none";
+      const detail = err?.message || "Communication failure";
+      showError(
+        `Unable to reach calculation agent: ${detail}`,
+        "Network/Gateway Warning",
+        [
+          "If using a custom API key, check that it contains no extraneous whitespace or special characters.",
+          "Open 'AI Provider & Key' to click 'Test Connection' and verify live access.",
+          "Check if your provider account has available quota or credit."
+        ]
+      );
+    } finally {
+      btnSubmitCalc.disabled = false;
+      btnCalcText.textContent = "Calculate Now";
+      btnCalcSpinner.style.display = "none";
+    }
+  }
+
+  function showError(msg, reason, suggestions) {
+    errorBanner.style.display = "block";
+    errorTitle.textContent = reason ? `Calculation Notice [${reason}]` : "Calculation Notice";
+    errorDesc.textContent = msg;
+    if (Array.isArray(suggestions) && suggestions.length > 0) {
+      errorSuggestions.innerHTML = `<strong>Suggestions:</strong><ul style="margin:4px 0 0 16px; padding:0;">${suggestions.map(s => `<li>${s}</li>`).join("")}</ul>`;
+    } else {
+      errorSuggestions.innerHTML = "";
+    }
+    errorBanner.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function renderCalculationResult(data, calcId, providerUsed, modelUsed) {
+    resultsPanel.style.display = "block";
+
+    // Latency & Model Badge
+    resLatencyBadge.textContent = `⚡ Computed in ${data.latencyMs || '<15'}ms (100% Exact Math)`;
+    resCategoryBadge.textContent = data.category || "General Calculation";
+    resModelBadge.textContent = `${providerUsed || 'AI'}: ${modelUsed || data.modelUsed}`;
+    resHeadlineValue.textContent = data.headlineResult || data.primaryValue;
+
+    // Research Gateway Decision Card
+    const gw = data.researchGateway;
+    if (gw && gw.needsResearch) {
+      resGatewayCard.className = "gateway-card gateway-card-researched";
+      resGatewayTitle.textContent = "🌐 Dynamic Web Research Grounding Executed";
+      resGatewayDesc.innerHTML = `
+        <strong>Gateway Decision:</strong> ${gw.reason || 'Dynamic statutory or empirical criteria detected.'}<br>
+        ${gw.queries?.length ? `<strong>Targeted Search Queries:</strong> <code>${gw.queries.join(" | ")}</code>` : ''}
+      `;
+
+      if (Array.isArray(gw.sources) && gw.sources.length > 0) {
+        resSourcesContainer.innerHTML = gw.sources.map(s => `
+          <a href="${s.url}" target="_blank" rel="noopener" class="source-chip">
+            <span>🔗</span>
+            <span>${s.title}</span>
+          </a>
+        `).join("");
+      } else {
+        resSourcesContainer.innerHTML = "";
+      }
+    } else {
+      resGatewayCard.className = "gateway-card gateway-card-bypassed";
+      resGatewayTitle.textContent = "⚡ Mathematical Bypass (Instant Calculation)";
+      resGatewayDesc.textContent = gw?.reason || "Self-contained mathematical formula. External web search bypassed to eliminate latency and save tokens.";
+      resSourcesContainer.innerHTML = "";
+    }
+
+    // Pillar 1: Assumptions
+    if (Array.isArray(data.inputsExtracted) && data.inputsExtracted.length > 0) {
+      resAssumptionsList.innerHTML = data.inputsExtracted.map(item => `
+        <div class="assumption-item">
+          <div>
+            <div class="assumption-name"><strong>${item.label || item.name}:</strong> ${item.value} ${item.unit || ''}</div>
+            <div style="font-size:12px; color:var(--text-muted);">${item.explanation || ''}</div>
+          </div>
+          <span class="assumption-tag ${item.isAssumed ? 'tag-assumed' : 'tag-explicit'}">
+            ${item.isAssumed ? 'Default Standard' : 'User Specified'}
+          </span>
+        </div>
+      `).join("");
+    } else {
+      resAssumptionsList.innerHTML = `<div style="font-size:13px; color:var(--text-muted);">Direct parameters evaluated.</div>`;
+    }
+
+    // Pillar 2: Step-by-Step Derivation
+    if (Array.isArray(data.stepByStep) && data.stepByStep.length > 0) {
+      resStepsList.innerHTML = data.stepByStep.map(st => `
+        <div class="step-item">
+          <div class="step-title">Step ${st.stepNumber}: ${st.title}</div>
+          <div class="step-formula">${st.formula} ➔ <strong>${st.intermediateResult || ''}</strong></div>
+        </div>
+      `).join("");
+    } else {
+      resStepsList.innerHTML = `<div style="font-size:13px; color:var(--text-muted);">Evaluated via safe deterministic JS execution.</div>`;
+    }
+
+    // Pillar 3: Interactive Sliders
+    renderSliders(data);
+
+    // Pillar 4: Sensitivity Matrix
+    renderSensitivity(data.sensitivityMatrix);
+
+    resultsPanel.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function renderSliders(data) {
+    if (!Array.isArray(data.interactiveControls) || data.interactiveControls.length === 0) {
+      resSlidersContainer.innerHTML = `<div style="font-size:13px; color:var(--text-muted);">This calculation has static parameters.</div>`;
+      return;
+    }
+
+    resSlidersContainer.innerHTML = data.interactiveControls.map(ctrl => `
+      <div class="slider-group" data-ctrl-id="${ctrl.id}">
+        <div class="slider-label-row">
+          <span class="slider-var-name">${ctrl.label || ctrl.id}</span>
+          <span class="slider-val-display" id="val-display-${ctrl.id}">${ctrl.value} ${ctrl.unit || ''}</span>
+        </div>
+        <input
+          type="range"
+          class="interactive-slider"
+          id="slider-${ctrl.id}"
+          min="${ctrl.min !== undefined ? ctrl.min : Math.floor(ctrl.value * 0.2)}"
+          max="${ctrl.max !== undefined ? ctrl.max : Math.ceil(ctrl.value * 2.5)}"
+          step="${ctrl.step || 1}"
+          value="${ctrl.value}"
+          data-unit="${ctrl.unit || ''}"
+          data-var="${ctrl.formulaVar || ctrl.id}"
+        />
+      </div>
+    `).join("");
+
+    data.interactiveControls.forEach(ctrl => {
+      const slider = document.getElementById(`slider-${ctrl.id}`);
+      const valDisplay = document.getElementById(`val-display-${ctrl.id}`);
+      slider.addEventListener("input", () => {
+        valDisplay.textContent = `${slider.value} ${ctrl.unit || ''}`;
+        recalculateClientSide(data);
+      });
+    });
+  }
+
+  function recalculateClientSide(data) {
+    if (!data.formulaExpression) return;
+
+    const currentVars = {};
+    data.interactiveControls.forEach(ctrl => {
+      const slider = document.getElementById(`slider-${ctrl.id}`);
+      if (slider) {
+        const varName = slider.getAttribute("data-var");
+        currentVars[varName] = parseFloat(slider.value) || 0;
+      }
+    });
+
+    try {
+      const executable = data.formulaExpression.replace(/\^/g, "**");
+      const varKeys = Object.keys(currentVars);
+      const varVals = varKeys.map(k => currentVars[k]);
+      const fn = new Function(...varKeys, `"use strict"; return (${executable});`);
+      const newVal = fn(...varVals);
+
+      if (!isNaN(newVal) && isFinite(newVal)) {
+        const rounded = Math.round(newVal * 100) / 100;
+        const unit = data.primaryUnit || '';
+        const isCur = ["$", "€", "£", "₹", "USD", "EUR", "GBP", "INR"].some(c => unit.includes(c));
+        resHeadlineValue.textContent = isCur ? `${unit}${rounded.toLocaleString()}` : `${rounded.toLocaleString()} ${unit}`.trim();
+
+        const primaryVar = data.primaryVariableKey || Object.keys(currentVars)[0];
+        if (primaryVar) {
+          const baseVal = currentVars[primaryVar];
+          const deltas = [
+            { label: "-20%", factor: 0.80 },
+            { label: "-10%", factor: 0.90 },
+            { label: "Current (Base)", factor: 1.00 },
+            { label: "+10%", factor: 1.10 },
+            { label: "+20%", factor: 1.20 },
+          ];
+          const matrix = deltas.map(d => {
+            const testVars = { ...currentVars, [primaryVar]: baseVal * d.factor };
+            const testFn = new Function(...Object.keys(testVars), `"use strict"; return (${executable});`);
+            const testRes = testFn(...Object.values(testVars));
+            const diffPct = rounded !== 0 ? ((testRes - rounded) / rounded) * 100 : 0;
+            return {
+              scenario: d.label,
+              variableValue: Math.round(baseVal * d.factor * 100) / 100,
+              resultValue: Math.round(testRes * 100) / 100,
+              deltaPercent: Math.round(diffPct * 10) / 10,
+              unit: data.primaryUnit || '',
+            };
+          });
+          renderSensitivity(matrix);
+        }
+      }
+    } catch (err) {
+      console.warn("Client recalculation error:", err.message);
+    }
+  }
+
+  function renderSensitivity(matrix) {
+    if (!Array.isArray(matrix) || matrix.length === 0) {
+      resSensitivityBody.innerHTML = `<tr><td colspan="4" style="color:var(--text-muted); padding:10px;">No sensitivity variance matrix generated.</td></tr>`;
+      return;
+    }
+
+    resSensitivityBody.innerHTML = matrix.map(row => `
+      <tr>
+        <td><strong>${row.scenario}</strong></td>
+        <td>${row.variableValue !== undefined ? row.variableValue : '-'}</td>
+        <td><strong>${row.resultValue} ${row.unit || ''}</strong></td>
+        <td class="${row.deltaPercent >= 0 ? 'delta-pos' : 'delta-neg'}">
+          ${row.deltaPercent >= 0 ? '+' : ''}${row.deltaPercent}%
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  // Copy Result Summary
+  document.getElementById("btn-copy-summary").addEventListener("click", () => {
+    const textToCopy = `LedgerMate AI Verified Calculation:\n${resHeadlineValue.textContent}\nCategory: ${resCategoryBadge.textContent}\nComputed in ${resLatencyBadge.textContent} with 100% Exact Math.`;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      alert("Calculation summary copied to clipboard!");
+    });
+  });
+
+  // -------------------------------------------------------------
+  // HITL (Human-in-the-Loop) Feedback Handlers
+  // -------------------------------------------------------------
+  document.getElementById("btn-rate-accurate").addEventListener("click", () => submitFeedback("accurate", "User confirmed accurate."));
+  document.getElementById("btn-rate-inaccurate").addEventListener("click", () => submitFeedback("inaccurate", "User flagged inaccurate."));
+
+  const hitlModal = document.getElementById("hitl-modal");
+  document.getElementById("btn-open-hitl-modal").addEventListener("click", () => hitlModal.classList.add("active"));
+  document.getElementById("btn-close-hitl-modal").addEventListener("click", () => hitlModal.classList.remove("active"));
+  document.getElementById("btn-cancel-hitl").addEventListener("click", () => hitlModal.classList.remove("active"));
+  document.getElementById("btn-submit-hitl").addEventListener("click", () => {
+    const rating = document.getElementById("hitl-rating-select").value;
+    const note = document.getElementById("hitl-note-text").value;
+    submitFeedback(rating, note);
+    hitlModal.classList.remove("active");
+  });
+
+  async function submitFeedback(rating, note) {
+    if (!currentCalcId) {
+      alert("No active calculation to review.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/calc-agent/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ calcId: currentCalcId, rating, hitlNote: note }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        alert("Thank you! Feedback registered to the review log.");
+      }
+    } catch (err) {
+      alert("Could not register feedback.");
+    }
+  }
+
+  // -------------------------------------------------------------
+  // History & Analytics
+  // -------------------------------------------------------------
+  async function loadHistoryAndAnalytics() {
+    try {
+      const res = await fetch("/api/calc-agent/history");
+      const data = await res.json();
+      if (data.analytics) {
+        document.getElementById("stat-total-queries").textContent = data.analytics.totalCalculations;
+        document.getElementById("stat-avg-latency").textContent = `${data.analytics.avgLatencyMs || 0} ms`;
+
+        const chartContainer = document.getElementById("categories-chart-container");
+        if (data.analytics.categories && data.analytics.categories.length > 0) {
+          const total = data.analytics.totalCalculations || 1;
+          chartContainer.innerHTML = data.analytics.categories.map(cat => {
+            const pct = Math.round((cat.count / total) * 100);
+            return `
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:3px;">
+                  <span style="font-weight:600;">${cat.category}</span>
+                  <span style="color:var(--text-muted);">${cat.count} (${pct}%)</span>
+                </div>
+                <div style="width:100%; height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">
+                  <div style="width:${pct}%; height:100%; background:var(--accent); border-radius:4px;"></div>
+                </div>
+              </div>
+            `;
+          }).join("");
+        } else {
+          chartContainer.innerHTML = `<div style="color:var(--text-muted); font-size:13px;">No calculations logged yet.</div>`;
+        }
+      }
+
+      const historyContainer = document.getElementById("history-items-container");
+      if (data.history && data.history.length > 0) {
+        historyContainer.innerHTML = data.history.map(item => `
+          <div class="history-card" id="history-row-${item.id}">
+            <div>
+              <div style="font-weight:600; font-size:14px; color:#0f172a;">${item.query}</div>
+              <div style="font-size:13.5px; color:var(--accent); font-weight:700;">${item.headline_result}</div>
+              <div style="font-size:11.5px; color:var(--text-muted);">${item.category} • ${item.latency_ms}ms • ${new Date(item.created_at).toLocaleString()}</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn-hitl btn-reload-history" data-id="${item.id}">⚡ Reload</button>
+              <button class="btn-hitl btn-delete-history" data-id="${item.id}" style="color:#ef4444;">Delete</button>
+            </div>
+          </div>
+        `).join("");
+
+        document.querySelectorAll(".btn-reload-history").forEach(b => {
+          b.addEventListener("click", async () => {
+            const id = b.getAttribute("data-id");
+            const r = await fetch(`/api/calc-agent/history/${id}`);
+            const d = await r.json();
+            if (d.record && d.record.data) {
+              document.querySelector("[data-tab='studio-tab']").click();
+              queryInput.value = d.record.query;
+              charCounter.textContent = `${d.record.query.length} / 500 characters`;
+              currentCalcData = d.record.data;
+              currentCalcId = d.record.id;
+              renderCalculationResult(currentCalcData, currentCalcId);
+            }
+          });
+        });
+
+        document.querySelectorAll(".btn-delete-history").forEach(b => {
+          b.addEventListener("click", async () => {
+            const id = b.getAttribute("data-id");
+            if (confirm("Delete this calculation record permanently?")) {
+              await fetch(`/api/calc-agent/history/${id}`, { method: "DELETE" });
+              const row = document.getElementById(`history-row-${id}`);
+              if (row) row.remove();
+            }
+          });
+        });
+      } else {
+        historyContainer.innerHTML = `<div style="color:var(--text-muted); font-size:13.5px; text-align:center; padding:18px;">No calculations yet. Run your first calculation in the Studio!</div>`;
+      }
+    } catch (err) {
+      console.warn("Could not load history:", err);
+    }
+  }
+
+  document.getElementById("btn-refresh-history")?.addEventListener("click", loadHistoryAndAnalytics);
+
+  // Initialize Toolbar
+  updateToolbarUI();
+})();
+</script>
+
+</body>
+</html>

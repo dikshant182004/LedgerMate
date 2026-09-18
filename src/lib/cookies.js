@@ -10,7 +10,7 @@ export function parseCookies(request) {
 }
 
 export function cookieHeader(name, value, { maxAge, httpOnly = true } = {}) {
-  const parts = [`${name}=${encodeURIComponent(value)}`, "Path=/", "SameSite=Lax", "Secure"];
+  const parts = [`${name}=${encodeURIComponent(value)}`, "Path=/", "SameSite=None", "Secure", "Partitioned"];
   if (httpOnly) parts.push("HttpOnly");
   if (maxAge !== undefined) parts.push(`Max-Age=${maxAge}`);
   return parts.join("; ");

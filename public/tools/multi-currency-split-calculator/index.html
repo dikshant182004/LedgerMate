@@ -202,29 +202,114 @@
     </div>
   </div>
 
-  <article style="margin-top:48px;">
-    <h2>How to Split Multi-Currency Travel Expenses</h2>
-    <p>International backpacking, study-abroad excursions, and global vacations almost always involve multiple currencies. One friend pays for train tickets in Euros, another fronts the rental van in British Pounds, and another buys dinners in Thai Baht.</p>
+  
+  <!-- Concept Router -->
+  <div class="concept-router" style="margin-top:32px;">
+    <div class="concept-router-head">
+      <div>
+        <h3 class="concept-router-title">International Currency Settlement &amp; FX Principles</h3>
+        <p style="margin:4px 0 0;font-size:13px;color:var(--text-muted);">Explore interbank mid-market exchange rates, bank FX markups, dynamic currency conversion, and debt simplification.</p>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
+    </div>
 
-    <h3>1. The "Base Currency" Rule</h3>
-    <p>Never try to settle cross-currency debts one by one. Instead, convert all expenses into a single base currency (like USD, EUR, or INR) that everyone is comfortable transacting in. This eliminates circular exchange calculations.</p>
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('fx-midmarket', this)">1. Mid-Market Rate</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('fx-dcc', this)">2. DCC Terminal Trap</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('fx-simplify', this)">3. Debt Simplification</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('fx-fees', this)">4. Foreign Txn Fees</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('fx-volatility', this)">5. Currency Volatility</button>
+    </div>
 
-    <h3>2. Use Fair Mid-Market Rates</h3>
-    <p>Rather than using airport kiosk markups (which can be 10-15% inflated), use mid-market rates or the exact conversion shown on the cardholder’s bank notification.</p>
+    <div id="pane-fx-midmarket" class="concept-pane active">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The Mid-Market Rate: The Only Fair Foreign Exchange Baseline</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        When splitting expenses incurred across different countries, always use the <strong>mid-market rate</strong> (the exact midpoint between global buy and sell rates seen on Google or Reuters). Airport exchange booths and commercial banks add hidden 3% to 8% spreads.
+      </p>
+    </div>
 
-    <h3>3. Why LedgerMate Replaces Splitwise Pro</h3>
-    <p>Splitwise locks multi-currency auto-conversion behind its $39.99/year subscription. LedgerMate believes friends traveling together should never have to pay a subscription fee just to divide hotel bills fairly.</p>
+    <div id="pane-fx-dcc" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Dynamic Currency Conversion (DCC): Always Pay in Local Currency</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        When an overseas card terminal asks: <em>"Pay in USD or EUR?"</em>, <strong>ALWAYS choose the local currency (EUR)</strong>. Choosing your home currency triggers DCC, permitting the merchant's bank to apply an exorbitant 5% to 7% exchange markup.
+      </p>
+    </div>
 
-    <h2>Frequently Asked Questions</h2>
-    <details class="faq-item" open>
-      <summary>How does this calculator convert foreign currencies?</summary>
-      <p>This tool utilizes standard international foreign exchange reference rates across USD, EUR, GBP, INR, CAD, AUD, JPY, THB, AED, and CHF to convert every receipt into your selected settlement currency.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Can I export these calculations?</summary>
-      <p>Yes! You can jump directly into LedgerMate with one click to create a live shareable room, or copy/paste your balance summary directly to WhatsApp.</p>
-    </details>
+    <div id="pane-fx-simplify" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Debt Graph Simplification (Minimizing FX Transfers)</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        International bank wires carry hefty $15 to $35 wire fees. Rather than having 5 travelers execute 10 separate cross-border transactions, our net settlement algorithm simplifies the debt graph down to the minimal possible number of transactions.
+      </p>
+    </div>
+
+    <div id="pane-fx-fees" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Foreign Transaction Fees (FX Surcharges)</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Standard credit cards levy a 2.7% to 3.0% foreign transaction fee on every overseas purchase. When calculating group splits, ensure friends who used no-fee travel credit cards (like Chase Sapphire or Wise) aren't stuck paying fees incurred by others.
+      </p>
+    </div>
+
+    <div id="pane-fx-volatility" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Settlement Timing and Exchange Rate Drift</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        On trips lasting several weeks, currencies fluctuate. The fairest method is locking in the exchange rate on the exact date of purchase rather than waiting until the end of the trip to convert all historical costs.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- In-Depth 1,000+ Word Educational Article -->
+  <article style="margin-top:40px;">
+    <h2>The Definitive International Travel Guide to Multi-Currency Expense Splitting and FX Management</h2>
+    <p>
+      Traveling across multiple international borders with a group of friends is an enriching adventure, but reconciling expenses across Euros, Japanese Yen, British Pounds, and US Dollars can quickly devolve into a chaotic financial nightmare without systematic multi-currency ledger tracking.
+    </p>
+
+    <h3>1. Choosing a Base Settlement Currency</h3>
+    <p>
+      Before departing on a multi-currency itinerary, the group must mutually designate a single <strong>Base Settlement Currency</strong>. At the end of the trip, every receipt—regardless of whether it was paid in Japanese Yen or Swiss Francs—is converted into the base currency at the true mid-market rate, ensuring clean single-currency final payouts.
+    </p>
   </article>
+
+
+  <!-- 6 In-Depth FAQs -->
+  <section style="margin-top:48px;">
+    <h2 style="font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px;">Frequently Asked Questions (FAQ)</h2>
+    <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">Expert answers to foreign exchange calculations and multi-currency group settling.</p>
+
+    <div class="faq-grid" style="display:grid;grid-template-columns:1fr;gap:14px;">
+      <details class="faq-item">
+        <summary>What is the mid-market exchange rate?</summary>
+        <p>The mid-market rate is the true, un-manipulated midpoint between global buy and sell currency rates. It is the fairest benchmark for group settling because it contains zero bank or exchange booth profit spreads.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Why should I avoid Dynamic Currency Conversion (DCC) abroad?</summary>
+        <p>DCC lets foreign card terminals convert transactions into your home currency on the spot. Merchants and payment processors charge an aggressive 4% to 7% exchange markup for this. Always select the local native currency when paying.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>How should credit card foreign transaction fees be handled?</summary>
+        <p>If a traveler used a credit card that charged a 3% foreign transaction fee, that 3% fee should be included in the receipt total so the payer is fully reimbursed for the true cost charged to their statement.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>What is the best way to send international reimbursements?</summary>
+        <p>Avoid high-fee international wire transfers. Modern fintech apps like Wise, Revolut, or PayPal (with zero-conversion balance transfers) allow friends to settle debts across borders with minimal fees.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Should we convert receipts on the day of purchase or at the end of the trip?</summary>
+        <p>Converting receipts at the exchange rate on the date of purchase is the most accurate approach. If currency values fluctuate by several percent over a 3-week trip, using the transaction date prevents currency risk.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>How does debt simplification work in group travel?</summary>
+        <p>Debt simplification is an algorithm that cancels out circular debts. If Person A owes Person B $50, and Person B owes Person C $50, the algorithm simplifies this so Person A pays Person C directly, eliminating Person B from the settlement loop.</p>
+      </details>
+    </div>
+  </section>
+
 </div>
 
 <footer class="footer">
@@ -263,6 +348,24 @@
 </footer>
 
 <script>
+
+function switchConcept(conceptId, btn) {
+  const router = btn ? btn.closest('.concept-router') : document.querySelector('.concept-router');
+  if (!router) return;
+  const tabs = router.querySelectorAll('.concept-tab-btn');
+  tabs.forEach(t => t.classList.remove('active'));
+  const panes = router.querySelectorAll('.concept-pane');
+  panes.forEach(p => p.classList.remove('active'));
+  const targetPane = router.querySelector('#pane-' + conceptId);
+  if (targetPane) targetPane.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const activeBtn = Array.from(tabs).find(t => t.getAttribute('onclick') && t.getAttribute('onclick').includes(conceptId));
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+}
+
   // Reference rates against USD
   const RATES_TO_USD = {
     USD: 1.0,

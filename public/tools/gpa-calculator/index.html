@@ -349,6 +349,84 @@
   </div>
 
   <!-- Deep Comprehensive SEO / Educational Article -->
+  
+  <!-- Concept Router -->
+  <div class="concept-router" style="margin-top:32px;">
+    <div class="concept-router-head">
+      <div>
+        <h3 class="concept-router-title">Academic GPA Systems &amp; Transcript Analytics</h3>
+        <p style="margin:4px 0 0;font-size:13px;color:var(--text-muted);">Master weighted vs unweighted scales, quality point mechanics, cumulative dilution, and quarter conversions.</p>
+      </div>
+      <span class="concept-badge">Educational Guide</span>
+    </div>
+
+    <div class="concept-nav" id="concept-tabs">
+      <button type="button" class="concept-tab-btn active" onclick="switchConcept('gpa-scales', this)">1. Weighted vs Unweighted</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('gpa-quality', this)">2. Quality Points Formula</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('gpa-dilution', this)">3. Cumulative Dilution</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('gpa-quarter', this)">4. Quarter to Semester</button>
+      <button type="button" class="concept-tab-btn" onclick="switchConcept('gpa-passfail', this)">5. Pass/Fail &amp; Incompletes</button>
+    </div>
+
+    <div id="pane-gpa-scales" class="concept-pane active">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Unweighted 4.0 vs. Weighted 4.5 &amp; 5.0 Scales</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        High schools and universities differentiate academic rigor by adding bonus grade weights:
+      </p>
+      <ul style="font-size:14px;line-height:1.65;color:var(--text-muted);padding-left:20px;margin-bottom:12px;">
+        <li><strong>Standard / College Courses (4.0 Scale):</strong> A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0.</li>
+        <li><strong>Honors Courses (+0.5 Weight, 4.5 Scale):</strong> An 'A' in Honors is awarded 4.5 quality points.</li>
+        <li><strong>AP (Advanced Placement) / IB / Dual Enrollment (+1.0 Weight, 5.0 Scale):</strong> An 'A' earns 5.0 quality points. A 'B' in an AP course is evaluated identically to an 'A' in a standard course (4.0 points).</li>
+      </ul>
+    </div>
+
+    <div id="pane-gpa-quality" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">The Quality Points Equation</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        GPA is a credit-weighted average, not a simple average of grades. A 4-credit Organic Chemistry course has four times the GPA impact of a 1-credit physical education lab:
+      </p>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-family:monospace;font-size:13px;color:var(--text);margin-bottom:12px;">
+        Quality Points for Course = Grade Point Equivalent &times; Course Credit Hours<br/>
+        Cumulative GPA = Total Accumulated Quality Points &divide; Total Graded Credit Hours Attempted
+      </div>
+    </div>
+
+    <div id="pane-gpa-dilution" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Cumulative GPA Dilution: Why Senior Year Grades Barely Move Your GPA</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        As you accumulate more completed credit hours, each new semester contributes a smaller fraction to your overall GPA denominator:
+      </p>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-family:monospace;font-size:13px;color:var(--text);margin-bottom:12px;">
+        Freshman Year (30 credits, 3.0 GPA): A straight-A semester (15 credits, 4.0) moves GPA from 3.0 &rarr; 3.33 (+0.33 boost).<br/>
+        Senior Year (105 credits, 3.0 GPA): A straight-A semester (15 credits, 4.0) moves GPA from 3.0 &rarr; 3.125 (+0.125 boost).
+      </div>
+    </div>
+
+    <div id="pane-gpa-quarter" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Quarter System vs. Semester System Conversion</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Institutions on the quarter system (such as UCLA, Stanford, University of Washington) use different credit weights than semester schools:
+      </p>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-family:monospace;font-size:13px;color:var(--text);margin-bottom:12px;">
+        1 Semester Credit Hour = 1.5 Quarter Credit Hours<br/>
+        1 Quarter Credit Hour = 0.667 Semester Credit Hours<br/>
+        A 180-quarter-credit degree equals a 120-semester-credit degree.
+      </div>
+    </div>
+
+    <div id="pane-gpa-passfail" class="concept-pane">
+      <h4 style="margin:0 0 10px;font-size:17px;font-weight:800;color:var(--text);">Pass/Fail (S/U), Incompletes, and Course Retakes</h4>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text-muted);margin-bottom:12px;">
+        Special registration grading modes affect transcripts differently:
+      </p>
+      <ul style="font-size:14px;line-height:1.65;color:var(--text-muted);padding-left:20px;">
+        <li><strong>Pass / Satisfactory (P/S):</strong> Awards earned credits toward graduation but is completely excluded from the GPA calculation.</li>
+        <li><strong>Fail / Unsatisfactory (F/U):</strong> In many institutions, failing a Pass/Fail course calculates as a 0.0 quality point penalty!</li>
+        <li><strong>Course Forgiveness / Retakes:</strong> Many universities replace the original grade in the cumulative GPA, though both attempts remain visible on official transcripts.</li>
+      </ul>
+    </div>
+  </div>
+
   <article style="margin-top:44px;line-height:1.7;">
     <h2>Understanding Global Academic Grading Systems &amp; Conversion Rules</h2>
     <p>International higher education relies on distinct mathematical scales to quantify academic performance. When applying to graduate schools abroad, submitting scholarship applications (Fulbright, DAAD, Commonwealth), or seeking multinational employment, understanding how your grades map across borders is crucial.</p>
@@ -428,6 +506,45 @@
       <p><strong>SGPA (Semester Grade Point Average)</strong> reflects your performance across courses taken in a single academic semester or term. <strong>CGPA (Cumulative Grade Point Average)</strong> is the cumulative weighted average of all semesters completed to date.</p>
     </details>
   </article>
+
+    <!-- 6 In-Depth FAQs -->
+    <section style="margin-top:48px;">
+      <h2 style="font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px;">Frequently Asked Questions (FAQ)</h2>
+      <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">Authoritative answers to college GPA calculation, weighting, and graduation honors.</p>
+
+      <div class="faq-grid" style="display:grid;grid-template-columns:1fr;gap:14px;">
+        <details class="faq-item">
+          <summary>How is cumulative GPA calculated?</summary>
+          <p>Multiply each course's grade point equivalent by its credit hours to determine Quality Points. Sum the quality points across all courses, and divide that total by the sum of all graded credit hours attempted: <code>Cumulative GPA = Total Quality Points &divide; Total Graded Credits</code>.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>What is the difference between weighted and unweighted GPA?</summary>
+          <p>An unweighted GPA caps all classes at 4.0 regardless of difficulty. A weighted GPA grants extra grade points for advanced coursework (typically +0.5 points for Honors classes on a 4.5 scale, and +1.0 point for AP, IB, or college-level classes on a 5.0 scale).</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Does a Pass/Fail (P/F) class affect my GPA?</summary>
+          <p>Passing a course under Pass/Fail earns credits toward graduation requirements but has zero effect on your GPA (it is excluded from both numerator and denominator). However, at many universities, receiving an 'F' in a Pass/Fail class counts as 0.0 points and lowers your GPA.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>What GPA is required for Latin Honors (Cum Laude)?</summary>
+          <p>While thresholds vary by university, typical benchmarks are: Cum Laude (Top 15% or ~3.5 - 3.7 GPA), Magna Cum Laude (Top 10% or ~3.75 - 3.89 GPA), and Summa Cum Laude (Top 5% or 3.90+ GPA).</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can I raise my GPA significantly during my senior year?</summary>
+          <p>Due to the law of cumulative dilution, raising your GPA becomes mathematically harder each year. By senior year, after completing 90+ credits, even a perfect 4.0 semester typically moves your cumulative GPA by only 0.1 to 0.15 points.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do plus (+) and minus (-) grades count toward GPA?</summary>
+          <p>Most universities use standard 0.33 intervals: A = 4.0, A- = 3.67, B+ = 3.33, B = 3.0, B- = 2.67, C+ = 2.33, C = 2.0, C- = 1.67, D+ = 1.33, D = 1.0, and F = 0.0.</p>
+        </details>
+      </div>
+    </section>
+
 </div>
 
 <footer class="footer">
@@ -467,6 +584,24 @@
 </footer>
 
 <script>
+
+function switchConcept(conceptId, btn) {
+  const router = btn ? btn.closest('.concept-router') : document.querySelector('.concept-router');
+  if (!router) return;
+  const tabs = router.querySelectorAll('.concept-tab-btn');
+  tabs.forEach(t => t.classList.remove('active'));
+  const panes = router.querySelectorAll('.concept-pane');
+  panes.forEach(p => p.classList.remove('active'));
+  const targetPane = router.querySelector('#pane-' + conceptId);
+  if (targetPane) targetPane.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const activeBtn = Array.from(tabs).find(t => t.getAttribute('onclick') && t.getAttribute('onclick').includes(conceptId));
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+}
+
 let currentCountry = 'us';
 
 // Initial course records per country

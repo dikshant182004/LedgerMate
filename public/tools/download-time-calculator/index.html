@@ -424,35 +424,35 @@
     <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">Clear explanations for common networking and download questions.</p>
 
     <div class="faq-grid">
-      <div class="faq-card">
-        <h3><span>❓</span> Why does my 100 Mbps internet connection download files at only 11 MB/s?</h3>
+            <details class="faq-item">
+        <summary>Why does my 100 Mbps internet connection download files at only 11 MB/s?</summary>
         <p>Broadband plans are sold in megabits per second (Mbps, with a lowercase b), while file sizes and download managers measure progress in megabytes per second (MB/s, with a capital B). Since 1 Byte equals 8 bits, 100 Mbps yields a theoretical ceiling of 12.5 MB/s. Subtracting 8-12% TCP/IP network protocol framing overhead results in an effective download speed of ~11.2 MB/s.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> What is TCP/IP protocol overhead?</h3>
+            <details class="faq-item">
+        <summary>What is TCP/IP protocol overhead?</summary>
         <p>Every chunk of file data transferred across the internet must be wrapped in Ethernet framing, IP address headers, and TCP sequence acknowledgments. In addition, packets occasionally collide or drop over congested networks, requiring retransmission. This invisible packet overhead consumes roughly 8% to 12% of total physical bandwidth.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> Why does Steam slow down during game downloads even on gigabit fiber?</h3>
+            <details class="faq-item">
+        <summary>Why does Steam slow down during game downloads even on gigabit fiber?</summary>
         <p>Game launchers like Steam and Battle.net download packages in heavily compressed chunks. Your computer's processor must decrypt and decompress these archives while simultaneously writing the extracted files to your storage drive. If your CPU or SSD cannot keep up, the launcher throttles download speeds to avoid disk queuing crashes.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> Does using a VPN make downloads faster or slower?</h3>
+            <details class="faq-item">
+        <summary>Does using a VPN make downloads faster or slower?</summary>
         <p>In almost all cases, a VPN slows down download speeds by 10% to 30% due to encryption overhead and routing through intermediary server relays. The only rare exception is when your ISP actively throttles specific types of traffic (such as peer-to-peer torrents or video streaming), where VPN encryption masks the traffic type from ISP throttle filters.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> What is the difference between asymmetric cable and symmetrical fiber?</h3>
+            <details class="faq-item">
+        <summary>What is the difference between asymmetric cable and symmetrical fiber?</summary>
         <p>Traditional coaxial cable internet (DOCSIS) provides high download bandwidth (e.g. 500 Mbps) but severely restricted upload bandwidth (e.g. 20 Mbps). Symmetrical fiber optic connections provide equal bandwidth in both directions (e.g. 1,000 Mbps download AND 1,000 Mbps upload), making cloud backups and video conferencing dramatically faster.</p>
-      </div>
+      </details>
 
-      <div class="faq-card">
-        <h3><span>❓</span> What is bufferbloat and how can it be prevented?</h3>
+            <details class="faq-item">
+        <summary>What is bufferbloat and how can it be prevented?</summary>
         <p>Bufferbloat happens when a router's packet buffer becomes overloaded during heavy file downloads, causing latency and ping to spike dramatically for everyone on the local network. Prevention involves enabling Smart Queue Management (SQM) such as CAKE or FQ-CoDel on modern routers, which fairly prioritizes low-latency packets like DNS queries and gaming traffic over bulk downloads.</p>
-      </div>
+      </details>
     </div>
   </section>
 </div>
