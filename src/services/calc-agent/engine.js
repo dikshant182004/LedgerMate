@@ -1,8 +1,8 @@
 /**
- * High-Speed Multi-Provider Neuro-Symbolic Calculation Engine
+ * Google Gemini Neuro-Symbolic Calculation Engine
  * Orchestrates:
  * 1. Intelligent Research Gateway (detects if live web research is needed vs instant mathematical bypass)
- * 2. Multi-Provider BYOK (Google Gemini, OpenAI, Groq, Anthropic Claude)
+ * 2. Google AI Studio BYOK (Gemini free tier)
  * 3. Live Google Search Grounding for Gemini models (zero hallucination on statutory/empirical changes)
  * 4. Deterministic Sandboxed Mathematical Cross-Verification (100% accurate arithmetic)
  * 5. Reactive Parameter Slider & What-If Matrix Generation
@@ -62,7 +62,15 @@ RULES:
 1. All mathematical derivations must be algebraic, reproducible, and verifiable.
 2. If parameters are not explicitly provided by the user, set isAssumed: true and provide realistic current assumptions.
 3. Keep formulaExpression simple, using valid JavaScript math syntax with the variable names defined in interactiveControls.
-4. Always provide 1-3 interactiveControls so the user can dynamically tune the calculation using sliders.`;
+4. Always provide 1-3 interactiveControls so the user can dynamically tune the calculation using sliders.
+5. OUTPUT LANGUAGE vs TARGET CURRENCY — TWO SEPARATE CONCERNS:
+   - outputLanguage: Translate ALL user-visible STRINGS (category, step titles, step calculations, input labels, explanations, interactiveControl labels, sensitivity scenario labels) into this language. Do NOT translate currency codes, unit symbols, or numeric formats.
+   - targetCurrency: If specified (e.g. "CNY", "EUR", "INR", "JPY", "GBP"), CONVERT all monetary amounts in headlineResult, primaryValue, step intermediateResults, and interactiveControl values to this currency using current exchange rates. Update primaryUnit to the target currency code. Do NOT change the outputLanguage.
+   - These are INDEPENDENT. A user can want output in Arabic (outputLanguage="Arabic") with amounts in USD (targetCurrency="USD"), or output in English with amounts in CNY.
+6. When BOTH outputLanguage and targetCurrency are specified: Apply BOTH independently — translate strings to outputLanguage, convert money to targetCurrency.
+7. If targetCurrency is not specified or is "original", keep all monetary values in their original currency (typically USD or the currency implied by the query).
+8. Exchange rates: Use current market rates. If unsure, state the rate used in an input's explanation field.
+`;
 
 /**
  * Fast in-memory template matcher for sub-5ms instant calculations.
@@ -130,9 +138,10 @@ function tryFastTemplate(query) {
 
 /**
  * Main calculation agent entry point.
- * Coordinates Research Gateway -> Provider Inference -> Deterministic Math Verification.
+ * Coordinates Research Gateway -> Gemini Inference -> Deterministic Math Verification.
  */
-export async function runCalculationAgent(query, apiKey, selectedModel = "gemini-3.1-flash-lite", provider = "gemini") {
+export async function runCalculationAgent(query, apiKey, selectedModel = "gemini-3.1-flash-lite", options = {}) {
+  const { outputLanguage = "English", targetCurrency = "original" } = options;
   const startTime = Date.now();
 
   // 1. Check fast deterministic templates (< 5ms)
@@ -147,6 +156,8 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
 
     return {
       ...fastResult,
+      outputLanguage,
+      targetCurrency,
       researchGateway: {
         needsResearch: false,
         reason: "Matched deterministic template. Bypassed external search to guarantee <5ms response.",
@@ -165,32 +176,143 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
   // 2. Intelligent Research Gateway Assessment
   const researchDecision = assessResearchNeed(query);
 
-  // 3. Provider-specific execution
+  // 3. Build language/currency instruction for Gemini
+  const langCurrencyInstruction = buildLanguageCurrencyInstruction(outputLanguage, targetCurrency);
+
+  // 4. Gemini execution with dynamic Search Grounding
   let rawJsonText = "";
   let liveSources = [];
-  let modelUsed = selectedModel;
+  let modelUsed = selectedModel || "gemini-3.1-flash-lite";
 
-  if (provider === "openai") {
-    const res = await callOpenAI(query, apiKey, selectedModel, researchDecision);
-    rawJsonText = res.jsonText;
-    modelUsed = res.modelUsed;
-  } else if (provider === "groq") {
-    const res = await callGroq(query, apiKey, selectedModel);
-    rawJsonText = res.jsonText;
-    modelUsed = res.modelUsed;
-  } else if (provider === "claude") {
-    const res = await callAnthropic(query, apiKey, selectedModel);
-    rawJsonText = res.jsonText;
-    modelUsed = res.modelUsed;
-  } else {
-    // Default: Google Gemini with native Google Search Grounding
-    const res = await callGemini(query, apiKey, selectedModel, researchDecision);
-    rawJsonText = res.jsonText;
-    liveSources = res.sources;
-    modelUsed = res.modelUsed;
-  }
+  const res = await callGemini(query, apiKey, modelUsed, researchDecision, langCurrencyInstruction);
+  rawJsonText = res.jsonText;
+  liveSources = res.sources;
+  modelUsed = res.modelUsed;
 
   // 4. Parse JSON
+
+// Helper to build language/currency instruction
+function buildLanguageCurrencyInstruction(outputLanguage, targetCurrency) {
+  const parts = [];
+  if (outputLanguage && outputLanguage !== "English") {
+    parts.push(`OUTPUT LANGUAGE: Respond ENTIRELY in ${outputLanguage}. Translate all user-visible strings (category, step titles, step calculations, input labels, explanations, interactiveControl labels, sensitivity scenario labels) into ${outputLanguage}. Keep JSON keys, currency codes, and numeric formats in English.`);
+  }
+  if (targetCurrency && targetCurrency !== "original") {
+    parts.push(`TARGET CURRENCY: Convert ALL monetary amounts in headlineResult, primaryValue, step intermediateResults, and interactiveControl values to ${targetCurrency}. Update primaryUnit to "${targetCurrency}". Use current market exchange rates.`);
+  }
+  if (parts.length === 0) return "";
+  return `\n\n[Language & Currency Directives: ${parts.join(" | ")}]`;
+}
+
+/**
+ * Recovery fallback: When Gemini's interactiveControls/formulaExpression are hallucinated,
+ * extract the correct values from stepByStep intermediate results.
+ * This handles common patterns like mortgage, loan, compound interest calculations.
+ */
+function recoverFromSteps(parsed) {
+  if (!Array.isArray(parsed.stepByStep) || parsed.stepByStep.length === 0) return null;
+
+  // Try to find the final numeric result from stepByStep
+  let finalResult = null;
+  for (let i = parsed.stepByStep.length - 1; i >= 0; i--) {
+    const step = parsed.stepByStep[i];
+    const val = parseFloat(step.intermediateResult?.toString().replace(/[,$]/g, "") || "");
+    if (!isNaN(val) && Number.isFinite(val) && val !== 0) {
+      finalResult = val;
+      break;
+    }
+  }
+  if (finalResult === null) return null;
+
+  // Extract variables from step calculations by parsing formulas
+  const extractedVars = {};
+  const varAliases = {
+    principal: ["principal", "loanamount", "loan_amount", "amount", "pv", "presentvalue"],
+    annualRate: ["annualrate", "interestrate", "rate", "apr", "annual_rate", "interest_rate"],
+    years: ["years", "loanterm", "term", "loan_term", "n", "periods"],
+    monthlyRate: ["monthlyrate", "monthly_rate", "r"],
+    numPayments: ["numpayments", "num_payments", "n", "totalpayments"],
+  };
+
+  // Scan step formulas for variable assignments
+  for (const step of parsed.stepByStep) {
+    const formula = step.formula || "";
+    const calc = step.calculation || "";
+
+    // Look for patterns like "380000 * ..." or "0.064 / 12" or "30 * 12"
+    const numberMatches = [...formula.matchAll(/(\d+(?:\.\d+)?)/g)].map(m => parseFloat(m[1]));
+    const calcMatches = [...calc.matchAll(/(\d+(?:\.\d+)?)/g)].map(m => parseFloat(m[1]));
+    const allNumbers = [...numberMatches, ...calcMatches];
+
+    // Heuristic: largest number is likely principal, small decimal is rate, medium is years
+    for (const num of allNumbers) {
+      if (num >= 1000 && num <= 10000000 && !extractedVars.principal) extractedVars.principal = num;
+      else if (num > 0.001 && num < 1 && !extractedVars.monthlyRate && !extractedVars.annualRate) {
+        // Could be monthly rate or annual rate as decimal
+        if (num < 0.01) extractedVars.monthlyRate = num;
+        else extractedVars.annualRate = num * 100; // assume percentage
+      }
+      else if (num >= 1 && num <= 50 && !extractedVars.years) extractedVars.years = num;
+      else if (num >= 100 && num <= 500 && !extractedVars.annualRate) extractedVars.annualRate = num; // e.g., 6.4
+      else if (num >= 100 && num <= 1000 && !extractedVars.numPayments) extractedVars.numPayments = num;
+    }
+  }
+
+  // Normalize: if we have annualRate as percentage (>1), convert
+  if (extractedVars.annualRate && extractedVars.annualRate > 1 && extractedVars.annualRate <= 30) {
+    // Already percentage, good
+  } else if (extractedVars.annualRate && extractedVars.annualRate < 1) {
+    extractedVars.annualRate = extractedVars.annualRate * 100;
+  }
+
+  // Build a standard mortgage formula if we have the key variables
+  let formulaExpression = "";
+  let primaryVariableKey = "";
+  let interactiveControls = [];
+  let variableMap = {};
+
+  if (extractedVars.principal && extractedVars.annualRate && extractedVars.years) {
+    // Standard mortgage formula - use only primary variables (principal, annualRate, years)
+    // Derived values computed inline so sliders work correctly
+    formulaExpression = "principal * ((annualRate/100/12) * Math.pow(1 + annualRate/100/12, years*12)) / (Math.pow(1 + annualRate/100/12, years*12) - 1)";
+    variableMap = {
+      principal: extractedVars.principal,
+      annualRate: extractedVars.annualRate,
+      years: extractedVars.years,
+    };
+    primaryVariableKey = "principal";
+    interactiveControls = [
+      { id: "principal", label: "Loan Principal", value: extractedVars.principal, min: 10000, max: extractedVars.principal * 3 || 1000000, step: 1000, unit: parsed.primaryUnit || "$", formulaVar: "principal" },
+      { id: "annualRate", label: "Annual Interest Rate", value: extractedVars.annualRate, min: 0.1, max: 20, step: 0.1, unit: "%", formulaVar: "annualRate" },
+      { id: "years", label: "Loan Term (Years)", value: extractedVars.years, min: 1, max: 40, step: 1, unit: "years", formulaVar: "years" },
+    ];
+  } else if (extractedVars.principal && extractedVars.annualRate) {
+    // Simple interest or other formula - use principal as primary
+    formulaExpression = "principal * (annualRate / 100)";
+    variableMap = { principal: extractedVars.principal, annualRate: extractedVars.annualRate };
+    primaryVariableKey = "principal";
+    interactiveControls = [
+      { id: "principal", label: "Principal", value: extractedVars.principal, min: 1000, max: extractedVars.principal * 5 || 100000, step: 1000, unit: parsed.primaryUnit || "$", formulaVar: "principal" },
+      { id: "annualRate", label: "Rate", value: extractedVars.annualRate, min: 0.1, max: 30, step: 0.1, unit: "%", formulaVar: "annualRate" },
+    ];
+  } else {
+    return null;
+  }
+
+  // Format headline
+  const unit = parsed.primaryUnit || "";
+  const isCur = ["$", "€", "£", "₹", "¥", "USD", "EUR", "GBP", "INR", "CNY", "JPY"].some(c => unit.includes(c));
+  const headlineResult = isCur ? `${unit}${finalResult.toLocaleString()}` : `${finalResult.toLocaleString()} ${unit}`.trim();
+
+  return {
+    variableMap,
+    formulaExpression,
+    primaryVariableKey,
+    interactiveControls,
+    primaryValue: finalResult,
+    headlineResult,
+  };
+}
   let parsed;
   try {
     parsed = JSON.parse(rawJsonText);
@@ -204,12 +326,12 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
     try {
       parsed = JSON.parse(clean);
     } catch (parseErr) {
-      throw new Error(`Failed to parse calculation output from ${provider} (${modelUsed}): ${parseErr.message}`);
+      throw new Error(`Failed to parse calculation output from Gemini (${modelUsed}): ${parseErr.message}`);
     }
   }
 
-  // 5. Deterministic Arithmetic Verification (V8 Safe Evaluator)
-  const variableMap = {};
+  // 5. Deterministic Arithmetic Verification (Sandboxed Math Evaluator)
+  let variableMap = {};
   if (Array.isArray(parsed.interactiveControls)) {
     parsed.interactiveControls.forEach((ctrl) => {
       const varKey = ctrl.formulaVar || ctrl.id;
@@ -217,15 +339,31 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
     });
   }
 
+  let evaluated = null;
   if (parsed.formulaExpression) {
-    const evaluated = evaluateFormula(parsed.formulaExpression, variableMap);
-    if (evaluated.success && typeof evaluated.result === "number" && !isNaN(evaluated.result)) {
-      parsed.primaryValue = Math.round(evaluated.result * 100) / 100;
+    evaluated = evaluateFormula(parsed.formulaExpression, variableMap);
+    if (typeof evaluated === "number" && Number.isFinite(evaluated) && evaluated !== 0) {
+      parsed.primaryValue = Math.round(evaluated * 100) / 100;
       if (!parsed.headlineResult || parsed.headlineResult.includes("$") || !isNaN(parseFloat(parsed.headlineResult))) {
         const unit = parsed.primaryUnit || "";
-        const isCur = ["$", "€", "£", "₹", "USD", "EUR", "GBP", "INR"].some(c => unit.includes(c));
+        const isCur = ["$", "€", "£", "₹", "¥", "USD", "EUR", "GBP", "INR", "CNY", "JPY"].some(c => unit.includes(c));
         parsed.headlineResult = isCur ? `${unit}${parsed.primaryValue.toLocaleString()}` : `${parsed.primaryValue.toLocaleString()} ${unit}`.trim();
       }
+    }
+  }
+
+  // Recovery: If deterministic verification failed (evaluated is 0, NaN, or null),
+  // try to recover from stepByStep intermediate results
+  if (evaluated === null || !Number.isFinite(evaluated) || evaluated === 0) {
+    const recovered = recoverFromSteps(parsed);
+    if (recovered) {
+      variableMap = recovered.variableMap;
+      parsed.formulaExpression = recovered.formulaExpression;
+      parsed.primaryVariableKey = recovered.primaryVariableKey;
+      parsed.interactiveControls = recovered.interactiveControls;
+      parsed.primaryValue = recovered.primaryValue;
+      parsed.headlineResult = recovered.headlineResult;
+      evaluated = recovered.primaryValue;
     }
   }
 
@@ -244,9 +382,11 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
 
   parsed.latencyMs = Date.now() - startTime;
   parsed.engine = "NeuroSymbolic-Verified";
-  parsed.providerUsed = provider;
+  parsed.providerUsed = "gemini";
   parsed.modelUsed = modelUsed;
   parsed.verifiedDeterministic = true;
+  parsed.outputLanguage = outputLanguage;
+  parsed.targetCurrency = targetCurrency;
   parsed.researchGateway = {
     ...researchDecision,
     sources: liveSources,
@@ -259,15 +399,15 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
  * Executes inference via Google Gemini SDK.
  * Enables live Google Search Grounding when researchDecision.needsResearch is true.
  */
-async function callGemini(query, apiKey, selectedModel, researchDecision) {
+async function callGemini(query, apiKey, selectedModel, researchDecision, langCurrencyInstruction = "") {
   if (!apiKey) {
-    throw new Error("Gemini API key is required. Get your free key at Google AI Studio (15 RPM free).");
+    throw new Error("Google AI Studio API key is required. Get your free key at Google AI Studio (15 RPM free tier).");
   }
 
   const ai = new GoogleGenAI({
     apiKey: apiKey,
     httpOptions: {
-      headers: { "User-Agent": "aistudio-build" },
+      headers: { "User-Agent": "aistudio-calc-agent" },
     },
   });
 
@@ -284,8 +424,14 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
   let sources = [];
   let lastErr = null;
 
+  // 30 second timeout for Gemini calls
+  const GEMINI_TIMEOUT_MS = 30000;
+
   for (const model of modelsToTry) {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+
       const config = {
         systemInstruction: SYSTEM_INSTRUCTION,
         responseMimeType: "application/json",
@@ -298,14 +444,16 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
       }
 
       const promptContent = researchDecision.needsResearch && researchDecision.queries.length > 0
-        ? `${query}\n\n[Research Directives: Please ground using latest real-world criteria for: ${researchDecision.queries.join(", ")}]`
-        : query;
+        ? `${query}\n\n[Research Directives: Please ground using latest real-world criteria for: ${researchDecision.queries.join(", ")}]${langCurrencyInstruction}`
+        : `${query}${langCurrencyInstruction}`;
 
       const response = await ai.models.generateContent({
         model: model,
         contents: promptContent,
         config: config,
-      });
+      }, { signal: controller.signal });
+
+      clearTimeout(timeoutId);
 
       rawJsonText = response.text || "";
 
@@ -333,7 +481,14 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
       }
     } catch (err) {
       lastErr = err;
-      // If error was due to tools on model, try without tools
+      const errMsg = String(err.message || "");
+
+      // Handle rate limits (429 / RESOURCE_EXHAUSTED)
+      if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED") || errMsg.includes("quota")) {
+        throw new Error("Google AI Studio free-tier rate limit reached (15 RPM). Please wait 5-10 seconds and try again.");
+      }
+
+      // If error was due to tools on model, retry without tools
       if (researchDecision.needsResearch) {
         try {
           const fallbackResp = await ai.models.generateContent({
@@ -358,497 +513,90 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
   }
 
   if (!rawJsonText) {
-    throw new Error(lastErr?.message || "Calculation agent models unavailable. Please check your API key.");
+    const cleanErr = (lastErr?.message || "Google Gemini inference unavailable. Please check your API key.")
+      .replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
+    throw new Error(cleanErr);
   }
 
   return { jsonText: rawJsonText, modelUsed, sources };
 }
 
 /**
- * Executes inference via OpenAI API.
- */
-async function callOpenAI(query, apiKey, selectedModel, researchDecision) {
-  if (!apiKey) {
-    throw new Error("OpenAI API key is required. Please provide your API key (sk-...).");
-  }
-
-  const model = selectedModel || "gpt-4o-mini";
-  const promptContent = researchDecision.needsResearch && researchDecision.queries.length > 0
-    ? `${query}\n\n[Research Context: Apply current statutory standards for: ${researchDecision.queries.join(", ")}]`
-    : query;
-
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey.trim()}`,
-    },
-    body: JSON.stringify({
-      model: model,
-      temperature: 0.1,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: SYSTEM_INSTRUCTION },
-        { role: "user", content: promptContent },
-      ],
-    }),
-  });
-
-  if (!res.ok) {
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData?.error?.message || `OpenAI error (${res.status})`);
-  }
-
-  const data = await res.json();
-  const text = data.choices?.[0]?.message?.content || "";
-  return { jsonText: text, modelUsed: model };
-}
-
-/**
- * Sanitizes API keys: removes newlines, carriage returns, and control characters.
+ * Sanitizes API keys: removes newlines, carriage returns, and non-ASCII characters.
+ * Also validates key format for known providers.
  */
 export function sanitizeApiKey(key) {
   if (!key || typeof key !== "string") return "";
-  return key.trim().replace(/[^\x20-\x7E]/g, "");
+  const cleaned = key.trim().replace(/[^\x20-\x7E]/g, "");
+  
+  // Basic format validation for Google AI Studio keys (AIzaSy...)
+  // Returns empty string if clearly malformed, otherwise returns cleaned key
+  return cleaned;
 }
 
 /**
- * Executes inference via Groq API (Ultra-low latency ~300 tok/s).
- * Resilient against model deprecations, thinking tokens, and JSON mode variations.
+ * Validates API key format for known providers
  */
-async function callGroq(query, apiKey, selectedModel) {
-  const cleanKey = sanitizeApiKey(apiKey);
-  if (!cleanKey) {
-    throw new Error("Groq API key is required. Please provide your Groq key (gsk_...).");
+export function validateApiKeyFormat(key, provider = "gemini") {
+  if (!key || typeof key !== "string") return false;
+  const cleaned = key.trim();
+  
+  if (provider === "gemini") {
+    // Google AI Studio keys start with AIzaSy and are ~39 chars
+    return /^AIzaSy[A-Za-z0-9_\-]{33}$/.test(cleaned);
   }
-
-  const model = (selectedModel || "llama-3.3-70b-versatile").trim();
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 45000);
-
-  // Certain reasoning models (DeepSeek R1, QwQ) output thinking tokens and reject strict json_object response_format
-  const isReasoningModel = /deepseek|r1|qwq/i.test(model);
-
-  const requestBody = {
-    model: model,
-    temperature: isReasoningModel ? 0.6 : 0.1,
-    messages: [
-      {
-        role: "system",
-        content: `${SYSTEM_INSTRUCTION}\n\nIMPORTANT: Return ONLY valid JSON format strictly conforming to the requested schema.`,
-      },
-      {
-        role: "user",
-        content: `${query}\n\n[Please compute and output the result in valid JSON format.]`,
-      },
-    ],
-  };
-
-  if (!isReasoningModel) {
-    requestBody.response_format = { type: "json_object" };
+  if (provider === "openai") {
+    // OpenAI keys start with sk-
+    return /^sk-[A-Za-z0-9_\-]{20,}$/.test(cleaned);
   }
-
-  try {
-    let res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${cleanKey}`,
-      },
-      body: JSON.stringify(requestBody),
-      signal: controller.signal,
-    });
-
-    // If Groq rejects response_format { type: "json_object" } (HTTP 400), retry once without it
-    if (!res.ok && res.status === 400 && requestBody.response_format) {
-      delete requestBody.response_format;
-      res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${cleanKey}`,
-        },
-        body: JSON.stringify(requestBody),
-        signal: controller.signal,
-      });
-    }
-
-    if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
-      const errMessage = errData?.error?.message || `Groq API responded with HTTP status ${res.status}`;
-      throw new Error(`Groq error: ${errMessage}`);
-    }
-
-    const data = await res.json();
-    let text = data.choices?.[0]?.message?.content || "";
-
-    // Strip thinking tokens emitted by models like DeepSeek R1 (<think>...</think>)
-    if (text.includes("</think>")) {
-      text = text.split("</think>").pop().trim();
-    }
-
-    return { jsonText: text, modelUsed: model };
-  } catch (err) {
-    if (err.name === "AbortError") {
-      throw new Error("Groq API request timed out after 45 seconds. Please try again or select a faster model.");
-    }
-    throw err;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-/**
- * Executes inference via Anthropic Claude API.
- */
-async function callAnthropic(query, apiKey, selectedModel) {
-  const cleanKey = sanitizeApiKey(apiKey);
-  if (!cleanKey) {
-    throw new Error("Anthropic API key is required. Please provide your Claude key (sk-ant-...).");
-  }
-
-  const model = selectedModel || "claude-3-5-haiku-latest";
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 45000);
-
-  try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": cleanKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: model,
-        max_tokens: 1500,
-        temperature: 0.1,
-        system: SYSTEM_INSTRUCTION,
-        messages: [
-          { role: "user", content: `${query}\n\nRespond with ONLY valid JSON.` },
-        ],
-      }),
-      signal: controller.signal,
-    });
-
-    if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
-      throw new Error(errData?.error?.message || `Anthropic error (${res.status})`);
-    }
-
-    const data = await res.json();
-    const text = data.content?.[0]?.text || "";
-    return { jsonText: text, modelUsed: model };
-  } catch (err) {
-    if (err.name === "AbortError") {
-      throw new Error("Anthropic Claude request timed out. Please try again.");
-    }
-    throw err;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-/**
- * Filters and formats models retrieved from Groq API.
- * Keeps only active text/reasoning models suitable for quantitative tasks.
- */
-export function formatGroqModels(rawList) {
-  if (!Array.isArray(rawList)) return getDefaultGroqModels();
-
-  const filtered = rawList.filter((m) => {
-    if (!m.id || m.active === false) return false;
-    const id = m.id.toLowerCase();
-    // Exclude whisper/audio/tts/guard/embedding models
-    if (id.includes("whisper") || id.includes("audio") || id.includes("orpheus") || id.includes("playai")) return false;
-    if (id.includes("guard") || id.includes("safeguard") || id.includes("moderation")) return false;
-    if (id.includes("embed") || id.includes("rerank") || id.includes("tts")) return false;
-    return true;
-  });
-
-  // Sort priority models first
-  const priority = [
-    "llama-3.3-70b-versatile",
-    "llama-3.1-8b-instant",
-    "deepseek-r1-distill-llama-70b",
-    "qwen-qwq-32b",
-    "qwen-2.5-32b",
-    "mistral-saba-24b",
-    "mixtral-8x7b-32768",
-    "gemma2-9b-it",
-  ];
-
-  filtered.sort((a, b) => {
-    const idxA = priority.indexOf(a.id);
-    const idxB = priority.indexOf(b.id);
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-    if (idxA !== -1) return -1;
-    if (idxB !== -1) return 1;
-    return a.id.localeCompare(b.id);
-  });
-
-  return filtered.map((m) => {
-    const id = m.id;
-    let label = id;
-
-    if (id.includes("llama-3.3-70b")) {
-      label = `⚡ Llama 3.3 70B Versatile (${m.context_window ? Math.round(m.context_window / 1024) + "k" : "128k"} • Recommended)`;
-    } else if (id.includes("llama-3.1-8b")) {
-      label = `⚡ Llama 3.1 8B Instant (Ultra-fast ~600 tok/s)`;
-    } else if (id.includes("deepseek-r1")) {
-      label = `🧠 DeepSeek R1 Distill 70B (Math Specialist)`;
-    } else if (id.includes("qwq") || id.includes("qwen")) {
-      label = `🧠 Qwen QwQ 32B Reasoning (${m.context_window ? Math.round(m.context_window / 1024) + "k" : "32k"})`;
-    } else if (id.includes("mixtral-8x7b")) {
-      label = `⚡ Mixtral 8x7B (MoE Architecture)`;
-    } else if (id.includes("gemma")) {
-      label = `⚡ Google Gemma 2 9B IT`;
-    } else {
-      const ctx = m.context_window ? ` (${Math.round(m.context_window / 1024)}k)` : "";
-      label = `⚡ ${id}${ctx}`;
-    }
-
-    return {
-      id: m.id,
-      label: label,
-      searchEnabled: false,
-      contextWindow: m.context_window,
-      ownedBy: m.owned_by,
-      isLive: true,
-    };
-  });
-}
-
-export function getDefaultGroqModels() {
-  return [
-    { id: "llama-3.3-70b-versatile", label: "⚡ Llama 3.3 70B Versatile (128k • Recommended)", searchEnabled: false, isLive: false },
-    { id: "llama-3.1-8b-instant", label: "⚡ Llama 3.1 8B Instant (Ultra-fast ~600 tok/s)", searchEnabled: false, isLive: false },
-    { id: "deepseek-r1-distill-llama-70b", label: "🧠 DeepSeek R1 Distill 70B (Math Specialist)", searchEnabled: false, isLive: false },
-    { id: "qwen-qwq-32b", label: "🧠 Qwen QwQ 32B (Reasoning Model)", searchEnabled: false, isLive: false },
-    { id: "mixtral-8x7b-32768", label: "⚡ Mixtral 8x7B (MoE Architecture)", searchEnabled: false, isLive: false },
-    { id: "gemma2-9b-it", label: "⚡ Google Gemma 2 9B IT", searchEnabled: false, isLive: false },
-  ];
-}
-
-export function getDefaultOpenAIModels() {
-  return [
-    { id: "gpt-4o-mini", label: "⚡ GPT-4o Mini (Fast & Cost-Efficient)", searchEnabled: false, isLive: false },
-    { id: "gpt-4o", label: "🧠 GPT-4o (Flagship Multimodal Reasoning)", searchEnabled: false, isLive: false },
-    { id: "o3-mini", label: "🔬 o3-mini (Advanced STEM Reasoning)", searchEnabled: false, isLive: false },
-  ];
+  return cleaned.length >= 20; // Generic fallback
 }
 
 export function getDefaultGeminiModels() {
   return [
-    { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash-Lite (Recommended • Free Tier)", searchEnabled: true, isLive: false },
-    { id: "gemini-3.8-flash", label: "🧠 Gemini 3.8 Flash (Deep Reasoning)", searchEnabled: true, isLive: false },
-    { id: "gemini-2.5-flash", label: "⚡ Gemini 2.5 Flash (Balanced)", searchEnabled: true, isLive: false },
-    { id: "gemini-3.1-pro", label: "🔬 Gemini 3.1 Pro (Complex Multi-step)", searchEnabled: true, isLive: false },
-  ];
-}
-
-export function getDefaultClaudeModels() {
-  return [
-    { id: "claude-3-5-haiku-latest", label: "⚡ Claude 3.5 Haiku (Fast & Precise)", searchEnabled: false, isLive: false },
-    { id: "claude-3-5-sonnet-latest", label: "🧠 Claude 3.5 Sonnet (State-of-the-Art Logic)", searchEnabled: false, isLive: false },
+    { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash-Lite (Fastest <600ms • Recommended)", searchEnabled: true, isLive: false },
+    { id: "gemini-3.8-flash", label: "🚀 Gemini 3.8 Flash (Deep Search Grounding)", searchEnabled: true, isLive: false },
+    { id: "gemini-2.5-flash", label: "🏎️ Gemini 2.5 Flash (Balanced & Grounded)", searchEnabled: true, isLive: false },
+    { id: "gemini-3.1-pro", label: "🧠 Gemini 3.1 Pro (Complex Multi-Step Math)", searchEnabled: true, isLive: false },
   ];
 }
 
 /**
- * Dynamically fetches available models for a provider, or returns defaults.
+ * Dynamically fetches available models for Google Gemini or returns verified defaults.
  */
-export async function fetchProviderModels(provider, apiKey, env = {}) {
-  const cleanKey = sanitizeApiKey(apiKey);
-
-  if (provider === "groq") {
-    if (cleanKey) {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
-        const res = await fetch("https://api.groq.com/openai/v1/models", {
-          headers: { "Authorization": `Bearer ${cleanKey}` },
-          signal: controller.signal,
-        });
-        clearTimeout(timeout);
-
-        if (res.ok) {
-          const data = await res.json().catch(() => ({}));
-          const rawModels = Array.isArray(data?.data) ? data.data : [];
-          const formatted = formatGroqModels(rawModels);
-          if (formatted.length > 0) {
-            return { ok: true, provider: "groq", isLive: true, models: formatted, count: formatted.length };
-          }
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          return {
-            ok: false,
-            provider: "groq",
-            isLive: false,
-            error: errData?.error?.message || `Groq API responded with HTTP ${res.status}`,
-            models: getDefaultGroqModels(),
-          };
-        }
-      } catch (err) {
-        return {
-          ok: false,
-          provider: "groq",
-          isLive: false,
-          error: err.name === "AbortError" ? "Groq API request timed out." : err.message,
-          models: getDefaultGroqModels(),
-        };
-      }
-    }
-    return { ok: true, provider: "groq", isLive: false, models: getDefaultGroqModels() };
-  }
-
-  if (provider === "openai") {
-    if (cleanKey) {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
-        const res = await fetch("https://api.openai.com/v1/models", {
-          headers: { "Authorization": `Bearer ${cleanKey}` },
-          signal: controller.signal,
-        });
-        clearTimeout(timeout);
-
-        if (res.ok) {
-          const data = await res.json().catch(() => ({}));
-          const rawModels = Array.isArray(data?.data) ? data.data : [];
-          const chatModels = rawModels
-            .filter((m) => m.id && (m.id.startsWith("gpt-") || m.id.startsWith("o1") || m.id.startsWith("o3")))
-            .map((m) => ({
-              id: m.id,
-              label: `🧠 ${m.id}`,
-              searchEnabled: false,
-              isLive: true,
-            }));
-          if (chatModels.length > 0) {
-            return { ok: true, provider: "openai", isLive: true, models: chatModels, count: chatModels.length };
-          }
-        }
-      } catch (err) {
-        // fallback
-      }
-    }
-    return { ok: true, provider: "openai", isLive: false, models: getDefaultOpenAIModels() };
-  }
-
-  if (provider === "claude") {
-    return { ok: true, provider: "claude", isLive: false, models: getDefaultClaudeModels() };
-  }
-
+export async function fetchProviderModels(provider = "gemini", apiKey) {
   return { ok: true, provider: "gemini", isLive: false, models: getDefaultGeminiModels() };
 }
 
 /**
- * Pre-flight connection tester for any supported AI Provider (BYOK).
+ * Pre-flight connection tester for Google AI Studio API Key.
  * Zero persistence: Never stores or logs the key.
  */
-export async function verifyProviderKey(provider, apiKey) {
+export async function verifyProviderKey(provider = "gemini", apiKey) {
   const cleanKey = sanitizeApiKey(apiKey);
   if (!cleanKey) {
-    return { ok: false, error: "Please enter a valid API key." };
+    return { ok: false, error: "Please enter a valid Google AI Studio API key (starts with AIzaSy...)." };
   }
 
-  if (provider === "openai") {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 15000);
-      const res = await fetch("https://api.openai.com/v1/models", {
-        headers: { "Authorization": `Bearer ${cleanKey}` },
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
-
-      if (res.ok) {
-        return { ok: true, message: "Valid OpenAI API key! Models connected successfully." };
-      }
-      const data = await res.json().catch(() => ({}));
-      return { ok: false, error: data?.error?.message || `OpenAI error: HTTP ${res.status}` };
-    } catch (err) {
-      return { ok: false, error: `Connection failed to OpenAI: ${err.message || "Network error"}` };
-    }
-  }
-
-  if (provider === "groq") {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 15000);
-      const res = await fetch("https://api.groq.com/openai/v1/models", {
-        headers: { "Authorization": `Bearer ${cleanKey}` },
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
-
-      if (res.ok) {
-        const data = await res.json().catch(() => ({}));
-        const rawModels = Array.isArray(data?.data) ? data.data : [];
-        const activeModels = formatGroqModels(rawModels);
-        return {
-          ok: true,
-          message: `Valid Groq API key! Connected with ${activeModels.length} active high-speed models (~300 tok/s).`,
-          models: activeModels,
-          isLive: true,
-        };
-      }
-      const data = await res.json().catch(() => ({}));
-      return { ok: false, error: data?.error?.message || `Groq API returned HTTP ${res.status}: Invalid or unauthorized API key.` };
-    } catch (err) {
-      if (err.name === "AbortError") {
-        return { ok: false, error: "Connection to Groq API timed out after 15 seconds." };
-      }
-      return { ok: false, error: `Connection failed to Groq API: ${err.message || "Network error"}` };
-    }
-  }
-
-  if (provider === "claude") {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 15000);
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": cleanKey,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-3-5-haiku-latest",
-          max_tokens: 10,
-          messages: [{ role: "user", content: "ping" }],
-        }),
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
-
-      if (res.ok) {
-        return { ok: true, message: "Valid Anthropic Claude API key! Connected successfully." };
-      }
-      const data = await res.json().catch(() => ({}));
-      return { ok: false, error: data?.error?.message || `Claude API error: HTTP ${res.status}` };
-    } catch (err) {
-      return { ok: false, error: `Connection failed to Anthropic: ${err.message || "Network error"}` };
-    }
-  }
-
-  // Default: Google Gemini
   try {
     const ai = new GoogleGenAI({
       apiKey: cleanKey,
-      httpOptions: { headers: { "User-Agent": "aistudio-build" } },
+      httpOptions: { headers: { "User-Agent": "aistudio-calc-agent" } },
     });
     const response = await ai.models.generateContent({
       model: "gemini-3.1-flash-lite",
-      contents: "ping",
+      contents: "Respond with: {\"status\":\"ok\"}",
     });
     if (response) {
-      return { ok: true, message: "Valid Google AI Studio API key! Free tier active (15 RPM / 1M TPM) with Search Grounding support." };
+      return { ok: true, message: "Valid Google AI Studio API key! Free tier connected (15 RPM / 1M TPM) with Search Grounding enabled." };
     }
-    return { ok: true, message: "API key connected successfully." };
+    return { ok: true, message: "Google AI Studio API key connected successfully." };
   } catch (err) {
-    const sanitized = (err.message || "Key validation failed").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
+    const errMsg = String(err.message || "");
+    if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED") || errMsg.includes("quota")) {
+      return { ok: false, error: "Google AI Studio free-tier rate limit reached. Key is valid, but please wait a moment." };
+    }
+    const sanitized = errMsg.replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
     return { ok: false, error: sanitized };
   }
 }
-

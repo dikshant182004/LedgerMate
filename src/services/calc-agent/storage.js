@@ -13,28 +13,11 @@ export async function ensureCalcTables(db) {
   try {
     await db.batch([
       db.prepare(`
-        CREATE TABLE IF NOT EXISTS calc_history (
-          id              TEXT PRIMARY KEY,
-          user_id         TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-          query           TEXT NOT NULL,
-          category        TEXT NOT NULL,
-          headline_result TEXT NOT NULL,
-          data_json       TEXT NOT NULL,
-          latency_ms      INTEGER NOT NULL,
-          created_at      INTEGER NOT NULL
-        )
+        CREATE TABLE IF NOT EXISTS calc_history (\n          id              TEXT PRIMARY KEY,\n          user_id         TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,\n          query           TEXT NOT NULL,\n          category        TEXT NOT NULL,\n          headline_result TEXT NOT NULL,\n          data_json       TEXT NOT NULL,\n          latency_ms      INTEGER NOT NULL,\n          created_at      INTEGER NOT NULL\n        )
       `),
       db.prepare(`CREATE INDEX IF NOT EXISTS idx_calc_history_user ON calc_history(user_id, created_at DESC)`),
       db.prepare(`
-        CREATE TABLE IF NOT EXISTS calc_feedback (
-          id              TEXT PRIMARY KEY,
-          calc_id         TEXT NOT NULL REFERENCES calc_history(id) ON DELETE CASCADE,
-          user_id         TEXT NOT NULL REFERENCES users(id),
-          rating          TEXT NOT NULL,
-          hitl_note       TEXT,
-          status          TEXT NOT NULL DEFAULT 'submitted',
-          created_at      INTEGER NOT NULL
-        )
+        CREATE TABLE IF NOT EXISTS calc_feedback (\n          id              TEXT PRIMARY KEY,\n          calc_id         TEXT NOT NULL REFERENCES calc_history(id) ON DELETE CASCADE,\n          user_id         TEXT NOT NULL REFERENCES users(id),\n          rating          TEXT NOT NULL,\n          hitl_note       TEXT,\n          status          TEXT NOT NULL DEFAULT 'submitted',\n          created_at      INTEGER NOT NULL\n        )
       `),
       db.prepare(`CREATE INDEX IF NOT EXISTS idx_calc_feedback_calc ON calc_feedback(calc_id)`),
     ]);
@@ -72,7 +55,7 @@ export async function saveCalculationRecord(db, userId, query, resultData, laten
   return id;
 }
 
-export async function getUserCalculationHistory(db, userId, limit = 20) {
+export async function getUserCalculationHistory(db, userId, limit = 100) {
   await ensureCalcTables(db);
   const { results } = await db.prepare(`
     SELECT id, query, category, headline_result, latency_ms, created_at
@@ -142,9 +125,19 @@ export async function getUserAnalytics(db, userId) {
     ORDER BY count DESC
   `).bind(userId).all();
 
+  // Recent timeline points for interactive charts
+  const { results: recentPoints } = await db.prepare(`
+    SELECT id, category, headline_result, latency_ms, created_at
+    FROM calc_history
+    WHERE user_id = ?
+    ORDER BY created_at DESC
+    LIMIT 200
+  `).bind(userId).all();
+
   return {
     totalCalculations: totalRow?.total_count || 0,
     avgLatencyMs: Math.round(totalRow?.avg_latency || 0),
     categories: categoryCounts || [],
+    recentPoints: recentPoints || [],
   };
 }
