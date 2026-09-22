@@ -3,9 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Multi-Provider Calculation Agent • Bring Your Own Key (Gemini, OpenAI, Groq, Claude)</title>
-<meta name="description" content="Fast multi-provider AI calculation orchestrator with dynamic research gateway, live web search grounding, deterministic math verification, and reactive sliders.">
-<link rel="canonical" href="https://splitmate.online/tools/calc-agent/">
+<title>AI Fast Calculation Agent Studio (Sub-2s Deterministic Math) | LedgerMate</title>
+<meta name="description" content="Neuro-symbolic calculation agent powered by Gemini 2.5 with live search grounding, step-by-step breakdown, and deterministic formula verification for rent splits, taxes, and loans.">
+<link rel="canonical" href="https://tryledgermate.in/tools/calc-agent/">
+<link rel="alternate" hreflang="en" href="https://tryledgermate.in/tools/calc-agent/">
+<link rel="alternate" hreflang="x-default" href="https://tryledgermate.in/tools/calc-agent/">
+<meta name="robots" content="index, follow">
+
+<!-- OpenGraph & Twitter Social Cards -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Calculation Agent Studio | LedgerMate">
+<meta property="og:description" content="Ask complex rent splits, 2026 global payroll taxes, and mortgage amortizations in plain text. Instant step-by-step breakdown &amp; reactive sliders.">
+<meta property="og:url" content="https://tryledgermate.in/tools/calc-agent/">
+<meta property="og:site_name" content="LedgerMate">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Calculation Agent | Deterministic Math &amp; Real-Time Sliders">
+<meta name="twitter:description" content="100% Exact calculations with Sub-2s SLA. Powered by neuro-symbolic reasoning and Google Search Grounding.">
+
+<!-- AEO / GEO Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "AI Calculation Agent Studio",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "url": "https://tryledgermate.in/tools/calc-agent/",
+      "description": "Deterministic neuro-symbolic calculation studio utilizing Gemini and structured client-side formulas for instant financial modeling.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "LedgerMate", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "AI Calculation Agent", "item": "https://tryledgermate.in/tools/calc-agent/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the AI Calculation Agent guarantee 100% mathematical accuracy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The agent separates natural-language problem parsing from numerical execution. LLMs extract parameters and statutory assumptions, while deterministic client-side JavaScript math engines compute exact formulas, eliminating arithmetic hallucination."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What calculation domains does the AI Agent support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The agent supports shared rent and utility splits, 2026 international payroll and income taxes, mortgage amortization schedules, debt snowball vs avalanche payoff, freelance rate budgeting, and statutory severance computations."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -249,6 +308,61 @@ body {
 }
 .btn-manage-ai:hover {
   background: #1e293b;
+}
+.btn-google-auth {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.btn-google-auth:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+.user-avatar-pill {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.consent-active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.consent-pending-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
 }
 
 /* Tabs */
@@ -735,19 +849,58 @@ body {
   .pillars-grid { grid-template-columns: 1fr; }
   .analytics-grid { grid-template-columns: 1fr; }
 }
+@media (max-width: 768px) {
+  .nav-inner {
+    padding: 8px 16px;
+    min-height: 52px;
+    height: 52px;
+  }
+  .nav-links {
+    gap: 8px;
+  }
+  .nav-links a:not(.btn-primary-sm) {
+    display: none !important;
+  }
+  .btn-primary-sm {
+    padding: 6px 13px;
+    font-size: 12.5px !important;
+    border-radius: 8px;
+  }
+}
 @media (max-width: 640px) {
+  .top-announcement {
+    padding: 7px 12px;
+    font-size: 11.5px;
+    gap: 8px;
+    line-height: 1.3;
+  }
+  .top-announcement a {
+    white-space: nowrap;
+    font-size: 11.5px;
+  }
   .agent-container { padding: 16px 12px 50px; }
+  .agent-title { font-size: clamp(22px, 5.5vw, 30px); }
+  .agent-subtitle { font-size: 14px; line-height: 1.5; }
+  .badge-sla { font-size: 11px; line-height: 1.35; padding: 4px 10px; }
   .orchestrator-toolbar { flex-direction: column; align-items: stretch; }
   .btn-manage-ai { width: 100%; justify-content: center; }
   .omnibar-controls { flex-direction: column; align-items: stretch; }
-  .btn-calc { width: 100%; justify-content: center; }
+  .btn-calc { width: 100%; justify-content: center; min-height: 44px; }
+  .sensitivity-table,
+  .matrix-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 </style>
 </head>
 <body>
 
 <div class="top-announcement">
-  <span>⚡ AI Calculation Agent • Bring Your Own API Key (Gemini Free Tier, OpenAI, Groq, Claude)</span>
+  <span>✨ Google AI Studio Engine • Instant 1-Click Consent with your Google Account • No API Keys Required</span>
   <a href="#studio">Launch Studio →</a>
 </div>
 
@@ -769,27 +922,32 @@ body {
   <header class="agent-header">
     <div class="badge-sla">
       <span class="dot"></span>
-      <span>Zero Sign-In Barrier • Bring Your Own Key • 100% Deterministic Math</span>
+      <span>✨ Google AI Studio Gemini Engine • 1-Click Google Account Consent • 100% Deterministic Math</span>
     </div>
     <h1 class="agent-title">AI Calculation &amp; Dynamic Research Agent</h1>
     <p class="agent-subtitle">
-      Bring your own API key to orchestrate calculations from trip splits to chemistry, US/global taxes, and mortgage prepayments.
-      The built-in research gateway auto-grounds changing statutory rules in real time, executing arithmetic deterministically without hallucination.
+      Seamless calculations powered by Google AI Studio Gemini Engine and your Google account. Built-in Google Search Grounding auto-retrieves statutory brackets, current rules, and empirical constants, verified deterministically without hallucinations or manual API key pasting.
     </p>
   </header>
 
   <!-- Provider & Orchestrator Toolbar -->
   <div class="orchestrator-toolbar" id="toolbar">
     <div class="toolbar-left">
-      <span class="toolbar-label">Active Provider:</span>
-      <span class="provider-pill" id="tb-provider-pill">⚡ Google Gemini</span>
-      <span class="model-pill" id="tb-model-pill">Gemini 3.1 Flash-Lite</span>
-      <span class="research-status-pill" id="tb-research-pill">🌐 Research Tool: Search Grounding Active</span>
+      <span class="toolbar-label">AI Engine:</span>
+      <span class="provider-pill" id="tb-provider-pill" style="cursor:pointer;" title="Click to configure AI Engine &amp; API Key">✨ Google AI Studio</span>
+      <span class="model-pill" id="tb-model-pill" style="cursor:pointer;" title="Click to view or switch model">Gemini 3.1 Flash-Lite</span>
+      <span class="research-status-pill" id="tb-research-pill">🌐 Google Search Grounding Active</span>
     </div>
-    <button class="btn-manage-ai" id="btn-open-settings-modal">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      <span>AI Provider &amp; Key Settings</span>
-    </button>
+    <div class="toolbar-right" style="display:flex; align-items:center; gap:8px;">
+      <button class="btn-hitl" id="btn-open-key-settings" style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:6px 12px; cursor:pointer;" title="Configure AI Provider &amp; API Keys (Gemini, Groq, OpenAI, Claude)">
+        <span>⚙️ API Key &amp; Models</span>
+      </button>
+      <button class="btn-google-auth" id="btn-open-consent-modal" title="View Google Account &amp; AI Consent">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        <span id="tb-user-email">dikshant182004@gmail.com</span>
+        <span class="consent-active-badge" id="tb-consent-badge">✓ AI Consent Active</span>
+      </button>
+    </div>
   </div>
 
   <!-- Tab Navigation -->
@@ -816,6 +974,25 @@ body {
             <span id="btn-calc-text">Calculate Now</span>
             <span class="spinner" id="btn-calc-spinner" style="display:none;"></span>
           </button>
+        </div>
+      </div>
+
+      <!-- Expandable Human-in-the-Loop (HITL) Statutory Adjustment Field -->
+      <div style="margin-top:12px; padding:8px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px;">
+        <button type="button" id="btn-toggle-hitl-input" style="background:none; border:none; color:var(--accent); font-size:12.5px; font-weight:700; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:6px;">
+          <span>✨ Add Human-in-the-Loop (HITL) Statutory / Parameter Rule</span>
+          <span id="hitl-chevron" style="font-size:10px;">▼</span>
+        </button>
+        <div id="hitl-input-container" style="display:none; margin-top:8px;">
+          <input
+            type="text"
+            id="hitl-input-text"
+            placeholder="E.g., In California with 9.3% state tax; standard deduction $14,600; or include 2026 statutory inflation bracket..."
+            style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:13px; box-sizing:border-box; background:#fff; font-family:inherit;"
+          />
+          <div style="font-size:11px; color:#64748b; margin-top:4px;">
+            The agent prioritizes your explicit HITL adjustments over default assumptions, ensuring 100% mathematical integrity.
+          </div>
         </div>
       </div>
 
@@ -853,6 +1030,7 @@ body {
           <span class="latency-badge" id="res-latency-badge">⚡ Computed in 620ms</span>
           <span class="category-badge" id="res-category-badge">General Calculation</span>
           <span class="category-badge" id="res-model-badge" style="background:#f1f5f9; color:#475569; border-color:#cbd5e1;">Gemini 3.1 Flash-Lite</span>
+          <span class="category-badge" id="res-hitl-badge" style="display:none; background:#ecfdf5; color:#065f46; border-color:#a7f3d0; font-weight:700;">✨ HITL Adjusted</span>
         </div>
         <button class="btn-hitl" id="btn-copy-summary">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -976,29 +1154,29 @@ body {
     </div>
   </section>
 
-  <!-- TAB 3: PRIVACY POLICY & ZERO STORAGE -->
+  <!-- TAB 3: PRIVACY POLICY & GOOGLE AI CONSENT -->
   <section id="privacy-tab" class="tab-content" style="display:none;">
     <div class="studio-card">
-      <h2 style="font-family:'Manrope',sans-serif; font-size:22px; margin-top:0;">Zero-Storage Guarantee &amp; Multi-Provider Privacy</h2>
+      <h2 style="font-family:'Manrope',sans-serif; font-size:22px; margin-top:0;">Privacy &amp; Google AI Studio Consent Architecture</h2>
       <p style="color:var(--text-muted); line-height:1.6; font-size:14.5px;">
-        Financial scenarios, company payrolls, mortgage metrics, and calculations deserve absolute confidentiality:
+        Financial scenarios, company payrolls, mortgage metrics, and calculations deserve absolute transparency, privacy, and integrity:
       </p>
 
       <div style="display:flex; flex-direction:column; gap:14px; margin-top:20px;">
         <div class="pillar-panel" style="background:#fff;">
-          <h4 style="margin:0 0 6px;">🛡️ 1. Zero API Key Server Persistence</h4>
+          <h4 style="margin:0 0 6px;">✨ 1. Frictionless Google Account Consent</h4>
           <p style="font-size:13px; color:#475569; margin:0; line-height:1.5;">
-            Your API keys (Gemini, OpenAI, Groq, or Claude) are <strong>NEVER stored in our database, files, or server logs</strong>. Keys live solely in your browser's ephemeral <code style="background:#f1f5f9; padding:2px 4px; border-radius:4px;">sessionStorage</code> and are transmitted via encrypted HTTPS headers. You can purge them at any second.
+            No visiting third-party developer consoles, generating tokens, or copying raw secret keys. Simply sign in with your Google account and grant 1-click consent to use Google AI Studio Gemini. You can revoke or renew your consent at any time.
           </p>
         </div>
         <div class="pillar-panel" style="background:#fff;">
-          <h4 style="margin:0 0 6px;">🌐 2. Dynamic Research Gateway &amp; Grounding</h4>
+          <h4 style="margin:0 0 6px;">🌐 2. Dynamic Google Search Grounding</h4>
           <p style="font-size:13px; color:#475569; margin:0; line-height:1.5;">
-            Instead of brittle pre-indexed data, the agent routes queries through an intelligent classifier. Pure arithmetic bypasses external search entirely; statutory and empirical queries invoke real-time search grounding with live citation links.
+            Instead of stale knowledge cutoffs, queries with statutory rules or empirical metrics trigger native Google Search Grounding. The engine extracts official brackets and citations in real time.
           </p>
         </div>
         <div class="pillar-panel" style="background:#fff;">
-          <h4 style="margin:0 0 6px;">🧮 3. Deterministic Arithmetic Integrity</h4>
+          <h4 style="margin:0 0 6px;">🧮 3. Deterministic Arithmetic Verification</h4>
           <p style="font-size:13px; color:#475569; margin:0; line-height:1.5;">
             All numbers are verified in a deterministic JavaScript evaluation runtime. The AI reasons about relationships and rules, while the evaluator guarantees 100% arithmetic accuracy without hallucination.
           </p>
@@ -1008,119 +1186,194 @@ body {
   </section>
 </main>
 
-<!-- BYOK Multi-Provider AI Settings Modal -->
-<div class="modal-overlay" id="byok-modal">
-  <div class="modal-dialog">
+<!-- Google AI Studio & Multi-Provider Settings Modal -->
+<div class="modal-overlay" id="consent-modal">
+  <div class="modal-dialog" style="max-width:560px;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="font-family:'Manrope',sans-serif; margin:0; font-size:19px;">AI Provider &amp; Key Settings</h3>
-      <button class="btn-hitl" id="btn-close-byok-modal" style="padding:4px 8px; font-size:12px;">✕</button>
-    </div>
-
-    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px; font-size:12.5px; color:#1e40af; margin-bottom:16px; line-height:1.5;">
-      <strong>🛡️ Zero-Storage Guarantee:</strong> Your API key is stored strictly in your browser session (<code style="background:#fff; padding:1px 4px; border-radius:3px;">sessionStorage</code>) and sent encrypted over HTTPS. <strong>It is never saved to any database, file, or server disk.</strong>
-    </div>
-
-    <!-- Provider Selection -->
-    <div style="margin-bottom:14px;">
-      <label style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;">Select AI Provider</label>
-      <select id="byok-provider-select" style="width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:13.5px; background:#fff;">
-        <option value="gemini">⚡ Google Gemini (Free Tier • Search Grounding Enabled)</option>
-        <option value="openai">🧠 OpenAI (GPT-4o, GPT-4o Mini, o3-mini)</option>
-        <option value="groq">⚡ Groq (Ultra-Low Latency ~300 tokens/sec)</option>
-        <option value="claude">🔮 Anthropic Claude (Claude 3.5 Sonnet / Haiku)</option>
-      </select>
-    </div>
-
-    <!-- Provider Guidance Banner -->
-    <div id="provider-guidance-box" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:13px; margin-bottom:16px;">
-      <!-- Dynamic per provider -->
-    </div>
-
-    <!-- Model Selector with Dynamic Live Sync -->
-    <div style="margin-bottom:14px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-        <label style="font-size:13px; font-weight:700;">Select Reasoning Model</label>
-        <button type="button" class="btn-hitl" id="btn-sync-models" style="padding:2px 8px; font-size:11.5px; display:inline-flex; align-items:center; gap:4px; border-radius:5px; background:#fff; cursor:pointer;" title="Fetch latest models from provider API">
-          🔄 Sync Live Models
-        </button>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:20px;">⚙️</span>
+        <h3 style="font-family:'Manrope',sans-serif; margin:0; font-size:18px;">AI Engine, Key &amp; Account Settings</h3>
       </div>
-      <select id="byok-model-select" style="width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:13.5px; background:#fff;">
-        <!-- Populated dynamically based on provider -->
-      </select>
-      <div id="model-sync-status" style="font-size:11.5px; color:#64748b; margin-top:4px; min-height:16px;"></div>
-
-      <!-- Custom Model ID Toggle -->
-      <div style="margin-top:6px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
-        <span style="color:#64748b;">Future or custom model?</span>
-        <button type="button" id="btn-toggle-custom-model" style="background:none; border:none; color:var(--accent); font-weight:600; cursor:pointer; padding:0 2px; text-decoration:underline;">+ Enter Custom Model ID</button>
-      </div>
-      <div id="custom-model-container" style="display:none; margin-top:8px;">
-        <input type="text" id="byok-custom-model-input" placeholder="e.g. llama-4-scout or newly announced model ID" style="width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; font-family:var(--mono-font); box-sizing:border-box;" />
-        <div style="font-size:11px; color:#64748b; margin-top:3px;">Tip: Enter any newly released model ID supported by your provider.</div>
-      </div>
+      <button class="btn-hitl" id="btn-close-consent-modal" style="padding:4px 8px; font-size:12px;">✕</button>
     </div>
 
-    <!-- Research Tool Capability Tag for Selected Model -->
-    <div id="model-capability-badge" style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; padding:4px 10px; border-radius:6px; margin-bottom:14px; background:#f0fdf4; color:#166534; border:1px solid #bbf7d0;">
-      🌐 Research Tool: Live Google Search Grounding Enabled
-    </div>
-
-    <!-- API Key Input -->
-    <div style="margin-bottom:16px;">
-      <label id="byok-key-label" style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;">API Key</label>
-      <div style="position:relative;">
-        <input
-          type="password"
-          id="byok-key-input"
-          placeholder="Paste API key..."
-          style="width:100%; padding:10px 42px 10px 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; font-family:var(--mono-font); box-sizing:border-box;"
-        />
-        <button type="button" id="btn-toggle-key-visibility" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:12px; font-weight:600;">Show</button>
-      </div>
-      <div id="byok-test-status" style="font-size:12.5px; margin-top:6px; min-height:18px;"></div>
-    </div>
-
-    <!-- Actions -->
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-      <button class="btn-hitl" id="btn-wipe-key" style="color:#ef4444; border-color:#fecaca;">
-        🗑️ Wipe Key
+    <!-- Modal Sub-Tabs -->
+    <div style="display:flex; gap:6px; background:#f1f5f9; padding:4px; border-radius:8px; margin-bottom:16px;">
+      <button type="button" id="tab-btn-byok" class="btn-hitl" style="flex:1; padding:6px 12px; font-size:13px; font-weight:700; border:none; background:#ffffff; box-shadow:0 1px 2px rgba(0,0,0,0.06); border-radius:6px;">
+        🔑 Custom API Key (BYOK)
       </button>
-      <div style="display:flex; gap:8px;">
-        <button class="btn-hitl" id="btn-test-key">
+      <button type="button" id="tab-btn-default" class="btn-hitl" style="flex:1; padding:6px 12px; font-size:13px; font-weight:600; border:none; background:transparent; border-radius:6px; color:#475569;">
+        ✨ Google AI Studio (1-Click)
+      </button>
+    </div>
+
+    <!-- TAB 1: CUSTOM API KEY & MULTI-PROVIDER -->
+    <div id="modal-tab-byok-content">
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; font-size:12.5px; color:#334155; margin-bottom:14px; line-height:1.5;">
+        <strong>Bring Your Own Key:</strong> Connect your personal API key for Google Gemini, Groq, OpenAI, or Anthropic Claude. Keys are stored locally in your browser with zero server persistence.
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+        <div>
+          <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">AI Provider</label>
+          <select id="cfg-provider" style="width:100%; padding:8px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:13px; background:#fff;">
+            <option value="gemini">Google Gemini (Default • Free 15 RPM)</option>
+            <option value="groq">Groq (Ultra-Fast 300 tok/s • Llama 3.3)</option>
+            <option value="openai">OpenAI (GPT-4o, GPT-4o-mini, o1, o3)</option>
+            <option value="claude">Anthropic Claude (3.5 Sonnet, 3.5 Haiku)</option>
+          </select>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label style="font-size:12px; font-weight:700; color:#334155;">Model</label>
+            <button type="button" id="btn-sync-models" style="background:none; border:none; color:var(--accent); font-size:11px; font-weight:700; cursor:pointer; padding:0;">🔄 Sync Live</button>
+          </div>
+          <select id="cfg-model" style="width:100%; padding:8px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:13px; background:#fff;">
+            <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended • High Quota)</option>
+            <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite (Fast • Free Tier)</option>
+            <option value="gemini-3.1-pro">Gemini 3.1 Pro (Complex Multi-step)</option>
+            <option value="gemini-3.8-flash">Gemini 3.8 Flash (Deep Reasoning • Preview Quota)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <label style="font-size:12px; font-weight:700; color:#334155;">API Key</label>
+          <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" id="cfg-get-key-link" style="font-size:11.5px; color:var(--accent); text-decoration:none; font-weight:600;">Get Gemini Key →</a>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input
+            type="password"
+            id="cfg-api-key"
+            placeholder="Paste your API key here (AIzaSy... or AQ...)"
+            style="flex:1; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:13px; font-family:var(--mono-font);"
+          />
+          <button type="button" id="btn-toggle-key-visibility" class="btn-hitl" style="font-size:12px; padding:6px 10px;">👁️</button>
+        </div>
+        <div id="cfg-key-hint" style="font-size:11px; color:#64748b; margin-top:4px;">
+          Format: Google AI Studio keys start with <code>AIzaSy</code> or <code>AQ.</code>.
+        </div>
+      </div>
+
+      <!-- Test Connection & Save Controls -->
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <button type="button" class="btn-hitl" id="btn-test-connection" style="flex:1; font-weight:700; background:#f8fafc; padding:8px;">
           🧪 Test Connection
         </button>
-        <button class="btn-calc" id="btn-save-byok" style="min-height:38px; padding:6px 16px;">
-          Save &amp; Connect
+        <button type="button" class="btn-calc" id="btn-save-custom-key" style="flex:1.2; padding:8px 14px; font-size:13px;">
+          💾 Save &amp; Connect
         </button>
+      </div>
+
+      <!-- Live Connection Test Status -->
+      <div id="cfg-test-status" style="display:none; font-size:12.5px; border-radius:6px; padding:10px 12px; margin-bottom:12px; line-height:1.5;"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #e2e8f0; padding-top:10px;">
+        <button type="button" id="btn-reset-to-server" class="btn-hitl" style="font-size:11.5px; color:#64748b; padding:4px 10px;">
+          🔄 Reset to Server-side Gemini
+        </button>
+        <button class="btn-hitl" id="btn-close-byok-modal" style="min-height:34px; padding:4px 14px;">
+          Done
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 2: GOOGLE ACCOUNT & 1-CLICK CONSENT -->
+    <div id="modal-tab-default-content" style="display:none;">
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:12px 14px; font-size:13px; color:#166534; margin-bottom:14px; line-height:1.5;">
+        <strong>✨ Hassle-Free Calculation Engine:</strong> Pre-configured with Google AI Studio Gemini. Sign in with your Google account for 1-click consent without needing to paste keys.
+      </div>
+
+      <!-- Google Account Connection Card -->
+      <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:14px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">
+          Google Account &amp; Identity
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:34px; height:34px; border-radius:50%; background:#2563eb; color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;" id="modal-avatar-circle">
+              D
+            </div>
+            <div>
+              <div style="font-weight:700; font-size:13.5px; color:#0f172a;" id="modal-user-name">Dikshant</div>
+              <div style="font-size:12px; color:#64748b;" id="modal-user-email">dikshant182004@gmail.com</div>
+            </div>
+          </div>
+          <span class="consent-active-badge" id="modal-consent-status-badge">✓ Consented</span>
+        </div>
+
+        <div style="margin-top:12px; padding-top:10px; border-top:1px dashed #e2e8f0;">
+          <div style="display:flex; gap:8px;">
+            <input
+              type="email"
+              id="input-custom-email"
+              placeholder="Enter Google account email"
+              value="dikshant182004@gmail.com"
+              style="flex:1; padding:6px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:12.5px;"
+            />
+            <button type="button" class="btn-hitl" id="btn-update-account" style="font-size:12px; padding:6px 12px;">
+              Switch
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scope Details -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; font-size:12px; color:#334155; margin-bottom:14px; line-height:1.6;">
+        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">Google AI Studio Capabilities:</div>
+        <ul style="margin:0; padding-left:16px;">
+          <li>Gemini 3.1 Flash-Lite quantitative natural language parsing.</li>
+          <li>Live Google Search Grounding for statutory brackets &amp; empirical rules.</li>
+          <li>100% deterministic arithmetic verification with reactive sliders.</li>
+        </ul>
+      </div>
+
+      <div id="consent-action-status" style="font-size:12.5px; margin-bottom:12px; min-height:16px;"></div>
+
+      <!-- Modal Footer Actions -->
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <button class="btn-hitl" id="btn-revoke-consent" style="color:#ef4444; border-color:#fecaca; font-size:12px; padding:6px 12px;">
+          Revoke Consent
+        </button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-hitl" id="btn-cancel-consent" style="min-height:36px;">
+            Close
+          </button>
+          <button class="btn-calc" id="btn-accept-consent" style="min-height:36px; padding:6px 18px; background:#16a34a;">
+            ✓ Accept &amp; Continue
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- HITL Feedback Modal -->
+<!-- HITL Feedback & Live Recalculation Modal -->
 <div class="modal-overlay" id="hitl-modal">
   <div class="modal-dialog">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="font-family:'Manrope',sans-serif; margin:0; font-size:18px;">Human-in-the-Loop Feedback</h3>
+      <h3 style="font-family:'Manrope',sans-serif; margin:0; font-size:18px;">✨ Human-in-the-Loop (HITL) Adjustment</h3>
       <button class="btn-hitl" id="btn-close-hitl-modal" style="padding:4px 8px; font-size:12px;">✕</button>
     </div>
     <p style="font-size:13px; color:var(--text-muted); margin:0 0 14px; line-height:1.5;">
-      Did this calculation miss a newly announced statutory shift or parameter? Submit a note to review.
+      Want to adjust a parameter, add a newly announced statutory tax bracket, or override an assumption? Enter your correction below to recalculate immediately with the agent.
     </p>
     <div style="margin-bottom:12px;">
-      <label style="font-size:12.5px; font-weight:700; display:block; margin-bottom:4px;">Your Rating</label>
+      <label style="font-size:12.5px; font-weight:700; display:block; margin-bottom:4px;">Action</label>
       <select id="hitl-rating-select" style="width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13.5px; background:#fff;">
-        <option value="accurate">Accurate calculation</option>
-        <option value="inaccurate">Needs statutory adjustment</option>
+        <option value="recalculate">⚡ Apply Statutory Correction &amp; Recalculate Now</option>
+        <option value="accurate">👍 Confirm Accurate (Register Feedback)</option>
+        <option value="inaccurate">👎 Flag Inaccurate (Log Review Note)</option>
       </select>
     </div>
     <div style="margin-bottom:16px;">
-      <label style="font-size:12.5px; font-weight:700; display:block; margin-bottom:4px;">Correction / Review Note</label>
-      <textarea id="hitl-note-text" placeholder="Detail any regional tax bracket shift, formula tweak, or statutory citation..." style="width:100%; height:80px; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; box-sizing:border-box; font-family:inherit;"></textarea>
+      <label style="font-size:12.5px; font-weight:700; display:block; margin-bottom:4px;">Statutory Shift / Parameter Correction Note</label>
+      <textarea id="hitl-note-text" placeholder="Detail any regional statutory rule, tax bracket, updated deduction, or parameter adjustment (e.g. 'Standard deduction is $14,600 and state tax rate is 9.3%')..." style="width:100%; height:85px; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; box-sizing:border-box; font-family:inherit;"></textarea>
     </div>
     <div style="display:flex; justify-content:flex-end; gap:8px;">
       <button class="btn-hitl" id="btn-cancel-hitl">Cancel</button>
-      <button class="btn-calc" id="btn-submit-hitl" style="min-height:38px; padding:6px 18px;">Submit Feedback</button>
+      <button class="btn-calc" id="btn-submit-hitl" style="min-height:38px; padding:6px 18px;">Apply &amp; Proceed</button>
     </div>
   </div>
 </div>
@@ -1134,145 +1387,48 @@ body {
 
 <script>
 /**
- * Multi-Provider AI Calculation Agent Client Controller
+ * Google AI Studio Calculation Agent Client Controller
  * Orchestrates:
- * 1. BYOK for Gemini, OpenAI, Groq, Anthropic Claude
- * 2. Dynamic Research Gateway & Google Search Grounding
+ * 1. 1-Click Google Account & AI Studio Consent
+ * 2. Dynamic Google Search Grounding with Gemini 3.1 Flash-Lite
  * 3. Client-Side Reactive Sliders & Sensitivity Matrix
- * 4. Zero Sign-In Barrier
+ * 4. Deterministic Arithmetic Verification
  */
 (function() {
   let currentCalcData = null;
   let currentCalcId = null;
   let timerInterval = null;
+  let pendingQueryAfterConsent = null;
 
-  // Provider Configurations
-  const PROVIDERS = {
-    gemini: {
-      name: "Google Gemini",
-      icon: "⚡",
-      defaultModel: "gemini-3.1-flash-lite",
-      keyPlaceholder: "AIzaSy...",
-      keyStoragePrefix: "calc_key_gemini",
-      guidanceHtml: `
-        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">🎁 Free with every Google Account:</div>
-        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
-          Google AI Studio provides <strong>15 requests per minute free</strong> with native Google Search Grounding.
-        </div>
-        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
-          <span>Get Free Key at Google AI Studio →</span>
-        </a>
-      `,
-      models: [
-        { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash-Lite (Fastest <600ms)", searchEnabled: true },
-        { id: "gemini-3.8-flash", label: "🚀 Gemini 3.8 Flash (Deep Search Grounding)", searchEnabled: true },
-        { id: "gemini-2.5-flash", label: "🏎️ Gemini 2.5 Flash (Stable & Grounded)", searchEnabled: true },
-        { id: "gemini-3.1-pro", label: "🧠 Gemini 3.1 Pro (Complex Multi-Step Math)", searchEnabled: true },
-      ]
-    },
-    openai: {
-      name: "OpenAI",
-      icon: "🧠",
-      defaultModel: "gpt-4o-mini",
-      keyPlaceholder: "sk-proj-...",
-      keyStoragePrefix: "calc_key_openai",
-      guidanceHtml: `
-        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">OpenAI Developer API:</div>
-        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
-          Use your standard OpenAI API key with GPT-4o Mini, GPT-4o, or o3-mini.
-        </div>
-        <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none;">
-          <span>OpenAI Platform Keys →</span>
-        </a>
-      `,
-      models: [
-        { id: "gpt-4o-mini", label: "⚡ GPT-4o Mini (Fast & Cost-Efficient)", searchEnabled: false },
-        { id: "gpt-4o", label: "🧠 GPT-4o (Flagship Multimodal Reasoning)", searchEnabled: false },
-        { id: "o3-mini", label: "🔬 o3-mini (Advanced STEM Reasoning)", searchEnabled: false },
-      ]
-    },
-    groq: {
-      name: "Groq",
-      icon: "⚡",
-      defaultModel: "llama-3.3-70b-versatile",
-      keyPlaceholder: "gsk_...",
-      keyStoragePrefix: "calc_key_groq",
-      guidanceHtml: `
-        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">Groq LPUs:</div>
-        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
-          Ultra-low latency inference (~300 tokens/sec) for instant mathematical models.
-        </div>
-        <a href="https://console.groq.com/keys" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none;">
-          <span>Get Free Groq Console Key →</span>
-        </a>
-      `,
-      models: [
-        { id: "llama-3.3-70b-versatile", label: "⚡ Llama 3.3 70B Versatile (128k • Recommended)", searchEnabled: false },
-        { id: "llama-3.1-8b-instant", label: "⚡ Llama 3.1 8B Instant (Ultra-fast ~600 tok/s)", searchEnabled: false },
-        { id: "deepseek-r1-distill-llama-70b", label: "🧠 DeepSeek R1 Distill 70B (Math Specialist)", searchEnabled: false },
-        { id: "qwen-qwq-32b", label: "🧠 Qwen QwQ 32B (Reasoning Model)", searchEnabled: false },
-        { id: "mixtral-8x7b-32768", label: "⚡ Mixtral 8x7B (MoE Architecture)", searchEnabled: false },
-        { id: "gemma2-9b-it", label: "⚡ Google Gemma 2 9B IT", searchEnabled: false },
-      ]
-    },
-    claude: {
-      name: "Anthropic Claude",
-      icon: "🔮",
-      defaultModel: "claude-3-5-haiku-latest",
-      keyPlaceholder: "sk-ant-...",
-      keyStoragePrefix: "calc_key_claude",
-      guidanceHtml: `
-        <div style="font-weight:700; color:#0f172a; margin-bottom:4px;">Anthropic Claude API:</div>
-        <div style="color:#475569; line-height:1.5; margin-bottom:8px;">
-          High-precision algebraic logic and benchmark-leading reasoning.
-        </div>
-        <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700; text-decoration:none;">
-          <span>Anthropic Console Keys →</span>
-        </a>
-      `,
-      models: [
-        { id: "claude-3-5-haiku-latest", label: "⚡ Claude 3.5 Haiku (Fast & Precise)", searchEnabled: false },
-        { id: "claude-3-5-sonnet-latest", label: "🧠 Claude 3.5 Sonnet (State-of-the-Art Logic)", searchEnabled: false },
-      ]
-    }
+  // Google AI Studio Account & Consent State
+  let authState = {
+    authenticated: false,
+    user: null,
+    consented: false,
+    engine: "Google AI Studio",
+    model: "gemini-3.1-flash-lite",
   };
-
-  // Restore cached models from previous live syncs
-  ["groq", "openai"].forEach(p => {
-    try {
-      const cached = localStorage.getItem("calc_cached_models_" + p);
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          PROVIDERS[p].models = parsed;
-        }
-      }
-    } catch(e) {}
-  });
 
   // DOM Elements
   const tbProviderPill = document.getElementById("tb-provider-pill");
   const tbModelPill = document.getElementById("tb-model-pill");
   const tbResearchPill = document.getElementById("tb-research-pill");
-  const btnOpenSettingsModal = document.getElementById("btn-open-settings-modal");
-  const byokModal = document.getElementById("byok-modal");
-  const btnCloseByokModal = document.getElementById("btn-close-byok-modal");
-  const byokProviderSelect = document.getElementById("byok-provider-select");
-  const byokModelSelect = document.getElementById("byok-model-select");
-  const btnSyncModels = document.getElementById("btn-sync-models");
-  const modelSyncStatus = document.getElementById("model-sync-status");
-  const btnToggleCustomModel = document.getElementById("btn-toggle-custom-model");
-  const customModelContainer = document.getElementById("custom-model-container");
-  const byokCustomModelInput = document.getElementById("byok-custom-model-input");
-  const providerGuidanceBox = document.getElementById("provider-guidance-box");
-  const modelCapabilityBadge = document.getElementById("model-capability-badge");
-  const byokKeyLabel = document.getElementById("byok-key-label");
-  const byokKeyInput = document.getElementById("byok-key-input");
-  const btnToggleKeyVisibility = document.getElementById("btn-toggle-key-visibility");
-  const byokTestStatus = document.getElementById("byok-test-status");
-  const btnTestKey = document.getElementById("btn-test-key");
-  const btnSaveByok = document.getElementById("btn-save-byok");
-  const btnWipeKey = document.getElementById("btn-wipe-key");
+  const btnOpenConsentModal = document.getElementById("btn-open-consent-modal");
+  const tbUserEmail = document.getElementById("tb-user-email");
+  const tbConsentBadge = document.getElementById("tb-consent-badge");
+
+  const consentModal = document.getElementById("consent-modal");
+  const btnCloseConsentModal = document.getElementById("btn-close-consent-modal");
+  const btnCancelConsent = document.getElementById("btn-cancel-consent");
+  const btnAcceptConsent = document.getElementById("btn-accept-consent");
+  const btnRevokeConsent = document.getElementById("btn-revoke-consent");
+  const modalAvatarCircle = document.getElementById("modal-avatar-circle");
+  const modalUserName = document.getElementById("modal-user-name");
+  const modalUserEmail = document.getElementById("modal-user-email");
+  const modalConsentStatusBadge = document.getElementById("modal-consent-status-badge");
+  const inputCustomEmail = document.getElementById("input-custom-email");
+  const btnUpdateAccount = document.getElementById("btn-update-account");
+  const consentActionStatus = document.getElementById("consent-action-status");
 
   const queryInput = document.getElementById("query-input");
   const charCounter = document.getElementById("char-counter");
@@ -1331,312 +1487,554 @@ body {
   });
 
   // -------------------------------------------------------------
-  // Provider & BYOK State Management
+  // Google Account & AI Studio Consent Management
   // -------------------------------------------------------------
-  function getActiveProvider() {
-    return localStorage.getItem("calc_active_provider") || "gemini";
-  }
-
-  function setActiveProvider(prov) {
-    localStorage.setItem("calc_active_provider", prov);
-  }
-
-  function getActiveModel(prov) {
-    const defaultModel = PROVIDERS[prov]?.defaultModel || "gemini-3.1-flash-lite";
-    return localStorage.getItem(`calc_model_${prov}`) || defaultModel;
-  }
-
-  function setActiveModel(prov, model) {
-    localStorage.setItem(`calc_model_${prov}`, model);
-  }
-
-  function getProviderKey(prov) {
-    const prefix = PROVIDERS[prov]?.keyStoragePrefix || "calc_key_gemini";
-    return sessionStorage.getItem(prefix) || "";
-  }
-
-  function setProviderKey(prov, key) {
-    const prefix = PROVIDERS[prov]?.keyStoragePrefix || "calc_key_gemini";
-    if (key) {
-      sessionStorage.setItem(prefix, key);
-    } else {
-      sessionStorage.removeItem(prefix);
-    }
-  }
-
-  function updateToolbarUI() {
-    const prov = getActiveProvider();
-    const model = getActiveModel(prov);
-    const key = getProviderKey(prov);
-    const provConfig = PROVIDERS[prov] || PROVIDERS.gemini;
-
-    tbProviderPill.textContent = `${provConfig.icon} ${provConfig.name}`;
-    const modelObj = provConfig.models.find(m => m.id === model);
-    tbModelPill.textContent = modelObj ? modelObj.label.split(" (")[0] : model;
-
-    if (prov === "gemini") {
-      tbResearchPill.className = "research-status-pill";
-      tbResearchPill.innerHTML = `🌐 Google Search Grounding: Active ${key ? '🟢' : '🔑'}`;
-    } else {
-      tbResearchPill.className = "research-status-pill";
-      tbResearchPill.style.background = "#f8fafc";
-      tbResearchPill.style.color = "#334155";
-      tbResearchPill.style.borderColor = "#cbd5e1";
-      tbResearchPill.innerHTML = `⚡ High-Speed Direct Math ${key ? '🟢' : '🔑'}`;
-    }
-  }
-
-  function cleanApiKey(raw) {
-    if (!raw || typeof raw !== "string") return "";
-    return raw.trim().replace(/[^\x20-\x7E]/g, "");
-  }
-
-  function populateModelSelect(prov, preferredModelId) {
-    const provConfig = PROVIDERS[prov] || PROVIDERS.gemini;
-    const activeModel = preferredModelId || getActiveModel(prov);
-    
-    // Check if preferred model is in list
-    const hasModel = provConfig.models.some(m => m.id === activeModel);
-    let optionsHtml = provConfig.models.map(m => `
-      <option value="${m.id}" ${m.id === activeModel ? 'selected' : ''}>${m.label}</option>
-    `).join("");
-
-    if (!hasModel && activeModel) {
-      optionsHtml = `<option value="${activeModel}" selected>⚙️ Custom Model: ${activeModel}</option>` + optionsHtml;
-    }
-
-    byokModelSelect.innerHTML = optionsHtml;
-    updateModelCapabilityBadge();
-  }
-
-  async function syncLiveModels(prov, key, silent = false) {
-    const provConfig = PROVIDERS[prov];
-    const sanitizedKey = cleanApiKey(key || getProviderKey(prov));
-
-    if (!silent) {
-      modelSyncStatus.innerHTML = `<span style="color:#2563eb;">Fetching live models from ${provConfig.name} API...</span>`;
-      btnSyncModels.disabled = true;
-    }
-
+  async function loadAuthStatus() {
     try {
-      const res = await fetch("/api/calc-agent/models", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider: prov, apiKey: sanitizedKey }),
-      });
-      const data = await res.json().catch(() => ({}));
-
-      if (data.ok && Array.isArray(data.models) && data.models.length > 0) {
-        PROVIDERS[prov].models = data.models;
-        try {
-          localStorage.setItem("calc_cached_models_" + prov, JSON.stringify(data.models));
-        } catch(e) {}
-
-        const currentSelected = byokModelSelect.value || getActiveModel(prov);
-        populateModelSelect(prov, currentSelected);
-
-        if (data.isLive) {
-          modelSyncStatus.innerHTML = `<span style="color:#16a34a; font-weight:600;">✓ Synchronized ${data.models.length} live models directly from ${provConfig.name}</span>`;
-        } else {
-          modelSyncStatus.innerHTML = `<span style="color:#64748b;">Loaded ${data.models.length} standard models (Paste API key to fetch live models)</span>`;
-        }
-      } else if (!silent) {
-        modelSyncStatus.innerHTML = `<span style="color:#ef4444;">${data.error || "Could not fetch live models. Using defaults."}</span>`;
-      }
-    } catch (err) {
-      if (!silent) {
-        modelSyncStatus.innerHTML = `<span style="color:#ef4444;">Live sync error: ${err.message || "Network issue"}</span>`;
-      }
-    } finally {
-      btnSyncModels.disabled = false;
-    }
-  }
-
-  function populateModalFields(selectedProv) {
-    const prov = selectedProv || getActiveProvider();
-    const provConfig = PROVIDERS[prov] || PROVIDERS.gemini;
-    byokProviderSelect.value = prov;
-    providerGuidanceBox.innerHTML = provConfig.guidanceHtml;
-    byokKeyLabel.textContent = `${provConfig.name} API Key`;
-    byokKeyInput.placeholder = provConfig.keyPlaceholder;
-    
-    const key = getProviderKey(prov);
-    byokKeyInput.value = key;
-    byokTestStatus.textContent = "";
-
-    // Populate models
-    const activeModel = getActiveModel(prov);
-    populateModelSelect(prov, activeModel);
-
-    // Reset or show custom model input if activeModel isn't in default list
-    const isCustom = !provConfig.models.some(m => m.id === activeModel);
-    if (isCustom && activeModel) {
-      customModelContainer.style.display = "block";
-      byokCustomModelInput.value = activeModel;
-      btnToggleCustomModel.textContent = "- Use List Selection";
-    } else {
-      customModelContainer.style.display = "none";
-      byokCustomModelInput.value = "";
-      btnToggleCustomModel.textContent = "+ Enter Custom Model ID";
-    }
-
-    // Auto-sync in background if Groq or OpenAI has a key
-    if ((prov === "groq" || prov === "openai") && key) {
-      syncLiveModels(prov, key, true);
-    } else {
-      modelSyncStatus.textContent = "";
-    }
-  }
-
-  function updateModelCapabilityBadge() {
-    const prov = byokProviderSelect.value;
-    const modelId = byokModelSelect.value;
-    const provConfig = PROVIDERS[prov];
-    const modelObj = provConfig?.models.find(m => m.id === modelId);
-
-    if (modelObj?.searchEnabled || prov === "gemini") {
-      modelCapabilityBadge.style.display = "inline-flex";
-      modelCapabilityBadge.style.background = "#f0fdf4";
-      modelCapabilityBadge.style.color = "#166534";
-      modelCapabilityBadge.style.borderColor = "#bbf7d0";
-      modelCapabilityBadge.innerHTML = "🌐 Research Tool: Live Google Search Grounding Active";
-    } else {
-      modelCapabilityBadge.style.display = "inline-flex";
-      modelCapabilityBadge.style.background = "#f8fafc";
-      modelCapabilityBadge.style.color = "#475569";
-      modelCapabilityBadge.style.borderColor = "#cbd5e1";
-      modelCapabilityBadge.innerHTML = "⚡ Pure Inference: Ultra-Fast Reasoning Engine";
-    }
-  }
-
-  byokProviderSelect.addEventListener("change", () => {
-    populateModalFields(byokProviderSelect.value);
-    byokTestStatus.textContent = "";
-  });
-
-  byokModelSelect.addEventListener("change", () => {
-    updateModelCapabilityBadge();
-  });
-
-  // Toggle custom model input container
-  btnToggleCustomModel.addEventListener("click", () => {
-    if (customModelContainer.style.display === "none") {
-      customModelContainer.style.display = "block";
-      btnToggleCustomModel.textContent = "- Use List Selection";
-      byokCustomModelInput.focus();
-    } else {
-      customModelContainer.style.display = "none";
-      btnToggleCustomModel.textContent = "+ Enter Custom Model ID";
-      byokCustomModelInput.value = "";
-    }
-  });
-
-  // Sync Live Models Button
-  btnSyncModels.addEventListener("click", () => {
-    const prov = byokProviderSelect.value;
-    const key = byokKeyInput.value.trim();
-    syncLiveModels(prov, key, false);
-  });
-
-  // Open & Close Settings Modal
-  btnOpenSettingsModal.addEventListener("click", () => {
-    byokModal.classList.add("active");
-    populateModalFields();
-  });
-
-  btnCloseByokModal.addEventListener("click", () => {
-    byokModal.classList.remove("active");
-  });
-
-  // Toggle Key Visibility
-  btnToggleKeyVisibility.addEventListener("click", () => {
-    if (byokKeyInput.type === "password") {
-      byokKeyInput.type = "text";
-      btnToggleKeyVisibility.textContent = "Hide";
-    } else {
-      byokKeyInput.type = "password";
-      btnToggleKeyVisibility.textContent = "Show";
-    }
-  });
-
-  // Test Key
-  btnTestKey.addEventListener("click", async () => {
-    const prov = byokProviderSelect.value;
-    const key = cleanApiKey(byokKeyInput.value);
-    if (!key) {
-      byokTestStatus.innerHTML = '<span style="color:#ef4444;">Please paste an API key to test.</span>';
-      return;
-    }
-
-    byokTestStatus.innerHTML = '<span style="color:#2563eb;">Validating connection with ' + PROVIDERS[prov].name + '...</span>';
-    btnTestKey.disabled = true;
-
-    try {
-      const res = await fetch("/api/calc-agent/verify-key", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider: prov, apiKey: key }),
-      });
+      const res = await fetch("/api/calc-agent/auth-status");
       const data = await res.json().catch(() => ({}));
       if (data.ok) {
-        byokTestStatus.innerHTML = '<span style="color:#16a34a; font-weight:700;">✓ ' + data.message + '</span>';
-        
-        // If server returned live models, update models dropdown directly
-        if (Array.isArray(data.models) && data.models.length > 0) {
-          PROVIDERS[prov].models = data.models;
-          try {
-            localStorage.setItem("calc_cached_models_" + prov, JSON.stringify(data.models));
-          } catch(e) {}
-          populateModelSelect(prov);
-          modelSyncStatus.innerHTML = `<span style="color:#16a34a; font-weight:600;">✓ Synchronized ${data.models.length} live models from ${PROVIDERS[prov].name}</span>`;
+        authState.authenticated = !!data.authenticated;
+        authState.user = data.user;
+        authState.consented = !!data.consented;
+        authState.engine = data.engine || "Google AI Studio";
+        authState.model = data.model || "gemini-3.1-flash-lite";
+        updateAuthUI();
+      }
+    } catch (e) {
+      console.warn("Auth status fetch error:", e);
+    }
+  }
+
+  function updateAuthUI() {
+    const email = authState.user?.email || "dikshant182004@gmail.com";
+    const name = authState.user?.name || email.split("@")[0];
+    const initial = (name.charAt(0) || email.charAt(0) || "G").toUpperCase();
+
+    if (tbUserEmail) tbUserEmail.textContent = email;
+    if (modalUserName) modalUserName.textContent = name;
+    if (modalUserEmail) modalUserEmail.textContent = email;
+    if (modalAvatarCircle) modalAvatarCircle.textContent = initial;
+    if (inputCustomEmail) inputCustomEmail.value = email;
+
+    if (authState.consented) {
+      if (tbConsentBadge) {
+        tbConsentBadge.className = "consent-active-badge";
+        tbConsentBadge.textContent = "✓ AI Consent Active";
+      }
+      if (modalConsentStatusBadge) {
+        modalConsentStatusBadge.className = "consent-active-badge";
+        modalConsentStatusBadge.textContent = "✓ Consent Active";
+      }
+      if (btnAcceptConsent) {
+        btnAcceptConsent.textContent = "✓ Consent Granted (Ready)";
+        btnAcceptConsent.style.background = "#16a34a";
+      }
+      if (btnRevokeConsent) {
+        btnRevokeConsent.style.display = "inline-block";
+      }
+    } else {
+      if (tbConsentBadge) {
+        tbConsentBadge.className = "consent-pending-badge";
+        tbConsentBadge.textContent = "🔑 Consent Required";
+      }
+      if (modalConsentStatusBadge) {
+        modalConsentStatusBadge.className = "consent-pending-badge";
+        modalConsentStatusBadge.textContent = "Consent Pending";
+      }
+      if (btnAcceptConsent) {
+        btnAcceptConsent.textContent = "✓ Accept Consent & Continue";
+        btnAcceptConsent.style.background = "#2563eb";
+      }
+      if (btnRevokeConsent) {
+        btnRevokeConsent.style.display = "none";
+      }
+    }
+  }
+
+  function openConsentModal(notice, targetTab = "byok") {
+    if (notice && consentActionStatus) {
+      consentActionStatus.innerHTML = `<span style="color:#d97706; font-weight:600;">${notice}</span>`;
+    } else if (consentActionStatus) {
+      consentActionStatus.innerHTML = "";
+    }
+
+    // Switch to target sub-tab
+    switchModalTab(targetTab);
+    loadSavedBYOKSettings();
+    consentModal.classList.add("active");
+  }
+
+  function closeConsentModal() {
+    consentModal.classList.remove("active");
+  }
+
+  const btnOpenKeySettings = document.getElementById("btn-open-key-settings");
+  if (btnOpenKeySettings) {
+    btnOpenKeySettings.addEventListener("click", () => openConsentModal(null, "byok"));
+  }
+
+  if (btnOpenConsentModal) btnOpenConsentModal.addEventListener("click", () => openConsentModal(null, "default"));
+  if (tbProviderPill) tbProviderPill.addEventListener("click", () => openConsentModal(null, "byok"));
+  if (tbModelPill) tbModelPill.addEventListener("click", () => openConsentModal(null, "byok"));
+  if (btnCloseConsentModal) btnCloseConsentModal.addEventListener("click", () => closeConsentModal());
+  if (btnCancelConsent) btnCancelConsent.addEventListener("click", () => closeConsentModal());
+  const btnCloseByokModal = document.getElementById("btn-close-byok-modal");
+  if (btnCloseByokModal) btnCloseByokModal.addEventListener("click", () => closeConsentModal());
+
+  // -------------------------------------------------------------
+  // Multi-Provider & BYOK Settings Controller
+  // -------------------------------------------------------------
+  const tabBtnByok = document.getElementById("tab-btn-byok");
+  const tabBtnDefault = document.getElementById("tab-btn-default");
+  const modalTabByokContent = document.getElementById("modal-tab-byok-content");
+  const modalTabDefaultContent = document.getElementById("modal-tab-default-content");
+
+  function switchModalTab(tab) {
+    if (tab === "byok") {
+      tabBtnByok.style.background = "#ffffff";
+      tabBtnByok.style.color = "#0f172a";
+      tabBtnByok.style.boxShadow = "0 1px 2px rgba(0,0,0,0.06)";
+      tabBtnByok.style.fontWeight = "700";
+
+      tabBtnDefault.style.background = "transparent";
+      tabBtnDefault.style.color = "#475569";
+      tabBtnDefault.style.boxShadow = "none";
+      tabBtnDefault.style.fontWeight = "600";
+
+      modalTabByokContent.style.display = "block";
+      modalTabDefaultContent.style.display = "none";
+    } else {
+      tabBtnDefault.style.background = "#ffffff";
+      tabBtnDefault.style.color = "#0f172a";
+      tabBtnDefault.style.boxShadow = "0 1px 2px rgba(0,0,0,0.06)";
+      tabBtnDefault.style.fontWeight = "700";
+
+      tabBtnByok.style.background = "transparent";
+      tabBtnByok.style.color = "#475569";
+      tabBtnByok.style.boxShadow = "none";
+      tabBtnByok.style.fontWeight = "600";
+
+      modalTabDefaultContent.style.display = "block";
+      modalTabByokContent.style.display = "none";
+    }
+  }
+
+  if (tabBtnByok) tabBtnByok.addEventListener("click", () => switchModalTab("byok"));
+  if (tabBtnDefault) tabBtnDefault.addEventListener("click", () => switchModalTab("default"));
+
+  const cfgProvider = document.getElementById("cfg-provider");
+  const cfgModel = document.getElementById("cfg-model");
+  const cfgApiKey = document.getElementById("cfg-api-key");
+  const cfgGetKeyLink = document.getElementById("cfg-get-key-link");
+  const cfgKeyHint = document.getElementById("cfg-key-hint");
+  const cfgTestStatus = document.getElementById("cfg-test-status");
+  const btnToggleKeyVis = document.getElementById("btn-toggle-key-visibility");
+  const btnTestConn = document.getElementById("btn-test-connection");
+  const btnSaveCustomKey = document.getElementById("btn-save-custom-key");
+  const btnResetToServer = document.getElementById("btn-reset-to-server");
+  const btnSyncModels = document.getElementById("btn-sync-models");
+
+  const PROVIDER_METADATA = {
+    gemini: {
+      name: "Google Gemini",
+      defaultModel: "gemini-2.5-flash",
+      models: [
+        { id: "gemini-2.5-flash", name: "Gemini 2.5 Flash (Recommended • High Quota)" },
+        { id: "gemini-3.1-flash-lite", name: "Gemini 3.1 Flash-Lite (Fast • Free Tier)" },
+        { id: "gemini-3.1-pro", name: "Gemini 3.1 Pro (Complex Multi-step)" },
+        { id: "gemini-3.8-flash", name: "Gemini 3.8 Flash (Deep Reasoning • Preview Quota)" }
+      ],
+      keyLinkText: "Get Gemini Key →",
+      keyLinkHref: "https://aistudio.google.com/apikey",
+      keyHint: "Format: Google AI Studio keys start with <code>AIzaSy</code> or <code>AQ.</code>.",
+      keyPlaceholder: "Paste your Gemini API key (AIzaSy... or AQ...)"
+    },
+    groq: {
+      name: "Groq",
+      defaultModel: "llama-3.3-70b-versatile",
+      models: [
+        { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B (Fast, Versatile)" },
+        { id: "deepseek-r1-distill-llama-70b", name: "DeepSeek R1 Distill 70B (Math Reasoning)" },
+        { id: "qwen-qwq-32b", name: "Qwen QwQ 32B (Analytical)" },
+        { id: "llama-3.1-8b-instant", name: "Llama 3.1 8B Instant (Ultra-Fast)" }
+      ],
+      keyLinkText: "Get Groq Key →",
+      keyLinkHref: "https://console.groq.com/keys",
+      keyHint: "Format: Groq keys start with <code>gsk_</code>.",
+      keyPlaceholder: "Paste your Groq API key (gsk_...)"
+    },
+    openai: {
+      name: "OpenAI",
+      defaultModel: "gpt-4o-mini",
+      models: [
+        { id: "gpt-4o-mini", name: "GPT-4o Mini (Fast, Cost-Effective)" },
+        { id: "gpt-4o", name: "GPT-4o (Omni Reasoning)" },
+        { id: "o3-mini", name: "o3-mini (High-Performance STEM)" },
+        { id: "o1", name: "o1 (Deep Reasoning)" }
+      ],
+      keyLinkText: "Get OpenAI Key →",
+      keyLinkHref: "https://platform.openai.com/api-keys",
+      keyHint: "Format: OpenAI keys start with <code>sk-</code> or <code>sk-proj-</code>.",
+      keyPlaceholder: "Paste your OpenAI API key (sk-...)"
+    },
+    claude: {
+      name: "Anthropic Claude",
+      defaultModel: "claude-3-5-sonnet-20241022",
+      models: [
+        { id: "claude-3-5-sonnet-20241022", name: "Claude 3.5 Sonnet (State of the Art)" },
+        { id: "claude-3-5-haiku-20241022", name: "Claude 3.5 Haiku (Ultra-Fast)" }
+      ],
+      keyLinkText: "Get Claude Key →",
+      keyLinkHref: "https://console.anthropic.com/",
+      keyHint: "Format: Claude keys start with <code>sk-ant-</code>.",
+      keyPlaceholder: "Paste your Anthropic Claude API key (sk-ant-...)"
+    }
+  };
+
+  function updateProviderFields(provider) {
+    const meta = PROVIDER_METADATA[provider] || PROVIDER_METADATA.gemini;
+    if (cfgGetKeyLink) {
+      cfgGetKeyLink.textContent = meta.keyLinkText;
+      cfgGetKeyLink.href = meta.keyLinkHref;
+    }
+    if (cfgKeyHint) {
+      cfgKeyHint.innerHTML = meta.keyHint;
+    }
+    if (cfgApiKey) {
+      cfgApiKey.placeholder = meta.keyPlaceholder;
+    }
+    if (cfgModel) {
+      cfgModel.innerHTML = meta.models.map(m => `<option value="${m.id}">${m.label || m.name || m.id}</option>`).join("");
+    }
+    if (cfgTestStatus) {
+      cfgTestStatus.style.display = "none";
+    }
+  }
+
+  if (cfgProvider) {
+    cfgProvider.addEventListener("change", () => {
+      updateProviderFields(cfgProvider.value);
+    });
+  }
+
+  if (btnToggleKeyVis && cfgApiKey) {
+    btnToggleKeyVis.addEventListener("click", () => {
+      if (cfgApiKey.type === "password") {
+        cfgApiKey.type = "text";
+        btnToggleKeyVis.textContent = "🔒";
+      } else {
+        cfgApiKey.type = "password";
+        btnToggleKeyVis.textContent = "👁️";
+      }
+    });
+  }
+
+  function loadSavedBYOKSettings() {
+    const savedProvider = localStorage.getItem("calc_agent_provider") || "gemini";
+    const savedModel = localStorage.getItem("calc_agent_model");
+    const savedKey = localStorage.getItem("calc_agent_custom_key") || "";
+
+    if (cfgProvider) cfgProvider.value = savedProvider;
+    updateProviderFields(savedProvider);
+    if (savedModel && cfgModel) cfgModel.value = savedModel;
+    if (cfgApiKey) cfgApiKey.value = savedKey;
+  }
+
+  // Live Connection Verification
+  if (btnTestConn) {
+    btnTestConn.addEventListener("click", async () => {
+      const provider = cfgProvider.value;
+      const apiKey = cfgApiKey.value.trim();
+
+      cfgTestStatus.style.display = "block";
+      cfgTestStatus.style.background = "#eff6ff";
+      cfgTestStatus.style.border = "1px solid #bfdbfe";
+      cfgTestStatus.style.color = "#1e40af";
+      cfgTestStatus.innerHTML = `<span>🔄 Testing connection to <strong>${PROVIDER_METADATA[provider]?.name || provider}</strong>...</span>`;
+      btnTestConn.disabled = true;
+
+      try {
+        const res = await fetch("/api/calc-agent/verify-key", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ provider, apiKey })
+        });
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok && data.ok) {
+          cfgTestStatus.style.background = "#f0fdf4";
+          cfgTestStatus.style.border = "1px solid #86efac";
+          cfgTestStatus.style.color = "#166534";
+          cfgTestStatus.innerHTML = `
+            <strong>✓ Connection Verified!</strong><br>
+            Connected to <strong>${data.providerName || provider}</strong> successfully.<br>
+            <span style="font-size:11.5px;">Latency: ${data.latencyMs || '<20'}ms | Status: Active &amp; Ready for calculations.</span>
+          `;
+          // Automatically sync live models if returned
+          if (Array.isArray(data.models) && data.models.length > 0) {
+            const currentSelected = cfgModel.value;
+            cfgModel.innerHTML = data.models.map(m => `<option value="${m.id}">${m.label || m.name || m.id}</option>`).join("");
+            if (data.models.some(m => m.id === currentSelected)) {
+              cfgModel.value = currentSelected;
+            }
+          }
+        } else {
+          cfgTestStatus.style.background = "#fef2f2";
+          cfgTestStatus.style.border = "1px solid #fca5a5";
+          cfgTestStatus.style.color = "#991b1b";
+          const errMsg = data.error || `HTTP ${res.status}: Connection failed`;
+          const errReason = data.reason || "Invalid credentials or gateway timeout";
+          cfgTestStatus.innerHTML = `
+            <strong>✕ Connection Failed [${errReason}]</strong><br>
+            <span>${errMsg}</span>
+            <div style="margin-top:6px; font-size:11.5px; color:#b91c1c;">
+              <strong>Troubleshooting:</strong><br>
+              • Check that the key does not have leading/trailing spaces or shell quotes.<br>
+              • For ${PROVIDER_METADATA[provider]?.name}, obtain a fresh key at <a href="${PROVIDER_METADATA[provider]?.keyLinkHref}" target="_blank" rel="noopener" style="color:#b91c1c; text-decoration:underline;">this console</a>.<br>
+              • Or click "Reset to Server-side Gemini" to use the pre-configured engine.
+            </div>
+          `;
+        }
+      } catch (err) {
+        cfgTestStatus.style.background = "#fef2f2";
+        cfgTestStatus.style.border = "1px solid #fca5a5";
+        cfgTestStatus.style.color = "#991b1b";
+        cfgTestStatus.innerHTML = `<strong>✕ Network / Gateway Error:</strong> ${err.message}`;
+      } finally {
+        btnTestConn.disabled = false;
+      }
+    });
+  }
+
+  // Live Model Sync
+  if (btnSyncModels) {
+    btnSyncModels.addEventListener("click", async () => {
+      const provider = cfgProvider.value;
+      const apiKey = cfgApiKey.value.trim();
+      btnSyncModels.textContent = "Syncing...";
+      btnSyncModels.disabled = true;
+
+      try {
+        const res = await fetch("/api/calc-agent/models", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ provider, apiKey })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (data.ok && Array.isArray(data.models) && data.models.length > 0) {
+          const currentSelected = cfgModel.value;
+          cfgModel.innerHTML = data.models.map(m => `<option value="${m.id}">${m.label || m.name || m.id}</option>`).join("");
+          if (data.models.some(m => m.id === currentSelected)) {
+            cfgModel.value = currentSelected;
+          }
+          btnSyncModels.textContent = "✓ Synced";
+          setTimeout(() => { btnSyncModels.textContent = "🔄 Sync Live"; }, 1500);
+        } else {
+          btnSyncModels.textContent = "✕ Failed";
+          setTimeout(() => { btnSyncModels.textContent = "🔄 Sync Live"; }, 1500);
+        }
+      } catch (e) {
+        btnSyncModels.textContent = "✕ Error";
+        setTimeout(() => { btnSyncModels.textContent = "🔄 Sync Live"; }, 1500);
+      } finally {
+        btnSyncModels.disabled = false;
+      }
+    });
+  }
+
+  // Save Custom Key & Update Toolbar
+  if (btnSaveCustomKey) {
+    btnSaveCustomKey.addEventListener("click", () => {
+      const provider = cfgProvider.value;
+      const model = cfgModel.value;
+      const apiKey = cfgApiKey.value.trim();
+
+      if (apiKey) {
+        localStorage.setItem("calc_agent_custom_key", apiKey);
+        localStorage.setItem("calc_agent_provider", provider);
+        localStorage.setItem("calc_agent_model", model);
+        localStorage.setItem("calc_agent_mode", "byok");
+
+        const providerName = PROVIDER_METADATA[provider]?.name || provider;
+        if (tbProviderPill) tbProviderPill.textContent = `🔑 ${providerName} (Custom Key)`;
+        if (tbModelPill) tbModelPill.textContent = model;
+        if (tbResearchPill) {
+          if (provider === "gemini") {
+            tbResearchPill.textContent = "🌐 Google Search Grounding Active";
+            tbResearchPill.style.display = "inline-flex";
+          } else {
+            tbResearchPill.textContent = "⚡ Fast Inference Mode";
+          }
         }
       } else {
-        byokTestStatus.innerHTML = '<span style="color:#ef4444;">✕ Error: ' + (data.error || "Key validation failed") + '</span>';
+        localStorage.setItem("calc_agent_provider", provider);
+        localStorage.setItem("calc_agent_model", model);
       }
-    } catch (err) {
-      byokTestStatus.innerHTML = '<span style="color:#ef4444;">✕ Network error while validating key: ' + (err.message || "") + '</span>';
-    } finally {
-      btnTestKey.disabled = false;
+
+      closeConsentModal();
+      if (pendingQueryAfterConsent) {
+        const q = pendingQueryAfterConsent;
+        pendingQueryAfterConsent = null;
+        handleCalculate(q.hitlCorrection);
+      }
+    });
+  }
+
+  // Reset to Server-side Gemini
+  if (btnResetToServer) {
+    btnResetToServer.addEventListener("click", () => {
+      localStorage.removeItem("calc_agent_custom_key");
+      localStorage.setItem("calc_agent_provider", "gemini");
+      localStorage.setItem("calc_agent_model", "gemini-2.5-flash");
+      localStorage.setItem("calc_agent_mode", "server");
+
+      if (cfgApiKey) cfgApiKey.value = "";
+      if (cfgProvider) cfgProvider.value = "gemini";
+      updateProviderFields("gemini");
+      if (cfgModel) cfgModel.value = "gemini-2.5-flash";
+
+      if (tbProviderPill) tbProviderPill.textContent = "✨ Google AI Studio";
+      if (tbModelPill) tbModelPill.textContent = "Gemini 2.5 Flash";
+      if (tbResearchPill) {
+        tbResearchPill.textContent = "🌐 Google Search Grounding Active";
+        tbResearchPill.style.display = "inline-flex";
+      }
+
+      if (cfgTestStatus) {
+        cfgTestStatus.style.display = "block";
+        cfgTestStatus.style.background = "#f0fdf4";
+        cfgTestStatus.style.border = "1px solid #86efac";
+        cfgTestStatus.style.color = "#166534";
+        cfgTestStatus.innerHTML = "✓ Reset to default Google AI Studio server-side Gemini engine.";
+      }
+    });
+  }
+
+  // Initialize Toolbar from localStorage if user had custom key saved
+  (function initToolbarFromStorage() {
+    const savedMode = localStorage.getItem("calc_agent_mode");
+    const savedKey = localStorage.getItem("calc_agent_custom_key");
+    const savedProvider = localStorage.getItem("calc_agent_provider");
+    const savedModel = localStorage.getItem("calc_agent_model");
+
+    if (savedMode === "byok" && savedKey && savedProvider) {
+      const providerName = PROVIDER_METADATA[savedProvider]?.name || savedProvider;
+      if (tbProviderPill) tbProviderPill.textContent = `🔑 ${providerName} (Custom Key)`;
+      if (tbModelPill && savedModel) tbModelPill.textContent = savedModel;
+      if (tbResearchPill && savedProvider !== "gemini") {
+        tbResearchPill.textContent = "⚡ Fast Inference Mode";
+      }
     }
-  });
+  })();
 
-  // Save Settings
-  btnSaveByok.addEventListener("click", () => {
-    const prov = byokProviderSelect.value;
-    let model = byokModelSelect.value;
-    
-    // Check if custom model was typed
-    const customModel = cleanApiKey(byokCustomModelInput.value);
-    if (customModelContainer.style.display !== "none" && customModel) {
-      model = customModel;
-    }
+  // Connect / Accept Consent (Google 1-Click)
+  if (btnAcceptConsent) {
+    btnAcceptConsent.addEventListener("click", async () => {
+      const email = inputCustomEmail?.value?.trim() || authState.user?.email || "dikshant182004@gmail.com";
+      btnAcceptConsent.disabled = true;
+      btnAcceptConsent.textContent = "Connecting Google AI Studio...";
+      consentActionStatus.innerHTML = `<span style="color:#2563eb;">Connecting to Google AI Studio for ${email}...</span>`;
 
-    const key = cleanApiKey(byokKeyInput.value);
+      try {
+        const res = await fetch("/api/calc-agent/connect-google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (data.ok) {
+          authState.authenticated = true;
+          authState.user = data.user;
+          authState.consented = true;
+          updateAuthUI();
+          consentActionStatus.innerHTML = `<span style="color:#16a34a; font-weight:700;">✓ Connected with Google AI Studio active!</span>`;
+          setTimeout(() => {
+            closeConsentModal();
+            if (pendingQueryAfterConsent) {
+              const q = pendingQueryAfterConsent;
+              pendingQueryAfterConsent = null;
+              handleCalculate(q.hitlCorrection);
+            }
+          }, 450);
+        } else {
+          consentActionStatus.innerHTML = `<span style="color:#ef4444; font-weight:600;">✕ ${data.error || "Failed to grant consent"}</span>`;
+        }
+      } catch (err) {
+        consentActionStatus.innerHTML = `<span style="color:#ef4444;">✕ Error: ${err.message}</span>`;
+      } finally {
+        btnAcceptConsent.disabled = false;
+        updateAuthUI();
+      }
+    });
+  }
 
-    setActiveProvider(prov);
-    setActiveModel(prov, model);
-    setProviderKey(prov, key);
+  // Switch / Update Account
+  if (btnUpdateAccount) {
+    btnUpdateAccount.addEventListener("click", async () => {
+      const email = inputCustomEmail?.value?.trim();
+      if (!email || !email.includes("@")) {
+        alert("Please enter a valid Google account email.");
+        return;
+      }
+      btnUpdateAccount.disabled = true;
+      consentActionStatus.innerHTML = `<span style="color:#2563eb;">Switching account to ${email}...</span>`;
+      try {
+        const res = await fetch("/api/calc-agent/connect-google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (data.ok) {
+          authState.authenticated = true;
+          authState.user = data.user;
+          authState.consented = true;
+          updateAuthUI();
+          consentActionStatus.innerHTML = `<span style="color:#16a34a; font-weight:600;">✓ Switched to ${email} with active AI consent.</span>`;
+        } else {
+          consentActionStatus.innerHTML = `<span style="color:#ef4444;">✕ ${data.error || "Failed to switch"}</span>`;
+        }
+      } catch (e) {
+        consentActionStatus.innerHTML = `<span style="color:#ef4444;">✕ Error: ${e.message}</span>`;
+      } finally {
+        btnUpdateAccount.disabled = false;
+      }
+    });
+  }
 
-    updateToolbarUI();
-    byokModal.classList.remove("active");
-  });
+  // Revoke Consent
+  if (btnRevokeConsent) {
+    btnRevokeConsent.addEventListener("click", async () => {
+      if (!confirm("Revoke Google AI Studio consent? You can re-enable it at any time.")) return;
+      btnRevokeConsent.disabled = true;
+      try {
+        const res = await fetch("/api/calc-agent/consent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ consent: false }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (data.ok) {
+          authState.consented = false;
+          updateAuthUI();
+          consentActionStatus.innerHTML = `<span style="color:#64748b;">Consent revoked.</span>`;
+        }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        btnRevokeConsent.disabled = false;
+      }
+    });
+  }
 
-  // Wipe Key
-  btnWipeKey.addEventListener("click", () => {
-    const prov = byokProviderSelect.value;
-    if (confirm(`Disconnect and wipe your ${PROVIDERS[prov].name} API key from this browser session?`)) {
-      setProviderKey(prov, "");
-      byokKeyInput.value = "";
-      byokTestStatus.innerHTML = '<span style="color:#64748b;">Key purged from session.</span>';
-      modelSyncStatus.textContent = "";
-      updateToolbarUI();
-    }
-  });
+  // Initialize auth state
+  loadAuthStatus();
 
   // -------------------------------------------------------------
-  // Calculation Execution Pipeline (No Sign-in Wall)
+  // Calculation Execution Pipeline
   // -------------------------------------------------------------
-  btnSubmitCalc.addEventListener("click", handleCalculate);
+  btnSubmitCalc.addEventListener("click", () => handleCalculate());
   queryInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -1644,17 +2042,40 @@ body {
     }
   });
 
-  async function handleCalculate() {
+  // Toggle Human-in-the-Loop Rule Field on Omnibar
+  const btnToggleHitl = document.getElementById("btn-toggle-hitl-input");
+  const hitlInputContainer = document.getElementById("hitl-input-container");
+  const hitlChevron = document.getElementById("hitl-chevron");
+  if (btnToggleHitl && hitlInputContainer) {
+    btnToggleHitl.addEventListener("click", () => {
+      if (hitlInputContainer.style.display === "none") {
+        hitlInputContainer.style.display = "block";
+        if (hitlChevron) hitlChevron.textContent = "▲";
+        document.getElementById("hitl-input-text")?.focus();
+      } else {
+        hitlInputContainer.style.display = "none";
+        if (hitlChevron) hitlChevron.textContent = "▼";
+      }
+    });
+  }
+
+  async function handleCalculate(customHitl) {
     const query = queryInput.value.trim();
     if (!query) {
       alert("Please enter a calculation query.");
       return;
     }
 
-    const provider = getActiveProvider();
-    const model = getActiveModel(provider);
-    const rawApiKey = getProviderKey(provider);
-    const apiKey = cleanApiKey(rawApiKey);
+    // Determine HITL statutory/parameter correction
+    const hitlInputEl = document.getElementById("hitl-input-text");
+    const hitlCorrection = (typeof customHitl === "string" && customHitl.trim())
+      ? customHitl.trim()
+      : (hitlInputEl ? hitlInputEl.value.trim() : "");
+
+    // Retrieve active provider & key configuration
+    const activeProvider = localStorage.getItem("calc_agent_provider") || "gemini";
+    const activeModel = localStorage.getItem("calc_agent_model") || "gemini-3.1-flash-lite";
+    const customApiKey = localStorage.getItem("calc_agent_custom_key") || "";
 
     // Hide previous results & errors
     errorBanner.style.display = "none";
@@ -1674,18 +2095,23 @@ body {
 
     const headers = {
       "Content-Type": "application/json",
-      "x-ai-provider": provider,
-      "x-ai-model": model,
     };
-    if (apiKey) {
-      headers["x-api-key"] = apiKey;
+    if (hitlCorrection) {
+      headers["x-hitl-correction"] = encodeURIComponent(hitlCorrection);
     }
 
     try {
       const response = await fetch("/api/calc-agent/query", {
         method: "POST",
         headers,
-        body: JSON.stringify({ query, provider, model, apiKey }),
+        body: JSON.stringify({
+          query,
+          hitlCorrection,
+          provider: activeProvider,
+          model: activeModel,
+          apiKey: customApiKey,
+          consent: true
+        }),
       });
 
       let resData;
@@ -1700,18 +2126,19 @@ body {
       liveTimerBanner.style.display = "none";
 
       if (!response.ok) {
-        if (resData.requiresKey) {
-          byokModal.classList.add("active");
-          populateModalFields(resData.provider || provider);
-          byokTestStatus.innerHTML = `<span style="color:#ef4444;">${resData.error}</span>`;
+        if (resData.requiresConsent && !customApiKey) {
+          authState.consented = false;
+          updateAuthUI();
+          pendingQueryAfterConsent = { query, hitlCorrection };
+          openConsentModal("Please confirm your Google AI Studio consent to proceed.", "default");
         }
         showError(
           resData.error || `Calculation failed (HTTP ${response.status})`,
           resData.reason,
           resData.suggestions || [
-            "Verify your API key in the 'AI Provider & Key' modal.",
-            "Click 'Test Connection' to ensure your key is valid.",
-            "Use 'Sync Live Models' to ensure your selected model is active."
+            "Test or update your API key in the 'API Key & Models' settings.",
+            "Confirm your Google account consent by clicking the Google AI Studio badge in the toolbar.",
+            "Verify that your query specifies numeric values or currency amounts."
           ]
         );
         return;
@@ -1719,7 +2146,7 @@ body {
 
       currentCalcData = resData.data;
       currentCalcId = resData.calcId;
-      renderCalculationResult(currentCalcData, currentCalcId, resData.providerUsed, resData.modelUsed);
+      renderCalculationResult(currentCalcData, currentCalcId, resData.providerUsed || "Google AI Studio", resData.modelUsed || "Gemini 3.1 Flash-Lite");
     } catch (err) {
       clearInterval(timerInterval);
       liveTimerBanner.style.display = "none";
@@ -1728,9 +2155,8 @@ body {
         `Unable to reach calculation agent: ${detail}`,
         "Network/Gateway Warning",
         [
-          "If using a custom API key, check that it contains no extraneous whitespace or special characters.",
-          "Open 'AI Provider & Key' to click 'Test Connection' and verify live access.",
-          "Check if your provider account has available quota or credit."
+          "Check your internet connection and refresh the page.",
+          "Verify your API Key connection in the 'API Key & Models' settings menu."
         ]
       );
     } finally {
@@ -1744,11 +2170,25 @@ body {
     errorBanner.style.display = "block";
     errorTitle.textContent = reason ? `Calculation Notice [${reason}]` : "Calculation Notice";
     errorDesc.textContent = msg;
+
+    let suggestionsHtml = "";
     if (Array.isArray(suggestions) && suggestions.length > 0) {
-      errorSuggestions.innerHTML = `<strong>Suggestions:</strong><ul style="margin:4px 0 0 16px; padding:0;">${suggestions.map(s => `<li>${s}</li>`).join("")}</ul>`;
-    } else {
-      errorSuggestions.innerHTML = "";
+      suggestionsHtml = `<strong>Suggestions:</strong><ul style="margin:4px 0 0 16px; padding:0;">${suggestions.map(s => `<li>${s}</li>`).join("")}</ul>`;
     }
+
+    // Direct action button if error appears to be API key related
+    const isKeyIssue = /api key|unauthorized|401|403|quota|forbidden|key format/i.test(msg + " " + (reason || ""));
+    const keyActionBtnHtml = isKeyIssue
+      ? `<div style="margin-top:10px;"><button type="button" id="btn-fix-key-action" class="btn-hitl" style="font-size:12px; font-weight:700; color:#dc2626; border-color:#fca5a5; background:#fff; cursor:pointer; padding:6px 12px; border-radius:6px;">⚙️ Open API Key &amp; Provider Settings to Fix</button></div>`
+      : "";
+
+    errorSuggestions.innerHTML = suggestionsHtml + keyActionBtnHtml;
+
+    const fixBtn = document.getElementById("btn-fix-key-action");
+    if (fixBtn) {
+      fixBtn.addEventListener("click", () => openConsentModal("Check or update your API key connection below.", "byok"));
+    }
+
     errorBanner.scrollIntoView({ behavior: "smooth" });
   }
 
@@ -1760,6 +2200,16 @@ body {
     resCategoryBadge.textContent = data.category || "General Calculation";
     resModelBadge.textContent = `${providerUsed || 'AI'}: ${modelUsed || data.modelUsed}`;
     resHeadlineValue.textContent = data.headlineResult || data.primaryValue;
+
+    // HITL Badge
+    const resHitlBadge = document.getElementById("res-hitl-badge");
+    if (resHitlBadge) {
+      if (data.hitlCorrectionApplied || data.hitlApplied) {
+        resHitlBadge.style.display = "inline-flex";
+      } else {
+        resHitlBadge.style.display = "none";
+      }
+    }
 
     // Research Gateway Decision Card
     const gw = data.researchGateway;
@@ -1789,8 +2239,21 @@ body {
     }
 
     // Pillar 1: Assumptions
+    let assumptionsHtml = "";
+    if (data.hitlCorrectionApplied) {
+      assumptionsHtml += `
+        <div class="assumption-item" style="background:#ecfdf5; border:1px solid #a7f3d0; margin-bottom:10px;">
+          <div>
+            <div class="assumption-name" style="color:#065f46;"><strong>✨ Human-in-the-Loop (HITL) Adjustment Applied:</strong></div>
+            <div style="font-size:12.5px; color:#047857; margin-top:2px;">${data.hitlCorrectionApplied}</div>
+          </div>
+          <span class="assumption-tag" style="background:#059669; color:#fff;">User Rule</span>
+        </div>
+      `;
+    }
+
     if (Array.isArray(data.inputsExtracted) && data.inputsExtracted.length > 0) {
-      resAssumptionsList.innerHTML = data.inputsExtracted.map(item => `
+      assumptionsHtml += data.inputsExtracted.map(item => `
         <div class="assumption-item">
           <div>
             <div class="assumption-name"><strong>${item.label || item.name}:</strong> ${item.value} ${item.unit || ''}</div>
@@ -1801,9 +2264,10 @@ body {
           </span>
         </div>
       `).join("");
-    } else {
-      resAssumptionsList.innerHTML = `<div style="font-size:13px; color:var(--text-muted);">Direct parameters evaluated.</div>`;
+    } else if (!data.hitlCorrectionApplied) {
+      assumptionsHtml = `<div style="font-size:13px; color:var(--text-muted);">Direct parameters evaluated.</div>`;
     }
+    resAssumptionsList.innerHTML = assumptionsHtml;
 
     // Pillar 2: Step-by-Step Derivation
     if (Array.isArray(data.stepByStep) && data.stepByStep.length > 0) {
@@ -1956,9 +2420,24 @@ body {
   document.getElementById("btn-cancel-hitl").addEventListener("click", () => hitlModal.classList.remove("active"));
   document.getElementById("btn-submit-hitl").addEventListener("click", () => {
     const rating = document.getElementById("hitl-rating-select").value;
-    const note = document.getElementById("hitl-note-text").value;
-    submitFeedback(rating, note);
-    hitlModal.classList.remove("active");
+    const note = document.getElementById("hitl-note-text").value.trim();
+
+    if (rating === "recalculate") {
+      if (!note) {
+        alert("Please enter your statutory correction or parameter override note.");
+        return;
+      }
+      hitlModal.classList.remove("active");
+      const hitlInputEl = document.getElementById("hitl-input-text");
+      if (hitlInputEl) {
+        hitlInputEl.value = note;
+        if (hitlInputContainer) hitlInputContainer.style.display = "block";
+      }
+      handleCalculate(note);
+    } else {
+      submitFeedback(rating, note);
+      hitlModal.classList.remove("active");
+    }
   });
 
   async function submitFeedback(rating, note) {
@@ -2067,8 +2546,8 @@ body {
 
   document.getElementById("btn-refresh-history")?.addEventListener("click", loadHistoryAndAnalytics);
 
-  // Initialize Toolbar
-  updateToolbarUI();
+  // Initialize UI with Auth State
+  updateAuthUI();
 })();
 </script>
 

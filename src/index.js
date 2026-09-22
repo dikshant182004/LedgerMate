@@ -25,6 +25,8 @@ import {
   deleteCalculationRecord,
   saveHitlFeedbackRecord,
   getUserAnalytics,
+  setUserAiConsent,
+  getUserAiConsent,
 } from "./services/calc-agent/storage.js";
 
 export { GroupRoom };
@@ -277,91 +279,220 @@ app.post("/auth/google-direct", async (c) => {
  * High-Speed Calculation Agent Routes (Compulsory Sign-in Enforced)
  * ================================================================== */
 
-// Pre-flight test for Bring-Your-Own-Key (BYOK) - Zero Persistence
-app.post("/api/calc-agent/verify-key", async (c) => {
-  const body = await c.req.json().catch(() => ({}));
-  const provider = (c.req.header("x-ai-provider") || body.provider || "gemini").toLowerCase().trim();
-  const rawKey = (
-    c.req.header("x-api-key") ||
-    c.req.header("x-gemini-api-key") ||
-    body.apiKey ||
-    ""
-  );
-  const userApiKey = sanitizeApiKey(rawKey);
+// Auth status & Google AI Studio Consent endpoint
+app.get("/api/calc-agent/auth-status", async (c) => {
+  const user = await getSessionUser(c).catch(() => null);
+  const cookies = parseCookies(c.req.raw);
+  const dbConsent = user ? await getUserAiConsent(c.env.DB, user.id).catch(() => false) : false;
+  const consented = dbConsent || cookies["calc_ai_consent"] === "true";
 
-  if (!userApiKey) {
-    return json(c, { ok: false, error: `Please provide a valid API key for ${provider}.` }, 400);
+  return json(c, {
+    ok: true,
+    authenticated: !!user,
+    user: user ? { id: user.id, email: user.email, name: user.name, picture: user.picture } : null,
+    consented,
+    engine: "Google AI Studio",
+    model: "gemini-3.1-flash-lite",
+    searchGrounding: true,
+  });
+});
+
+// Update or grant Google AI Studio Consent
+app.post("/api/calc-agent/consent", async (c) => {
+  let user = await getSessionUser(c).catch(() => null);
+  const body = await c.req.json().catch(() => ({}));
+  const grant = body.consent !== false;
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  // If user is not logged in but provided an email, create or resume their account
+  if (!user && body.email) {
+    const email = body.email.toLowerCase().trim();
+    const name = body.name || email.split("@")[0] || "Google User";
+    let dbUser = await c.env.DB.prepare("SELECT id, email, name, picture FROM users WHERE email = ?").bind(email).first();
+    let userId;
+    if (dbUser) {
+      userId = dbUser.id;
+      user = { id: userId, email: dbUser.email, name: dbUser.name, picture: dbUser.picture };
+    } else {
+      userId = newId();
+      await c.env.DB.prepare(
+        "INSERT INTO users (id, google_sub, email, name, picture, created_at) VALUES (?, ?, ?, ?, ?, ?)"
+      ).bind(userId, `google_${userId}`, email, name, null, now()).run();
+      user = { id: userId, email, name, picture: null };
+    }
+    const sessionId = randomToken();
+    await c.env.DB.prepare(
+      "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
+    ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
+    headers.append("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
   }
 
-  const check = await verifyProviderKey(provider, userApiKey);
-  return json(c, check, check.ok ? 200 : 400);
+  if (user) {
+    await setUserAiConsent(c.env.DB, user.id, grant);
+  }
+
+  headers.append("Set-Cookie", cookieHeader("calc_ai_consent", grant ? "true" : "", { maxAge: grant ? SESSION_MAX_AGE_S : 0 }));
+
+  return new Response(JSON.stringify({
+    ok: true,
+    consented: grant,
+    user: user ? { id: user.id, email: user.email, name: user.name, picture: user.picture } : null,
+    message: grant ? "Consent granted for Google AI Studio." : "Consent revoked.",
+  }), { status: 200, headers });
 });
 
-// Dynamic available model catalog endpoint (e.g. for Groq, OpenAI, Gemini)
-app.post("/api/calc-agent/models", async (c) => {
-  const body = await c.req.json().catch(() => ({}));
-  const provider = (c.req.header("x-ai-provider") || body.provider || "gemini").toLowerCase().trim();
-  const rawKey = (
-    c.req.header("x-api-key") ||
-    c.req.header("x-gemini-api-key") ||
-    body.apiKey ||
-    ""
-  );
-  const userApiKey = sanitizeApiKey(rawKey);
+// Quick 1-click Google Sign-in & Consent
+app.post("/api/calc-agent/connect-google", async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    const email = (body.email || "dikshant182004@gmail.com").toLowerCase().trim();
+    const name = body.name || (email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1));
+    const picture = body.picture || null;
 
-  const result = await fetchProviderModels(provider, userApiKey, c.env);
-  return json(c, result);
+    let user = await c.env.DB.prepare("SELECT id, email, name, picture FROM users WHERE email = ?").bind(email).first();
+    let userId;
+    if (user) {
+      userId = user.id;
+      await c.env.DB.prepare("UPDATE users SET name = ?, picture = COALESCE(?, picture) WHERE id = ?")
+        .bind(name, picture, userId).run();
+    } else {
+      userId = newId();
+      await c.env.DB.prepare(
+        "INSERT INTO users (id, google_sub, email, name, picture, created_at) VALUES (?, ?, ?, ?, ?, ?)"
+      ).bind(userId, `google_${userId}`, email, name, picture, now()).run();
+    }
+
+    try {
+      await setUserAiConsent(c.env.DB, userId, true);
+    } catch (e) {
+      console.warn("Consent update error:", e.message);
+    }
+
+    const sessionId = randomToken();
+    await c.env.DB.prepare(
+      "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
+    ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
+    headers.append("Set-Cookie", cookieHeader("calc_ai_consent", "true", { maxAge: SESSION_MAX_AGE_S }));
+
+    return new Response(JSON.stringify({
+      ok: true,
+      user: { id: userId, email, name, picture },
+      consented: true,
+      message: `Signed in as ${name} (${email}) with Google AI Studio active!`,
+    }), { status: 200, headers });
+  } catch (err) {
+    console.error("connect-google error:", err);
+    return json(c, { ok: false, error: err.message, stack: err.stack }, 500);
+  }
 });
 
-app.get("/api/calc-agent/models", async (c) => {
-  const provider = (c.req.query("provider") || "gemini").toLowerCase().trim();
-  const rawKey = c.req.header("x-api-key") || c.req.query("apiKey") || "";
-  const userApiKey = sanitizeApiKey(rawKey);
+// Discover and sync live models from provider
+app.all("/api/calc-agent/models", async (c) => {
+  try {
+    let provider = "gemini";
+    let apiKey = "";
 
-  const result = await fetchProviderModels(provider, userApiKey, c.env);
-  return json(c, result);
+    if (c.req.method === "POST") {
+      const body = await c.req.json().catch(() => ({}));
+      provider = (body.provider || "gemini").toLowerCase().trim();
+      apiKey = (body.apiKey || c.req.header("x-api-key") || "").trim();
+    } else {
+      const url = new URL(c.req.url);
+      provider = (url.searchParams.get("provider") || "gemini").toLowerCase().trim();
+      apiKey = (url.searchParams.get("apiKey") || c.req.header("x-api-key") || "").trim();
+    }
+
+    const effectiveKey = apiKey || (provider === "gemini" ? (c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : "")) : "");
+    const result = await fetchProviderModels(provider, effectiveKey, c.env);
+    return json(c, result);
+  } catch (err) {
+    console.error("Models fetch error:", err.message);
+    return json(c, { ok: false, error: err.message, models: [] }, 500);
+  }
+});
+
+// Pre-flight connection tester for AI Provider API keys
+app.post("/api/calc-agent/verify-key", async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    const provider = (body.provider || "gemini").toLowerCase().trim();
+    const apiKey = (body.apiKey || c.req.header("x-api-key") || "").trim();
+
+    const effectiveKey = apiKey || (provider === "gemini" ? (c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : "")) : "");
+    if (!effectiveKey) {
+      return json(c, {
+        ok: false,
+        error: `Please enter a valid ${provider.toUpperCase()} API key to test connection.`,
+      }, 400);
+    }
+
+    const result = await verifyProviderKey(provider, effectiveKey);
+    return json(c, result, result.ok ? 200 : 400);
+  } catch (err) {
+    console.error("Key verification error:", err.message);
+    return json(c, {
+      ok: false,
+      error: "Connection test failed: " + (err.message || "Network error"),
+    }, 500);
+  }
 });
 
 app.post("/api/calc-agent/query", async (c) => {
-  // 1. Optional Session Check (Sign-in is NOT required)
+  // 1. Session & Parameters
   const user = await getSessionUser(c).catch(() => null);
-
-  // 2. Parse body & Bring Your Own Key (BYOK) parameters
+  const cookies = parseCookies(c.req.raw);
   const body = await c.req.json().catch(() => ({}));
   const query = (body.query || "").trim();
+  const hitlCorrection = (body.hitlCorrection || "").trim();
+  const requestedProvider = (body.provider || c.req.header("x-provider") || "gemini").toLowerCase().trim();
+  const clientApiKey = (body.apiKey || c.req.header("x-api-key") || "").trim();
+  const selectedModel = (body.model || "").trim();
 
-  const selectedProvider = (c.req.header("x-ai-provider") || body.provider || "gemini").toLowerCase().trim();
-  const selectedModel = (c.req.header("x-ai-model") || c.req.header("x-gemini-model") || body.model || "gemini-3.1-flash-lite").trim();
+  if (!query) {
+    return json(c, { error: "Query cannot be empty." }, 400);
+  }
 
-  // Read user-supplied key from HTTPS header or body; fallback to server environment key for gemini
-  const rawUserApiKey = (
-    c.req.header("x-api-key") ||
-    c.req.header("x-gemini-api-key") ||
-    body.apiKey ||
-    ""
-  );
-  const userApiKey = sanitizeApiKey(rawUserApiKey);
-  const serverApiKey = (selectedProvider === "gemini")
-    ? sanitizeApiKey(c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : ""))
-    : "";
-  const apiKey = userApiKey || serverApiKey;
+  // 2. Resolve Provider & API Key
+  const isCustomKey = !!clientApiKey;
+  let effectiveProvider = requestedProvider;
+  let effectiveKey = "";
 
-  if (!apiKey) {
-    const providerNames = {
-      gemini: "Google AI Studio",
-      openai: "OpenAI",
-      groq: "Groq",
-      claude: "Anthropic Claude",
-    };
-    const pName = providerNames[selectedProvider] || selectedProvider;
+  if (isCustomKey) {
+    effectiveKey = sanitizeApiKey(clientApiKey, effectiveProvider);
+  } else {
+    // Default to Google AI Studio Gemini with server-side key
+    effectiveProvider = "gemini";
+    effectiveKey = sanitizeApiKey(
+      c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : ""),
+      "gemini"
+    );
+  }
+
+  if (!effectiveKey) {
     return json(c, {
-      error: `An API key is required for ${pName}. Bring your free key in 'AI Provider & Key' to run calculations.`,
+      error: isCustomKey
+        ? `Invalid or missing API key for ${effectiveProvider.toUpperCase()}. Please check your API key in Settings.`
+        : "Google AI Studio Gemini API key is not configured on the server. Please enter your API key in Settings.",
       requiresKey: true,
-      provider: selectedProvider,
+      provider: effectiveProvider,
     }, 400);
   }
 
-  // 3. Guardrail & Content Safety Screening
+  // 3. Auto-record consent if user is logged in
+  if (user) {
+    const dbConsent = await getUserAiConsent(c.env.DB, user.id).catch(() => false);
+    if (!dbConsent) {
+      await setUserAiConsent(c.env.DB, user.id, true).catch(() => {});
+    }
+  }
+
+  // 4. Guardrail & Content Safety Screening
   const guard = screenCalculationQuery(query);
   if (!guard.safe) {
     return json(c, {
@@ -371,11 +502,12 @@ app.post("/api/calc-agent/query", async (c) => {
     }, 400);
   }
 
-  // 4. Execute Fast Multi-Provider Agent Pipeline
+  // 5. Execute Calculation Agent Pipeline
   try {
-    const result = await runCalculationAgent(guard.sanitizedQuery, apiKey, selectedModel, selectedProvider);
+    const modelToUse = selectedModel || (effectiveProvider === "gemini" ? "gemini-3.1-flash-lite" : "");
+    const result = await runCalculationAgent(guard.sanitizedQuery, effectiveKey, modelToUse, effectiveProvider, hitlCorrection);
 
-    // 5. Persist to D1 if user has an active session (never store API keys)
+    // 6. Persist to D1 if user has an active session
     const calcId = await saveCalculationRecord(
       c.env.DB,
       user ? user.id : null,
@@ -388,15 +520,21 @@ app.post("/api/calc-agent/query", async (c) => {
       ok: true,
       calcId,
       data: result,
-      user: user ? { id: user.id, name: user.name } : null,
-      byokUsed: !!userApiKey,
-      providerUsed: result.providerUsed || selectedProvider,
-      modelUsed: result.modelUsed || selectedModel,
+      user: user ? { id: user.id, name: user.name, email: user.email } : null,
+      providerUsed: effectiveProvider === "gemini" ? "Google AI Studio" : (effectiveProvider.charAt(0).toUpperCase() + effectiveProvider.slice(1)),
+      modelUsed: result.modelUsed || modelToUse,
       researchGateway: result.researchGateway,
+      hitlApplied: !!hitlCorrection,
     });
   } catch (err) {
     console.error("Calculation agent failure:", err.message);
-    const sanitizedMsg = (err.message || "").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]").replace(/sk-[A-Za-z0-9_\-]{20,}/g, "[REDACTED]");
+    const sanitizedMsg = (err.message || "")
+      .replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]")
+      .replace(/AQ\.[A-Za-z0-9_\-]{30,}/g, "[REDACTED]")
+      .replace(/gsk_[A-Za-z0-9_\-]{15,}/g, "[REDACTED]")
+      .replace(/sk-(?:proj-)?[A-Za-z0-9_\-]{20,}/g, "[REDACTED]")
+      .replace(/sk-ant-[A-Za-z0-9_\-]{20,}/g, "[REDACTED]");
+
     return json(c, {
       error: "The calculation agent encountered an error: " + sanitizedMsg,
       details: sanitizedMsg,
@@ -742,6 +880,27 @@ app.all("/api/cron/cleanup", async (c) => {
 app.get("/agent", (c) => c.redirect("/tools/calc-agent/", 301));
 app.get("/calc-agent", (c) => c.redirect("/tools/calc-agent/", 301));
 app.get("/tools/calc-agent", (c) => c.redirect("/tools/calc-agent/", 301));
+app.get("/tools", (c) => c.redirect("/#tools", 301));
+app.get("/tools/", (c) => c.redirect("/#tools", 301));
+app.get("/regional", (c) => c.redirect("/regional/", 301));
+app.get("/international", (c) => c.redirect("/regional/", 301));
+app.get("/international/", (c) => c.redirect("/regional/", 301));
+app.get("/ar", (c) => c.redirect("/regional/#islamic", 301));
+app.get("/ar/", (c) => c.redirect("/regional/#islamic", 301));
+app.get("/es", (c) => c.redirect("/regional/#spanish", 301));
+app.get("/es/", (c) => c.redirect("/regional/#spanish", 301));
+app.get("/fr", (c) => c.redirect("/regional/#french", 301));
+app.get("/fr/", (c) => c.redirect("/regional/#french", 301));
+
+// International & Regional Calculators Canonical Redirects
+app.get("/ar/zakat-calculator", (c) => c.redirect("/ar/zakat-calculator/", 301));
+app.get("/ar/end-of-service-calculator", (c) => c.redirect("/ar/end-of-service-calculator/", 301));
+app.get("/ar/inheritance-calculator", (c) => c.redirect("/ar/inheritance-calculator/", 301));
+app.get("/es/calculadora-finiquito", (c) => c.redirect("/es/calculadora-finiquito/", 301));
+app.get("/es/calculadora-aguinaldo", (c) => c.redirect("/es/calculadora-aguinaldo/", 301));
+app.get("/fr/calculateur-indemnite-licenciement", (c) => c.redirect("/fr/calculateur-indemnite-licenciement/", 301));
+app.get("/fr/bareme-kilometrique", (c) => c.redirect("/fr/bareme-kilometrique/", 301));
+app.get("/tools/iban-validator", (c) => c.redirect("/tools/iban-validator/", 301));
 
 /* ================================================================== *
  * Static assets fallback (the SPA)

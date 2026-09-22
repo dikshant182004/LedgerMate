@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculadora de Finiquito y Liquidación 2026 | Mexico Severance Calculator (LFT) | LedgerMate</title>
+<meta name="description" content="Calcula tu finiquito por renuncia o despido injustificado según la Ley Federal del Trabajo (LFT México). Mexican severance pay, SDI, and vacation bonus calculator." />
+<link rel="canonical" href="https://tryledgermate.in/es/calculadora-finiquito/" />
+<link rel="alternate" hreflang="es" href="https://tryledgermate.in/es/calculadora-finiquito/" />
+<link rel="alternate" hreflang="en" href="https://tryledgermate.in/regional/#americas" />
+<link rel="alternate" hreflang="x-default" href="https://tryledgermate.in/es/calculadora-finiquito/" />
+<meta name="robots" content="index, follow" />
+
+<!-- OpenGraph & Twitter Social Cards -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Calculadora de Finiquito y Liquidación 2026 | LFT México" />
+<meta property="og:description" content="Simula tu finiquito por renuncia o liquidación por despido con la reforma de Vacaciones Dignas y Salario Diario Integrado (SDI)." />
+<meta property="og:url" content="https://tryledgermate.in/es/calculadora-finiquito/" />
+<meta property="og:site_name" content="LedgerMate Regional Hub" />
+<meta property="og:locale" content="es_MX" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Calculadora Finiquito y Liquidación 2026 | LFT" />
+<meta name="twitter:description" content="Cálculo exacto de 3 meses de indemnización, 20 días por año, prima de antigüedad y aguinaldo proporcional." />
+
+<!-- AEO / GEO Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Calculadora de Finiquito y Liquidación (Mexico Severance Calculator)",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "url": "https://tryledgermate.in/es/calculadora-finiquito/",
+      "description": "Calculadora laboral oficial para calcular finiquitos por renuncia voluntaria y liquidaciones por despido injustificado conforme a la LFT de México.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "LedgerMate", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "Regional Hub", "item": "https://tryledgermate.in/regional/" },
+        { "@type": "ListItem", "position": 3, "name": "Finiquito y Liquidación", "item": "https://tryledgermate.in/es/calculadora-finiquito/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuál es la diferencia legal entre finiquito y liquidación en México?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El finiquito corresponde cuando la relación laboral termina por renuncia voluntaria o despido justificado (incluye días trabajados, aguinaldo, vacaciones y prima vacacional proporcionales). La liquidación o indemnización aplica en despidos injustificados o cierre patronal (Artículos 48 y 50 LFT) e incluye adicionalmente 3 meses de salario constitucional, 20 días por año laborado y prima de antigüedad."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo se calcula el Salario Diario Integrado (SDI) para la liquidación?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El SDI (Art. 84 y 89 LFT) incorpora el salario ordinario diario más las partes proporcionales de aguinaldo diario (15 días / 365 = 0.0411), prima vacacional diaria (días de ley × 25% / 365) y demás prestaciones fijas en dinero o especie percibidas por el trabajador."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Quién tiene derecho a la prima de antigüedad (Art. 162 LFT)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En despido injustificado o justificado, se paga sin importar los años laborados. En renuncia voluntaria, sólo se paga obligatoriamente si el trabajador ha cumplido un mínimo de 15 años de servicio continuos. Equivale a 12 días por año con tope legal de dos salarios mínimos generales."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo impacta la reforma de Vacaciones Dignas en el finiquito?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A partir de la reforma, el primer año otorga un mínimo de 12 días laborales de vacaciones pagadas (en lugar de 6), aumentando 2 días por año subsecuente hasta llegar a 20 días en el año 5. Esto incrementa directamente el factor de integración del SDI y el pago proporcional al renunciar."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --primary: #0284c7;
+  --primary-light: #f0f9ff;
+  --primary-hover: #0369a1;
+  --accent: #e11d48;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --border-focus: #38bdf8;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Header */
+.header-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+}
+.brand-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+}
+.nav-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--primary); }
+.btn-cta {
+  background: var(--primary);
+  color: #fff !important;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+/* Page wrapper */
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 18px 80px;
+}
+
+@media (max-width: 860px) {
+  .page-wrapper {
+    padding: 16px 14px 40px !important;
+  }
+  .calc-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .calc-sidebar {
+    position: static !important;
+  }
+  .result-card {
+    position: static !important;
+  }
+  .nav-links a:not(.btn-cta):not(.hub-back-btn) {
+    display: none !important;
+  }
+}
+@media (max-width: 640px) {
+  .header-container {
+    padding: 8px 16px;
+    min-height: 52px;
+  }
+  .brand-badge {
+    display: none !important;
+  }
+  .btn-cta {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+  .calc-card {
+    padding: 18px 14px !important;
+  }
+  .guide-container {
+    padding: 20px 16px !important;
+  }
+  input, select {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+}
+
+/* Sidebar & Sticky Container */
+.calc-sidebar {
+  position: sticky;
+  top: 86px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Breadcrumb & Navigation Styles */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.breadcrumb-nav a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb-nav a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-sep {
+  color: #94a3b8;
+  font-weight: 400;
+}
+.breadcrumb-current {
+  color: #64748b;
+  font-weight: 600;
+}
+.hub-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0369a1;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.hub-back-btn:hover {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+h1 {
+  font-size: clamp(22px, 3.8vw, 34px);
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-size: 15.5px;
+  color: var(--text-muted);
+  max-width: 840px;
+  margin-bottom: 24px;
+}
+
+/* Calculator Grid */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+@media (max-width: 860px) {
+  .calc-grid { grid-template-columns: 1fr; }
+}
+
+.calc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+.card-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.form-section { margin-bottom: 20px; }
+.section-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 520px) {
+  .input-row { grid-template-columns: 1fr; }
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+}
+.field-hint {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 400;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap input, .input-wrap select {
+  width: 100%;
+  padding: 11px 14px 11px 56px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 16px; /* Prevents auto zoom */
+  font-family: inherit;
+  font-weight: 700;
+  background: #fff;
+  transition: all 0.15s;
+  min-height: 48px;
+}
+.input-wrap input:focus, .input-wrap select:focus {
+  outline: none;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+.currency-tag {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #0369a1;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  padding: 3px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Result Card */
+.result-card {
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
+  position: static;
+}
+.type-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  background: #38bdf8;
+  color: #0f172a;
+}
+.result-stat-group {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.result-label {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.result-big-number {
+  font-size: 34px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+.result-currency {
+  font-size: 18px;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-left: 6px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #cbd5e1;
+}
+.breakdown-row strong { color: #ffffff; }
+
+.share-action-box {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+.btn-share {
+  flex: 1;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-reset {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-reset:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Educational Content */
+.guide-container {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 30px;
+  margin-top: 40px;
+  box-shadow: var(--shadow);
+}
+.guide-container h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 28px 0 14px;
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+.guide-container h2:first-child { margin-top: 0; }
+.guide-container h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 20px 0 10px;
+}
+.guide-container p {
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.guide-container ul, .guide-container ol {
+  margin: 12px 0 18px 24px;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.guide-container li { margin-bottom: 6px; }
+
+.callout-box {
+  background: #f0f9ff;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 18px;
+  margin: 20px 0;
+  font-size: 14.5px;
+  color: #0369a1;
+}
+
+.data-table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+.data-table th {
+  background: #f1f5f9;
+  padding: 10px 14px;
+  font-weight: 800;
+  color: #1e293b;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: #334155;
+}
+.data-table tr:hover td { background: #f8fafc; }
+
+/* FAQs */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open {
+  border-color: var(--primary);
+}
+.faq-question {
+  padding: 14px 18px;
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  user-select: none;
+}
+.faq-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 12px;
+  color: #64748b;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+.faq-answer {
+  display: none;
+  padding: 16px 18px;
+  font-size: 14.5px;
+  color: #334155;
+  line-height: 1.75;
+  border-top: 1px solid var(--border);
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+</style>
+
+<!-- JSON-LD Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Calculadora de Finiquito y Liquidación 2026",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" },
+      "description": "Calculadora laboral oficial para calcular el finiquito por renuncia y la liquidación por despido injustificado conforme a la Ley Federal del Trabajo de México, Chile y Colombia."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuál es la diferencia exacta entre Finiquito y Liquidación en México?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El Finiquito se paga cuando el trabajador renuncia voluntariamente o finaliza su contrato por mutuo acuerdo, e integra las partes proporcionales de aguinaldo, vacaciones y prima vacacional devengadas. La Liquidación se paga obligatoriamente cuando el patrón rescinde el contrato sin causa justificada (despido injustificado), sumando al finiquito la indemnización constitucional de 3 meses de salario, 20 días por cada año laborado y la prima de antigüedad."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo afecta la reforma de Vacaciones Dignas al cálculo del finiquito?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Con la reforma del Artículo 76 de la LFT, el derecho a vacaciones inicia en 12 días laborables para el primer año de servicio y aumenta en 2 días por año subsecuente. Esto incrementa proporcionalmente la compensación por vacaciones no gozadas y la prima vacacional mínima del 25%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿A quién le corresponde la prima de antigüedad de 12 días por año?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En caso de despido (justificado o injustificado), el patrón debe pagar la prima de antigüedad independientemente del tiempo trabajado. En caso de renuncia voluntaria, el Artículo 162 fracción III de la LFT establece que únicamente tienen derecho a ella quienes hayan cumplido al menos 15 años de servicio ininterrumpido."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<header class="header-nav">
+  <div class="header-container">
+    <a href="/" class="brand-logo" title="LedgerMate - Inicio">
+      <span>📐 LedgerMate</span>
+      <span class="brand-badge">Leyes Laborales LatAm</span>
+    </a>
+    <div class="nav-links">
+      <a href="/regional/" class="hub-back-btn">🌐 Hub Regional</a>
+      <a href="/es/calculadora-aguinaldo/">Calculadora de Aguinaldo</a>
+      <a href="/app/" class="btn-cta">App de Gastos Compartidos</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-wrapper">
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumb-nav" aria-label="Navegación">
+    <a href="/">Inicio (LedgerMate)</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/regional/">🌐 Hub Regional</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Calculadora de Finiquito</span>
+  </nav>
+
+  <div>
+    <div class="hero-badge">⚖️ Actualizada 2026 con Reforma de Vacaciones Dignas</div>
+    <h1>Calculadora de Finiquito y Liquidación por Despido</h1>
+    <p class="hero-subtitle">
+      Conoce al detalle cuánto dinero te corresponde por ley al terminar tu relación laboral: renuncia voluntaria (finiquito) o despido injustificado (liquidación constitucional) en México, Chile y Colombia.
+    </p>
+  </div>
+
+  <div class="calc-grid">
+    <!-- Input Card -->
+    <div class="calc-card">
+      <div class="card-header-title">
+        <span>📋 Datos de tu Empleo y Salario</span>
+      </div>
+
+      <!-- Country & Cause -->
+      <div class="input-row">
+        <div class="field-group">
+          <label class="field-label">País de Residencia</label>
+          <div class="input-wrap">
+            <select id="country-select" onchange="onCountryChange()">
+              <option value="MX" selected>México (Ley Federal del Trabajo - LFT)</option>
+              <option value="CL">Chile (Código del Trabajo)</option>
+              <option value="CO">Colombia (Código Sustantivo del Trabajo)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Motivo de Separación</label>
+          <div class="input-wrap">
+            <select id="separation-reason" onchange="recalculate()">
+              <option value="despido" selected>Despido Injustificado (Liquidación Total)</option>
+              <option value="renuncia">Renuncia Voluntaria (Finiquito Ordinario)</option>
+              <option value="termino">Término de Contrato / Mutuo Acuerdo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salary Inputs -->
+      <div class="form-section">
+        <div class="section-label">💵 Remuneración Salarial</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">
+              <span>Sueldo Mensual Bruto</span>
+              <span class="field-hint">Antes de deducciones de impuestos</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="monthly-salary" value="18000" min="0" oninput="recalculate()">
+              <span class="currency-tag curr-symbol">MXN</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <span>Días de Aguinaldo por Contrato</span>
+              <span class="field-hint">Mínimo legal en México: 15 días</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="aguinaldo-days" value="15" min="1" oninput="recalculate()">
+              <span class="currency-tag">días</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time of Service -->
+      <div class="form-section">
+        <div class="section-label">📅 Antigüedad en el Trabajo</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">Años Completos de Servicio</label>
+            <div class="input-wrap">
+              <input type="number" id="service-years" value="3" min="0" max="50" oninput="recalculate()">
+              <span class="currency-tag">años</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Meses Adicionales</label>
+            <div class="input-wrap">
+              <input type="number" id="service-months" value="6" min="0" max="11" oninput="recalculate()">
+              <span class="currency-tag">meses</span>
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">
+              <span>Días de Vacaciones Pendientes de Gozar</span>
+              <span class="field-hint">Días devengados no disfrutados</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="vacation-days-pending" value="8" min="0" oninput="recalculate()">
+              <span class="currency-tag">días</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <span>Días Laborados del Mes en Curso</span>
+              <span class="field-hint">Sueldo de la quincena pendiente</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="unpaid-days" value="10" min="0" max="31" oninput="recalculate()">
+              <span class="currency-tag">días</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Summary Sidebar -->
+    <div class="calc-sidebar">
+      <div class="result-card">
+        <div id="badge-mode" class="type-badge">
+          Liquidación Constitucional por Despido
+        </div>
+
+        <div class="result-stat-group">
+          <div class="result-label">Total Neto Estimado a Recibir:</div>
+          <div class="result-big-number">
+            <span id="res-total">$104,250</span>
+            <span class="result-currency curr-symbol">MXN</span>
+          </div>
+        </div>
+
+        <div class="breakdown-row">
+          <span>Sueldo días devengados no pagados:</span>
+          <span><strong id="res-unpaid-salary">$6,000</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Aguinaldo proporcional del año:</span>
+          <span><strong id="res-aguinaldo">$4,500</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Vacaciones pendientes + Prima (25%):</span>
+          <span><strong id="res-vacations">$6,000</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row" id="row-indemnizacion">
+          <span>Indemnización 3 meses (Constitucional):</span>
+          <span><strong id="res-3months">$54,000</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row" id="row-20days">
+          <span>Indemnización 20 días por año:</span>
+          <span><strong id="res-20days">$21,000</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row" id="row-antiguedad">
+          <span>Prima de antigüedad (12 días/año):</span>
+          <span><strong id="res-antiguedad">$12,750</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+
+        <div class="share-action-box">
+          <a id="whatsapp-share-btn" href="#" target="_blank" rel="noopener" class="btn-share">
+            <span>📲 Compartir Resumen por WhatsApp</span>
+          </a>
+          <button class="btn-reset" onclick="resetForm()">Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- LedgerMate Promotion -->
+      <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+        <h4 style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:6px;">¿Compartes gastos de casa o préstamos?</h4>
+        <p style="font-size:12.5px; color:#475569; line-height:1.6; margin-bottom:10px;">
+          Durante una transición laboral, mantener tus cuentas personales y gastos compartidos en orden es crucial. LedgerMate te permite dividir rentas y gastos en segundos sin registro.
+        </p>
+        <a href="/app/" style="font-size:12.5px; font-weight:700; color:var(--primary); text-decoration:none;">Probar LedgerMate gratis ←</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-depth Educational Guide (1200+ words) -->
+  <article class="guide-container">
+    <h2>Guía Jurídica y Práctica: Finiquito y Liquidación según la Ley Laboral</h2>
+    <p>
+      El momento de poner fin a una relación de trabajo genera frecuentes incertidumbres legales. Tanto empleados como empleadores suelen confundir los conceptos de <strong>finiquito</strong> y <strong>liquidación</strong>, dos figuras jurídicas con fundamentos legales, montos y alcances totalmente distintos en la legislación laboral de México (Ley Federal del Trabajo - LFT), Chile (Código del Trabajo) y Colombia (Código Sustantivo del Trabajo).
+    </p>
+
+    <div class="callout-box">
+      <strong>Regla Fundamental de Distinción:</strong>
+      El <strong>Finiquito</strong> es el pago de las prestaciones y derechos que el trabajador ya devengó o acumuló durante el tiempo trabajado (salario pendiente, aguinaldo proporcional, vacaciones y prima vacacional). La <strong>Liquidación</strong> es una indemnización legal que el patrón está obligado a pagar cuando despide al colaborador sin causa legalmente justificada.
+    </div>
+
+    <h2>1. Conceptos que Integran el Finiquito Ordinario (Renuncia Voluntaria)</h2>
+    <p>
+      Cuando un trabajador decide presentar su renuncia voluntaria o cuando concluye un contrato temporal por mutuo acuerdo, el patrón debe entregar un finiquito que comprende:
+    </p>
+    <ul>
+      <li><strong>Salarios devengados y no pagados:</strong> Los días que el trabajador laboró en la quincena o semana corriente antes de separarse de la empresa.</li>
+      <li><strong>Aguinaldo proporcional:</strong> La parte proporcional de los 15 días mínimos de ley (o más, según contrato) correspondientes a los días trabajados en el año natural en curso.</li>
+      <li><strong>Vacaciones devengadas y no gozadas:</strong> El pago en dinero de los días de descanso obligatorio que el empleado tenía pendientes de disfrutar, calculados con la nueva tabla de <em>Vacaciones Dignas</em>.</li>
+      <li><strong>Prima vacacional:</strong> Por ley (Art. 80 LFT), un mínimo del 25% adicional sobre el monto correspondiente a las vacaciones.</li>
+      <li><strong>Prima de antigüedad (solo si aplica):</strong> De acuerdo con el Artículo 162 fracción III de la LFT, en caso de renuncia voluntaria únicamente se paga si el trabajador tiene <strong>15 o más años de servicio cumplidos</strong>.</li>
+    </ul>
+
+    <h2>2. Conceptos de la Liquidación por Despido Injustificado</h2>
+    <p>
+      Si la empresa decide despedir al trabajador por causas no imputables a él (recortes de personal, reorganización, o sin pruebas de falta grave según el Artículo 47 de la LFT), la ley protege al trabajador con una indemnización constitucional compuesta por:
+    </p>
+    <ul>
+      <li><strong>Todo lo correspondiente al Finiquito:</strong> Salarios adeudados, aguinaldo proporcional, vacaciones y prima vacacional.</li>
+      <li><strong>3 meses de Salario Constitucional (Art. 48 LFT):</strong> Noventa días de salario como indemnización directa por la pérdida intempestiva del empleo.</li>
+      <li><strong>20 días de salario por cada año de servicio prestado (Art. 50 LFT):</strong> Aplicable en despidos donde el patrón se niega a la reinstalación del empleado.</li>
+      <li><strong>Prima de antigüedad obligatoria (Art. 162 LFT):</strong> 12 días de salario por cada año de servicio laborado. La ley fija un tope para esta prima: no puede pagarse con un salario menor al salario mínimo ni mayor a dos veces el salario mínimo general vigente.</li>
+    </ul>
+
+    <!-- Comparative Table -->
+    <div class="data-table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Concepto Prestacional</th>
+            <th>Renuncia Voluntaria (Finiquito)</th>
+            <th>Despido Injustificado (Liquidación)</th>
+            <th>Fundamento Legal (LFT)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Días trabajados del mes</strong></td>
+            <td>Sí (100% devengado)</td>
+            <td>Sí (100% devengado)</td>
+            <td>Art. 82 y 84</td>
+          </tr>
+          <tr>
+            <td><strong>Aguinaldo proporcional</strong></td>
+            <td>Sí (Proporcional a días del año)</td>
+            <td>Sí (Proporcional a días del año)</td>
+            <td>Art. 87</td>
+          </tr>
+          <tr>
+            <td><strong>Vacaciones y Prima 25%</strong></td>
+            <td>Sí (Días acumulados)</td>
+            <td>Sí (Días acumulados)</td>
+            <td>Art. 76 y 80</td>
+          </tr>
+          <tr>
+            <td><strong>Indemnización 3 meses</strong></td>
+            <td>No corresponde</td>
+            <td><strong>Sí (90 días de salario)</strong></td>
+            <td>Art. 48</td>
+          </tr>
+          <tr>
+            <td><strong>20 días por año trabajado</strong></td>
+            <td>No corresponde</td>
+            <td><strong>Sí (20 días/año)</strong></td>
+            <td>Art. 50</td>
+          </tr>
+          <tr>
+            <td><strong>Prima de antigüedad (12 d/año)</strong></td>
+            <td>Solo con 15+ años de antigüedad</td>
+            <td><strong>Sí (Sin importar los años)</strong></td>
+            <td>Art. 162</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Reforma de "Vacaciones Dignas" y su Efecto en el Cálculo</h2>
+    <p>
+      A partir del 1 de enero de 2023, entró en vigor el decreto que duplicó el periodo vacacional mínimo en México. La tabla actual estipula:
+    </p>
+    <ul>
+      <li>Año 1: 12 días laborales</li>
+      <li>Año 2: 14 días laborales</li>
+      <li>Año 3: 16 días laborales</li>
+      <li>Año 4: 18 días laborales</li>
+      <li>Año 5: 20 días laborales</li>
+      <li>De 6 a 10 años: 22 días laborales</li>
+      <li>De 11 a 15 años: 24 días laborales</li>
+    </ul>
+    <p>
+      Este cambio beneficia notablemente a los trabajadores al momento de su separación, ya que los días no gozados representan ahora un importe sustancialmente superior en la prima vacacional y en la indemnización del finiquito.
+    </p>
+
+    <!-- FAQs Section -->
+    <h2 style="margin-top: 36px;">Preguntas Frecuentes sobre Finiquito y Liquidación</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>¿Qué plazo tiene la empresa para pagarme el finiquito o liquidación?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        En México, la Ley Federal del Trabajo establece que el finiquito o liquidación debe entregarse el mismo día de la separación laboral o en la fecha de corte inmediata. Si el patrón demora o se niega a pagar, el trabajador cuenta con un plazo de <strong>un año</strong> para reclamar el pago de sus prestaciones y <strong>dos meses</strong> para demandar indemnización por despido injustificado ante el Centro Federal de Conciliación y Registro Laboral (CFCRL).
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>¿El finiquito y la liquidación pagan impuestos ante el SAT?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Algunos conceptos están total o parcialmente exentos de Impuesto Sobre la Renta (ISR) según el Artículo 93 de la Ley del ISR:
+        El aguinaldo está exento hasta por el equivalente a 30 UMAs. La prima vacacional está exenta hasta 15 UMAs. En la liquidación por despido, la indemnización (3 meses y 20 días por año) goza de una exención de hasta 90 veces la UMA por cada año de servicio laborado. El excedente causa retención de ISR.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>¿Debo firmar mi finiquito si no estoy de acuerdo con la cantidad?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Jamás firmes un documento de renuncia voluntaria ni un recibo finiquito con cláusulas de "no me reservo acción legal alguna" si el dinero no te ha sido entregado en ese mismo acto o si consideras que fuiste despedido injustificadamente. Acude previamente a la Procuraduría Federal de la Defensa del Trabajo (PROFEDET) para recibir asesoría gratuita.
+      </div>
+    </div>
+  </article>
+</main>
+
+<script>
+function formatMoney(n, curr) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function onCountryChange() {
+  const c = document.getElementById('country-select').value;
+  const symbols = document.querySelectorAll('.curr-symbol');
+  let curr = 'MXN';
+  if (c === 'CL') curr = 'CLP';
+  if (c === 'CO') curr = 'COP';
+  symbols.forEach(s => s.textContent = curr);
+  recalculate();
+}
+
+function recalculate() {
+  const country = document.getElementById('country-select').value;
+  const reason = document.getElementById('separation-reason').value;
+  const monthlySalary = parseFloat(document.getElementById('monthly-salary').value) || 0;
+  const aguinaldoDaysContract = parseFloat(document.getElementById('aguinaldo-days').value) || 15;
+  const years = parseInt(document.getElementById('service-years').value) || 0;
+  const months = parseInt(document.getElementById('service-months').value) || 0;
+  const vacationDaysPending = parseFloat(document.getElementById('vacation-days-pending').value) || 0;
+  const unpaidDays = parseFloat(document.getElementById('unpaid-days').value) || 0;
+
+  const totalYears = years + (months / 12);
+  const dailySalary = monthlySalary / 30;
+
+  // 1. Unpaid salary of current month
+  const unpaidSalary = unpaidDays * dailySalary;
+
+  // 2. Proportional Aguinaldo (months in current year)
+  // Approximate portion of the year = months / 12 (or minimum 1 month if year just started)
+  const fractionOfYear = Math.min(1, Math.max(0.08, (months > 0 ? months : 6) / 12));
+  const proportionalAguinaldo = fractionOfYear * aguinaldoDaysContract * dailySalary;
+
+  // 3. Pending vacations + 25% vacation premium
+  const vacationAmount = vacationDaysPending * dailySalary;
+  const vacationPremium = vacationAmount * 0.25;
+  const totalVacations = vacationAmount + vacationPremium;
+
+  // 4. Severance indemnities (if despido)
+  let indemnizacion3Months = 0;
+  let indemnizacion20Days = 0;
+  let primaAntiguedad = 0;
+
+  const isDespido = reason === 'despido';
+
+  if (isDespido) {
+    indemnizacion3Months = dailySalary * 90;
+    indemnizacion20Days = totalYears * 20 * dailySalary;
+
+    // Prima de antigüedad: 12 days per year, capped at 2x minimum wage in Mexico (~550 MXN)
+    // We cap the daily salary for prima de antiguedad at 550 or dailySalary, whichever is smaller (if MX)
+    const cappedDailyForPrima = (country === 'MX') ? Math.min(dailySalary, 550) : dailySalary;
+    primaAntiguedad = totalYears * 12 * cappedDailyForPrima;
+  } else if (reason === 'renuncia' && totalYears >= 15) {
+    // Prima de antiguedad in voluntary resignation if 15+ years
+    const cappedDailyForPrima = (country === 'MX') ? Math.min(dailySalary, 550) : dailySalary;
+    primaAntiguedad = totalYears * 12 * cappedDailyForPrima;
+  }
+
+  const total = unpaidSalary + proportionalAguinaldo + totalVacations + indemnizacion3Months + indemnizacion20Days + primaAntiguedad;
+
+  // Update UI
+  const curr = document.querySelector('.curr-symbol').textContent;
+  document.getElementById('res-total').textContent = formatMoney(total, curr);
+  document.getElementById('res-unpaid-salary').textContent = formatMoney(unpaidSalary, curr);
+  document.getElementById('res-aguinaldo').textContent = formatMoney(proportionalAguinaldo, curr);
+  document.getElementById('res-vacations').textContent = formatMoney(totalVacations, curr);
+  document.getElementById('res-3months').textContent = formatMoney(indemnizacion3Months, curr);
+  document.getElementById('res-20days').textContent = formatMoney(indemnizacion20Days, curr);
+  document.getElementById('res-antiguedad').textContent = formatMoney(primaAntiguedad, curr);
+
+  // Toggle rows visibility
+  document.getElementById('row-indemnizacion').style.display = isDespido ? 'flex' : 'none';
+  document.getElementById('row-20days').style.display = isDespido ? 'flex' : 'none';
+  document.getElementById('row-antiguedad').style.display = (primaAntiguedad > 0) ? 'flex' : 'none';
+
+  const badge = document.getElementById('badge-mode');
+  if (isDespido) {
+    badge.textContent = 'Liquidación Constitucional por Despido';
+    badge.style.background = '#e11d48';
+    badge.style.color = '#ffffff';
+  } else {
+    badge.textContent = 'Finiquito por Renuncia Voluntaria';
+    badge.style.background = '#38bdf8';
+    badge.style.color = '#0f172a';
+  }
+
+  // WhatsApp share
+  const text = encodeURIComponent(`Cálculo de mi liquidación/finiquito con LedgerMate:
+- Tipo: ${isDespido ? 'Liquidación por Despido' : 'Finiquito por Renuncia'}
+- Antigüedad: ${years} años y ${months} meses
+- Total estimado: ${formatMoney(total, curr)} ${curr}
+Calcula el tuyo gratis: https://tryledgermate.in/es/calculadora-finiquito/`);
+  document.getElementById('whatsapp-share-btn').href = `https://api.whatsapp.com/send?text=${text}`;
+}
+
+function resetForm() {
+  document.getElementById('monthly-salary').value = '18000';
+  document.getElementById('aguinaldo-days').value = '15';
+  document.getElementById('service-years').value = '3';
+  document.getElementById('service-months').value = '0';
+  document.getElementById('vacation-days-pending').value = '6';
+  document.getElementById('unpaid-days').value = '0';
+  recalculate();
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  if (!item) return;
+  const ans = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+  if (isOpen) {
+    item.classList.remove('open');
+    if (ans) ans.style.display = 'none';
+  } else {
+    item.classList.add('open');
+    if (ans) ans.style.display = 'block';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', onCountryChange);
+</script>
+
+</body>
+</html>

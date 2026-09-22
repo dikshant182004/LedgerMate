@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculateur Indemnité de Licenciement 2026 | French Severance Calculator (Code du Travail) | LedgerMate</title>
+<meta name="description" content="Calcul de l'indemnité légale de licenciement selon les articles L1234-9 et R1234-2 du Code du Travail. French severance pay and dismissal compensation calculator." />
+<link rel="canonical" href="https://tryledgermate.in/fr/calculateur-indemnite-licenciement/" />
+<link rel="alternate" hreflang="fr" href="https://tryledgermate.in/fr/calculateur-indemnite-licenciement/" />
+<link rel="alternate" hreflang="en" href="https://tryledgermate.in/regional/#europe" />
+<link rel="alternate" hreflang="x-default" href="https://tryledgermate.in/fr/calculateur-indemnite-licenciement/" />
+<meta name="robots" content="index, follow" />
+
+<!-- OpenGraph & Twitter Social Cards -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Calculateur Indemnité Légale de Licenciement 2026 | France" />
+<meta property="og:description" content="Simulateur officiel d'indemnité de licenciement et rupture conventionnelle selon l'ancienneté et le salaire de référence." />
+<meta property="og:url" content="https://tryledgermate.in/fr/calculateur-indemnite-licenciement/" />
+<meta property="og:site_name" content="LedgerMate Regional Hub" />
+<meta property="og:locale" content="fr_FR" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Calculateur Indemnité Licenciement 2026 | Code du Travail" />
+<meta name="twitter:description" content="Calcul légal selon les articles L. 1234-9 et R. 1234-2 : 1/4 et 1/3 de mois de salaire par année d'ancienneté." />
+
+<!-- AEO / GEO Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Calculateur d'Indemnité Légale de Licenciement (French Severance Calculator)",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "url": "https://tryledgermate.in/fr/calculateur-indemnite-licenciement/",
+      "description": "Calculateur officiel conforme aux barèmes du Code du travail français pour les licenciements personnels, économiques et ruptures conventionnelles.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "LedgerMate", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "Regional Hub", "item": "https://tryledgermate.in/regional/" },
+        { "@type": "ListItem", "position": 3, "name": "Indemnité de Licenciement", "item": "https://tryledgermate.in/fr/calculateur-indemnite-licenciement/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Comment se calcule l'indemnité légale de licenciement en France (Art. R1234-2) ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'article R. 1234-2 du Code du travail prévoit que l'indemnité minimale ne peut être inférieure à : 1/4 de mois de salaire par année d'ancienneté pour les années jusqu'à 10 ans, et 1/3 de mois de salaire par année d'ancienneté pour les années au-delà de 10 ans. Les mois incomplets sont calculés proportionnellement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle est la règle pour déterminer le salaire de référence ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le salaire de référence retenu est le montant le plus avantageux pour le salarié entre : la moyenne mensuelle des 12 derniers mois précédant la notification du licenciement, ou la moyenne mensuelle des 3 derniers mois (les primes annuelles étant alors proratisées sur 3 mois)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "L'indemnité de licenciement est-elle imposable en 2026 ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'indemnité légale ou conventionnelle de licenciement est exonérée d'impôt sur le revenu dans la limite du montant légal/conventionnel, ou jusqu'à 2 fois la rémunération annuelle brute dans la limite de 6 fois le PASS (Plafond Annuel de la Sécurité Sociale)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle est l'ancienneté minimale exigée pour bénéficier de l'indemnité légale ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le salarié sous contrat à durée indéterminée (CDI) doit justifier d'au moins 8 mois d'ancienneté ininterrompue au service du même employeur à la date de notification du licenciement (hors faute grave ou faute lourde)."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --primary: #2563eb;
+  --primary-light: #eff6ff;
+  --primary-hover: #1d4ed8;
+  --accent: #dc2626;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --border-focus: #60a5fa;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.header-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+}
+.brand-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #bfdbfe;
+}
+.nav-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--primary); }
+.btn-cta {
+  background: var(--primary);
+  color: #fff !important;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 18px 80px;
+}
+
+@media (max-width: 860px) {
+  .page-wrapper {
+    padding: 16px 14px 40px !important;
+  }
+  .calc-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .calc-sidebar {
+    position: static !important;
+  }
+  .result-card {
+    position: static !important;
+  }
+  .nav-links a:not(.btn-cta):not(.hub-back-btn) {
+    display: none !important;
+  }
+}
+@media (max-width: 640px) {
+  .header-container {
+    padding: 8px 16px;
+    min-height: 52px;
+  }
+  .brand-badge {
+    display: none !important;
+  }
+  .btn-cta {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+  .calc-card {
+    padding: 18px 14px !important;
+  }
+  .guide-container {
+    padding: 20px 16px !important;
+  }
+  input, select {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+}
+
+/* Sidebar & Sticky Container */
+.calc-sidebar {
+  position: sticky;
+  top: 86px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Breadcrumb & Navigation Styles */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.breadcrumb-nav a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb-nav a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-sep {
+  color: #94a3b8;
+  font-weight: 400;
+}
+.breadcrumb-current {
+  color: #64748b;
+  font-weight: 600;
+}
+.hub-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e40af;
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.hub-back-btn:hover {
+  background: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+h1 {
+  font-size: clamp(22px, 3.8vw, 34px);
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-size: 15.5px;
+  color: var(--text-muted);
+  max-width: 840px;
+  margin-bottom: 24px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+@media (max-width: 860px) {
+  .calc-grid { grid-template-columns: 1fr; }
+}
+
+.calc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+.card-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.form-section { margin-bottom: 20px; }
+.section-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 520px) {
+  .input-row { grid-template-columns: 1fr; }
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+}
+.field-hint {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 400;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap input, .input-wrap select {
+  width: 100%;
+  padding: 11px 14px 11px 56px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 16px; /* Prevents auto zoom */
+  font-family: inherit;
+  font-weight: 700;
+  background: #fff;
+  transition: all 0.15s;
+  min-height: 48px;
+}
+.input-wrap input:focus, .input-wrap select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+.currency-tag {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 3px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Result Card */
+.result-card {
+  background: linear-gradient(145deg, #1e3a8a, #1d4ed8);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 10px 25px -5px rgba(29, 78, 216, 0.35);
+  position: static;
+}
+.seniority-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  background: #dbeafe;
+  color: #1e40af;
+}
+.result-stat-group {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.result-label {
+  font-size: 13px;
+  color: #bfdbfe;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.result-big-number {
+  font-size: 34px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+.result-currency {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fde68a;
+  margin-left: 6px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #e2e8f0;
+}
+.breakdown-row strong { color: #ffffff; }
+
+.share-action-box {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+.btn-share {
+  flex: 1;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-reset {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-reset:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Educational Content */
+.guide-container {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 30px;
+  margin-top: 40px;
+  box-shadow: var(--shadow);
+}
+.guide-container h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 28px 0 14px;
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+.guide-container h2:first-child { margin-top: 0; }
+.guide-container h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 20px 0 10px;
+}
+.guide-container p {
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.guide-container ul, .guide-container ol {
+  margin: 12px 0 18px 24px;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.guide-container li { margin-bottom: 6px; }
+
+.callout-box {
+  background: #eff6ff;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 18px;
+  margin: 20px 0;
+  font-size: 14.5px;
+  color: #1e40af;
+}
+
+.data-table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+.data-table th {
+  background: #f1f5f9;
+  padding: 10px 14px;
+  font-weight: 800;
+  color: #1e293b;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: #334155;
+}
+.data-table tr:hover td { background: #f8fafc; }
+
+/* FAQs */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open {
+  border-color: var(--primary);
+}
+.faq-question {
+  padding: 14px 18px;
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  user-select: none;
+}
+.faq-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 12px;
+  color: #64748b;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+.faq-answer {
+  display: none;
+  padding: 16px 18px;
+  font-size: 14.5px;
+  color: #334155;
+  line-height: 1.75;
+  border-top: 1px solid var(--border);
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+</style>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Calculateur Indemnité de Licenciement 2026",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+      "description": "Simulateur gratuit d'indemnité légale de licenciement selon les articles L. 1234-9 et R. 1234-2 du Code du travail. Intègre le salaire de référence, l'ancienneté au prorata des mois, et les indemnités compensatrices."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quelle est la formule légale de calcul de l'indemnité de licenciement en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Conformément à l'article R. 1234-2 du Code du travail, l'indemnité légale minimale s'élève à : 1/4 de mois de salaire par année d'ancienneté pour les 10 premières années, et 1/3 de mois de salaire par année pour les années au-delà de 10 ans. Les années incomplètes sont proratisées en mois."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment se calcule le salaire de référence pour l'indemnité ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'employeur doit obligatoirement retenir la formule la plus avantageuse pour le salarié entre : soit la moyenne mensuelle des 12 derniers mois de salaire brut, soit le tiers des 3 derniers mois (en réintégrant prorata temporis les primes annuelles ou exceptionnelles perçues)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "L'indemnité de licenciement est-elle imposable ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'indemnité légale ou conventionnelle de licenciement est totalement exonérée d'impôt sur le revenu dans la limite du montant fixé par la loi ou la convention collective, ou dans la limite de 2 fois le PASS (Plafond Annuel de la Sécurité Sociale) si ce montant est supérieur."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<header class="header-nav">
+  <div class="header-container">
+    <a href="/" class="brand-logo" title="LedgerMate - Accueil">
+      <span>📐 LedgerMate</span>
+      <span class="brand-badge">Droit du Travail France</span>
+    </a>
+    <div class="nav-links">
+      <a href="/regional/" class="hub-back-btn">🌐 Hub Régional</a>
+      <a href="/fr/bareme-kilometrique/">Barème Kilométrique URSSAF</a>
+      <a href="/app/" class="btn-cta">Gestion de Dépenses Partagées</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-wrapper">
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumb-nav" aria-label="Navigation">
+    <a href="/">Accueil (LedgerMate)</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/regional/">🌐 Hub Régional</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Calculateur Indemnité de Licenciement</span>
+  </nav>
+
+  <div>
+    <div class="hero-badge">⚖️ Conforme Code du Travail & Ordonnances Macron</div>
+    <h1>Calculateur Officiel d'Indemnité de Licenciement</h1>
+    <p class="hero-subtitle">
+      Estimez précisément votre indemnité légale de licenciement selon les articles L. 1234-9 et R. 1234-2 du Code du travail, avec proratisation des mois d'ancienneté et comparaison des salaires de référence.
+    </p>
+  </div>
+
+  <div class="calc-grid">
+    <!-- Form Inputs Card -->
+    <div class="calc-card">
+      <div class="card-header-title">
+        <span>📋 Données Salariales et Ancienneté</span>
+      </div>
+
+      <!-- Salary Reference Inputs -->
+      <div class="form-section">
+        <div class="section-label">💶 Salaire Brut de Référence</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">
+              <span>Moyenne brute des 12 derniers mois</span>
+              <span class="field-hint">Salaires bruts hors remboursements de frais</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="salary-12m" value="3200" min="0" oninput="recalculate()">
+              <span class="currency-tag">€</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <span>Moyenne brute des 3 derniers mois</span>
+              <span class="field-hint">Avec primes proratisées</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="salary-3m" value="3350" min="0" oninput="recalculate()">
+              <span class="currency-tag">€</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ancienneté Inputs -->
+      <div class="form-section">
+        <div class="section-label">📅 Ancienneté dans l'Entreprise</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">Années complètes d'ancienneté</label>
+            <div class="input-wrap">
+              <input type="number" id="seniority-years" value="7" min="0" max="50" oninput="recalculate()">
+              <span class="currency-tag">ans</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Mois supplémentaires complets</label>
+            <div class="input-wrap">
+              <input type="number" id="seniority-months" value="4" min="0" max="11" oninput="recalculate()">
+              <span class="currency-tag">mois</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Complementary Indemnities -->
+      <div class="form-section">
+        <div class="section-label">🏖️ Indemnités Compensatrices Annexes</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">
+              <span>Préavis non exécuté rémunéré</span>
+              <span class="field-hint">En mois de salaire (ex. 2 ou 3 mois)</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="notice-months" value="0" min="0" max="6" oninput="recalculate()">
+              <span class="currency-tag">mois</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <span>Jours de congés payés restants</span>
+              <span class="field-hint">Acquis non pris lors du départ</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="vacation-days" value="12" min="0" oninput="recalculate()">
+              <span class="currency-tag">jours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Summary Sidebar -->
+    <div class="calc-sidebar">
+      <div class="result-card">
+        <div id="seniority-summary-badge" class="seniority-badge">
+          Ancienneté retenue : 7 ans et 4 mois
+        </div>
+
+        <div class="result-stat-group">
+          <div class="result-label">Indemnité Légale de Licenciement :</div>
+          <div class="result-big-number">
+            <span id="res-legal-indemnity">6 142</span>
+            <span class="result-currency">€</span>
+          </div>
+        </div>
+
+        <div class="breakdown-row">
+          <span>Salaire de référence retenu :</span>
+          <span><strong id="res-ref-salary">3 350 €</strong> (plus avantageux)</span>
+        </div>
+        <div class="breakdown-row">
+          <span>Taux applicable (≤ 10 ans) :</span>
+          <span><strong>1/4 de mois</strong> par an</span>
+        </div>
+        <div class="breakdown-row">
+          <span>Indemnité compensatrice de préavis :</span>
+          <span><strong id="res-notice-indemnity">0 €</strong></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Indemnité congés payés acquis :</span>
+          <span><strong id="res-vacation-indemnity">1 855 €</strong></span>
+        </div>
+        <div class="breakdown-row" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 8px; margin-top: 8px;">
+          <span><strong>Total estimé du solde de tout compte :</strong></span>
+          <span><strong id="res-total-settlement" style="font-size:16px; color:#fde68a;">7 997 €</strong></span>
+        </div>
+
+        <div class="share-action-box">
+          <a id="whatsapp-share-btn" href="#" target="_blank" rel="noopener" class="btn-share">
+            <span>📲 Partager la simulation</span>
+          </a>
+          <button class="btn-reset" onclick="resetForm()">Réinitialiser</button>
+        </div>
+      </div>
+
+      <!-- LedgerMate CTA Box -->
+      <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+        <h4 style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:6px;">Colocation ou frais partagés après déménagement ?</h4>
+        <p style="font-size:12.5px; color:#475569; line-height:1.6; margin-bottom:10px;">
+          Une période de transition professionnelle implique souvent des réajustements de budget. LedgerMate simplifie le partage des loyers, charges et cautions entre colocataires sans inscription.
+        </p>
+        <a href="/app/" style="font-size:12.5px; font-weight:700; color:var(--primary); text-decoration:none;">Découvrir LedgerMate gratuitement ←</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Guide (1200+ words) -->
+  <article class="guide-container">
+    <h2>Guide Juridique Complet du Licenciement et de la Rupture Conventionnelle</h2>
+    <p>
+      La fin d'un contrat de travail à durée indéterminée (CDI) ouvre droit, sous réserve de remplir certaines conditions d'ancienneté, au versement d'une indemnité de licenciement. Ce droit protecteur est encadré par les <strong>articles L. 1234-9 et R. 1234-2 du Code du travail</strong>, issus des ordonnances Macron qui ont revalorisé le barème légal minimal de 25 %.
+    </p>
+
+    <div class="callout-box">
+      <strong>Condition d'ancienneté légale :</strong>
+      Le salarié en CDI a droit à l'indemnité légale dès lors qu'il justifie d'au moins <strong>8 mois d'ancienneté ininterrompue</strong> au service du même employeur à la date de notification du licenciement. Aucune indemnité légale n'est due en cas de faute grave ou de faute lourde.
+    </div>
+
+    <h2>Formule Légale du Code du Travail (Article R. 1234-2)</h2>
+    <p>
+      L'indemnité légale de licenciement ne peut pas être inférieure aux montants suivants :
+    </p>
+    <ul>
+      <li><strong>Pour les 10 premières années d'ancienneté :</strong> 1/4 de mois de salaire brut par année d'ancienneté.</li>
+      <li><strong>À partir de la 11ème année d'ancienneté :</strong> 1/3 de mois de salaire brut par année d'ancienneté.</li>
+    </ul>
+    <p>
+      En cas d'année incomplète, l'indemnité est calculée proportionnellement au nombre de mois complets travaillés (Nombre de mois ÷ 12).
+    </p>
+
+    <!-- Benchmark Matrix Table -->
+    <div class="data-table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Ancienneté</th>
+            <th>Formule de Calcul Légale</th>
+            <th>Exemple pour un salaire de 3 000 € brut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1 an</strong></td>
+            <td>1 × (1/4 × 3 000 €)</td>
+            <td>750 €</td>
+          </tr>
+          <tr>
+            <td><strong>3 ans</strong></td>
+            <td>3 × (1/4 × 3 000 €)</td>
+            <td>2 250 €</td>
+          </tr>
+          <tr>
+            <td><strong>5 ans</strong></td>
+            <td>5 × (1/4 × 3 000 €)</td>
+            <td>3 750 €</td>
+          </tr>
+          <tr>
+            <td><strong>10 ans</strong></td>
+            <td>10 × (1/4 × 3 000 €)</td>
+            <td>7 500 €</td>
+          </tr>
+          <tr>
+            <td><strong>15 ans</strong></td>
+            <td>(10 × 1/4 × 3 000 €) + (5 × 1/3 × 3 000 €)</td>
+            <td>12 500 €</td>
+          </tr>
+          <tr>
+            <td><strong>20 ans</strong></td>
+            <td>(10 × 1/4 × 3 000 €) + (10 × 1/3 × 3 000 €)</td>
+            <td>17 500 €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Règle Impérative du Salaire Mensuel de Référence</h2>
+    <p>
+      Le salaire pris en considération pour le calcul de l'indemnité de licenciement est déterminé selon la formule <strong>la plus avantageuse pour le salarié</strong> entre :
+    </p>
+    <ol>
+      <li><strong>La moyenne des 12 derniers mois :</strong> précédant le licenciement, ou lorsque la durée de service est inférieure à 12 mois, la moyenne mensuelle de la rémunération de l'ensemble des mois précédant le licenciement.</li>
+      <li><strong>Le tiers des 3 derniers mois :</strong> Dans ce cas, toute prime ou autre élément de salaire annuel ou exceptionnel qui aurait été versé au salarié pendant cette période n'est pris en compte que dans la limite d'un montant calculé au prorata temporis (1/12ème pour une prime annuelle).</li>
+    </ol>
+
+    <h2>Indemnité Conventionnelle de Branche vs Indemnité Légale</h2>
+    <p>
+      La convention collective applicable à l'entreprise (Syntec, Métallurgie, Bâtiment, Commerce de détail, etc.) prévoit très fréquemment une indemnité de licenciement plus favorable que le minimum légal du Code du travail, en fonction de la catégorie professionnelle (Cadre vs Non-Cadre). En vertu du principe de faveur, c'est obligatoirement <strong>le montant le plus élevé</strong> qui doit être versé au salarié.
+    </p>
+
+    <h2>Régime Fiscal et Social : Exonération d'Impôt et de Cotisations</h2>
+    <p>
+      L'indemnité légale ou conventionnelle de licenciement bénéficie d'un régime d'exonération fiscale et sociale particulièrement protecteur (Article 80 duodecies du Code général des impôts) :
+    </p>
+    <ul>
+      <li><strong>Exonération totale d'impôt sur le revenu :</strong> à hauteur du montant légal ou conventionnel, ou du double de la rémunération annuelle brute perçue l'année civile précédente, dans la limite de 2 fois le PASS (Plafond Annuel de la Sécurité Sociale).</li>
+      <li><strong>Exonération de cotisations de sécurité sociale :</strong> dans la limite de 2 fois le PASS, sous réserve que l'indemnité totale ne dépasse pas 10 fois le PASS.</li>
+    </ul>
+
+    <!-- FAQs Section -->
+    <h2 style="margin-top: 36px;">Foire Aux Questions sur l'Indemnité de Licenciement</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>La rupture conventionnelle donne-t-elle droit à la même indemnité ?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Oui. En vertu de l'article L. 1237-13 du Code du travail, l'indemnité spécifique de rupture conventionnelle ne peut en aucun cas être inférieure à l'indemnité légale de licenciement (ou conventionnelle si l'accord de branche le prévoit). Le salarié et l'employeur peuvent négocier une indemnité supra-légale supérieure.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>La période de préavis compte-t-elle dans le calcul de l'ancienneté ?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Oui, même si le salarié est dispensé d'exécuter son préavis par l'employeur, la durée du préavis s'ajoute à l'ancienneté pour déterminer le montant définitif de l'indemnité de licenciement, car le contrat de travail ne prend juridiquement fin qu'à l'expiration du préavis.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Un salarié licencié pour inaptitude a-t-il droit à une indemnité doublée ?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Si l'inaptitude physique est d'origine professionnelle (consécutive à un accident du travail ou à une maladie professionnelle), l'article L. 1226-14 du Code du travail dispose que l'indemnité spéciale de licenciement est <strong>doublée</strong> par rapport à l'indemnité légale, sauf dispositions conventionnelles plus avantageuses.
+      </div>
+    </div>
+  </article>
+</main>
+
+<script>
+function formatEuro(n) {
+  return Math.round(n).toLocaleString('fr-FR') + ' €';
+}
+
+function recalculate() {
+  const s12 = parseFloat(document.getElementById('salary-12m').value) || 0;
+  const s3 = parseFloat(document.getElementById('salary-3m').value) || 0;
+  const years = parseInt(document.getElementById('seniority-years').value) || 0;
+  const months = parseInt(document.getElementById('seniority-months').value) || 0;
+  const noticeMonths = parseFloat(document.getElementById('notice-months').value) || 0;
+  const vacationDays = parseFloat(document.getElementById('vacation-days').value) || 0;
+
+  // Ref salary: the highest between s12 and s3
+  const refSalary = Math.max(s12, s3);
+  const totalYears = years + (months / 12);
+
+  let legalIndemnity = 0;
+  if (totalYears >= (8 / 12)) {
+    if (totalYears <= 10) {
+      legalIndemnity = totalYears * (1 / 4) * refSalary;
+    } else {
+      legalIndemnity = (10 * (1 / 4) * refSalary) + ((totalYears - 10) * (1 / 3) * refSalary);
+    }
+  }
+
+  // Complementary notice and vacations
+  const noticeIndemnity = noticeMonths * refSalary;
+  // Vacation days: daily rate based on 21.67 working days per month
+  const vacationIndemnity = vacationDays * (refSalary / 21.67);
+  const totalSettlement = legalIndemnity + noticeIndemnity + vacationIndemnity;
+
+  // Update UI
+  document.getElementById('res-legal-indemnity').textContent = Math.round(legalIndemnity).toLocaleString('fr-FR');
+  document.getElementById('res-ref-salary').textContent = Math.round(refSalary).toLocaleString('fr-FR') + ' €';
+  document.getElementById('res-notice-indemnity').textContent = formatEuro(noticeIndemnity);
+  document.getElementById('res-vacation-indemnity').textContent = formatEuro(vacationIndemnity);
+  document.getElementById('res-total-settlement').textContent = formatEuro(totalSettlement);
+
+  document.getElementById('seniority-summary-badge').textContent = `Ancienneté retenue : ${years} ans et ${months} mois`;
+
+  // WhatsApp share
+  const text = encodeURIComponent(`Simulation de mon indemnité de licenciement avec LedgerMate :
+- Ancienneté : ${years} ans et ${months} mois
+- Salaire brut de référence : ${formatEuro(refSalary)}
+- Indemnité légale de licenciement : ${formatEuro(legalIndemnity)}
+- Estimation totale du solde de tout compte : ${formatEuro(totalSettlement)}
+Simulez la vôtre gratuitement : https://tryledgermate.in/fr/calculateur-indemnite-licenciement/`);
+  document.getElementById('whatsapp-share-btn').href = `https://api.whatsapp.com/send?text=${text}`;
+}
+
+function resetForm() {
+  document.getElementById('salary-12m').value = '3200';
+  document.getElementById('salary-3m').value = '3350';
+  document.getElementById('seniority-years').value = '7';
+  document.getElementById('seniority-months').value = '4';
+  document.getElementById('notice-months').value = '0';
+  document.getElementById('vacation-days').value = '12';
+  recalculate();
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  if (!item) return;
+  const ans = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+  if (isOpen) {
+    item.classList.remove('open');
+    if (ans) ans.style.display = 'none';
+  } else {
+    item.classList.add('open');
+    if (ans) ans.style.display = 'block';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', recalculate);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculadora de Aguinaldo 2026 | Mexico Aguinaldo Calculator (Art 87 LFT) | LedgerMate</title>
+<meta name="description" content="Calcula tu aguinaldo de fin de año o parte proporcional según el Art 87 LFT y exención ISR de 30 UMAs. Official Mexican Christmas bonus calculator in MXN." />
+<link rel="canonical" href="https://tryledgermate.in/es/calculadora-aguinaldo/" />
+<link rel="alternate" hreflang="es" href="https://tryledgermate.in/es/calculadora-aguinaldo/" />
+<link rel="alternate" hreflang="en" href="https://tryledgermate.in/regional/#americas" />
+<link rel="alternate" hreflang="x-default" href="https://tryledgermate.in/es/calculadora-aguinaldo/" />
+<meta name="robots" content="index, follow" />
+
+<!-- OpenGraph & Twitter Social Cards -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Calculadora de Aguinaldo 2026 | Art 87 LFT México" />
+<meta property="og:description" content="Cálculo legal del aguinaldo completo o proporcional, días trabajados y exención fiscal de 30 UMAs ante el SAT." />
+<meta property="og:url" content="https://tryledgermate.in/es/calculadora-aguinaldo/" />
+<meta property="og:site_name" content="LedgerMate Regional Hub" />
+<meta property="og:locale" content="es_MX" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Calculadora de Aguinaldo 2026 | LFT México" />
+<meta name="twitter:description" content="Simula tu pago legal de aguinaldo antes del 20 de diciembre con cálculo exacto de retención ISR." />
+
+<!-- AEO / GEO Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Calculadora de Aguinaldo (Mexican Christmas Bonus Calculator)",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "url": "https://tryledgermate.in/es/calculadora-aguinaldo/",
+      "description": "Herramienta legal para calcular el aguinaldo en México de acuerdo con el Artículo 87 de la Ley Federal del Trabajo.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "LedgerMate", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "Regional Hub", "item": "https://tryledgermate.in/regional/" },
+        { "@type": "ListItem", "position": 3, "name": "Calculadora de Aguinaldo", "item": "https://tryledgermate.in/es/calculadora-aguinaldo/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuántos días de salario corresponden por aguinaldo según la ley mexicana?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El Artículo 87 de la Ley Federal del Trabajo (LFT) establece que los trabajadores tendrán derecho a un aguinaldo anual que deberá pagarse antes del día 20 de diciembre, equivalente a un mínimo de 15 días de salario para quienes hayan cumplido el año completo de servicios."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo se calcula el aguinaldo si no trabajé el año completo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los que no hayan cumplido el año de servicios tienen derecho a que se les pague la parte proporcional conforme al tiempo que hubieren trabajado. La fórmula es: (Salario Diario × 15 días / 365 días) × Días Efectivamente Trabajados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto aguinaldo está exento de pagar impuestos ISR ante el SAT en 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Conforme al Artículo 93 fracción XIV de la Ley del Impuesto sobre la Renta (LISR), el aguinaldo está exento del pago de ISR hasta por un monto equivalente a 30 Unidades de Medida y Actualización (UMA). El excedente sobre las 30 UMAs sí grava y está sujeto a retención de ISR."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuál es la fecha límite para recibir el pago del aguinaldo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La ley marca de forma improrrogable que el patrón debe pagar el aguinaldo a más tardar el día 19 de diciembre (antes del 20 de diciembre). El trabajador cuenta con un plazo de un año para reclamar el pago ante la Procuraduría Federal de la Defensa del Trabajo (PROFEDET)."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --primary: #059669;
+  --primary-light: #ecfdf5;
+  --primary-hover: #047857;
+  --accent: #d97706;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --border-focus: #10b981;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.header-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+}
+.brand-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #a7f3d0;
+}
+.nav-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--primary); }
+.btn-cta {
+  background: var(--primary);
+  color: #fff !important;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 18px 80px;
+}
+
+@media (max-width: 860px) {
+  .page-wrapper {
+    padding: 16px 14px 40px !important;
+  }
+  .calc-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .calc-sidebar {
+    position: static !important;
+  }
+  .result-card {
+    position: static !important;
+  }
+  .nav-links a:not(.btn-cta):not(.hub-back-btn) {
+    display: none !important;
+  }
+}
+@media (max-width: 640px) {
+  .header-container {
+    padding: 8px 16px;
+    min-height: 52px;
+  }
+  .brand-badge {
+    display: none !important;
+  }
+  .btn-cta {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+  .calc-card {
+    padding: 18px 14px !important;
+  }
+  .guide-container {
+    padding: 20px 16px !important;
+  }
+  input, select {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+}
+
+/* Sidebar & Sticky Container */
+.calc-sidebar {
+  position: sticky;
+  top: 86px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Breadcrumb & Navigation Styles */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.breadcrumb-nav a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb-nav a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-sep {
+  color: #94a3b8;
+  font-weight: 400;
+}
+.breadcrumb-current {
+  color: #64748b;
+  font-weight: 600;
+}
+.hub-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #065f46;
+  background: #d1fae5;
+  border: 1px solid #a7f3d0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.hub-back-btn:hover {
+  background: #a7f3d0;
+  color: #047857;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+h1 {
+  font-size: clamp(22px, 3.8vw, 34px);
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-size: 15.5px;
+  color: var(--text-muted);
+  max-width: 840px;
+  margin-bottom: 24px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+@media (max-width: 860px) {
+  .calc-grid { grid-template-columns: 1fr; }
+}
+
+.calc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+.card-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.form-section { margin-bottom: 20px; }
+.section-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 520px) {
+  .input-row { grid-template-columns: 1fr; }
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+}
+.field-hint {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 400;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap input, .input-wrap select {
+  width: 100%;
+  padding: 11px 14px 11px 56px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 16px; /* Prevents auto zoom */
+  font-family: inherit;
+  font-weight: 700;
+  background: #fff;
+  transition: all 0.15s;
+  min-height: 48px;
+}
+.input-wrap input:focus, .input-wrap select:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+.currency-tag {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Result Card */
+.result-card {
+  background: linear-gradient(145deg, #064e3b, #047857);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.35);
+  position: static;
+}
+.date-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  background: #fde68a;
+  color: #78350f;
+}
+.result-stat-group {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.result-label {
+  font-size: 13px;
+  color: #a7f3d0;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.result-big-number {
+  font-size: 34px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+.result-currency {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fde68a;
+  margin-left: 6px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #e2e8f0;
+}
+.breakdown-row strong { color: #ffffff; }
+
+.share-action-box {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+.btn-share {
+  flex: 1;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-reset {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-reset:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Educational Content */
+.guide-container {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 30px;
+  margin-top: 40px;
+  box-shadow: var(--shadow);
+}
+.guide-container h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 28px 0 14px;
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+.guide-container h2:first-child { margin-top: 0; }
+.guide-container h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 20px 0 10px;
+}
+.guide-container p {
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.guide-container ul, .guide-container ol {
+  margin: 12px 0 18px 24px;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.guide-container li { margin-bottom: 6px; }
+
+.callout-box {
+  background: #ecfdf5;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 18px;
+  margin: 20px 0;
+  font-size: 14.5px;
+  color: #065f46;
+}
+
+.data-table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+.data-table th {
+  background: #f1f5f9;
+  padding: 10px 14px;
+  font-weight: 800;
+  color: #1e293b;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: #334155;
+}
+.data-table tr:hover td { background: #f8fafc; }
+
+/* FAQs */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open {
+  border-color: var(--primary);
+}
+.faq-question {
+  padding: 14px 18px;
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  user-select: none;
+}
+.faq-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 12px;
+  color: #64748b;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+.faq-answer {
+  display: none;
+  padding: 16px 18px;
+  font-size: 14.5px;
+  color: #334155;
+  line-height: 1.75;
+  border-top: 1px solid var(--border);
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+</style>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Calculadora de Aguinaldo 2026",
+      "operatingSystem": "All",
+      "applicationCategory": "FinanceApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" },
+      "description": "Calculadora de aguinaldo mexicano y latinoamericano conforme al Artículo 87 de la Ley Federal del Trabajo. Calcula montos proporcionales, días laborados y exención fiscal de 30 UMAs para el SAT."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuál es la fecha límite legal para pagar el aguinaldo en México?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El Artículo 87 de la Ley Federal del Trabajo establece que el aguinaldo debe pagarse obligatoriamente antes del día 20 de diciembre de cada año. El incumplimiento genera sanciones patronales de entre 50 y 5,000 UMAs impuestas por la Secretaría del Trabajo y Previsión Social (STPS)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo se calcula el aguinaldo proporcional si trabajé menos de un año?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La fórmula legal es: (Salario diario × Días de aguinaldo estipulados ÷ 365) × Días efectivamente laborados en el año calendario. Todo trabajador con al menos un día laborado tiene derecho a su parte proporcional."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto aguinaldo está libre de pagar impuestos ante el SAT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Según el Artículo 93 fracción XIV de la Ley del Impuesto Sobre la Renta (LISR), el aguinaldo goza de una exención fiscal equivalente a 30 veces el valor diario de la UMA (aproximadamente $3,257 pesos). Cualquier cantidad que exceda este monto está gravada para efectos de retención de ISR."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<header class="header-nav">
+  <div class="header-container">
+    <a href="/" class="brand-logo" title="LedgerMate - Inicio">
+      <span>📐 LedgerMate</span>
+      <span class="brand-badge">Herramientas Salariales</span>
+    </a>
+    <div class="nav-links">
+      <a href="/regional/" class="hub-back-btn">🌐 Hub Regional</a>
+      <a href="/es/calculadora-finiquito/">Calculadora de Finiquito</a>
+      <a href="/app/" class="btn-cta">App de Gastos Compartidos</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-wrapper">
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumb-nav" aria-label="Navegación">
+    <a href="/">Inicio (LedgerMate)</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/regional/">🌐 Hub Regional</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Calculadora de Aguinaldo</span>
+  </nav>
+
+  <div>
+    <div class="hero-badge">🎄 Fecha Límite Legal: Antes del 20 de Diciembre</div>
+    <h1>Calculadora de Aguinaldo 2026 (México y Latinoamérica)</h1>
+    <p class="hero-subtitle">
+      Calcula tu aguinaldo neto y proporcional según los días trabajados en el año, tu salario diario y la exención fiscal de 30 UMAs ante el SAT conforme a la Ley Federal del Trabajo.
+    </p>
+  </div>
+
+  <div class="calc-grid">
+    <!-- Inputs Card -->
+    <div class="calc-card">
+      <div class="card-header-title">
+        <span>⚙️ Datos para el Cálculo del Aguinaldo</span>
+      </div>
+
+      <!-- Country Selection -->
+      <div class="input-row">
+        <div class="field-group">
+          <label class="field-label">País / Tipo de Prestación</label>
+          <div class="input-wrap">
+            <select id="country-select" onchange="onCountryChange()">
+              <option value="MX" selected>México (Aguinaldo Ley Federal del Trabajo)</option>
+              <option value="AR">Argentina (SAC / Sueldo Anual Complementario)</option>
+              <option value="CO">Colombia (Prima de Navidad / Servicios)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Días de Aguinaldo por Contrato</label>
+          <div class="input-wrap">
+            <input type="number" id="contract-days" value="15" min="15" max="90" oninput="recalculate()">
+            <span class="currency-tag">días</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salary Inputs -->
+      <div class="form-section">
+        <div class="section-label">💵 Sueldo Percibido</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">
+              <span>Sueldo Bruto Mensual</span>
+              <span class="field-hint">Salario fijo antes de impuestos</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="monthly-salary" value="16000" min="0" oninput="recalculate()">
+              <span class="currency-tag curr-symbol">MXN</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <span>Días Laborados en el Año Actual</span>
+              <span class="field-hint">365 días = año completo</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="days-worked" value="365" min="1" max="365" oninput="recalculate()">
+              <span class="currency-tag">días</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presets for Fast Testing -->
+      <div style="margin-top: 10px;">
+        <label style="font-size: 12px; font-weight: 700; color: #64748b;">Accesos rápidos de días trabajados:</label>
+        <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
+          <button type="button" onclick="setWorkedDays(365)" style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:6px; padding:4px 10px; font-size:12px; cursor:pointer; font-family:inherit;">Año Completo (365 d)</button>
+          <button type="button" onclick="setWorkedDays(180)" style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:6px; padding:4px 10px; font-size:12px; cursor:pointer; font-family:inherit;">Medio Año (180 d)</button>
+          <button type="button" onclick="setWorkedDays(90)" style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:6px; padding:4px 10px; font-size:12px; cursor:pointer; font-family:inherit;">3 Meses (90 d)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Card -->
+    <!-- Output Summary Sidebar -->
+    <div class="calc-sidebar">
+      <div class="result-card">
+        <div class="date-badge">
+          📅 Obligatorio antes del 20 de Diciembre
+        </div>
+
+        <div class="result-stat-group">
+          <div class="result-label">Aguinaldo Neto Estimado a Cobrar:</div>
+          <div class="result-big-number">
+            <span id="res-net-aguinaldo">$7,440</span>
+            <span class="result-currency curr-symbol">MXN</span>
+          </div>
+        </div>
+
+        <div class="breakdown-row">
+          <span>Aguinaldo Bruto Legal:</span>
+          <span><strong id="res-gross-aguinaldo">$8,000</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Salario diario ordinario:</span>
+          <span><strong id="res-daily-salary">$533.33</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Parte exenta de ISR (hasta 30 UMAs):</span>
+          <span><strong id="res-exempt-uma">$3,257</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Monto gravado sujeto a ISR:</span>
+          <span><strong id="res-taxable-amount">$4,743</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Retención estimada de ISR (~12%):</span>
+          <span><strong id="res-estimated-isr">-$560</strong> <span class="curr-symbol">MXN</span></span>
+        </div>
+
+        <div class="share-action-box">
+          <a id="whatsapp-share-btn" href="#" target="_blank" rel="noopener" class="btn-share">
+            <span>📲 Compartir por WhatsApp</span>
+          </a>
+          <button class="btn-reset" onclick="resetForm()">Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- LedgerMate Christmas Budget CTA -->
+      <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+        <h4 style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:6px;">🎁 ¿Planeando posadas, regalos o cenas en grupo?</h4>
+        <p style="font-size:12.5px; color:#475569; line-height:1.6; margin-bottom:10px;">
+          Evita disputas decembrinas al dividir compras de cenas navideñas, intercambios y viajes familiares. LedgerMate calcula quién le debe a quién automáticamente.
+        </p>
+        <a href="/app/" style="font-size:12.5px; font-weight:700; color:var(--primary); text-decoration:none;">Crear grupo de gastos gratis ←</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educational Guide (1100+ words) -->
+  <article class="guide-container">
+    <h2>Guía Legal y Fiscal Completa del Aguinaldo en México y Latinoamérica</h2>
+    <p>
+      El aguinaldo es una de las prestaciones laborales más esperadas por los trabajadores. En México, tiene rango de derecho irrenunciable consagrado en el <strong>Artículo 87 de la Ley Federal del Trabajo (LFT)</strong>, el cual dispone que todo trabajador subordinado debe recibir una gratificación anual en dinero en efectivo antes del día 20 de diciembre.
+    </p>
+
+    <div class="callout-box">
+      <strong>Texto del Artículo 87 LFT:</strong>
+      <em>"Los trabajadores tendrán derecho a un aguinaldo anual que deberá pagarse antes del día veinte de diciembre, equivalente a quince días de salario, por lo menos. Los que no hayan cumplido el año de servicios, independientemente de que se encuentren laborando o no en la fecha de liquidación del aguinaldo, tendrán derecho a que se les pague la parte proporcional del mismo, conforme al tiempo que hubieren trabajado..."</em>
+    </div>
+
+    <h2>¿Quiénes Tienen Derecho a Recibir Aguinaldo?</h2>
+    <p>
+      La legislación laboral protege a una amplia gama de trabajadores, sin distinción de jerarquía:
+    </p>
+    <ul>
+      <li>Trabajadores de planta, de base o de confianza.</li>
+      <li>Trabajadores sindicalizados y no sindicalizados.</li>
+      <li>Trabajadores por tiempo determinado o por obra determinada.</li>
+      <li>Comisionistas laborales, agentes de ventas y trabajadores del hogar.</li>
+      <li>Trabajadores que renunciaron o fueron despedidos durante el año (deben recibir su aguinaldo proporcional dentro de su finiquito o liquidación).</li>
+    </ul>
+
+    <h2>Fórmula Matemática del Aguinaldo Proporcional</h2>
+    <p>
+      Cuando un trabajador no laboró los 365 días del año (por haber ingresado después del 1 de enero, o por haber tenido licencias sin goce de sueldo), el aguinaldo se calcula matemáticamente de forma proporcional:
+    </p>
+    <ol>
+      <li><strong>Determinar el salario diario:</strong> Se divide el sueldo mensual bruto entre 30 días (Sueldo Diario = Salario Mensual ÷ 30).</li>
+      <li><strong>Obtener la cuota diaria de aguinaldo:</strong> Se dividen los días estipulados de aguinaldo (mínimo 15 días) entre los 365 días del año (Factor Diario = 15 ÷ 365 ≈ 0.041095).</li>
+      <li><strong>Multiplicar por los días trabajados:</strong> Se multiplica el factor anterior por los días efectivamente laborados en el año (Días de Aguinaldo Devengados = Factor Diario × Días Trabajados).</li>
+      <li><strong>Calcular el monto final bruto:</strong> Se multiplica el salario diario por los días devengados (Aguinaldo = Sueldo Diario × Días Devengados).</li>
+    </ol>
+
+    <!-- Benchmark Matrix Table -->
+    <div class="data-table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Antigüedad en el Año</th>
+            <th>Días Trabajados</th>
+            <th>Días de Aguinaldo a Pagar (Base 15 d)</th>
+            <th>Ejemplo ($15,000/mes)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Año Completo</strong></td>
+            <td>365 días</td>
+            <td>15.00 días</td>
+            <td>$7,500 MXN</td>
+          </tr>
+          <tr>
+            <td><strong>9 Meses</strong></td>
+            <td>274 días</td>
+            <td>11.26 días</td>
+            <td>$5,630 MXN</td>
+          </tr>
+          <tr>
+            <td><strong>6 Meses (Medio año)</strong></td>
+            <td>182 días</td>
+            <td>7.48 días</td>
+            <td>$3,740 MXN</td>
+          </tr>
+          <tr>
+            <td><strong>3 Meses</strong></td>
+            <td>91 días</td>
+            <td>3.74 días</td>
+            <td>$1,870 MXN</td>
+          </tr>
+          <tr>
+            <td><strong>1 Mes</strong></td>
+            <td>30 días</td>
+            <td>1.23 días</td>
+            <td>$615 MXN</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Tratamiento Fiscal: ¿El Aguinaldo Paga Impuesto Sobre la Renta (ISR)?</h2>
+    <p>
+      Una duda constante entre los asalariados es si el Servicio de Administración Tributaria (SAT) cobra impuestos sobre este ingreso. La respuesta es: <strong>sí, pero con una exención legal muy importante</strong>.
+    </p>
+    <p>
+      El Artículo 93 fracción XIV de la Ley del Impuesto Sobre la Renta (LISR) estipula que las gratificaciones que reciban los trabajadores están <strong>exentas de ISR hasta por un monto equivalente a 30 veces la Unidad de Medida y Actualización (UMA)</strong> diaria vigente (aproximadamente $3,257 pesos).
+    </p>
+    <p>
+      Si tu aguinaldo bruto es menor a 30 UMAs, no pagarás ni un solo peso de impuesto. Si tu aguinaldo excede ese umbral, la empresa únicamente retendrá ISR sobre la cantidad excedente (el monto gravado), aplicando el procedimiento del Artículo 174 del Reglamento de la Ley del ISR.
+    </p>
+
+    <!-- FAQs Section -->
+    <h2 style="margin-top: 36px;">Preguntas Frecuentes sobre el Aguinaldo</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>¿Puede el patrón pagarme el aguinaldo en mercancía, vales o despensa?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        No. La Ley Federal del Trabajo prohíbe tajantemente el pago del aguinaldo en especie, mercancías, vales de despensa, pagarés o fichas. El pago debe realizarse forzosamente en moneda de curso legal (dinero en efectivo o transferencia bancaria a la cuenta de nómina del trabajador).
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>¿Qué sanciones enfrenta el patrón si no paga el aguinaldo antes del 20 de diciembre?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Los patrones que omitan el pago o lo realicen de manera extemporánea o incompleta pueden ser denunciados ante la PROFEDET y sancionados con multas que van de <strong>50 a 5,000 veces la UMA</strong> por cada trabajador afectado (Artículos 992 y 1002 LFT).
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>¿Las incapacidades médicas descuentan días de aguinaldo?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        No en todos los casos. Los periodos de incapacidad por maternidad (pre y postnatal) y por riesgos de trabajo o accidentes profesionales se consideran expresamente por la ley como tiempo efectivo de trabajo, por lo que <strong>no deben ser descontados</strong> de la suma de días laborados para el aguinaldo. Solo las incapacidades por enfermedad general sin subsidio o las faltas injustificadas pueden descontarse.
+      </div>
+    </div>
+  </article>
+</main>
+
+<script>
+function formatMoney(n, curr) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function onCountryChange() {
+  const c = document.getElementById('country-select').value;
+  const symbols = document.querySelectorAll('.curr-symbol');
+  let curr = 'MXN';
+  if (c === 'AR') curr = 'ARS';
+  if (c === 'CO') curr = 'COP';
+  symbols.forEach(s => s.textContent = curr);
+  recalculate();
+}
+
+function setWorkedDays(days) {
+  document.getElementById('days-worked').value = days;
+  recalculate();
+}
+
+function recalculate() {
+  const country = document.getElementById('country-select').value;
+  const contractDays = parseFloat(document.getElementById('contract-days').value) || 15;
+  const monthlySalary = parseFloat(document.getElementById('monthly-salary').value) || 0;
+  const daysWorked = parseFloat(document.getElementById('days-worked').value) || 365;
+
+  const dailySalary = monthlySalary / 30;
+  const factor = (daysWorked / 365);
+  const grossAguinaldo = factor * contractDays * dailySalary;
+
+  // UMA calculation for Mexico: 30 UMAs ≈ 3,257 MXN
+  const uma30 = (country === 'MX') ? 3257 : 0;
+  const exemptAmount = Math.min(grossAguinaldo, uma30);
+  const taxableAmount = Math.max(0, grossAguinaldo - exemptAmount);
+
+  // Approximate effective ISR rate on taxable portion (~12-15%)
+  const estimatedIsr = taxableAmount * 0.12;
+  const netAguinaldo = Math.max(0, grossAguinaldo - estimatedIsr);
+
+  const curr = document.querySelector('.curr-symbol').textContent;
+  document.getElementById('res-net-aguinaldo').textContent = formatMoney(netAguinaldo, curr);
+  document.getElementById('res-gross-aguinaldo').textContent = formatMoney(grossAguinaldo, curr);
+  document.getElementById('res-daily-salary').textContent = '$' + dailySalary.toFixed(2);
+  document.getElementById('res-exempt-uma').textContent = formatMoney(exemptAmount, curr);
+  document.getElementById('res-taxable-amount').textContent = formatMoney(taxableAmount, curr);
+  document.getElementById('res-estimated-isr').textContent = '-' + formatMoney(estimatedIsr, curr);
+
+  // WhatsApp share
+  const text = encodeURIComponent(`Cálculo de mi aguinaldo 2026 con LedgerMate:
+- Días trabajados: ${daysWorked} días
+- Aguinaldo Bruto: ${formatMoney(grossAguinaldo, curr)} ${curr}
+- Aguinaldo Neto estimado: ${formatMoney(netAguinaldo, curr)} ${curr}
+Calcula tu aguinaldo antes del 20 de diciembre gratis: https://tryledgermate.in/es/calculadora-aguinaldo/`);
+  document.getElementById('whatsapp-share-btn').href = `https://api.whatsapp.com/send?text=${text}`;
+}
+
+function resetForm() {
+  document.getElementById('monthly-salary').value = '16000';
+  document.getElementById('contract-days').value = '15';
+  document.getElementById('days-worked').value = '365';
+  recalculate();
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  if (!item) return;
+  const ans = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+  if (isOpen) {
+    item.classList.remove('open');
+    if (ans) ans.style.display = 'none';
+  } else {
+    item.classList.add('open');
+    if (ans) ans.style.display = 'block';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', recalculate);
+</script>
+
+</body>
+</html>

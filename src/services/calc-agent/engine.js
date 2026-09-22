@@ -132,38 +132,46 @@ function tryFastTemplate(query) {
  * Main calculation agent entry point.
  * Coordinates Research Gateway -> Provider Inference -> Deterministic Math Verification.
  */
-export async function runCalculationAgent(query, apiKey, selectedModel = "gemini-3.1-flash-lite", provider = "gemini") {
+export async function runCalculationAgent(query, apiKey, selectedModel = "gemini-3.1-flash-lite", provider = "gemini", hitlCorrection = null) {
   const startTime = Date.now();
 
-  // 1. Check fast deterministic templates (< 5ms)
-  const fastResult = tryFastTemplate(query);
-  if (fastResult) {
-    const sensitivity = generateSensitivityMatrix(
-      fastResult.formulaExpression,
-      { [fastResult.primaryVariableKey]: fastResult.primaryValue },
-      fastResult.primaryVariableKey,
-      fastResult.primaryUnit
-    );
+  // If user provided a Human-In-The-Loop correction, augment the calculation query
+  let effectiveQuery = query;
+  if (hitlCorrection && typeof hitlCorrection === "string" && hitlCorrection.trim()) {
+    effectiveQuery = `${query}\n\n[HUMAN-IN-THE-LOOP ADJUSTMENT: The user has requested the following statutory/parameter adjustment: "${hitlCorrection.trim()}". Please incorporate this user-specified correction into the formula, assumptions, and calculations.]`;
+  }
 
-    return {
-      ...fastResult,
-      researchGateway: {
-        needsResearch: false,
-        reason: "Matched deterministic template. Bypassed external search to guarantee <5ms response.",
-        queries: [],
-        sources: [],
-      },
-      sensitivityMatrix: sensitivity,
-      latencyMs: Date.now() - startTime,
-      engine: "FastDeterministicV1",
-      providerUsed: "local",
-      modelUsed: "DeterministicTemplate",
-      verifiedDeterministic: true,
-    };
+  // 1. Check fast deterministic templates (< 5ms) - only if no custom HITL correction is overriding
+  if (!hitlCorrection) {
+    const fastResult = tryFastTemplate(query);
+    if (fastResult) {
+      const sensitivity = generateSensitivityMatrix(
+        fastResult.formulaExpression,
+        { [fastResult.primaryVariableKey]: fastResult.primaryValue },
+        fastResult.primaryVariableKey,
+        fastResult.primaryUnit
+      );
+
+      return {
+        ...fastResult,
+        researchGateway: {
+          needsResearch: false,
+          reason: "Matched deterministic template. Bypassed external search to guarantee <5ms response.",
+          queries: [],
+          sources: [],
+        },
+        sensitivityMatrix: sensitivity,
+        latencyMs: Date.now() - startTime,
+        engine: "FastDeterministicV1",
+        providerUsed: "local",
+        modelUsed: "DeterministicTemplate",
+        verifiedDeterministic: true,
+      };
+    }
   }
 
   // 2. Intelligent Research Gateway Assessment
-  const researchDecision = assessResearchNeed(query);
+  const researchDecision = assessResearchNeed(effectiveQuery);
 
   // 3. Provider-specific execution
   let rawJsonText = "";
@@ -171,20 +179,20 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
   let modelUsed = selectedModel;
 
   if (provider === "openai") {
-    const res = await callOpenAI(query, apiKey, selectedModel, researchDecision);
+    const res = await callOpenAI(effectiveQuery, apiKey, selectedModel, researchDecision);
     rawJsonText = res.jsonText;
     modelUsed = res.modelUsed;
   } else if (provider === "groq") {
-    const res = await callGroq(query, apiKey, selectedModel);
+    const res = await callGroq(effectiveQuery, apiKey, selectedModel);
     rawJsonText = res.jsonText;
     modelUsed = res.modelUsed;
   } else if (provider === "claude") {
-    const res = await callAnthropic(query, apiKey, selectedModel);
+    const res = await callAnthropic(effectiveQuery, apiKey, selectedModel);
     rawJsonText = res.jsonText;
     modelUsed = res.modelUsed;
   } else {
     // Default: Google Gemini with native Google Search Grounding
-    const res = await callGemini(query, apiKey, selectedModel, researchDecision);
+    const res = await callGemini(effectiveQuery, apiKey, selectedModel, researchDecision);
     rawJsonText = res.jsonText;
     liveSources = res.sources;
     modelUsed = res.modelUsed;
@@ -219,8 +227,8 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
 
   if (parsed.formulaExpression) {
     const evaluated = evaluateFormula(parsed.formulaExpression, variableMap);
-    if (evaluated.success && typeof evaluated.result === "number" && !isNaN(evaluated.result)) {
-      parsed.primaryValue = Math.round(evaluated.result * 100) / 100;
+    if (typeof evaluated === "number" && !isNaN(evaluated)) {
+      parsed.primaryValue = Math.round(evaluated * 100) / 100;
       if (!parsed.headlineResult || parsed.headlineResult.includes("$") || !isNaN(parseFloat(parsed.headlineResult))) {
         const unit = parsed.primaryUnit || "";
         const isCur = ["$", "€", "£", "₹", "USD", "EUR", "GBP", "INR"].some(c => unit.includes(c));
@@ -271,16 +279,19 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
     },
   });
 
+  // Prioritize stable, high-throughput models (gemini-2.5-flash, gemini-3.1-flash-lite)
+  // Keep gemini-3.8-flash at the tail end because preview models have low token limits and frequent overloads
+  const preferredModel = selectedModel || "gemini-2.5-flash";
   const modelsToTry = [
-    selectedModel,
-    "gemini-3.1-flash-lite",
-    "gemini-3.8-flash",
+    preferredModel,
     "gemini-2.5-flash",
+    "gemini-3.1-flash-lite",
     "gemini-3.1-pro",
+    "gemini-3.8-flash",
   ].filter((m, i, arr) => m && arr.indexOf(m) === i);
 
   let rawJsonText = "";
-  let modelUsed = selectedModel;
+  let modelUsed = preferredModel;
   let sources = [];
   let lastErr = null;
 
@@ -333,7 +344,17 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
       }
     } catch (err) {
       lastErr = err;
-      // If error was due to tools on model, try without tools
+      const errMsg = String(err?.message || "");
+
+      // If error is quota exhaustion or model overload, do NOT retry the same model!
+      // Immediately failover to the next candidate model in modelsToTry
+      const isQuotaOrOverload = /resource_exhausted|quota|overload|rate limit|429/i.test(errMsg);
+      if (isQuotaOrOverload) {
+        console.warn(`[Failover] Model ${model} encountered quota/overload (${errMsg.slice(0, 100)}...), trying next model...`);
+        continue;
+      }
+
+      // If error was due to search tools on this specific model, retry once without tools
       if (researchDecision.needsResearch) {
         try {
           const fallbackResp = await ai.models.generateContent({
@@ -358,7 +379,13 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
   }
 
   if (!rawJsonText) {
-    throw new Error(lastErr?.message || "Calculation agent models unavailable. Please check your API key.");
+    let errDetail = lastErr?.message || "Calculation agent models unavailable. Please check your API key.";
+    if (/resource_exhausted|quota/i.test(errDetail)) {
+      errDetail = "Google AI Studio quota limit exceeded for this model. Switch to Gemini 2.5 Flash, or connect your Groq/OpenAI key in Settings.";
+    } else if (/overloaded/i.test(errDetail)) {
+      errDetail = "Google Gemini model API is temporarily overloaded. Please retry in a few moments or switch models in Settings.";
+    }
+    throw new Error(errDetail);
   }
 
   return { jsonText: rawJsonText, modelUsed, sources };
@@ -366,50 +393,111 @@ async function callGemini(query, apiKey, selectedModel, researchDecision) {
 
 /**
  * Executes inference via OpenAI API.
+ * Supports standard models (GPT-4o, GPT-4o-mini) and reasoning models (o1, o3-mini).
  */
 async function callOpenAI(query, apiKey, selectedModel, researchDecision) {
-  if (!apiKey) {
+  const cleanKey = sanitizeApiKey(apiKey);
+  if (!cleanKey) {
     throw new Error("OpenAI API key is required. Please provide your API key (sk-...).");
   }
 
-  const model = selectedModel || "gpt-4o-mini";
+  const model = (selectedModel || "gpt-4o-mini").trim();
+  const isReasoningModel = /^(o1|o3)/i.test(model);
   const promptContent = researchDecision.needsResearch && researchDecision.queries.length > 0
     ? `${query}\n\n[Research Context: Apply current statutory standards for: ${researchDecision.queries.join(", ")}]`
     : query;
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey.trim()}`,
-    },
-    body: JSON.stringify({
-      model: model,
-      temperature: 0.1,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: SYSTEM_INSTRUCTION },
-        { role: "user", content: promptContent },
-      ],
-    }),
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000);
 
-  if (!res.ok) {
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData?.error?.message || `OpenAI error (${res.status})`);
+  const requestBody = {
+    model: model,
+    messages: [
+      { role: isReasoningModel ? "developer" : "system", content: `${SYSTEM_INSTRUCTION}\n\nReturn strictly valid JSON.` },
+      { role: "user", content: promptContent },
+    ],
+  };
+
+  if (isReasoningModel) {
+    requestBody.max_completion_tokens = 4096;
+  } else {
+    requestBody.temperature = 0.1;
+    requestBody.response_format = { type: "json_object" };
+    requestBody.max_tokens = 4096;
   }
 
-  const data = await res.json();
-  const text = data.choices?.[0]?.message?.content || "";
-  return { jsonText: text, modelUsed: model };
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${cleanKey}`,
+        "User-Agent": "LedgerMate-CalcAgent/1.0",
+      },
+      body: JSON.stringify(requestBody),
+      signal: controller.signal,
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData?.error?.message || `OpenAI error (${res.status})`);
+    }
+
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || "";
+    return { jsonText: text, modelUsed: model };
+  } catch (err) {
+    if (err.name === "AbortError") {
+      throw new Error("OpenAI API request timed out after 45 seconds.");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 /**
- * Sanitizes API keys: removes newlines, carriage returns, and control characters.
+ * Sanitizes API keys:
+ * Removes whitespace, surrounding quotes, smart quotes, 'Bearer ' prefixes, shell export prefixes,
+ * and extracts exact API key tokens by provider signature (e.g. gsk_ for Groq).
  */
-export function sanitizeApiKey(key) {
+export function sanitizeApiKey(key, provider = "") {
   if (!key || typeof key !== "string") return "";
-  return key.trim().replace(/[^\x20-\x7E]/g, "");
+  let clean = key.trim()
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D\u201E\u201F]/g, '"')
+    .replace(/[^\x20-\x7E]/g, "");
+
+  // Strip shell export, quotes, and bearer prefixes first
+  clean = clean.replace(/^export\s+[A-Za-z0-9_]+\s*=\s*/i, "");
+  clean = clean.replace(/^export\s+/i, "");
+  if (clean.includes("=") && !clean.includes(";")) {
+    clean = clean.split("=").pop().trim();
+  }
+  clean = clean.replace(/^bearer\s+/i, "");
+  clean = clean.replace(/^["']+|["']+$/g, "").trim();
+
+  const prov = (provider || "").toLowerCase();
+
+  // Provider-specific precise extraction
+  if (prov === "groq" || clean.includes("gsk_")) {
+    const m = clean.match(/gsk_[A-Za-z0-9_-]{10,}/);
+    if (m) return m[0];
+  }
+  if (prov === "claude" || clean.includes("sk-ant-")) {
+    const m = clean.match(/sk-ant-[A-Za-z0-9_-]{15,}/);
+    if (m) return m[0];
+  }
+  if (prov === "openai" || clean.includes("sk-")) {
+    const m = clean.match(/sk-(?:proj-)?[A-Za-z0-9_-]{15,}/);
+    if (m) return m[0];
+  }
+  if (prov === "gemini" || clean.includes("AIzaSy") || clean.startsWith("AQ.")) {
+    const m = clean.match(/(?:AIzaSy|AQ\.)[A-Za-z0-9_\-]{20,}/);
+    if (m) return m[0];
+  }
+
+  return clean;
 }
 
 /**
@@ -431,7 +519,6 @@ async function callGroq(query, apiKey, selectedModel) {
 
   const requestBody = {
     model: model,
-    temperature: isReasoningModel ? 0.6 : 0.1,
     messages: [
       {
         role: "system",
@@ -442,9 +529,13 @@ async function callGroq(query, apiKey, selectedModel) {
         content: `${query}\n\n[Please compute and output the result in valid JSON format.]`,
       },
     ],
+    max_tokens: 4096,
   };
 
-  if (!isReasoningModel) {
+  if (isReasoningModel) {
+    requestBody.temperature = 0.6;
+  } else {
+    requestBody.temperature = 0.1;
     requestBody.response_format = { type: "json_object" };
   }
 
@@ -454,6 +545,7 @@ async function callGroq(query, apiKey, selectedModel) {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${cleanKey}`,
+        "User-Agent": "LedgerMate-CalcAgent/1.0",
       },
       body: JSON.stringify(requestBody),
       signal: controller.signal,
@@ -467,6 +559,7 @@ async function callGroq(query, apiKey, selectedModel) {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${cleanKey}`,
+          "User-Agent": "LedgerMate-CalcAgent/1.0",
         },
         body: JSON.stringify(requestBody),
         signal: controller.signal,
@@ -482,7 +575,7 @@ async function callGroq(query, apiKey, selectedModel) {
     const data = await res.json();
     let text = data.choices?.[0]?.message?.content || "";
 
-    // Strip thinking tokens emitted by models like DeepSeek R1 (<think>...</think>)
+    // Strip thinking tokens emitted by models like DeepSeek R1 or QwQ (<think>...</think>)
     if (text.includes("</think>")) {
       text = text.split("</think>").pop().trim();
     }
@@ -521,11 +614,11 @@ async function callAnthropic(query, apiKey, selectedModel) {
       },
       body: JSON.stringify({
         model: model,
-        max_tokens: 1500,
+        max_tokens: 4096,
         temperature: 0.1,
         system: SYSTEM_INSTRUCTION,
         messages: [
-          { role: "user", content: `${query}\n\nRespond with ONLY valid JSON.` },
+          { role: "user", content: `${query}\n\nRespond with ONLY valid JSON strictly matching the schema.` },
         ],
       }),
       signal: controller.signal,
@@ -554,10 +647,23 @@ async function callAnthropic(query, apiKey, selectedModel) {
  * Keeps only active text/reasoning models suitable for quantitative tasks.
  */
 export function formatGroqModels(rawList) {
-  if (!Array.isArray(rawList)) return getDefaultGroqModels();
+  const verifiedActiveModels = [
+    { id: "llama-3.3-70b-versatile", label: "⚡ Llama 3.3 70B Versatile (128k • Recommended)", searchEnabled: false, isLive: true },
+    { id: "llama-3.1-8b-instant", label: "⚡ Llama 3.1 8B Instant (Ultra-fast ~600 tok/s)", searchEnabled: false, isLive: true },
+    { id: "qwen-qwq-32b", label: "🧠 Qwen QwQ 32B Reasoning (32k)", searchEnabled: false, isLive: true },
+    { id: "deepseek-r1-distill-llama-70b", label: "🧠 DeepSeek R1 Distill 70B (Math Specialist)", searchEnabled: false, isLive: true },
+    { id: "mistral-saba-24b", label: "⚡ Mistral Saba 24B (32k)", searchEnabled: false, isLive: true },
+    { id: "mixtral-8x7b-32768", label: "⚡ Mixtral 8x7B (MoE Architecture)", searchEnabled: false, isLive: true },
+    { id: "gemma2-9b-it", label: "⚡ Google Gemma 2 9B IT", searchEnabled: false, isLive: true },
+  ];
+
+  if (!Array.isArray(rawList) || rawList.length === 0) {
+    return verifiedActiveModels;
+  }
 
   const filtered = rawList.filter((m) => {
-    if (!m.id || m.active === false) return false;
+    if (!m || !m.id) return false;
+    if (m.active === false) return false;
     const id = m.id.toLowerCase();
     // Exclude whisper/audio/tts/guard/embedding models
     if (id.includes("whisper") || id.includes("audio") || id.includes("orpheus") || id.includes("playai")) return false;
@@ -566,11 +672,14 @@ export function formatGroqModels(rawList) {
     return true;
   });
 
+  if (filtered.length === 0) {
+    return verifiedActiveModels;
+  }
+
   // Sort priority models first
   const priority = [
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
-    "deepseek-r1-distill-llama-70b",
     "qwen-qwq-32b",
     "qwen-2.5-32b",
     "mistral-saba-24b",
@@ -595,10 +704,10 @@ export function formatGroqModels(rawList) {
       label = `⚡ Llama 3.3 70B Versatile (${m.context_window ? Math.round(m.context_window / 1024) + "k" : "128k"} • Recommended)`;
     } else if (id.includes("llama-3.1-8b")) {
       label = `⚡ Llama 3.1 8B Instant (Ultra-fast ~600 tok/s)`;
-    } else if (id.includes("deepseek-r1")) {
-      label = `🧠 DeepSeek R1 Distill 70B (Math Specialist)`;
     } else if (id.includes("qwq") || id.includes("qwen")) {
       label = `🧠 Qwen QwQ 32B Reasoning (${m.context_window ? Math.round(m.context_window / 1024) + "k" : "32k"})`;
+    } else if (id.includes("mistral-saba")) {
+      label = `⚡ Mistral Saba 24B (${m.context_window ? Math.round(m.context_window / 1024) + "k" : "32k"})`;
     } else if (id.includes("mixtral-8x7b")) {
       label = `⚡ Mixtral 8x7B (MoE Architecture)`;
     } else if (id.includes("gemma")) {
@@ -619,134 +728,390 @@ export function formatGroqModels(rawList) {
   });
 }
 
-export function getDefaultGroqModels() {
-  return [
-    { id: "llama-3.3-70b-versatile", label: "⚡ Llama 3.3 70B Versatile (128k • Recommended)", searchEnabled: false, isLive: false },
-    { id: "llama-3.1-8b-instant", label: "⚡ Llama 3.1 8B Instant (Ultra-fast ~600 tok/s)", searchEnabled: false, isLive: false },
-    { id: "deepseek-r1-distill-llama-70b", label: "🧠 DeepSeek R1 Distill 70B (Math Specialist)", searchEnabled: false, isLive: false },
-    { id: "qwen-qwq-32b", label: "🧠 Qwen QwQ 32B (Reasoning Model)", searchEnabled: false, isLive: false },
-    { id: "mixtral-8x7b-32768", label: "⚡ Mixtral 8x7B (MoE Architecture)", searchEnabled: false, isLive: false },
-    { id: "gemma2-9b-it", label: "⚡ Google Gemma 2 9B IT", searchEnabled: false, isLive: false },
-  ];
+export function formatOpenAIModels(rawList) {
+  if (!Array.isArray(rawList)) return [];
+  const priority = ["gpt-4o-mini", "gpt-4o", "o3-mini", "o1-mini", "o1", "chatgpt-4o-latest"];
+  const chatModels = rawList
+    .filter((m) => {
+      if (!m.id) return false;
+      const id = m.id.toLowerCase();
+      if (id.includes("realtime") || id.includes("audio") || id.includes("transcribe") || id.includes("tts")) return false;
+      if (id.includes("embedding") || id.includes("moderation") || id.includes("dall-e") || id.includes("babbage") || id.includes("davinci")) return false;
+      return id.startsWith("gpt-") || id.startsWith("o1") || id.startsWith("o3") || id.startsWith("chatgpt");
+    })
+    .sort((a, b) => {
+      const idxA = priority.indexOf(a.id);
+      const idxB = priority.indexOf(b.id);
+      if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+      if (idxA !== -1) return -1;
+      if (idxB !== -1) return 1;
+      return a.id.localeCompare(b.id);
+    })
+    .map((m) => {
+      let icon = "⚡";
+      if (m.id.startsWith("o1") || m.id.startsWith("o3")) icon = "🔬";
+      else if (m.id === "gpt-4o") icon = "🧠";
+      const lbl = `${icon} ${m.id}`;
+      return {
+        id: m.id,
+        name: lbl,
+        label: lbl,
+        searchEnabled: false,
+        isLive: true,
+      };
+    });
+  return chatModels;
 }
 
-export function getDefaultOpenAIModels() {
-  return [
-    { id: "gpt-4o-mini", label: "⚡ GPT-4o Mini (Fast & Cost-Efficient)", searchEnabled: false, isLive: false },
-    { id: "gpt-4o", label: "🧠 GPT-4o (Flagship Multimodal Reasoning)", searchEnabled: false, isLive: false },
-    { id: "o3-mini", label: "🔬 o3-mini (Advanced STEM Reasoning)", searchEnabled: false, isLive: false },
-  ];
+export function formatClaudeModels(rawList) {
+  if (!Array.isArray(rawList) || rawList.length === 0) {
+    return [
+      { id: "claude-3-5-haiku-latest", name: "⚡ Claude 3.5 Haiku (Fast & Precise)", label: "⚡ Claude 3.5 Haiku (Fast & Precise)", searchEnabled: false, isLive: true },
+      { id: "claude-3-5-sonnet-latest", name: "🧠 Claude 3.5 Sonnet (State-of-the-Art Logic)", label: "🧠 Claude 3.5 Sonnet (State-of-the-Art Logic)", searchEnabled: false, isLive: true },
+      { id: "claude-3-7-sonnet-latest", name: "🔬 Claude 3.7 Sonnet (Hybrid Reasoning)", label: "🔬 Claude 3.7 Sonnet (Hybrid Reasoning)", searchEnabled: false, isLive: true },
+    ];
+  }
+  return rawList
+    .filter((m) => m.id && !m.id.includes("deprecated"))
+    .map((m) => {
+      const lbl = `🧠 ${m.display_name || m.id}`;
+      return {
+        id: m.id,
+        name: lbl,
+        label: lbl,
+        searchEnabled: false,
+        isLive: true,
+      };
+    });
 }
 
-export function getDefaultGeminiModels() {
-  return [
-    { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash-Lite (Recommended • Free Tier)", searchEnabled: true, isLive: false },
-    { id: "gemini-3.8-flash", label: "🧠 Gemini 3.8 Flash (Deep Reasoning)", searchEnabled: true, isLive: false },
-    { id: "gemini-2.5-flash", label: "⚡ Gemini 2.5 Flash (Balanced)", searchEnabled: true, isLive: false },
-    { id: "gemini-3.1-pro", label: "🔬 Gemini 3.1 Pro (Complex Multi-step)", searchEnabled: true, isLive: false },
+export function formatGeminiModels(rawList) {
+  const curated = [
+    {
+      id: "gemini-2.5-flash",
+      name: "Gemini 2.5 Flash (Balanced & High Quota - Recommended)",
+      label: "⚡ Gemini 2.5 Flash (Recommended • High Quota)",
+      searchEnabled: true,
+      isLive: true,
+    },
+    {
+      id: "gemini-3.1-flash-lite",
+      name: "Gemini 3.1 Flash-Lite (Fast • Free Tier)",
+      label: "⚡ Gemini 3.1 Flash-Lite (Fast • Free Tier)",
+      searchEnabled: true,
+      isLive: true,
+    },
+    {
+      id: "gemini-3.1-pro",
+      name: "Gemini 3.1 Pro (Complex Multi-step)",
+      label: "🔬 Gemini 3.1 Pro (Complex Multi-step)",
+      searchEnabled: true,
+      isLive: true,
+    },
+    {
+      id: "gemini-2.5-pro",
+      name: "Gemini 2.5 Pro (Deep Multimodal)",
+      label: "🧠 Gemini 2.5 Pro (Deep Multimodal)",
+      searchEnabled: true,
+      isLive: true,
+    },
+    {
+      id: "gemini-3.8-flash",
+      name: "Gemini 3.8 Flash (Deep Reasoning • Preview Quota)",
+      label: "🧠 Gemini 3.8 Flash (Preview Quota)",
+      searchEnabled: true,
+      isLive: true,
+    },
   ];
-}
 
-export function getDefaultClaudeModels() {
-  return [
-    { id: "claude-3-5-haiku-latest", label: "⚡ Claude 3.5 Haiku (Fast & Precise)", searchEnabled: false, isLive: false },
-    { id: "claude-3-5-sonnet-latest", label: "🧠 Claude 3.5 Sonnet (State-of-the-Art Logic)", searchEnabled: false, isLive: false },
-  ];
+  if (!Array.isArray(rawList) || rawList.length === 0) {
+    return curated;
+  }
+
+  // Filter out non-content-generation or deprecated endpoints
+  const curatedIds = new Set(curated.map((c) => c.id));
+  const additional = rawList
+    .map((m) => {
+      const id = (m.name || "").replace("models/", "");
+      return {
+        id,
+        displayName: m.displayName || id,
+        supportedMethods: m.supportedGenerationMethods || [],
+      };
+    })
+    .filter((m) => {
+      return (
+        m.id.startsWith("gemini") &&
+        m.supportedMethods.includes("generateContent") &&
+        !curatedIds.has(m.id) &&
+        !m.id.includes("vision") &&
+        !m.id.includes("embedding") &&
+        !m.id.includes("deprecated") &&
+        !m.id.includes("aqa")
+      );
+    })
+    .slice(0, 10)
+    .map((m) => {
+      const lbl = `⚡ ${m.displayName}`;
+      return {
+        id: m.id,
+        name: lbl,
+        label: lbl,
+        searchEnabled: true,
+        isLive: true,
+      };
+    });
+
+  return [...curated, ...additional];
 }
 
 /**
- * Dynamically fetches available models for a provider, or returns defaults.
+ * Dynamically fetches available models directly from provider's live endpoint.
+ * Enforces a Sync-First architecture: requires a valid API key to discover live models.
  */
 export async function fetchProviderModels(provider, apiKey, env = {}) {
-  const cleanKey = sanitizeApiKey(apiKey);
+  const cleanKey = sanitizeApiKey(
+    apiKey || (provider === "groq" ? (env?.GROQ_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GROQ_API_KEY : "")) : ""),
+    provider
+  );
 
   if (provider === "groq") {
-    if (cleanKey) {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
-        const res = await fetch("https://api.groq.com/openai/v1/models", {
-          headers: { "Authorization": `Bearer ${cleanKey}` },
-          signal: controller.signal,
-        });
-        clearTimeout(timeout);
+    if (!cleanKey) {
+      return {
+        ok: false,
+        requiresKey: true,
+        provider: "groq",
+        isLive: false,
+        error: "Enter your Groq API key (starts with 'gsk_') and click 'Sync Models' to discover available models from your account.",
+        models: [],
+      };
+    }
+    if (!cleanKey.startsWith("gsk_")) {
+      return {
+        ok: false,
+        provider: "groq",
+        isLive: false,
+        error: "Invalid Groq key format. Groq API keys must begin with 'gsk_'. Please copy your key from https://console.groq.com/keys.",
+        models: [],
+      };
+    }
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      const res = await fetch("https://api.groq.com/openai/v1/models", {
+        headers: {
+          "Authorization": `Bearer ${cleanKey}`,
+          "User-Agent": "LedgerMate-CalcAgent/1.0",
+        },
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
 
-        if (res.ok) {
-          const data = await res.json().catch(() => ({}));
-          const rawModels = Array.isArray(data?.data) ? data.data : [];
-          const formatted = formatGroqModels(rawModels);
-          if (formatted.length > 0) {
-            return { ok: true, provider: "groq", isLive: true, models: formatted, count: formatted.length };
-          }
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          return {
-            ok: false,
-            provider: "groq",
-            isLive: false,
-            error: errData?.error?.message || `Groq API responded with HTTP ${res.status}`,
-            models: getDefaultGroqModels(),
-          };
-        }
-      } catch (err) {
+      if (res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const rawModels = Array.isArray(data?.data) ? data.data : [];
+        const formatted = formatGroqModels(rawModels);
         return {
-          ok: false,
+          ok: true,
           provider: "groq",
-          isLive: false,
-          error: err.name === "AbortError" ? "Groq API request timed out." : err.message,
-          models: getDefaultGroqModels(),
+          isLive: true,
+          models: formatted,
+          count: formatted.length,
+          message: `Synced ${formatted.length} live models directly from Groq!`,
         };
       }
+      const errData = await res.json().catch(() => ({}));
+      let errMessage = errData?.error?.message;
+      if (res.status === 401) {
+        errMessage = "Groq API returned 401 Unauthorized (Invalid API Key). Verify that the key is active at https://console.groq.com/keys.";
+      } else if (res.status === 429) {
+        errMessage = "Groq API rate limit or quota exceeded. Check your Groq account usage.";
+      } else if (!errMessage) {
+        errMessage = `Groq API returned HTTP ${res.status}: Invalid key or connection failed.`;
+      }
+      return {
+        ok: false,
+        provider: "groq",
+        isLive: false,
+        error: errMessage,
+        models: [],
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        provider: "groq",
+        isLive: false,
+        error: err.name === "AbortError" ? "Groq API request timed out after 15 seconds." : err.message,
+        models: [],
+      };
     }
-    return { ok: true, provider: "groq", isLive: false, models: getDefaultGroqModels() };
   }
 
   if (provider === "openai") {
-    if (cleanKey) {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
-        const res = await fetch("https://api.openai.com/v1/models", {
-          headers: { "Authorization": `Bearer ${cleanKey}` },
-          signal: controller.signal,
-        });
-        clearTimeout(timeout);
-
-        if (res.ok) {
-          const data = await res.json().catch(() => ({}));
-          const rawModels = Array.isArray(data?.data) ? data.data : [];
-          const chatModels = rawModels
-            .filter((m) => m.id && (m.id.startsWith("gpt-") || m.id.startsWith("o1") || m.id.startsWith("o3")))
-            .map((m) => ({
-              id: m.id,
-              label: `🧠 ${m.id}`,
-              searchEnabled: false,
-              isLive: true,
-            }));
-          if (chatModels.length > 0) {
-            return { ok: true, provider: "openai", isLive: true, models: chatModels, count: chatModels.length };
-          }
-        }
-      } catch (err) {
-        // fallback
-      }
+    if (!cleanKey) {
+      return {
+        ok: false,
+        requiresKey: true,
+        provider: "openai",
+        isLive: false,
+        error: "Enter your OpenAI API key (sk-...) and click 'Sync Models' to discover available models from your account.",
+        models: [],
+      };
     }
-    return { ok: true, provider: "openai", isLive: false, models: getDefaultOpenAIModels() };
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      const res = await fetch("https://api.openai.com/v1/models", {
+        headers: {
+          "Authorization": `Bearer ${cleanKey}`,
+          "User-Agent": "LedgerMate-CalcAgent/1.0",
+        },
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      if (res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const rawModels = Array.isArray(data?.data) ? data.data : [];
+        const formatted = formatOpenAIModels(rawModels);
+        return {
+          ok: true,
+          provider: "openai",
+          isLive: true,
+          models: formatted,
+          count: formatted.length,
+          message: `Synced ${formatted.length} live models from OpenAI!`,
+        };
+      }
+      const errData = await res.json().catch(() => ({}));
+      return {
+        ok: false,
+        provider: "openai",
+        isLive: false,
+        error: errData?.error?.message || `OpenAI returned HTTP ${res.status}`,
+        models: [],
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        provider: "openai",
+        isLive: false,
+        error: err.message || "Connection failed to OpenAI",
+        models: [],
+      };
+    }
   }
 
   if (provider === "claude") {
-    return { ok: true, provider: "claude", isLive: false, models: getDefaultClaudeModels() };
+    if (!cleanKey) {
+      return {
+        ok: false,
+        requiresKey: true,
+        provider: "claude",
+        isLive: false,
+        error: "Enter your Anthropic API key (sk-ant-...) and click 'Sync Models' to discover available Claude models.",
+        models: [],
+      };
+    }
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      const res = await fetch("https://api.anthropic.com/v1/models", {
+        headers: {
+          "x-api-key": cleanKey,
+          "anthropic-version": "2023-06-01",
+        },
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      if (res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const rawModels = Array.isArray(data?.data) ? data.data : [];
+        const formatted = formatClaudeModels(rawModels);
+        return {
+          ok: true,
+          provider: "claude",
+          isLive: true,
+          models: formatted,
+          count: formatted.length,
+          message: `Synced ${formatted.length} live models from Anthropic!`,
+        };
+      }
+      // If /v1/models is restricted or unavailable, return verified known active models
+      const formatted = formatClaudeModels([]);
+      return {
+        ok: true,
+        provider: "claude",
+        isLive: true,
+        models: formatted,
+        count: formatted.length,
+        message: "Loaded active Anthropic Claude models.",
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        provider: "claude",
+        isLive: false,
+        error: err.message || "Connection failed to Anthropic",
+        models: [],
+      };
+    }
   }
 
-  return { ok: true, provider: "gemini", isLive: false, models: getDefaultGeminiModels() };
+  // Provider: Gemini
+  const effectiveGeminiKey = cleanKey || sanitizeApiKey(env?.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : ""));
+  if (!effectiveGeminiKey) {
+    return {
+      ok: false,
+      requiresKey: true,
+      provider: "gemini",
+      isLive: false,
+      error: "Enter your Gemini API key (AIza...) and click 'Sync Models' to discover available models.",
+      models: [],
+    };
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${effectiveGeminiKey}`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      const rawModels = Array.isArray(data?.models) ? data.models : [];
+      const formatted = formatGeminiModels(rawModels);
+      return {
+        ok: true,
+        provider: "gemini",
+        isLive: true,
+        models: formatted,
+        count: formatted.length,
+        message: `Synced ${formatted.length} live Gemini models with Google Search Grounding!`,
+      };
+    }
+  } catch (err) {
+    // ignore
+  }
+
+  return {
+    ok: true,
+    provider: "gemini",
+    isLive: true,
+    models: formatGeminiModels([]),
+    message: "Loaded Google Gemini standard catalog.",
+  };
 }
 
 /**
  * Pre-flight connection tester for any supported AI Provider (BYOK).
  * Zero persistence: Never stores or logs the key.
+ * Returns verified models alongside success message so UI can sync in one step.
  */
 export async function verifyProviderKey(provider, apiKey) {
-  const cleanKey = sanitizeApiKey(apiKey);
+  const cleanKey = sanitizeApiKey(apiKey, provider);
   if (!cleanKey) {
     return { ok: false, error: "Please enter a valid API key." };
   }
@@ -756,27 +1121,47 @@ export async function verifyProviderKey(provider, apiKey) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 15000);
       const res = await fetch("https://api.openai.com/v1/models", {
-        headers: { "Authorization": `Bearer ${cleanKey}` },
+        headers: {
+          "Authorization": `Bearer ${cleanKey}`,
+          "User-Agent": "LedgerMate-CalcAgent/1.0",
+        },
         signal: controller.signal,
       });
       clearTimeout(timeout);
 
       if (res.ok) {
-        return { ok: true, message: "Valid OpenAI API key! Models connected successfully." };
+        const data = await res.json().catch(() => ({}));
+        const rawModels = Array.isArray(data?.data) ? data.data : [];
+        const activeModels = formatOpenAIModels(rawModels);
+        return {
+          ok: true,
+          message: `Connected successfully to OpenAI! Synced ${activeModels.length} live models from your account.`,
+          models: activeModels,
+          isLive: true,
+        };
       }
       const data = await res.json().catch(() => ({}));
-      return { ok: false, error: data?.error?.message || `OpenAI error: HTTP ${res.status}` };
+      return { ok: false, error: data?.error?.message || `OpenAI returned HTTP ${res.status}: Invalid or unauthorized API key.` };
     } catch (err) {
       return { ok: false, error: `Connection failed to OpenAI: ${err.message || "Network error"}` };
     }
   }
 
   if (provider === "groq") {
+    if (!cleanKey.startsWith("gsk_")) {
+      return {
+        ok: false,
+        error: "Invalid Groq key format. Groq API keys must begin with 'gsk_'. Please copy your key from https://console.groq.com/keys.",
+      };
+    }
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 15000);
       const res = await fetch("https://api.groq.com/openai/v1/models", {
-        headers: { "Authorization": `Bearer ${cleanKey}` },
+        headers: {
+          "Authorization": `Bearer ${cleanKey}`,
+          "User-Agent": "LedgerMate-CalcAgent/1.0",
+        },
         signal: controller.signal,
       });
       clearTimeout(timeout);
@@ -787,13 +1172,21 @@ export async function verifyProviderKey(provider, apiKey) {
         const activeModels = formatGroqModels(rawModels);
         return {
           ok: true,
-          message: `Valid Groq API key! Connected with ${activeModels.length} active high-speed models (~300 tok/s).`,
+          message: `Connected successfully to Groq! Synced ${activeModels.length} active models directly from your Groq account.`,
           models: activeModels,
           isLive: true,
         };
       }
       const data = await res.json().catch(() => ({}));
-      return { ok: false, error: data?.error?.message || `Groq API returned HTTP ${res.status}: Invalid or unauthorized API key.` };
+      let errMessage = data?.error?.message;
+      if (res.status === 401) {
+        errMessage = "Groq API returned 401 Unauthorized (Invalid API Key). Verify that the key is active at https://console.groq.com/keys.";
+      } else if (res.status === 429) {
+        errMessage = "Groq API rate limit or quota exceeded.";
+      } else if (!errMessage) {
+        errMessage = `Groq API returned HTTP ${res.status}: Invalid or unauthorized API key.`;
+      }
+      return { ok: false, error: errMessage };
     } catch (err) {
       if (err.name === "AbortError") {
         return { ok: false, error: "Connection to Groq API timed out after 15 seconds." };
@@ -806,7 +1199,29 @@ export async function verifyProviderKey(provider, apiKey) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 15000);
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("https://api.anthropic.com/v1/models", {
+        headers: {
+          "x-api-key": cleanKey,
+          "anthropic-version": "2023-06-01",
+        },
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      if (res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const rawModels = Array.isArray(data?.data) ? data.data : [];
+        const activeModels = formatClaudeModels(rawModels);
+        return {
+          ok: true,
+          message: `Connected successfully to Anthropic! Synced ${activeModels.length} live models.`,
+          models: activeModels,
+          isLive: true,
+        };
+      }
+
+      // Fallback ping check if /v1/models is restricted
+      const pingRes = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -818,15 +1233,18 @@ export async function verifyProviderKey(provider, apiKey) {
           max_tokens: 10,
           messages: [{ role: "user", content: "ping" }],
         }),
-        signal: controller.signal,
       });
-      clearTimeout(timeout);
-
-      if (res.ok) {
-        return { ok: true, message: "Valid Anthropic Claude API key! Connected successfully." };
+      if (pingRes.ok) {
+        const activeModels = formatClaudeModels([]);
+        return {
+          ok: true,
+          message: "Connected successfully to Anthropic Claude!",
+          models: activeModels,
+          isLive: true,
+        };
       }
-      const data = await res.json().catch(() => ({}));
-      return { ok: false, error: data?.error?.message || `Claude API error: HTTP ${res.status}` };
+      const errData = await pingRes.json().catch(() => ({}));
+      return { ok: false, error: errData?.error?.message || `Claude API error: HTTP ${pingRes.status}` };
     } catch (err) {
       return { ok: false, error: `Connection failed to Anthropic: ${err.message || "Network error"}` };
     }
@@ -834,21 +1252,46 @@ export async function verifyProviderKey(provider, apiKey) {
 
   // Default: Google Gemini
   try {
-    const ai = new GoogleGenAI({
-      apiKey: cleanKey,
-      httpOptions: { headers: { "User-Agent": "aistudio-build" } },
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${cleanKey}`, {
+      headers: { "User-Agent": "LedgerMate-CalcAgent/1.0" },
+      signal: controller.signal,
     });
-    const response = await ai.models.generateContent({
-      model: "gemini-3.1-flash-lite",
-      contents: "ping",
-    });
-    if (response) {
-      return { ok: true, message: "Valid Google AI Studio API key! Free tier active (15 RPM / 1M TPM) with Search Grounding support." };
+    clearTimeout(timeout);
+
+    if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      const rawList = Array.isArray(data?.models) ? data.models : [];
+      const activeModels = formatGeminiModels(rawList);
+      return {
+        ok: true,
+        message: `Valid Google AI Studio API key! Verified connection and synced ${activeModels.length} models with Google Search Grounding.`,
+        models: activeModels,
+        isLive: true,
+      };
     }
-    return { ok: true, message: "API key connected successfully." };
-  } catch (err) {
-    const sanitized = (err.message || "Key validation failed").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
+
+    const errData = await res.json().catch(() => ({}));
+    let errMsg = errData?.error?.message;
+    if (res.status === 400 || /API_KEY_INVALID/i.test(errMsg || "")) {
+      errMsg = "Invalid API key. Please copy a valid Google AI Studio key from https://aistudio.google.com/apikey.";
+    } else if (res.status === 403 || /PERMISSION_DENIED/i.test(errMsg || "")) {
+      errMsg = "Permission denied. Ensure the Generative Language API is enabled for this key.";
+    } else if (res.status === 429 || /RESOURCE_EXHAUSTED/i.test(errMsg || "")) {
+      errMsg = "Google AI Studio quota exceeded. Please check your plan limits at https://ai.google.dev/gemini-api/docs/rate-limits.";
+    }
+
+    const sanitized = (errMsg || `Google AI Studio returned HTTP ${res.status}`)
+      .replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]")
+      .replace(/AQ\.[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
+
     return { ok: false, error: sanitized };
+  } catch (err) {
+    if (err.name === "AbortError") {
+      return { ok: false, error: "Connection to Google AI Studio timed out after 12 seconds." };
+    }
+    return { ok: false, error: `Connection failed to Google AI Studio: ${err.message || "Network error"}` };
   }
 }
 

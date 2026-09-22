@@ -126,6 +126,32 @@ export async function saveHitlFeedbackRecord(db, calcId, userId, rating, hitlNot
   return { id, status: "submitted" };
 }
 
+export async function setUserAiConsent(db, userId, consented = true) {
+  if (!db || !userId) return false;
+  try {
+    try {
+      await db.prepare("ALTER TABLE users ADD COLUMN ai_consent INTEGER DEFAULT 0").run();
+      await db.prepare("ALTER TABLE users ADD COLUMN ai_consent_at INTEGER").run();
+    } catch (e) {}
+    await db.prepare("UPDATE users SET ai_consent = ?, ai_consent_at = ? WHERE id = ?")
+      .bind(consented ? 1 : 0, now(), userId).run();
+    return true;
+  } catch (err) {
+    console.warn("Could not save AI consent to DB:", err.message);
+    return false;
+  }
+}
+
+export async function getUserAiConsent(db, userId) {
+  if (!db || !userId) return false;
+  try {
+    const row = await db.prepare("SELECT ai_consent FROM users WHERE id = ?").bind(userId).first();
+    return !!(row && row.ai_consent);
+  } catch (err) {
+    return false;
+  }
+}
+
 export async function getUserAnalytics(db, userId) {
   await ensureCalcTables(db);
   const totalRow = await db.prepare(`

@@ -1,0 +1,1023 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Barème Kilométrique 2026 URSSAF | French Mileage Expense Calculator | LedgerMate</title>
+<meta name="description" content="Calculateur officiel des frais kilométriques 2026 (impôts &amp; URSSAF) pour véhicules thermiques et électriques (+20%). French official mileage allowance and tax deduction calculator." />
+<link rel="canonical" href="https://tryledgermate.in/fr/bareme-kilometrique/" />
+<link rel="alternate" hreflang="fr" href="https://tryledgermate.in/fr/bareme-kilometrique/" />
+<link rel="alternate" hreflang="en" href="https://tryledgermate.in/regional/#europe" />
+<link rel="alternate" hreflang="x-default" href="https://tryledgermate.in/fr/bareme-kilometrique/" />
+<meta name="robots" content="index, follow" />
+
+<!-- OpenGraph & Twitter Social Cards -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Barème Kilométrique 2026 URSSAF & DGFiP | France" />
+<meta property="og:description" content="Simulateur officiel de déduction des frais réels de transport domicile-travail et déplacements professionnels." />
+<meta property="og:url" content="https://tryledgermate.in/fr/bareme-kilometrique/" />
+<meta property="og:site_name" content="LedgerMate Regional Hub" />
+<meta property="og:locale" content="fr_FR" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Barème Kilométrique 2026 URSSAF | LedgerMate" />
+<meta name="twitter:description" content="Calcul des indemnités kilométriques de 3 CV à 7 CV et majoration de 20% pour véhicules 100% électriques." />
+
+<!-- AEO / GEO Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Simulateur Barème Kilométrique (French Mileage Expense Calculator)",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "url": "https://tryledgermate.in/fr/bareme-kilometrique/",
+      "description": "Calculateur officiel d'indemnités kilométriques conforme au barème publié par la DGFiP et l'URSSAF pour l'imposition des revenus.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "LedgerMate", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "Regional Hub", "item": "https://tryledgermate.in/regional/" },
+        { "@type": "ListItem", "position": 3, "name": "Barème Kilométrique", "item": "https://tryledgermate.in/fr/bareme-kilometrique/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Comment fonctionne le barème kilométrique officiel en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le barème fiscal dépend de la puissance administrative du véhicule (de 3 CV à 7 CV et plus) et de la distance parcourue à titre professionnel dans l'année (paliers : jusqu'à 5 000 km, de 5 001 à 20 000 km, et au-delà de 20 000 km)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Les véhicules 100% électriques bénéficient-ils d'une majoration en 2026 ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, conformément aux directives de la DGFiP et de l'URSSAF, le montant des frais de déplacement calculés selon le barème est majoré de 20% pour les véhicules à motorisation 100% électrique afin d'encourager la transition écologique."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Faut-il choisir les frais réels ou l'abattement forfaitaire de 10% ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Par défaut, l'administration fiscale applique automatiquement une déduction forfaitaire de 10% sur les salaires. Si vos frais réels kilométriques (et éventuellement de repas) dépassent ce montant, il est financièrement avantageux d'opter pour la déduction des frais réels sur votre déclaration de revenus."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelles sont les pièces justificatives exigées par le fisc ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le contribuable doit pouvoir justifier de la réalité des trajets professionnels : certificat d'immatriculation (carte grise) attestant de la puissance fiscale, carnet de bord ou agenda des déplacements mentionnant dates, motifs et kilométrages, et factures d'entretien du véhicule."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --primary: #0891b2;
+  --primary-light: #ecfeff;
+  --primary-hover: #0e7490;
+  --accent: #f59e0b;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --border-focus: #06b6d4;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.header-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+}
+.brand-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #a5f3fc;
+}
+.nav-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--primary); }
+.btn-cta {
+  background: var(--primary);
+  color: #fff !important;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 18px 80px;
+}
+
+@media (max-width: 860px) {
+  .page-wrapper {
+    padding: 16px 14px 40px !important;
+  }
+  .calc-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .calc-sidebar {
+    position: static !important;
+  }
+  .result-card {
+    position: static !important;
+  }
+  .nav-links a:not(.btn-cta):not(.hub-back-btn) {
+    display: none !important;
+  }
+}
+@media (max-width: 640px) {
+  .header-container {
+    padding: 8px 16px;
+    min-height: 52px;
+  }
+  .brand-badge {
+    display: none !important;
+  }
+  .btn-cta {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+  .calc-card {
+    padding: 18px 14px !important;
+  }
+  .guide-container {
+    padding: 20px 16px !important;
+  }
+  input, select {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+}
+
+/* Sidebar & Sticky Container */
+.calc-sidebar {
+  position: sticky;
+  top: 86px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Breadcrumb & Navigation Styles */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.breadcrumb-nav a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb-nav a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-sep {
+  color: #94a3b8;
+  font-weight: 400;
+}
+.breadcrumb-current {
+  color: #64748b;
+  font-weight: 600;
+}
+.hub-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0e7490;
+  background: #cffafe;
+  border: 1px solid #a5f3fc;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.hub-back-btn:hover {
+  background: #a5f3fc;
+  color: #0891b2;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #cffafe;
+  color: #0e7490;
+  border: 1px solid #a5f3fc;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+h1 {
+  font-size: clamp(22px, 3.8vw, 34px);
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-size: 15.5px;
+  color: var(--text-muted);
+  max-width: 840px;
+  margin-bottom: 24px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+@media (max-width: 860px) {
+  .calc-grid { grid-template-columns: 1fr; }
+}
+
+.calc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+.card-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.form-section { margin-bottom: 20px; }
+.section-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 520px) {
+  .input-row { grid-template-columns: 1fr; }
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+}
+.field-hint {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 400;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap input, .input-wrap select {
+  width: 100%;
+  padding: 11px 14px 11px 56px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 16px; /* Prevents auto zoom */
+  font-family: inherit;
+  font-weight: 700;
+  background: #fff;
+  transition: all 0.15s;
+  min-height: 48px;
+}
+.input-wrap input:focus, .input-wrap select:focus {
+  outline: none;
+  border-color: #0891b2;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+}
+.currency-tag {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #0e7490;
+  background: #ecfeff;
+  border: 1px solid #a5f3fc;
+  padding: 3px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Result Card */
+.result-card {
+  background: linear-gradient(145deg, #0e7490, #0891b2);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 10px 25px -5px rgba(8, 145, 178, 0.35);
+  position: static;
+}
+.recommendation-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  background: #fef08a;
+  color: #854d0e;
+}
+.result-stat-group {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.result-label {
+  font-size: 13px;
+  color: #cffafe;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.result-big-number {
+  font-size: 34px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+.result-currency {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fef08a;
+  margin-left: 6px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #e2e8f0;
+}
+.breakdown-row strong { color: #ffffff; }
+
+.share-action-box {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+.btn-share {
+  flex: 1;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-reset {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-reset:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Educational Content */
+.guide-container {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 30px;
+  margin-top: 40px;
+  box-shadow: var(--shadow);
+}
+.guide-container h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 28px 0 14px;
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+.guide-container h2:first-child { margin-top: 0; }
+.guide-container h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 20px 0 10px;
+}
+.guide-container p {
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.guide-container ul, .guide-container ol {
+  margin: 12px 0 18px 24px;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.guide-container li { margin-bottom: 6px; }
+
+.callout-box {
+  background: #ecfeff;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 18px;
+  margin: 20px 0;
+  font-size: 14.5px;
+  color: #0e7490;
+}
+
+.data-table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+.data-table th {
+  background: #f1f5f9;
+  padding: 10px 14px;
+  font-weight: 800;
+  color: #1e293b;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: #334155;
+}
+.data-table tr:hover td { background: #f8fafc; }
+
+/* FAQs */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open {
+  border-color: var(--primary);
+}
+.faq-question {
+  padding: 14px 18px;
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  user-select: none;
+}
+.faq-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 12px;
+  color: #64748b;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+.faq-answer {
+  display: none;
+  padding: 16px 18px;
+  font-size: 14.5px;
+  color: #334155;
+  line-height: 1.75;
+  border-top: 1px solid var(--border);
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+</style>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Simulateur Barème Kilométrique URSSAF 2026",
+      "operatingSystem": "All",
+      "applicationCategory": "FinanceApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+      "description": "Simulateur officiel de calcul des frais réels kilométriques selon la grille fiscale URSSAF et DGFiP. Majoration véhicule électrique de 20% et comparateur avec l'abattement forfaitaire de 10%."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quelle est la majoration fiscale pour un véhicule électrique selon le barème kilométrique ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Conformément à l'arrêté ministériel en vigueur, les montants des frais de déplacement calculés selon le barème kilométrique officiel sont majorés de 20 % pour les véhicules propulsés exclusivement à l'énergie électrique."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment choisir entre l'abattement forfaitaire de 10% et les frais réels kilométriques ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Par défaut, l'administration fiscale applique automatiquement un abattement forfaitaire de 10% sur vos salaires nets déclarés. Si vos frais kilométriques réels calculés avec le barème dépassent ce montant de 10%, il est nettement plus avantageux d'opter pour la déduction des frais réels sur votre déclaration d'impôt sur le revenu."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelles dépenses sont déjà couvertes par le barème kilométrique ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le barème kilométrique intègre déjà la dépréciation du véhicule, l'assurance automobile, les frais d'entretien courant et pneumatiques, ainsi que le carburant ou la recharge électrique. Les péages d'autoroute et les intérêts d'emprunt peuvent en revanche être déduits en supplément."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<header class="header-nav">
+  <div class="header-container">
+    <a href="/" class="brand-logo" title="LedgerMate - Accueil">
+      <span>📐 LedgerMate</span>
+      <span class="brand-badge">Fiscalité & Frais Réels</span>
+    </a>
+    <div class="nav-links">
+      <a href="/regional/" class="hub-back-btn">🌐 Hub Régional</a>
+      <a href="/fr/calculateur-indemnite-licenciement/">Indemnité de Licenciement</a>
+      <a href="/app/" class="btn-cta">Gestion de Dépenses Partagées</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-wrapper">
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumb-nav" aria-label="Navigation">
+    <a href="/">Accueil (LedgerMate)</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/regional/">🌐 Hub Régional</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Simulateur Barème Kilométrique</span>
+  </nav>
+
+  <div>
+    <div class="hero-badge">🚗 Grille Officielle URSSAF & DGFiP 2026</div>
+    <h1>Simulateur Barème Kilométrique (Frais Réels Auto & Moto)</h1>
+    <p class="hero-subtitle">
+      Calculez votre déduction fiscale de frais kilométriques professionnels selon la puissance fiscale de votre véhicule, avec bonus électrique de +20% et comparaison directe avec l'abattement forfaitaire de 10%.
+    </p>
+  </div>
+
+  <div class="calc-grid">
+    <!-- Form Inputs Card -->
+    <div class="calc-card">
+      <div class="card-header-title">
+        <span>⚙️ Données du Véhicule et Déplacements</span>
+      </div>
+
+      <!-- Power & Engine Type -->
+      <div class="input-row">
+        <div class="field-group">
+          <label class="field-label">Puissance Fiscale du Véhicule (CV)</label>
+          <div class="input-wrap">
+            <select id="fiscal-power" onchange="recalculate()">
+              <option value="3">3 CV et moins</option>
+              <option value="4">4 CV</option>
+              <option value="5" selected>5 CV (Standard)</option>
+              <option value="6">6 CV</option>
+              <option value="7">7 CV et plus</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Motorisation</label>
+          <div class="input-wrap">
+            <select id="engine-type" onchange="recalculate()">
+              <option value="thermal" selected>Thermique / Hybride classique</option>
+              <option value="electric">100% Électrique (+20% majoration)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distances -->
+      <div class="form-section">
+        <div class="section-label">🛣️ Kilomètres Parcourus dans l'Année</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">
+              <span>Distance professionnelle annuelle</span>
+              <span class="field-hint">Trajets domicile-travail et missions</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="annual-km" value="12500" min="0" step="100" oninput="recalculate()">
+              <span class="currency-tag">km</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <span>Salaire net imposable annuel</span>
+              <span class="field-hint">Pour comparer avec les 10% d'abattement</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="annual-salary" value="32000" min="0" step="500" oninput="recalculate()">
+              <span class="currency-tag">€</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Summary Sidebar -->
+    <div class="calc-sidebar">
+      <div class="result-card">
+        <div id="recommendation-badge" class="recommendation-badge">
+          ⭐ Frais réels kilométriques recommandés
+        </div>
+
+        <div class="result-stat-group">
+          <div class="result-label">Déduction Kilométrique Calculée :</div>
+          <div class="result-big-number">
+            <span id="res-mileage-allowance">5 858</span>
+            <span class="result-currency">€</span>
+          </div>
+        </div>
+
+        <div class="breakdown-row">
+          <span>Abattement forfaitaire standard (10%) :</span>
+          <span><strong id="res-standard-allowance">3 200 €</strong></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Gain fiscal net estimé :</span>
+          <span><strong id="res-net-gain" style="color:#fef08a;">+2 658 € déductibles</strong></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Tranche kilométrique appliquée :</span>
+          <span id="res-distance-tier"><strong>5 001 à 20 000 km</strong></span>
+        </div>
+        <div class="breakdown-row">
+          <span>Majoration véhicule électrique :</span>
+          <span id="res-electric-bonus">Non (+0%)</span>
+        </div>
+
+        <div class="share-action-box">
+          <a id="whatsapp-share-btn" href="#" target="_blank" rel="noopener" class="btn-share">
+            <span>📲 Partager la simulation</span>
+          </a>
+          <button class="btn-reset" onclick="resetForm()">Réinitialiser</button>
+        </div>
+      </div>
+
+      <!-- LedgerMate Fuel & Trips CTA -->
+      <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+        <h4 style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:6px;">🚗 Covoiturage ou partage des frais de carburant ?</h4>
+        <p style="font-size:12.5px; color:#475569; line-height:1.6; margin-bottom:10px;">
+          Si vous faites du covoiturage quotidien ou des voyages entre amis, LedgerMate calcule équitablement la part de carburant et de péage de chaque passager en direct.
+        </p>
+        <a href="/app/" style="font-size:12.5px; font-weight:700; color:var(--primary); text-decoration:none;">Partager les frais de trajet gratuitement ←</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educational Guide (1100+ words) -->
+  <article class="guide-container">
+    <h2>Guide Pratique et Fiscal du Barème Kilométrique URSSAF et Frais Réels</h2>
+    <p>
+      Chaque année, des millions de salariés, professions libérales et indépendants en France se posent la même question lors de leur déclaration de revenus : <em>faut-il conserver l'abattement forfaitaire automatique de 10 % ou opter pour la déduction des frais réels kilométriques ?</em>
+    </p>
+
+    <div class="callout-box">
+      <strong>Principe de la déduction aux frais réels :</strong>
+      Si vous effectuez des trajets quotidiens réguliers entre votre domicile et votre lieu de travail, ou des déplacements professionnels avec votre véhicule personnel, le barème kilométrique officiel publié par la Direction Générale des Finances Publiques (DGFiP) vous permet d'évaluer forfaitairement vos dépenses réelles sans avoir à conserver chaque ticket d'essence.
+    </div>
+
+    <h2>Grille Officielle des Formules Automobiles</h2>
+    <p>
+      Le calcul dépend de la puissance fiscale (indiquée à la case P.6 de votre certificat d'immatriculation / carte grise) et du kilométrage total parcouru à titre professionnel sur l'année civile (d) :
+    </p>
+
+    <div class="data-table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Puissance Fiscale</th>
+            <th>Jusqu'à 5 000 km</th>
+            <th>De 5 001 à 20 000 km</th>
+            <th>Au-delà de 20 000 km</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>3 CV et moins</strong></td>
+            <td>d × 0,529</td>
+            <td>(d × 0,316) + 1 065</td>
+            <td>d × 0,370</td>
+          </tr>
+          <tr>
+            <td><strong>4 CV</strong></td>
+            <td>d × 0,606</td>
+            <td>(d × 0,340) + 1 330</td>
+            <td>d × 0,407</td>
+          </tr>
+          <tr>
+            <td><strong>5 CV</strong></td>
+            <td>d × 0,636</td>
+            <td>(d × 0,357) + 1 395</td>
+            <td>d × 0,427</td>
+          </tr>
+          <tr>
+            <td><strong>6 CV</strong></td>
+            <td>d × 0,665</td>
+            <td>(d × 0,374) + 1 457</td>
+            <td>d × 0,447</td>
+          </tr>
+          <tr>
+            <td><strong>7 CV et plus</strong></td>
+            <td>d × 0,697</td>
+            <td>(d × 0,394) + 1 515</td>
+            <td>d × 0,470</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Bonus Écologique : Majoration de 20 % pour Véhicules Électriques</h2>
+    <p>
+      Afin d'encourager la transition vers les mobilités douces et décarbonées, l'administration fiscale applique une <strong>majoration automatique de 20 %</strong> sur le montant total calculé par le barème pour les automobilistes circulant en véhicule 100 % électrique. Par exemple, une déduction de 5 000 € pour un modèle thermique passe automatiquement à <strong>6 000 €</strong> pour une voiture électrique de même puissance fiscale.
+    </p>
+
+    <h2>Que Couvre Exactement le Barème Kilométrique ?</h2>
+    <p>Le barème kilométrique forfaitaire englobe légalement l'ensemble des dépenses suivantes :</p>
+    <ul>
+      <li>La dépréciation annuelle du véhicule (amortissement de sa valeur d'achat).</li>
+      <li>Les dépenses courantes de carburant (essence, diesel) ou d'électricité.</li>
+      <li>Les primes d'assurance automobile annuelle.</li>
+      <li>Les frais d'entretien, de révision mécanique et de pneumatiques.</li>
+    </ul>
+    <p>
+      <strong>Dépenses déductibles en sus :</strong> Vous pouvez déduire en complément du barème les frais de péage d'autoroute et de stationnement payant professionnel, ainsi que les intérêts d'emprunt au prorata de l'usage professionnel si le véhicule a été acheté à crédit.
+    </p>
+
+    <h2>Règle Fiscale des 40 Kilomètres Domicile-Travail</h2>
+    <p>
+      L'administration fiscale admet la déduction des trajets aller-retour quotidiens entre le domicile et le lieu de travail dans la limite de <strong>40 kilomètres par trajet (soit 80 km aller-retour par jour travaillé)</strong>. Si la distance est supérieure à 40 km, vous devez être en mesure de justifier cet éloignement par des contraintes familiales (emploi du conjoint, scolarité des enfants) ou professionnelles particulières (difficultés à trouver un logement à proximité).
+    </p>
+
+    <!-- FAQs Section -->
+    <h2 style="margin-top: 36px;">Foire Aux Questions sur le Barème Kilométrique</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Quels justificatifs dois-je conserver en cas de contrôle fiscal ?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Vous n'avez pas à joindre de justificatifs lors du dépôt de votre déclaration en ligne, mais vous devez impérativement conserver pendant au moins 3 ans : la copie de la carte grise au nom du contribuable, les factures d'entretien montrant le compteur kilométrique annuel, et un carnet de bord ou agenda détaillant la date, le motif et la distance de chaque déplacement.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Puis-je utiliser le barème si j'utilise le véhicule de mon conjoint ?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Oui, si vous êtes mariés ou pacsés soumis à une imposition commune, vous pouvez appliquer le barème kilométrique pour un véhicule immatriculé au nom de votre conjoint(e), pourvu que vous participiez effectivement aux frais du véhicule et que les deux conjoints ne déduisent pas deux fois les mêmes kilomètres.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Si mon employeur me verse déjà des indemnités kilométriques, que dois-je faire ?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        Si votre entreprise vous rembourse déjà des frais kilométriques exonérés de cotisations sociales, vous ne pouvez pas déduire en plus ces mêmes kilomètres aux frais réels sur votre feuille d'impôt, sauf si vous réintégrez l'intégralité des remboursements perçus dans vos salaires imposables.
+      </div>
+    </div>
+  </article>
+</main>
+
+<script>
+function formatEuro(n) {
+  return Math.round(n).toLocaleString('fr-FR') + ' €';
+}
+
+function recalculate() {
+  const cv = parseInt(document.getElementById('fiscal-power').value) || 5;
+  const isElectric = document.getElementById('engine-type').value === 'electric';
+  const km = parseFloat(document.getElementById('annual-km').value) || 0;
+  const annualSalary = parseFloat(document.getElementById('annual-salary').value) || 0;
+
+  let baseAllowance = 0;
+  let tierLabel = 'Jusqu’à 5 000 km';
+
+  if (km <= 5000) {
+    tierLabel = 'Jusqu’à 5 000 km';
+    if (cv <= 3) baseAllowance = km * 0.529;
+    else if (cv === 4) baseAllowance = km * 0.606;
+    else if (cv === 5) baseAllowance = km * 0.636;
+    else if (cv === 6) baseAllowance = km * 0.665;
+    else baseAllowance = km * 0.697;
+  } else if (km <= 20000) {
+    tierLabel = 'De 5 001 à 20 000 km';
+    if (cv <= 3) baseAllowance = (km * 0.316) + 1065;
+    else if (cv === 4) baseAllowance = (km * 0.340) + 1330;
+    else if (cv === 5) baseAllowance = (km * 0.357) + 1395;
+    else if (cv === 6) baseAllowance = (km * 0.374) + 1457;
+    else baseAllowance = (km * 0.394) + 1515;
+  } else {
+    tierLabel = 'Au-delà de 20 000 km';
+    if (cv <= 3) baseAllowance = km * 0.370;
+    else if (cv === 4) baseAllowance = km * 0.407;
+    else if (cv === 5) baseAllowance = km * 0.427;
+    else if (cv === 6) baseAllowance = km * 0.447;
+    else baseAllowance = km * 0.470;
+  }
+
+  // +20% bonus for 100% electric
+  const electricMultiplier = isElectric ? 1.20 : 1.0;
+  const finalAllowance = baseAllowance * electricMultiplier;
+
+  // Standard 10% allowance comparison (minimum ~472 €, maximum ~14 171 €)
+  const standard10Percent = Math.min(14171, Math.max(472, annualSalary * 0.10));
+  const netGain = finalAllowance - standard10Percent;
+
+  // Update UI
+  document.getElementById('res-mileage-allowance').textContent = Math.round(finalAllowance).toLocaleString('fr-FR');
+  document.getElementById('res-standard-allowance').textContent = formatEuro(standard10Percent);
+  document.getElementById('res-distance-tier').innerHTML = `<strong>${tierLabel}</strong>`;
+  document.getElementById('res-electric-bonus').innerHTML = isElectric ? '<strong style="color:#10b981;">Oui (+20% appliqué)</strong>' : 'Non (+0%)';
+
+  const badge = document.getElementById('recommendation-badge');
+  const gainEl = document.getElementById('res-net-gain');
+
+  if (netGain > 0) {
+    badge.textContent = '⭐ Frais réels kilométriques recommandés';
+    badge.style.background = '#fef08a';
+    badge.style.color = '#854d0e';
+    gainEl.innerHTML = `<span style="color:#fef08a;">+${formatEuro(netGain)} de déduction supplémentaire</span>`;
+  } else {
+    badge.textContent = 'ℹ️ Abattement forfaitaire de 10% plus avantageux';
+    badge.style.background = '#e2e8f0';
+    badge.style.color = '#334155';
+    gainEl.innerHTML = `<span style="color:#cbd5e1;">L'abattement forfaitaire rapporte +${formatEuro(-netGain)}</span>`;
+  }
+
+  // WhatsApp share
+  const text = encodeURIComponent(`Simulation Barème Kilométrique URSSAF 2026 :
+- Véhicule : ${cv} CV (${isElectric ? 'Électrique' : 'Thermique'})
+- Kilométrage pro : ${km.toLocaleString('fr-FR')} km
+- Déduction kilométrique : ${formatEuro(finalAllowance)}
+- Comparaison abattement 10% : ${netGain > 0 ? 'Frais réels plus avantageux' : '10% plus avantageux'}
+Simulez vos frais réels gratuitement : https://tryledgermate.in/fr/bareme-kilometrique/`);
+  document.getElementById('whatsapp-share-btn').href = `https://api.whatsapp.com/send?text=${text}`;
+}
+
+function resetForm() {
+  document.getElementById('fiscal-power').value = '5';
+  document.getElementById('engine-type').value = 'thermal';
+  document.getElementById('annual-km').value = '12500';
+  document.getElementById('annual-salary').value = '32000';
+  recalculate();
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  if (!item) return;
+  const ans = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+  if (isOpen) {
+    item.classList.remove('open');
+    if (ans) ans.style.display = 'none';
+  } else {
+    item.classList.add('open');
+    if (ans) ans.style.display = 'block';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', recalculate);
+</script>
+
+</body>
+</html>
