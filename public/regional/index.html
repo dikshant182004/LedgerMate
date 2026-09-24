@@ -60,7 +60,9 @@
 }
 </script>
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
@@ -77,12 +79,12 @@
   --text: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
-  
+
   --primary: #6366f1;
   --primary-hover: #4f46e5;
   --primary-soft: rgba(99, 102, 241, 0.15);
   --primary-glow: rgba(99, 102, 241, 0.35);
-  
+
   --badge-bg: rgba(99, 102, 241, 0.2);
   --badge-text: #a5b4fc;
   --badge-border: rgba(99, 102, 241, 0.35);
@@ -109,12 +111,12 @@ body[data-region="islamic"] {
   --text: #f0fdf4;
   --text-muted: #a7f3d0;
   --text-dim: #6ee7b7;
-  
+
   --primary: #10b981;
   --primary-hover: #059669;
   --primary-soft: rgba(16, 185, 129, 0.2);
   --primary-glow: rgba(16, 185, 129, 0.45);
-  
+
   --badge-bg: rgba(16, 185, 129, 0.25);
   --badge-text: #6ee7b7;
   --badge-border: rgba(16, 185, 129, 0.45);
@@ -136,12 +138,12 @@ body[data-region="spanish"] {
   --text: #fffbeb;
   --text-muted: #fde68a;
   --text-dim: #fcd34d;
-  
+
   --primary: #f59e0b;
   --primary-hover: #d97706;
   --primary-soft: rgba(245, 158, 11, 0.2);
   --primary-glow: rgba(245, 158, 11, 0.45);
-  
+
   --badge-bg: rgba(245, 158, 11, 0.25);
   --badge-text: #fde68a;
   --badge-border: rgba(245, 158, 11, 0.45);
@@ -163,12 +165,12 @@ body[data-region="french"] {
   --text: #f0f7ff;
   --text-muted: #bfdbfe;
   --text-dim: #93c5fd;
-  
+
   --primary: #3b82f6;
   --primary-hover: #2563eb;
   --primary-soft: rgba(59, 130, 246, 0.2);
   --primary-glow: rgba(59, 130, 246, 0.45);
-  
+
   --badge-bg: rgba(59, 130, 246, 0.25);
   --badge-text: #93c5fd;
   --badge-border: rgba(59, 130, 246, 0.45);
@@ -190,12 +192,12 @@ body[data-region="eurasia"] {
   --text: #f0fdfa;
   --text-muted: #99f6e4;
   --text-dim: #5eead4;
-  
+
   --primary: #14b8a6;
   --primary-hover: #0d9488;
   --primary-soft: rgba(20, 184, 166, 0.2);
   --primary-glow: rgba(20, 184, 166, 0.45);
-  
+
   --badge-bg: rgba(20, 184, 166, 0.25);
   --badge-text: #99f6e4;
   --badge-border: rgba(20, 184, 166, 0.45);
@@ -217,12 +219,12 @@ body[data-region="asia"] {
   --text: #fff1f2;
   --text-muted: #fecdd3;
   --text-dim: #fda4af;
-  
+
   --primary: #f43f5e;
   --primary-hover: #e11d48;
   --primary-soft: rgba(244, 63, 94, 0.2);
   --primary-glow: rgba(244, 63, 94, 0.45);
-  
+
   --badge-bg: rgba(244, 63, 94, 0.25);
   --badge-text: #fecdd3;
   --badge-border: rgba(244, 63, 94, 0.45);
@@ -244,12 +246,12 @@ body[data-region="usa"] {
   --text: #f0f9ff;
   --text-muted: #bae6fd;
   --text-dim: #7dd3fc;
-  
+
   --primary: #0ea5e9;
   --primary-hover: #0284c7;
   --primary-soft: rgba(14, 165, 233, 0.2);
   --primary-glow: rgba(14, 165, 233, 0.45);
-  
+
   --badge-bg: rgba(14, 165, 233, 0.25);
   --badge-text: #bae6fd;
   --badge-border: rgba(14, 165, 233, 0.45);
@@ -264,7 +266,11 @@ body[data-region="usa"] {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.25s ease, box-shadow 0.35s ease;
+}
+
+button, input, select, a, .region-pill, .sim-tab-btn, .calc-card {
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
 
 body {
@@ -807,7 +813,9 @@ body[data-region="usa"] header.site-nav { background: rgba(3, 15, 32, 0.9); }
   box-shadow: var(--shadow-card);
   position: relative;
   overflow: hidden;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 320px;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .calc-card::before {
   content: "";
@@ -1648,14 +1656,14 @@ footer.site-footer {
           <label><span id="simInput1Label">Eligible Net Wealth / Cash:</span> <span id="simInput1Unit" style="color:var(--primary);font-family:'JetBrains Mono';">SAR</span></label>
           <div class="sim-input-wrap">
             <span class="sim-currency-tag" id="simCurrency1">SAR</span>
-            <input type="number" class="sim-input" id="simInput1" value="50000" step="1000" oninput="runSimCalc()">
+            <input type="number" class="sim-input" id="simInput1" value="50000" step="1000" oninput="scheduleSimCalc()">
           </div>
         </div>
         <div class="sim-field" id="simField2">
           <label><span id="simInput2Label">Gold Price per Gram:</span> <span id="simInput2Unit" style="color:var(--text-muted);font-family:'JetBrains Mono';">24K Gold</span></label>
           <div class="sim-input-wrap">
             <span class="sim-currency-tag" id="simCurrency2">SAR</span>
-            <input type="number" class="sim-input" id="simInput2" value="285" step="5" oninput="runSimCalc()">
+            <input type="number" class="sim-input" id="simInput2" value="285" step="5" oninput="scheduleSimCalc()">
           </div>
         </div>
       </div>
@@ -2360,33 +2368,62 @@ function setRegion(regionKey) {
   }
 }
 
-function filterCards() {
-  const regionKey = document.body.getAttribute('data-region') || 'all';
-  const searchTerm = (document.getElementById('toolSearch').value || '').trim().toLowerCase();
-  const cards = document.querySelectorAll('#cardsGrid .calc-card');
-  let visibleCount = 0;
-
-  cards.forEach(card => {
-    const cardRegions = (card.getAttribute('data-region') || '').split(/\s+/);
-    const textContent = (card.textContent || '').toLowerCase();
-    
-    const matchesRegion = (regionKey === 'all' || cardRegions.includes(regionKey));
-    const matchesSearch = !searchTerm || textContent.includes(searchTerm);
-
-    if (matchesRegion && matchesSearch) {
-      card.style.display = 'flex';
-      visibleCount++;
-    } else {
-      card.style.display = 'none';
-    }
-  });
-
-  document.getElementById('statCount').textContent = visibleCount;
-  document.getElementById('toolsCountBadge').textContent = `Showing ${visibleCount} Tool${visibleCount === 1 ? '' : 's'}`;
+// In-Memory Card Index for Zero-Reflow Search & Filter Performance
+let _cachedCards = null;
+function getCardsIndex() {
+  if (!_cachedCards) {
+    const raw = document.querySelectorAll('#cardsGrid .calc-card');
+    _cachedCards = Array.from(raw).map(card => ({
+      el: card,
+      regions: (card.getAttribute('data-region') || '').split(/\s+/),
+      text: (card.textContent || '').toLowerCase()
+    }));
+  }
+  return _cachedCards;
 }
 
+function filterCards() {
+  const regionKey = document.body.getAttribute('data-region') || 'all';
+  const searchInput = document.getElementById('toolSearch');
+  const searchTerm = (searchInput ? searchInput.value : '').trim().toLowerCase();
+  const cards = getCardsIndex();
+  let visibleCount = 0;
+
+  for (let i = 0; i < cards.length; i++) {
+    const item = cards[i];
+    const matchesRegion = (regionKey === 'all' || item.regions.includes(regionKey));
+    const matchesSearch = !searchTerm || item.text.includes(searchTerm);
+
+    if (matchesRegion && matchesSearch) {
+      if (item.el.style.display !== 'flex') item.el.style.display = 'flex';
+      visibleCount++;
+    } else {
+      if (item.el.style.display !== 'none') item.el.style.display = 'none';
+    }
+  }
+
+  const statCountEl = document.getElementById('statCount');
+  if (statCountEl) statCountEl.textContent = visibleCount;
+  const countBadgeEl = document.getElementById('toolsCountBadge');
+  if (countBadgeEl) countBadgeEl.textContent = `Showing ${visibleCount} Tool${visibleCount === 1 ? '' : 's'}`;
+}
+
+let _searchRaf = null;
 function filterBySearch() {
-  filterCards();
+  if (_searchRaf) cancelAnimationFrame(_searchRaf);
+  _searchRaf = requestAnimationFrame(() => {
+    filterCards();
+    _searchRaf = null;
+  });
+}
+
+let _simRaf = null;
+function scheduleSimCalc() {
+  if (_simRaf) cancelAnimationFrame(_simRaf);
+  _simRaf = requestAnimationFrame(() => {
+    runSimCalc();
+    _simRaf = null;
+  });
 }
 
 // ⚡ JURISDICTION SIMULATOR ENGINE
@@ -2522,7 +2559,7 @@ function runSimCalc() {
 
     document.getElementById('simRow1Label').textContent = "Gold Nisab Threshold (85g):";
     document.getElementById('simRow1Val').textContent = "SAR " + nisab.toLocaleString('en-US', {maximumFractionDigits: 0});
-    
+
     document.getElementById('simRow2Label').textContent = "Nisab Qualification:";
     document.getElementById('simRow2Val').textContent = isExceeded ? "✅ Exceeds Nisab (Obligatory)" : "❌ Below Nisab (No Zakat Due)";
     document.getElementById('simRow2Val').style.color = isExceeded ? "#10b981" : "#94a3b8";
@@ -2622,6 +2659,7 @@ function runSimCalc() {
 
 // Auto-activate region from URL hash if provided
 window.addEventListener('DOMContentLoaded', () => {
+  getCardsIndex();
   const hash = window.location.hash.replace('#', '');
   if (hash && REGION_THEMES[hash]) {
     setRegion(hash);

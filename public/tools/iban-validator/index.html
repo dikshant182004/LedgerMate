@@ -84,6 +84,8 @@
 }
 </script>
 <link rel="icon" href="/icons/favicon-32.png" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -106,6 +108,10 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+button, input, select, a {
+  touch-action: manipulation;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -584,7 +590,7 @@ h1 {
           <span class="field-hint">e.g. SA..., AE..., FR..., ES..., DE..., GB...</span>
         </label>
         <div class="input-wrap">
-          <input type="text" id="iban-input" value="SA03 8000 0000 6080 1016 7519" placeholder="Enter IBAN..." oninput="validateIban()">
+          <input type="text" id="iban-input" value="SA03 8000 0000 6080 1016 7519" placeholder="Enter IBAN..." oninput="scheduleIbanValidation()">
         </div>
 
         <div class="preset-chips">
@@ -885,9 +891,18 @@ function mod97(str) {
   return checksum;
 }
 
+let _ibanRaf = null;
+function scheduleIbanValidation() {
+  if (_ibanRaf) cancelAnimationFrame(_ibanRaf);
+  _ibanRaf = requestAnimationFrame(() => {
+    validateIban();
+    _ibanRaf = null;
+  });
+}
+
 function setIban(val) {
   document.getElementById('iban-input').value = val;
-  validateIban();
+  scheduleIbanValidation();
 }
 
 function validateIban() {
