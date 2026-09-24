@@ -27,9 +27,16 @@ export async function ensureCalcTables(db) {
   }
 }
 
+// Returns the new record's id on success, or null if the record could not be
+// persisted. Callers MUST check for null rather than assuming the id is always
+// usable — a record that failed to save cannot later be found by refine/feedback
+// (see getCalculationRecord), so silently handing back an id for a row that was
+// never written is what previously made the "Request Adjustment" / "Accurate"
+// buttons fail with a confusing "Calculation record not found" error even though
+// the calculation itself had just worked.
 export async function saveCalculationRecord(db, userId, query, resultData, latencyMs) {
+  if (!userId || !db) return null;
   const id = newId();
-  if (!userId || !db) return id;
 
   try {
     await ensureCalcTables(db);
@@ -50,6 +57,7 @@ export async function saveCalculationRecord(db, userId, query, resultData, laten
     ).run();
   } catch (err) {
     console.warn("Could not persist calculation history record:", err.message);
+    return null;
   }
 
   return id;
@@ -94,17 +102,25 @@ export async function deleteCalculationRecord(db, calcId, userId) {
 export async function saveHitlFeedbackRecord(db, calcId, userId, rating, hitlNote) {
   await ensureCalcTables(db);
   const id = newId();
-  await db.prepare(`
-    INSERT INTO calc_feedback (id, calc_id, user_id, rating, hitl_note, status, created_at)
-    VALUES (?, ?, ?, ?, ?, 'submitted', ?)
-  `).bind(
-    id,
-    calcId,
-    userId,
-    rating,
-    hitlNote ? hitlNote.slice(0, 1000) : null,
-    now()
-  ).run();
+  try {
+    await db.prepare(`
+      INSERT INTO calc_feedback (id, calc_id, user_id, rating, hitl_note, status, created_at)
+      VALUES (?, ?, ?, ?, ?, 'submitted', ?)
+    `).bind(
+      id,
+      calcId,
+      userId,
+      rating,
+      hitlNote ? hitlNote.slice(0, 1000) : null,
+      now()
+    ).run();
+  } catch (err) {
+    // Don't let a feedback-logging hiccup (e.g. the referenced calculation
+    // was since deleted, or a transient DB error) turn into a hard failure
+    // for something as low-stakes as a thumbs-up or a currency-switch note.
+    console.warn("Could not persist HITL feedback record:", err.message);
+    return { id, status: "not_saved" };
+  }
 
   return { id, status: "submitted" };
 }

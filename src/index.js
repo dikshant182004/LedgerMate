@@ -16,7 +16,7 @@ import {
 } from "./services/group-state.js";
 import { broadcastGroupState, scheduleGroupAlarm, recomputeGroupAlarm, connectToGroupRoom } from "./services/realtime.js";
 import { GroupRoom } from "./durable-objects/group-room.js";
-import { screenCalculationQuery } from "./services/calc-agent/guardrails.js";
+import { screenCalculationQuery, detectCurrencyRequest } from "./services/calc-agent/guardrails.js";
 import { runCalculationAgent, verifyProviderKey, fetchProviderModels, sanitizeApiKey } from "./services/calc-agent/engine.js";
 import {
   saveCalculationRecord,
@@ -65,9 +65,9 @@ async function calcRateLimitMiddleware(c, next) {
     c.header("X-RateLimit-Remaining", String(rl.remaining));
     if (rl.resetAt) c.header("X-RateLimit-Reset", String(Math.ceil(rl.resetAt / 1000)));
     if (!rl.allowed) {
-      return json(c, { 
-        error: "Rate limit exceeded. Maximum 30 calculations per minute.", 
-        retryAfter: Math.ceil((rl.resetAt - Date.now()) / 1000) 
+      return json(c, {
+        error: "Rate limit exceeded. Maximum 30 calculations per minute.",
+        retryAfter: Math.ceil((rl.resetAt - Date.now()) / 1000)
       }, 429);
     }
   }
@@ -79,7 +79,7 @@ async function cspMiddleware(c, next) {
   await next();
   const isCalcAgent = c.req.path.startsWith("/tools/calc-agent");
   if (isCalcAgent) {
-    c.header("Content-Security-Policy", 
+    c.header("Content-Security-Policy",
       "default-src 'self'; " +
       "script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
@@ -438,10 +438,17 @@ app.post("/api/calc-agent/query", calcRateLimitMiddleware, async (c) => {
       result,
       result.latencyMs
     );
+    // calcId is null if the history write failed (e.g. transient D1 error). We
+    // still return the calculation itself — it succeeded — but flag that
+    // follow-up features (Request Adjustment / Accurate / Report Issue) won't
+    // have a record to attach to, so the frontend can disable them instead of
+    // letting the user click into a dead-end "record not found" error.
+    const historySaved = calcId !== null;
 
     return json(c, {
       ok: true,
       calcId,
+      historySaved,
       data: result,
       user: { id: user.id, name: user.name, email: user.email, picture: user.picture },
       providerUsed: result.providerUsed || "gemini",
@@ -495,14 +502,14 @@ app.post("/api/calc-agent/refine", calcRateLimitMiddleware, async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const calcId = String(body.calcId || "");
   const note = String(body.hitlNote || "").trim().slice(0, 1000);
-  
+
   // Validate note content - must be a meaningful refinement
   if (!note || note.length < 3) return json(c, { error: "Please provide a specific refinement request (minimum 3 characters)." }, 400);
-  
+
   // Only accept API key via secure header
   const rawApiKey = c.req.header("x-api-key") || c.req.header("x-gemini-api-key") || "";
   const apiKey = sanitizeApiKey(rawApiKey);
-  
+
   // Validate model against allowed list
   let selectedModel = (c.req.header("x-ai-model") || body.model || "gemini-3.1-flash-lite").trim();
   if (!ALLOWED_GEMINI_MODELS.has(selectedModel)) {
@@ -516,10 +523,15 @@ app.post("/api/calc-agent/refine", calcRateLimitMiddleware, async (c) => {
   const guard = screenCalculationQuery(record.query);
   if (!guard.safe) return json(c, { error: guard.message, reason: guard.reason }, 400);
 
-  // Preserve original outputLanguage and targetCurrency unless explicitly overridden
+  // Preserve original outputLanguage and targetCurrency unless explicitly overridden.
+  // There is no currency dropdown anymore — a currency change is just something the
+  // person types in this adjustment note ("convert this to euros"), so detect it here
+  // as the authoritative source of truth. body.targetCurrency (sent by the frontend's
+  // own quick-match) is kept as a secondary fallback for compatibility.
   const originalData = record.data || {};
   const outputLanguage = CALC_LANGUAGES.has(body.language) ? body.language : (originalData.outputLanguage || "English");
-  const targetCurrency = body.targetCurrency || originalData.targetCurrency || "original";
+  const noteCurrency = detectCurrencyRequest(note);
+  const targetCurrency = noteCurrency || body.targetCurrency || originalData.targetCurrency || "original";
 
   try {
     await saveHitlFeedbackRecord(c.env.DB, calcId, user.id, "revision_requested", note);
@@ -533,7 +545,7 @@ app.post("/api/calc-agent/refine", calcRateLimitMiddleware, async (c) => {
     result.refinedFrom = calcId;
     result.refinementNote = note;
     const newCalcId = await saveCalculationRecord(c.env.DB, user.id, record.query, result, result.latencyMs);
-    return json(c, { ok: true, calcId: newCalcId, data: result, providerUsed: result.providerUsed, modelUsed: result.modelUsed });
+    return json(c, { ok: true, calcId: newCalcId, historySaved: newCalcId !== null, data: result, providerUsed: result.providerUsed, modelUsed: result.modelUsed });
   } catch (err) {
     console.error("Calculation refinement failure:", err.message);
     const sanitizedMsg = (err.message || "").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");

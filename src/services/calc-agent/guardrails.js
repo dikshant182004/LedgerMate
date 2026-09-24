@@ -36,6 +36,71 @@ const CALCULATION_KEYWORDS = [
   /\b(mole|moles|molar|molarity|grams?|liters?|ml|mg|ph|stoichiometry|reaction|solution|density|enthalpy|volume|pressure|kelvin|celsius)\b/i,
 ];
 
+// Recognized target currencies and the plain-English words people actually type
+// for them. Used to read a currency change out of a free-text HITL adjustment
+// note (e.g. "convert this to euros" or "show it in rupees instead") now that
+// currency is no longer a separate dropdown — the person just asks for it.
+// Word aliases only — currency symbols ($, €, £, ¥, ₹) are matched separately
+// via symbolMap in detectCurrencyRequest, since a regex \b word-boundary
+// around a symbol character is unreliable (e.g. it fails to match "$" at the
+// very start of a string).
+const CURRENCY_ALIASES = {
+  USD: ["usd", "us dollar", "us dollars", "dollar", "dollars"],
+  EUR: ["eur", "euro", "euros"],
+  GBP: ["gbp", "pound", "pounds", "sterling"],
+  CNY: ["cny", "rmb", "yuan", "chinese yuan"],
+  JPY: ["jpy", "yen", "japanese yen"],
+  INR: ["inr", "rupee", "rupees", "indian rupee", "indian rupees"],
+  AUD: ["aud", "australian dollar", "australian dollars"],
+  CAD: ["cad", "canadian dollar", "canadian dollars"],
+  AED: ["aed", "dirham", "dirhams"],
+};
+
+/**
+ * Looks for a request to change the output currency inside a free-text note
+ * (e.g. a HITL "Request Adjustment" message). Returns a currency code like
+ * "EUR", or null if no currency change is mentioned.
+ *
+ * A note like "convert USD to EUR" mentions TWO currencies — the source and
+ * the destination — so we can't just return whichever one matches first.
+ * We collect every currency mention with its position in the text and:
+ *   1. If there's a connector word ("to"/"into"/"as"), prefer the currency
+ *      mentioned right after it — that's the destination in "convert X to Y".
+ *   2. Otherwise, prefer whichever currency is mentioned LAST, since that's
+ *      almost always the target ("...to euros", "...into dollars").
+ */
+export function detectCurrencyRequest(text) {
+  if (!text || typeof text !== "string") return null;
+  const lower = text.toLowerCase();
+  const found = [];
+  const symbolMap = { "$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY", "₹": "INR" };
+  for (const [sym, code] of Object.entries(symbolMap)) {
+    let idx = lower.indexOf(sym);
+    while (idx !== -1) {
+      found.push({ code, index: idx });
+      idx = lower.indexOf(sym, idx + 1);
+    }
+  }
+  for (const [code, aliases] of Object.entries(CURRENCY_ALIASES)) {
+    for (const alias of aliases) {
+      const re = new RegExp(`\\b${alias}\\b`, "gi");
+      let m;
+      while ((m = re.exec(lower)) !== null) {
+        found.push({ code, index: m.index });
+      }
+    }
+  }
+  if (found.length === 0) return null;
+  found.sort((a, b) => a.index - b.index);
+
+  const connectorMatch = lower.match(/\b(to|into|as)\b/);
+  if (connectorMatch) {
+    const after = found.filter((f) => f.index > connectorMatch.index);
+    if (after.length > 0) return after[0].code;
+  }
+  return found[found.length - 1].code;
+}
+
 export function screenCalculationQuery(rawQuery) {
   if (!rawQuery || typeof rawQuery !== "string") {
     return {

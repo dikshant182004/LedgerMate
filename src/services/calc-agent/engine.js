@@ -190,6 +190,87 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
   modelUsed = res.modelUsed;
 
   // 4. Parse JSON
+  let parsed;
+  try {
+    parsed = JSON.parse(rawJsonText);
+  } catch (err) {
+    let clean = rawJsonText.replace(/```json/gi, "").replace(/```/g, "").trim();
+    const firstBrace = clean.indexOf("{");
+    const lastBrace = clean.lastIndexOf("}");
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      clean = clean.substring(firstBrace, lastBrace + 1);
+    }
+    try {
+      parsed = JSON.parse(clean);
+    } catch (parseErr) {
+      throw new Error(`Failed to parse calculation output from Gemini (${modelUsed}): ${parseErr.message}`);
+    }
+  }
+
+  // 5. Deterministic Arithmetic Verification (Sandboxed Math Evaluator)
+  let variableMap = {};
+  if (Array.isArray(parsed.interactiveControls)) {
+    parsed.interactiveControls.forEach((ctrl) => {
+      const varKey = ctrl.formulaVar || ctrl.id;
+      variableMap[varKey] = Number(ctrl.value) || 0;
+    });
+  }
+
+  let evaluated = null;
+  if (parsed.formulaExpression) {
+    evaluated = evaluateFormula(parsed.formulaExpression, variableMap);
+    if (typeof evaluated === "number" && Number.isFinite(evaluated) && evaluated !== 0) {
+      parsed.primaryValue = Math.round(evaluated * 100) / 100;
+      if (!parsed.headlineResult || parsed.headlineResult.includes("$") || !isNaN(parseFloat(parsed.headlineResult))) {
+        const unit = parsed.primaryUnit || "";
+        const isCur = ["$", "€", "£", "₹", "¥", "USD", "EUR", "GBP", "INR", "CNY", "JPY"].some(c => unit.includes(c));
+        parsed.headlineResult = isCur ? `${unit}${parsed.primaryValue.toLocaleString()}` : `${parsed.primaryValue.toLocaleString()} ${unit}`.trim();
+      }
+    }
+  }
+
+  // Recovery: If deterministic verification failed (evaluated is 0, NaN, or null),
+  // try to recover from stepByStep intermediate results
+  if (evaluated === null || !Number.isFinite(evaluated) || evaluated === 0) {
+    const recovered = recoverFromSteps(parsed);
+    if (recovered) {
+      variableMap = recovered.variableMap;
+      parsed.formulaExpression = recovered.formulaExpression;
+      parsed.primaryVariableKey = recovered.primaryVariableKey;
+      parsed.interactiveControls = recovered.interactiveControls;
+      parsed.primaryValue = recovered.primaryValue;
+      parsed.headlineResult = recovered.headlineResult;
+      evaluated = recovered.primaryValue;
+    }
+  }
+
+  // 6. Generate 5-Point Sensitivity Matrix
+  const primaryKey = parsed.primaryVariableKey || Object.keys(variableMap)[0];
+  if (parsed.formulaExpression && primaryKey && variableMap[primaryKey] !== undefined) {
+    parsed.sensitivityMatrix = generateSensitivityMatrix(
+      parsed.formulaExpression,
+      variableMap,
+      primaryKey,
+      parsed.primaryUnit || ""
+    );
+  } else {
+    parsed.sensitivityMatrix = [];
+  }
+
+  parsed.latencyMs = Date.now() - startTime;
+  parsed.engine = "NeuroSymbolic-Verified";
+  parsed.providerUsed = "gemini";
+  parsed.modelUsed = modelUsed;
+  parsed.verifiedDeterministic = true;
+  parsed.outputLanguage = outputLanguage;
+  parsed.targetCurrency = targetCurrency;
+  parsed.researchGateway = {
+    ...researchDecision,
+    sources: liveSources,
+  };
+
+  return parsed;
+}
 
 // Helper to build language/currency instruction
 function buildLanguageCurrencyInstruction(outputLanguage, targetCurrency) {
@@ -312,87 +393,6 @@ function recoverFromSteps(parsed) {
     primaryValue: finalResult,
     headlineResult,
   };
-}
-  let parsed;
-  try {
-    parsed = JSON.parse(rawJsonText);
-  } catch (err) {
-    let clean = rawJsonText.replace(/```json/gi, "").replace(/```/g, "").trim();
-    const firstBrace = clean.indexOf("{");
-    const lastBrace = clean.lastIndexOf("}");
-    if (firstBrace !== -1 && lastBrace > firstBrace) {
-      clean = clean.substring(firstBrace, lastBrace + 1);
-    }
-    try {
-      parsed = JSON.parse(clean);
-    } catch (parseErr) {
-      throw new Error(`Failed to parse calculation output from Gemini (${modelUsed}): ${parseErr.message}`);
-    }
-  }
-
-  // 5. Deterministic Arithmetic Verification (Sandboxed Math Evaluator)
-  let variableMap = {};
-  if (Array.isArray(parsed.interactiveControls)) {
-    parsed.interactiveControls.forEach((ctrl) => {
-      const varKey = ctrl.formulaVar || ctrl.id;
-      variableMap[varKey] = Number(ctrl.value) || 0;
-    });
-  }
-
-  let evaluated = null;
-  if (parsed.formulaExpression) {
-    evaluated = evaluateFormula(parsed.formulaExpression, variableMap);
-    if (typeof evaluated === "number" && Number.isFinite(evaluated) && evaluated !== 0) {
-      parsed.primaryValue = Math.round(evaluated * 100) / 100;
-      if (!parsed.headlineResult || parsed.headlineResult.includes("$") || !isNaN(parseFloat(parsed.headlineResult))) {
-        const unit = parsed.primaryUnit || "";
-        const isCur = ["$", "€", "£", "₹", "¥", "USD", "EUR", "GBP", "INR", "CNY", "JPY"].some(c => unit.includes(c));
-        parsed.headlineResult = isCur ? `${unit}${parsed.primaryValue.toLocaleString()}` : `${parsed.primaryValue.toLocaleString()} ${unit}`.trim();
-      }
-    }
-  }
-
-  // Recovery: If deterministic verification failed (evaluated is 0, NaN, or null),
-  // try to recover from stepByStep intermediate results
-  if (evaluated === null || !Number.isFinite(evaluated) || evaluated === 0) {
-    const recovered = recoverFromSteps(parsed);
-    if (recovered) {
-      variableMap = recovered.variableMap;
-      parsed.formulaExpression = recovered.formulaExpression;
-      parsed.primaryVariableKey = recovered.primaryVariableKey;
-      parsed.interactiveControls = recovered.interactiveControls;
-      parsed.primaryValue = recovered.primaryValue;
-      parsed.headlineResult = recovered.headlineResult;
-      evaluated = recovered.primaryValue;
-    }
-  }
-
-  // 6. Generate 5-Point Sensitivity Matrix
-  const primaryKey = parsed.primaryVariableKey || Object.keys(variableMap)[0];
-  if (parsed.formulaExpression && primaryKey && variableMap[primaryKey] !== undefined) {
-    parsed.sensitivityMatrix = generateSensitivityMatrix(
-      parsed.formulaExpression,
-      variableMap,
-      primaryKey,
-      parsed.primaryUnit || ""
-    );
-  } else {
-    parsed.sensitivityMatrix = [];
-  }
-
-  parsed.latencyMs = Date.now() - startTime;
-  parsed.engine = "NeuroSymbolic-Verified";
-  parsed.providerUsed = "gemini";
-  parsed.modelUsed = modelUsed;
-  parsed.verifiedDeterministic = true;
-  parsed.outputLanguage = outputLanguage;
-  parsed.targetCurrency = targetCurrency;
-  parsed.researchGateway = {
-    ...researchDecision,
-    sources: liveSources,
-  };
-
-  return parsed;
 }
 
 /**
@@ -528,7 +528,7 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
 export function sanitizeApiKey(key) {
   if (!key || typeof key !== "string") return "";
   const cleaned = key.trim().replace(/[^\x20-\x7E]/g, "");
-  
+
   // Basic format validation for Google AI Studio keys (AIzaSy...)
   // Returns empty string if clearly malformed, otherwise returns cleaned key
   return cleaned;
@@ -540,7 +540,7 @@ export function sanitizeApiKey(key) {
 export function validateApiKeyFormat(key, provider = "gemini") {
   if (!key || typeof key !== "string") return false;
   const cleaned = key.trim();
-  
+
   if (provider === "gemini") {
     // Google AI Studio keys start with AIzaSy and are ~39 chars
     return /^AIzaSy[A-Za-z0-9_\-]{33}$/.test(cleaned);
@@ -578,25 +578,54 @@ export async function verifyProviderKey(provider = "gemini", apiKey) {
     return { ok: false, error: "Please enter a valid Google AI Studio API key (starts with AIzaSy...)." };
   }
 
-  try {
-    const ai = new GoogleGenAI({
-      apiKey: cleanKey,
-      httpOptions: { headers: { "User-Agent": "aistudio-calc-agent" } },
-    });
-    const response = await ai.models.generateContent({
-      model: "gemini-3.1-flash-lite",
-      contents: "Respond with: {\"status\":\"ok\"}",
-    });
-    if (response) {
-      return { ok: true, message: "Valid Google AI Studio API key! Free tier connected (15 RPM / 1M TPM) with Search Grounding enabled." };
+  const ai = new GoogleGenAI({
+    apiKey: cleanKey,
+    httpOptions: { headers: { "User-Agent": "aistudio-calc-agent" } },
+  });
+
+  // Google's own error message for a 503 says spikes are "usually temporary" —
+  // so a single short retry resolves this for the user most of the time
+  // instead of surfacing an error for something that isn't actually wrong
+  // with their key.
+  const maxAttempts = 2;
+  let lastErr = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3.1-flash-lite",
+        contents: "Respond with: {\"status\":\"ok\"}",
+      });
+      if (response) {
+        return { ok: true, message: "Valid Google AI Studio API key! Free tier connected (15 RPM / 1M TPM) with Search Grounding enabled." };
+      }
+      return { ok: true, message: "Google AI Studio API key connected successfully." };
+    } catch (err) {
+      lastErr = err;
+      const errMsg = String(err.message || "");
+      const isOverloaded = errMsg.includes("503") || errMsg.includes("UNAVAILABLE") || errMsg.includes("high demand");
+      if (isOverloaded && attempt < maxAttempts) {
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        continue;
+      }
+      break;
     }
-    return { ok: true, message: "Google AI Studio API key connected successfully." };
-  } catch (err) {
-    const errMsg = String(err.message || "");
-    if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED") || errMsg.includes("quota")) {
-      return { ok: false, error: "Google AI Studio free-tier rate limit reached. Key is valid, but please wait a moment." };
-    }
-    const sanitized = errMsg.replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
-    return { ok: false, error: sanitized };
   }
+
+  const errMsg = String(lastErr?.message || "");
+  if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED") || errMsg.includes("quota")) {
+    return { ok: false, error: "Google AI Studio free-tier rate limit reached. Key is valid, but please wait a moment." };
+  }
+  if (errMsg.includes("503") || errMsg.includes("UNAVAILABLE") || errMsg.includes("high demand")) {
+    return {
+      ok: false,
+      error: "Google's AI service is temporarily overloaded on their end — your key is likely fine. Please try connecting again in a minute.",
+      transient: true,
+    };
+  }
+  if (errMsg.includes("401") || errMsg.includes("403") || errMsg.includes("API_KEY_INVALID") || errMsg.includes("PERMISSION_DENIED")) {
+    return { ok: false, error: "That API key looks invalid or doesn't have access. Double-check you copied it correctly from Google AI Studio." };
+  }
+  const sanitized = errMsg.replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
+  return { ok: false, error: sanitized || "Could not verify the key. Please try again." };
 }

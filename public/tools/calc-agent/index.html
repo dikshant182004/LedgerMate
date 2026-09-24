@@ -1094,7 +1094,7 @@ body {
 <nav class="nav">
   <div class="nav-inner">
     <a href="/" class="logo">Ledger<span>Mate</span></a>
-    
+
     <div class="nav-links">
       <a href="/app/">Web App</a>
       <a href="/guides/calc-agent/">User Guide</a>
@@ -1179,7 +1179,7 @@ body {
 
   <!-- TAB 1: CALCULATION STUDIO -->
   <div id="studio-tab" class="tab-pane active">
-    
+
     <!-- Orchestrator Toolbar -->
     <div class="orchestrator-toolbar">
       <div class="toolbar-left">
@@ -1203,12 +1203,12 @@ body {
     <!-- Omnibar Studio -->
     <div class="omnibar-card">
       <div class="omnibar-input-wrapper">
-        <textarea 
-          id="query-input" 
-          class="omnibar-textarea" 
+        <textarea
+          id="query-input"
+          class="omnibar-textarea"
           placeholder="Ask any calculation... e.g. 'Split $3,450 rent between 3 people where Room A has an attached bath (+$200) and Room C is smaller (-$150)' or 'Convert 150 Gaj to Square Feet and calculate construction cost at $140/sqft'"
         ></textarea>
-        
+
         <div class="omnibar-controls">
           <div class="omnibar-meta">
             <label for="lang-select" id="ui-lbl-lang">Language:</label>
@@ -1223,19 +1223,6 @@ body {
               <option value="Japanese">Japanese (日本語)</option>
               <option value="Russian">Russian (Русский)</option>
               <option value="Portuguese">Portuguese (Português)</option>
-            </select>
-            <label for="currency-select" id="ui-lbl-currency" style="margin-left: 12px;">Currency:</label>
-            <select id="currency-select" class="select-lang" onchange="handleCurrencyChange()">
-              <option value="original" selected>Original (Auto)</option>
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="GBP">GBP (£)</option>
-              <option value="CNY">CNY (¥)</option>
-              <option value="JPY">JPY (¥)</option>
-              <option value="INR">INR (₹)</option>
-              <option value="AUD">AUD (A$)</option>
-              <option value="CAD">CAD (C$)</option>
-              <option value="AED">AED (د.إ)</option>
             </select>
             <span id="char-counter">0 chars</span>
           </div>
@@ -1260,7 +1247,7 @@ body {
 
     <!-- Calculation Results Section -->
     <div class="result-section" id="result-container">
-      
+
       <!-- Headline Answer -->
       <div class="headline-card">
         <div class="headline-category" id="res-category">
@@ -1322,16 +1309,16 @@ body {
         <div id="steps-container"></div>
       </div>
 
-      <!-- Human in the Loop (HITL) Feedback Card -->
+      <!-- "Fix This Answer" Feedback Card (internally: Human-in-the-Loop / HITL) -->
       <div class="hitl-feedback-card">
         <div>
-          <strong id="ui-hitl-title">Human-in-the-Loop Refinement:</strong>
-          <span style="color: #64748b; font-size: 13px; margin-left: 6px;" id="ui-hitl-sub">Need to adjust an assumption or refine the calculation?</span>
+          <strong id="ui-hitl-title">Does this look right?</strong>
+          <span style="color: #64748b; font-size: 13px; margin-left: 6px;" id="ui-hitl-sub">If a number, rate, or even the currency needs to change, just tell us in plain English and we'll redo the math.</span>
         </div>
         <div style="display: flex; gap: 8px;">
-          <button class="btn-hitl" onclick="openRefineModal()" id="ui-btn-adjust">✏️ Request Adjustment</button>
-          <button class="btn-hitl" onclick="sendFeedback('helpful')" id="ui-btn-accurate">👍 Accurate</button>
-          <a class="btn-hitl" id="btn-report-issue" href="/feedback/?from=calc-agent">👎 Report Issue</a>
+          <button class="btn-hitl" onclick="openRefineModal()" id="ui-btn-adjust">✏️ Fix / Change Something</button>
+          <button class="btn-hitl" onclick="sendFeedback('helpful')" id="ui-btn-accurate">👍 Looks Right</button>
+          <a class="btn-hitl" id="btn-report-issue" href="/feedback/?from=calc-agent">👎 Something's Wrong</a>
         </div>
       </div>
     </div>
@@ -1339,7 +1326,7 @@ body {
 
   <!-- TAB 2: HISTORY & TIMELINE ANALYTICS -->
   <div id="history-tab" class="tab-pane">
-    
+
     <!-- Timeline Filter Toolbar -->
     <div class="history-controls-row">
       <div class="timeline-pills">
@@ -1414,12 +1401,12 @@ body {
     <div class="section-title" style="margin-top: 24px;">
       <span>🗂️ Your Calculation Vault</span>
     </div>
-    
+
     <div class="history-search-bar">
-      <input 
-        type="text" 
-        id="history-search" 
-        class="history-search-input" 
+      <input
+        type="text"
+        id="history-search"
+        class="history-search-input"
         placeholder="Filter your calculations by keyword, amount, or topic..."
         oninput="filterHistoryList()"
       />
@@ -1490,23 +1477,24 @@ body {
   </div>
 </div>
 
-<!-- MODAL: HITL REFINE -->
+<!-- MODAL: "Fix / Change Something" (internally: Human-in-the-Loop / HITL Refine) -->
 <div class="modal-overlay" id="modal-refine">
   <div class="modal-dialog">
     <div class="modal-header">
-      <h3 class="modal-title">✏️ Request Calculation Adjustment</h3>
+      <h3 class="modal-title" id="ui-refine-modal-title">✏️ What should we change?</h3>
       <button class="btn-modal-close" onclick="closeRefineModal()">&times;</button>
     </div>
-    <p style="font-size: 13.5px; color: #64748b; margin: 0 0 14px;">
-      Provide human feedback or modify an assumption (e.g. "Use a 25% tax bracket instead of 20%").
+    <p style="font-size: 13.5px; color: #64748b; margin: 0 0 14px;" id="ui-refine-modal-desc">
+      This answer was calculated by AI. If something looks off — a rate, an assumption, how many people are splitting it, or you'd simply like the amount shown in a different currency — just describe it below in your own words and we'll recalculate it for you.
     </p>
     <div class="modal-field">
+      <div id="refine-examples" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;"></div>
       <textarea id="refine-note-input" class="modal-input" style="min-height: 90px; resize: vertical;" placeholder="Explain your adjustment..."></textarea>
     </div>
     <div style="display: flex; justify-content: flex-end; gap: 8px;">
       <button class="btn-hitl" onclick="closeRefineModal()">Cancel</button>
       <button class="btn-calc" style="padding: 8px 18px;" onclick="submitRefinement()">
-        <span id="refine-btn-text">Recalculate with Correction</span>
+        <span id="refine-btn-text">Recalculate</span>
       </button>
     </div>
   </div>
@@ -1530,6 +1518,15 @@ const UI_TRANSLATIONS = {
     langLbl: "Language:",
     currencyLbl: "Currency:",
     presetTitle: "Instant Templates & Realistic Examples:",
+    hitlModalTitle: "✏️ What should we change?",
+    hitlModalDesc: "This answer was calculated by AI. If something looks off — a rate, an assumption, how many people are splitting it, or you'd simply like the amount shown in a different currency — just describe it below in your own words and we'll recalculate it for you.",
+    hitlTryLabel: "Try one of these:",
+    hitlExamples: [
+      "Use a 25% tax bracket instead of 20%",
+      "Convert this to Euros (EUR)",
+      "Assume 5 people are splitting this, not 3",
+      "Use this year's GST/VAT rate instead"
+    ],
     proofTitle: "🔍 Step-by-Step Algebraic Proof",
     slidersTitle: "🎛️ Interactive Variable Adjusters",
     slidersSub: "Instant Reactivity",
@@ -1539,11 +1536,11 @@ const UI_TRANSLATIONS = {
     thVariable: "Variable Adjusted",
     thOutcome: "Calculated Outcome",
     thDelta: "Delta (%)",
-    hitlTitle: "Human-in-the-Loop Refinement:",
-    hitlSub: "Need to adjust an assumption or refine the calculation?",
-    btnAdjust: "✏️ Request Adjustment",
-    btnAccurate: "👍 Accurate",
-    btnReport: "👎 Report Issue",
+    hitlTitle: "Does this look right?",
+    hitlSub: "If a number, rate, or even the currency needs to change, just tell us in plain English and we'll redo the math.",
+    btnAdjust: "✏️ Fix / Change Something",
+    btnAccurate: "👍 Looks Right",
+    btnReport: "👎 Something's Wrong",
     currentBase: "Current (Base)",
     step: "Step",
     financialTerms: {
@@ -1612,6 +1609,15 @@ const UI_TRANSLATIONS = {
     langLbl: "اللغة:",
     currencyLbl: "العملة:",
     presetTitle: "نماذج وأمثلة جاهزة:",
+    hitlModalTitle: "✏️ ما الذي تريد تغييره؟",
+    hitlModalDesc: "تم حساب هذه النتيجة بواسطة الذكاء الاصطناعي. إذا كان هناك شيء غير صحيح — نسبة، افتراض، عدد الأشخاص المشاركين، أو ببساطة تريد رؤية المبلغ بعملة أخرى — فقط اكتب طلبك بكلماتك الخاصة وسنعيد الحساب لك.",
+    hitlTryLabel: "جرّب أحد هذه الأمثلة:",
+    hitlExamples: [
+      "استخدم شريحة ضريبية 25% بدلاً من 20%",
+      "حوّل هذا إلى يورو (EUR)",
+      "افترض أن 5 أشخاص يتقاسمون هذا المبلغ وليس 3",
+      "استخدم نسبة الضريبة لهذا العام بدلاً من ذلك"
+    ],
     proofTitle: "🔍 الإثبات الجبري خطوة بخطوة",
     slidersTitle: "🎛️ تعديل المتغيرات التفاعلي",
     slidersSub: "استجابة فورية",
@@ -1621,11 +1627,11 @@ const UI_TRANSLATIONS = {
     thVariable: "المتغير المعدل",
     thOutcome: "النتيجة المحسوبة",
     thDelta: "الفارق (٪)",
-    hitlTitle: "التحسين بتدخل بشري:",
-    hitlSub: "هل تحتاج إلى تعديل افتراض أو تصحيح الحساب؟",
-    btnAdjust: "✏️ طلب تعديل",
-    btnAccurate: "👍 دقيق",
-    btnReport: "👎 إبلاغ عن مشكلة",
+    hitlTitle: "هل هذا صحيح؟",
+    hitlSub: "إذا احتجت لتغيير رقم أو نسبة أو حتى العملة، فقط أخبرنا بذلك وسنعيد الحساب.",
+    btnAdjust: "✏️ تعديل / تغيير شيء",
+    btnAccurate: "👍 صحيح",
+    btnReport: "👎 هناك خطأ ما",
     currentBase: "الحالي (الأساس)",
     step: "خطوة",
     financialTerms: {
@@ -1694,6 +1700,15 @@ const UI_TRANSLATIONS = {
     langLbl: "भाषा:",
     currencyLbl: "मुद्रा:",
     presetTitle: "त्वरित उदाहरण और टेम्पलेट्स:",
+    hitlModalTitle: "✏️ हमें क्या बदलना चाहिए?",
+    hitlModalDesc: "यह जवाब AI द्वारा निकाला गया है। अगर कोई दर, मान्यता, लोगों की संख्या गलत लगे, या आप बस राशि किसी अलग मुद्रा में देखना चाहें — तो नीचे अपने शब्दों में बताएं, हम दोबारा हिसाब कर देंगे।",
+    hitlTryLabel: "इनमें से कोई एक आज़माएं:",
+    hitlExamples: [
+      "20% के बजाय 25% टैक्स स्लैब का उपयोग करें",
+      "इसे यूरो (EUR) में बदलें",
+      "मान लें कि यह 3 नहीं बल्कि 5 लोगों के बीच बंट रहा है",
+      "इस साल की GST दर का उपयोग करें"
+    ],
     proofTitle: "🔍 चरण-दर-चरण बीजगणितीय प्रमाण",
     slidersTitle: "🎛️ इंटरएक्टिव चर समायोजक",
     slidersSub: "तत्काल प्रतिक्रिया",
@@ -1703,11 +1718,11 @@ const UI_TRANSLATIONS = {
     thVariable: "समायोजित चर",
     thOutcome: "परिकलित परिणाम",
     thDelta: "अंतर (%)",
-    hitlTitle: "मानव प्रतिक्रिया और सुधार:",
-    hitlSub: "क्या किसी गणना को संशोधित या स्पष्ट करने की आवश्यकता है?",
-    btnAdjust: "✏️ संशोधन का अनुरोध करें",
-    btnAccurate: "👍 सटीक",
-    btnReport: "👎 समस्या की रिपोर्ट करें",
+    hitlTitle: "क्या यह सही लग रहा है?",
+    hitlSub: "अगर कोई संख्या, दर, या मुद्रा बदलनी है, तो बस हमें आसान भाषा में बताएं — हम दोबारा हिसाब कर देंगे।",
+    btnAdjust: "✏️ कुछ ठीक/बदलें",
+    btnAccurate: "👍 सही लग रहा है",
+    btnReport: "👎 कुछ गलत है",
     currentBase: "वर्तमान (आधार)",
     step: "चरण",
     financialTerms: {
@@ -1776,6 +1791,15 @@ const UI_TRANSLATIONS = {
     langLbl: "Idioma:",
     currencyLbl: "Moneda:",
     presetTitle: "Plantillas y Ejemplos Instantáneos:",
+    hitlModalTitle: "✏️ ¿Qué deberíamos cambiar?",
+    hitlModalDesc: "Esta respuesta fue calculada por IA. Si algo no se ve bien — una tasa, un supuesto, cuántas personas lo dividen, o simplemente quieres verlo en otra moneda — descríbelo abajo con tus propias palabras y lo recalculamos.",
+    hitlTryLabel: "Prueba uno de estos:",
+    hitlExamples: [
+      "Usa un tramo de impuestos del 25% en vez de 20%",
+      "Convierte esto a Euros (EUR)",
+      "Supón que lo dividen 5 personas, no 3",
+      "Usa la tasa de IVA de este año"
+    ],
     proofTitle: "🔍 Demostración Algebraica Paso a Paso",
     slidersTitle: "🎛️ Ajustadores de Variables Interactivos",
     slidersSub: "Reactividad Instantánea",
@@ -1785,11 +1809,11 @@ const UI_TRANSLATIONS = {
     thVariable: "Variable Ajustada",
     thOutcome: "Resultado Calculado",
     thDelta: "Delta (%)",
-    hitlTitle: "Ajuste con Intervención Humana:",
-    hitlSub: "¿Desea ajustar una suposición o corregir el cálculo?",
-    btnAdjust: "✏️ Solicitar Ajuste",
-    btnAccurate: "👍 Exacto",
-    btnReport: "👎 Informar Problema",
+    hitlTitle: "¿Esto se ve bien?",
+    hitlSub: "Si un número, una tasa o incluso la moneda necesita cambiar, dínoslo en tus propias palabras y lo recalculamos.",
+    btnAdjust: "✏️ Corregir / Cambiar Algo",
+    btnAccurate: "👍 Se Ve Bien",
+    btnReport: "👎 Algo Está Mal",
     currentBase: "Actual (Base)",
     step: "Paso",
     financialTerms: {
@@ -1858,6 +1882,15 @@ const UI_TRANSLATIONS = {
     langLbl: "Langue :",
     currencyLbl: "Devise :",
     presetTitle: "Modèles et Exemples Rapides :",
+    hitlModalTitle: "✏️ Que devrions-nous changer ?",
+    hitlModalDesc: "Cette réponse a été calculée par l'IA. Si quelque chose semble incorrect — un taux, une hypothèse, le nombre de personnes, ou vous souhaitez simplement voir le montant dans une autre devise — décrivez-le ci-dessous avec vos propres mots et nous recalculerons.",
+    hitlTryLabel: "Essayez l'un de ces exemples :",
+    hitlExamples: [
+      "Utilise une tranche d'imposition de 25 % au lieu de 20 %",
+      "Convertis ceci en Euros (EUR)",
+      "Suppose que 5 personnes partagent, pas 3",
+      "Utilise le taux de TVA de cette année"
+    ],
     proofTitle: "🔍 Preuve Algébrique Étape par Étape",
     slidersTitle: "🎛️ Curseurs de Variables Interactifs",
     slidersSub: "Réactivité Immédiate",
@@ -1867,11 +1900,11 @@ const UI_TRANSLATIONS = {
     thVariable: "Variable Ajustée",
     thOutcome: "Résultat Calculé",
     thDelta: "Écart (%)",
-    hitlTitle: "Affinement Humain :",
-    hitlSub: "Besoin de modifier une hypothèse ou de recalculer ?",
-    btnAdjust: "✏️ Demander un Ajustement",
-    btnAccurate: "👍 Précis",
-    btnReport: "👎 Signaler un Problème",
+    hitlTitle: "Est-ce correct ?",
+    hitlSub: "Si un chiffre, un taux ou même la devise doit changer, dites-le-nous simplement et nous referons le calcul.",
+    btnAdjust: "✏️ Corriger / Changer Quelque Chose",
+    btnAccurate: "👍 C'est Correct",
+    btnReport: "👎 Quelque Chose Cloche",
     currentBase: "Actuel (Base)",
     step: "Étape",
     financialTerms: {
@@ -1940,6 +1973,15 @@ const UI_TRANSLATIONS = {
     langLbl: "Sprache:",
     currencyLbl: "Währung:",
     presetTitle: "Schnellvorlagen & Beispiele:",
+    hitlModalTitle: "✏️ Was sollen wir ändern?",
+    hitlModalDesc: "Dieses Ergebnis wurde von einer KI berechnet. Wenn etwas nicht stimmt — ein Satz, eine Annahme, die Anzahl der Personen, oder Sie möchten den Betrag einfach in einer anderen Währung sehen — beschreiben Sie es unten in eigenen Worten, und wir rechnen es neu.",
+    hitlTryLabel: "Probieren Sie eines dieser Beispiele:",
+    hitlExamples: [
+      "Verwende 25% Steuersatz statt 20%",
+      "Rechne das in Euro (EUR) um",
+      "Nimm an, es teilen sich 5 Personen, nicht 3",
+      "Verwende den diesjährigen Mehrwertsteuersatz"
+    ],
     proofTitle: "🔍 Schrittweise Algebraische Herleitung",
     slidersTitle: "🎛️ Interaktive Variablen-Regler",
     slidersSub: "Sofortige Neuberechnung",
@@ -1949,11 +1991,11 @@ const UI_TRANSLATIONS = {
     thVariable: "Angepasste Variable",
     thOutcome: "Berechnetes Ergebnis",
     thDelta: "Abweichung (%)",
-    hitlTitle: "Menschliche Verfeinerung:",
-    hitlSub: "Möchten Sie eine Annahme anpassen oder verfeinern?",
-    btnAdjust: "✏️ Anpassung anfordern",
-    btnAccurate: "👍 Exakt",
-    btnReport: "👎 Problem melden",
+    hitlTitle: "Sieht das richtig aus?",
+    hitlSub: "Wenn sich eine Zahl, ein Satz oder sogar die Währung ändern soll, sagen Sie es uns einfach — wir rechnen es neu.",
+    btnAdjust: "✏️ Etwas ändern",
+    btnAccurate: "👍 Sieht gut aus",
+    btnReport: "👎 Etwas stimmt nicht",
     currentBase: "Aktuell (Basis)",
     step: "Schritt",
     financialTerms: {
@@ -2022,6 +2064,15 @@ const UI_TRANSLATIONS = {
     langLbl: "语言：",
     currencyLbl: "货币：",
     presetTitle: "即时模板与实用示例：",
+    hitlModalTitle: "✏️ 需要修改什么？",
+    hitlModalDesc: "这个结果是由 AI 计算的。如果有地方看起来不对——比如税率、某个假设条件、分摊的人数，或者你只是想换一种货币显示金额——请在下面用你自己的话描述一下，我们会重新计算。",
+    hitlTryLabel: "试试这些示例：",
+    hitlExamples: [
+      "使用25%的税率而不是20%",
+      "把这个换算成欧元（EUR）",
+      "假设是5个人分摊，不是3个人",
+      "使用今年的增值税/GST税率"
+    ],
     proofTitle: "🔍 分步骤代数推导证明",
     slidersTitle: "🎛️ 交互式变量调节滑块",
     slidersSub: "实时即刻响应",
@@ -2031,11 +2082,11 @@ const UI_TRANSLATIONS = {
     thVariable: "调整变量",
     thOutcome: "计算结果",
     thDelta: "增量变化 (%)",
-    hitlTitle: "人机协同反馈与修正：",
-    hitlSub: "需要调整预设假设或修正计算逻辑？",
-    btnAdjust: "✏️ 请求修正计算",
-    btnAccurate: "👍 准确无误",
-    btnReport: "👎 反馈问题",
+    hitlTitle: "这个结果对吗？",
+    hitlSub: "如果数字、税率甚至货币需要更改，直接告诉我们，我们会重新计算。",
+    btnAdjust: "✏️ 修改内容",
+    btnAccurate: "👍 没问题",
+    btnReport: "👎 有问题",
     currentBase: "当前基准",
     step: "步骤",
     financialTerms: {
@@ -2104,6 +2155,15 @@ const UI_TRANSLATIONS = {
     langLbl: "言語:",
     currencyLbl: "通貨:",
     presetTitle: "テンプレート・計算例:",
+    hitlModalTitle: "✏️ 何を変更しますか？",
+    hitlModalDesc: "この結果はAIが計算したものです。税率や前提条件、人数などがおかしい場合、または単に別の通貨で金額を見たい場合は、下に自分の言葉で説明してください。再計算します。",
+    hitlTryLabel: "こちらの例を試してみてください：",
+    hitlExamples: [
+      "税率を20%ではなく25%にしてください",
+      "これをユーロ(EUR)に換算してください",
+      "3人ではなく5人で割ると仮定してください",
+      "今年の消費税率を使ってください"
+    ],
     proofTitle: "🔍 ステップ別の数式証明",
     slidersTitle: "🎛️ インタラクティブ変数スライダー",
     slidersSub: "リアルタイム即時反映",
@@ -2113,11 +2173,11 @@ const UI_TRANSLATIONS = {
     thVariable: "調整された変数",
     thOutcome: "計算結果",
     thDelta: "変動率 (%)",
-    hitlTitle: "ヒューマン・イン・ザ・ループ修正:",
-    hitlSub: "前提条件の変更や再計算が必要ですか？",
-    btnAdjust: "✏️ 修正をリクエスト",
-    btnAccurate: "👍 正確",
-    btnReport: "👎 問題を報告",
+    hitlTitle: "この結果で合っていますか？",
+    hitlSub: "数値や税率、通貨などを変更したい場合は、そのまま教えてください。再計算します。",
+    btnAdjust: "✏️ 修正・変更する",
+    btnAccurate: "👍 合っています",
+    btnReport: "👎 間違っています",
     currentBase: "現在（基準）",
     step: "ステップ",
     financialTerms: {
@@ -2186,6 +2246,15 @@ const UI_TRANSLATIONS = {
     langLbl: "Язык:",
     currencyLbl: "Валюта:",
     presetTitle: "Готовые шаблоны и примеры:",
+    hitlModalTitle: "✏️ Что нужно изменить?",
+    hitlModalDesc: "Этот результат рассчитан ИИ. Если что-то выглядит неверно — ставка, допущение, количество людей, или вы просто хотите увидеть сумму в другой валюте — опишите это ниже своими словами, и мы всё пересчитаем.",
+    hitlTryLabel: "Попробуйте один из примеров:",
+    hitlExamples: [
+      "Используй налоговую ставку 25% вместо 20%",
+      "Переведи это в евро (EUR)",
+      "Предположим, что делят 5 человек, а не 3",
+      "Используй ставку НДС за этот год"
+    ],
     proofTitle: "🔍 Пошаговое алгебраическое доказательство",
     slidersTitle: "🎛️ Интерактивные регуляторы параметров",
     slidersSub: "Мгновенный пересчет",
@@ -2195,11 +2264,11 @@ const UI_TRANSLATIONS = {
     thVariable: "Измененный параметр",
     thOutcome: "Результат",
     thDelta: "Дельта (%)",
-    hitlTitle: "Уточнение пользователем:",
-    hitlSub: "Нужно изменить предположение или скорректировать расчет?",
-    btnAdjust: "✏️ Запросить уточнение",
-    btnAccurate: "👍 Точно",
-    btnReport: "👎 Сообщить об ошибке",
+    hitlTitle: "Всё верно?",
+    hitlSub: "Если нужно изменить число, ставку или даже валюту — просто напишите нам, и мы пересчитаем.",
+    btnAdjust: "✏️ Исправить / Изменить",
+    btnAccurate: "👍 Всё верно",
+    btnReport: "👎 Есть ошибка",
     currentBase: "Текущий (База)",
     step: "Шаг",
     financialTerms: {
@@ -2268,6 +2337,15 @@ const UI_TRANSLATIONS = {
     langLbl: "Idioma:",
     currencyLbl: "Moeda:",
     presetTitle: "Exemplos e Modelos Rápidos:",
+    hitlModalTitle: "✏️ O que devemos mudar?",
+    hitlModalDesc: "Esta resposta foi calculada por IA. Se algo parecer errado — uma taxa, uma suposição, quantas pessoas estão dividindo, ou você só quer ver o valor em outra moeda — descreva abaixo com suas próprias palavras e recalculamos para você.",
+    hitlTryLabel: "Experimente um destes:",
+    hitlExamples: [
+      "Use uma faixa de imposto de 25% em vez de 20%",
+      "Converta isso para Euros (EUR)",
+      "Suponha que 5 pessoas estão dividindo, não 3",
+      "Use a taxa de imposto deste ano"
+    ],
     proofTitle: "🔍 Prova Algébrica Passo a Passo",
     slidersTitle: "🎛️ Ajustes Interativos de Variáveis",
     slidersSub: "Reatividade Instantânea",
@@ -2277,11 +2355,11 @@ const UI_TRANSLATIONS = {
     thVariable: "Variável Ajustada",
     thOutcome: "Resultado Calculado",
     thDelta: "Delta (%)",
-    hitlTitle: "Refinamento com Intervenção Humana:",
-    hitlSub: "Deseja ajustar uma premissa ou refinar o cálculo?",
-    btnAdjust: "✏️ Solicitar Ajuste",
-    btnAccurate: "👍 Preciso",
-    btnReport: "👎 Reportar Problema",
+    hitlTitle: "Isso está certo?",
+    hitlSub: "Se um número, taxa ou até a moeda precisar mudar, é só nos dizer — recalculamos na hora.",
+    btnAdjust: "✏️ Corrigir / Mudar Algo",
+    btnAccurate: "👍 Está Certo",
+    btnReport: "👎 Algo Está Errado",
     currentBase: "Atual (Base)",
     step: "Passo",
     financialTerms: {
@@ -2342,7 +2420,7 @@ const UI_TRANSLATIONS = {
 function formatLocalizedNumber(num, lang) {
   if (num === null || num === undefined || isNaN(num)) return String(num || "");
   const n = Number(num);
-  
+
   if (lang === "Arabic") {
     const arabicDigits = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
     return n.toLocaleString("en-US", { maximumFractionDigits: 2 }).replace(/\d/g, d => arabicDigits[d]);
@@ -2374,7 +2452,6 @@ function applyLocalizedUI(lang) {
   document.getElementById("ui-btn-manage-key").textContent = dict.manageKey;
   document.getElementById("calc-btn-text").textContent = dict.calcBtn;
   document.getElementById("ui-lbl-lang").textContent = dict.langLbl;
-  document.getElementById("ui-lbl-currency").textContent = dict.currencyLbl;
   document.getElementById("ui-preset-title").textContent = dict.presetTitle;
   document.getElementById("ui-proof-title").textContent = dict.proofTitle;
   document.getElementById("ui-sliders-title").textContent = dict.slidersTitle;
@@ -2389,6 +2466,11 @@ function applyLocalizedUI(lang) {
   document.getElementById("ui-hitl-sub").textContent = dict.hitlSub;
   document.getElementById("ui-btn-adjust").textContent = dict.btnAdjust;
   document.getElementById("ui-btn-accurate").textContent = dict.btnAccurate;
+  const modalTitleEl = document.getElementById("ui-refine-modal-title");
+  const modalDescEl = document.getElementById("ui-refine-modal-desc");
+  if (modalTitleEl) modalTitleEl.textContent = dict.hitlModalTitle || modalTitleEl.textContent;
+  if (modalDescEl) modalDescEl.textContent = dict.hitlModalDesc || modalDescEl.textContent;
+  renderRefineExamples(dict);
 
   // Re-render result if already present
   if (currentCalculation) {
@@ -2396,26 +2478,48 @@ function applyLocalizedUI(lang) {
   }
 }
 
+// There's no currency dropdown anymore — currency is whatever the most recent
+// calculation (or HITL "Fix / Change Something" request) ended up using. This
+// keeps that currency applied when only the language is switched.
+function getActiveCurrency() {
+  return (currentCalculation && currentCalculation.targetCurrency) ||
+    (canonicalCalculation && canonicalCalculation.targetCurrency) ||
+    "original";
+}
+
+// Fills the "Try one of these" example chips inside the Fix/Change modal so
+// people who have never used this feature immediately see what kinds of
+// requests are possible — including changing the currency.
+function renderRefineExamples(dict) {
+  const container = document.getElementById("refine-examples");
+  if (!container) return;
+  const examples = (dict && dict.hitlExamples) || UI_TRANSLATIONS.English.hitlExamples;
+  container.innerHTML = "";
+  examples.forEach((example) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "btn-hitl";
+    chip.style.fontWeight = "500";
+    chip.style.fontSize = "12px";
+    chip.style.padding = "5px 10px";
+    chip.textContent = example;
+    chip.onclick = () => {
+      const input = document.getElementById("refine-note-input");
+      input.value = example;
+      input.focus();
+    };
+    container.appendChild(chip);
+  });
+}
+
 function handleLanguageChange() {
   const selectedLang = document.getElementById("lang-select").value;
   applyLocalizedUI(selectedLang);
-  
-  // Use local transformation for instant language switch (no API call)
-  if (canonicalCalculation) {
-    const targetCurrency = document.getElementById("currency-select").value;
-    const transformed = transformCalculationLocal(canonicalCalculation, selectedLang, targetCurrency);
-    currentCalculation = transformed;
-    renderCalculationResult(transformed, currentCalcId);
-  }
-}
 
-function handleCurrencyChange() {
-  const selectedCurrency = document.getElementById("currency-select").value;
-  
-  // Use local transformation for instant currency switch (no API call)
+  // Use local transformation for instant language switch (no API call).
+  // Keep whatever currency is already active instead of resetting it.
   if (canonicalCalculation) {
-    const selectedLang = document.getElementById("lang-select").value;
-    const transformed = transformCalculationLocal(canonicalCalculation, selectedLang, selectedCurrency);
+    const transformed = transformCalculationLocal(canonicalCalculation, selectedLang, getActiveCurrency());
     currentCalculation = transformed;
     renderCalculationResult(transformed, currentCalcId);
   }
@@ -2546,19 +2650,59 @@ function getCurrencySymbol(currency) {
   return symbols[currency] || currency;
 }
 
+// There's no currency dropdown anymore — a currency change is just something
+// the person types into the "Fix / Change Something" box (e.g. "convert this
+// to euros"). This mirrors the same detection the server does, so a pure
+// currency request can be applied instantly on the client without waiting on
+// a round trip to the AI.
+const CURRENCY_WORD_ALIASES = {
+  USD: ["usd", "us dollar", "us dollars", "dollar", "dollars"],
+  EUR: ["eur", "euro", "euros"],
+  GBP: ["gbp", "pound", "pounds", "sterling"],
+  CNY: ["cny", "rmb", "yuan", "chinese yuan"],
+  JPY: ["jpy", "yen", "japanese yen"],
+  INR: ["inr", "rupee", "rupees", "indian rupee", "indian rupees"],
+  AUD: ["aud", "australian dollar", "australian dollars"],
+  CAD: ["cad", "canadian dollar", "canadian dollars"],
+  AED: ["aed", "dirham", "dirhams"],
+};
+function detectCurrencyRequest(text) {
+  if (!text) return null;
+  const lower = text.toLowerCase();
+  const symbolMap = { "$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY", "₹": "INR" };
+  for (const sym of Object.keys(symbolMap)) {
+    if (text.includes(sym)) return symbolMap[sym];
+  }
+  for (const [code, aliases] of Object.entries(CURRENCY_WORD_ALIASES)) {
+    for (const alias of aliases) {
+      if (new RegExp(`\\b${alias}\\b`, "i").test(lower)) return code;
+    }
+  }
+  return null;
+}
+// A short note that's basically just "convert/show this in <currency>" with
+// nothing else going on can be handled instantly on the client. Anything
+// longer or mixed with another instruction (e.g. also changing a tax rate)
+// still goes to the AI so both changes are applied correctly together.
+function isPureCurrencyRequest(note) {
+  const wordCount = note.trim().split(/\s+/).length;
+  if (wordCount > 10) return false;
+  return /\b(convert|change|switch|show|display|put|give|use)\b/i.test(note);
+}
+
 // Transform canonical calculation to target language/currency without LLM round-trip
 function transformCalculationLocal(data, targetLang, targetCurrency) {
   if (!data) return data;
-  
+
   const transformed = JSON.parse(JSON.stringify(data)); // Deep clone
   const originalCurrency = data.targetCurrency && data.targetCurrency !== "original" ? data.targetCurrency : "USD";
   const actualTargetCurrency = targetCurrency === "original" ? originalCurrency : targetCurrency;
-  
+
   // 1. Convert monetary values if currency changed
   if (actualTargetCurrency !== originalCurrency && actualTargetCurrency !== "original") {
     const convert = (val) => convertCurrency(val, originalCurrency, actualTargetCurrency);
     const targetSymbol = getCurrencySymbol(actualTargetCurrency);
-    
+
     if (transformed.primaryValue !== undefined) {
       transformed.primaryValue = Math.round(convert(transformed.primaryValue) * 100) / 100;
     }
@@ -2620,18 +2764,18 @@ function transformCalculationLocal(data, targetLang, targetCurrency) {
     transformed.primaryUnit = actualTargetCurrency;
     transformed.targetCurrency = actualTargetCurrency;
   }
-  
+
   // 2. Translate LLM-generated content (category, labels, step titles, etc.) to target language
   if (targetLang !== "English") {
     const dict = UI_TRANSLATIONS[targetLang];
     if (dict && dict.financialTerms) {
       const ft = dict.financialTerms;
-      
+
       // Translate category
       if (transformed.category && ft.categories[transformed.category]) {
         transformed.category = ft.categories[transformed.category];
       }
-      
+
       // Translate interactiveControls labels
       if (Array.isArray(transformed.interactiveControls)) {
         transformed.interactiveControls.forEach(ctrl => {
@@ -2640,7 +2784,7 @@ function transformCalculationLocal(data, targetLang, targetCurrency) {
           }
         });
       }
-      
+
       // Translate stepByStep titles and calculations
       if (Array.isArray(transformed.stepByStep)) {
         transformed.stepByStep.forEach(step => {
@@ -2652,7 +2796,7 @@ function transformCalculationLocal(data, targetLang, targetCurrency) {
           }
         });
       }
-      
+
       // Translate sensitivity matrix scenario labels
       if (Array.isArray(transformed.sensitivityMatrix)) {
         transformed.sensitivityMatrix.forEach(row => {
@@ -2663,20 +2807,39 @@ function transformCalculationLocal(data, targetLang, targetCurrency) {
       }
     }
   }
-  
+
   transformed.outputLanguage = targetLang;
-  
+
   return transformed;
 }
 
 async function getOrCreateCryptoKey() {
   if (sessionCryptoKey) return sessionCryptoKey;
   try {
-    sessionCryptoKey = await window.crypto.subtle.generateKey(
+    // The encrypted API key lives in sessionStorage, which survives a page
+    // reload within the same tab. Previously the AES key used to encrypt it
+    // was only ever kept in memory and freshly generated on every page load —
+    // so after any reload, decryption of the still-present ciphertext quietly
+    // failed, fell back to a raw base64 decode of encrypted bytes, and handed
+    // a garbage "API key" to every request (including Fix/Change) with no
+    // visible error. Persisting the raw key material alongside the ciphertext
+    // (both cleared together on sign-out) fixes that.
+    const storedMaterial = sessionStorage.getItem("calc_key_material");
+    if (storedMaterial) {
+      const rawBytes = Uint8Array.from(atob(storedMaterial), c => c.charCodeAt(0));
+      sessionCryptoKey = await window.crypto.subtle.importKey(
+        "raw", rawBytes, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]
+      );
+      return sessionCryptoKey;
+    }
+    const newKey = await window.crypto.subtle.generateKey(
       { name: "AES-GCM", length: 256 },
-      false,
+      true, // extractable so we can save + reconstruct it after a reload
       ["encrypt", "decrypt"]
     );
+    const exported = await window.crypto.subtle.exportKey("raw", newKey);
+    sessionStorage.setItem("calc_key_material", btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(exported)))));
+    sessionCryptoKey = newKey;
     return sessionCryptoKey;
   } catch (e) {
     return null;
@@ -2743,7 +2906,7 @@ async function checkAuthStatus() {
       headerSignin.style.display = "none";
       headerProfile.style.display = "flex";
       navUserImg.src = currentUser.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name || "User")}&background=2563eb&color=fff`;
-      
+
       const firstName = (currentUser.name || "User").split(" ")[0];
       navUserName.textContent = firstName;
 
@@ -2787,6 +2950,7 @@ async function handleSignOut() {
   } catch (e) {}
   sessionStorage.removeItem("calc_key_gemini_enc");
   sessionStorage.removeItem("calc_consent_gemini");
+  sessionStorage.removeItem("calc_key_material");
   sessionCryptoKey = null;
   window.location.reload();
 }
@@ -2901,6 +3065,8 @@ function wipeSavedKey() {
   sessionStorage.removeItem("calc_key_gemini_enc");
   sessionStorage.removeItem("calc_consent_gemini");
   sessionStorage.removeItem("calc_model_gemini");
+  sessionStorage.removeItem("calc_key_material");
+  sessionCryptoKey = null;
   document.getElementById("byok-key-input").value = "";
   document.getElementById("byok-consent-check").checked = false;
   updateKeyIndicator();
@@ -2986,7 +3152,10 @@ function loadPreset(el) {
 async function submitCalculation() {
   const query = document.getElementById("query-input").value.trim();
   const lang = document.getElementById("lang-select").value;
-  const targetCurrency = document.getElementById("currency-select").value;
+  // New calculations always start in their original/natural currency. To see
+  // it in a different currency, use "Fix / Change Something" after the fact
+  // (e.g. "Convert this to Euros") — that's the one place currency is set now.
+  const targetCurrency = "original";
   const btn = document.getElementById("btn-calculate");
   const btnText = document.getElementById("calc-btn-text");
   const errorBanner = document.getElementById("global-error-banner");
@@ -3135,13 +3304,13 @@ function renderCalculationResult(data, calcId) {
           <span>${ctrl.label}</span>
           <span class="slider-val-badge" id="val-badge-${ctrl.id}">${formatLocalizedNumber(currentVal, lang)} ${ctrl.unit || ""}</span>
         </div>
-        <input 
-          type="range" 
-          class="slider-input" 
-          id="slider-${ctrl.id}" 
-          min="${ctrl.min || 0}" 
-          max="${ctrl.max || (ctrl.value * 3 || 100)}" 
-          step="${ctrl.step || 1}" 
+        <input
+          type="range"
+          class="slider-input"
+          id="slider-${ctrl.id}"
+          min="${ctrl.min || 0}"
+          max="${ctrl.max || (ctrl.value * 3 || 100)}"
+          step="${ctrl.step || 1}"
           value="${currentVal}"
           oninput="handleSliderChange('${ctrl.id}')"
         />
@@ -3172,6 +3341,25 @@ function renderCalculationResult(data, calcId) {
   }
 
   resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  // If this calculation couldn't be saved to history (calcId is missing),
+  // "Fix / Change Something" and "Looks Right" have nothing to attach to —
+  // disable them with an explanation instead of letting the click silently
+  // fail or show a confusing "record not found" error.
+  const adjustBtn = document.getElementById("ui-btn-adjust");
+  const accurateBtn = document.getElementById("ui-btn-accurate");
+  const reportBtn = document.getElementById("btn-report-issue");
+  const hasRecord = !!calcId;
+  [adjustBtn, accurateBtn].forEach((el) => {
+    if (!el) return;
+    el.disabled = !hasRecord;
+    el.style.opacity = hasRecord ? "1" : "0.5";
+    el.style.cursor = hasRecord ? "pointer" : "not-allowed";
+    el.title = hasRecord ? "" : "This calculation wasn't saved to your history, so it can't be changed.";
+  });
+  if (reportBtn) {
+    reportBtn.href = hasRecord ? `/feedback/?from=calc-agent&calcId=${encodeURIComponent(calcId)}` : "/feedback/?from=calc-agent";
+  }
 }
 
 function renderSensitivityMatrixTable(data, lang, dict) {
@@ -3279,9 +3467,14 @@ function evaluateFormulaClient(formula, vars) {
  * ================================================================== */
 function openRefineModal() {
   if (!currentUser) {
-    alert("Please sign in with Google to refine calculations.");
+    alert("Please sign in with Google to request a change.");
     return;
   }
+  if (!currentCalcId) {
+    alert("This calculation wasn't saved to your history, so it can't be changed. Please run it again.");
+    return;
+  }
+  renderRefineExamples(UI_TRANSLATIONS[document.getElementById("lang-select").value] || UI_TRANSLATIONS.English);
   document.getElementById("modal-refine").classList.add("active");
   document.getElementById("refine-note-input").focus();
 }
@@ -3293,16 +3486,49 @@ function closeRefineModal() {
 async function submitRefinement() {
   const note = document.getElementById("refine-note-input").value.trim();
   const lang = document.getElementById("lang-select").value;
-  const targetCurrency = document.getElementById("currency-select").value;
   const btn = document.getElementById("refine-btn-text");
   if (!note) return;
+
+  // Fast path: a plain "convert/show this in <currency>" request doesn't need
+  // to go to the AI at all — apply it instantly using the same conversion
+  // logic that powers the language switcher, and skip the network round trip.
+  const detectedCurrency = detectCurrencyRequest(note);
+  if (detectedCurrency && isPureCurrencyRequest(note) && canonicalCalculation) {
+    const transformed = transformCalculationLocal(canonicalCalculation, lang, detectedCurrency);
+    currentCalculation = transformed;
+    closeRefineModal();
+    document.getElementById("refine-note-input").value = "";
+    renderCalculationResult(transformed, currentCalcId);
+    if (currentCalcId) {
+      // Best-effort analytics note; never blocks or errors the UI if it fails.
+      fetch("/api/calc-agent/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ calcId: currentCalcId, rating: "currency_switch", hitlNote: note }),
+      }).catch(() => {});
+    }
+    return;
+  }
 
   const encKey = sessionStorage.getItem("calc_key_gemini_enc");
   const apiKey = await decryptKeyFromSession(encKey);
   const consent = sessionStorage.getItem("calc_consent_gemini") === "true";
   const selectedModel = sessionStorage.getItem("calc_model_gemini") || "gemini-3.1-flash-lite";
 
-  btn.textContent = "Refining...";
+  // Same guard submitCalculation() uses — without it, a missing/expired key
+  // silently fails the request instead of prompting the person to reconnect it.
+  if (!apiKey || !consent) {
+    closeRefineModal();
+    openKeyModal();
+    return;
+  }
+
+  if (!currentCalcId) {
+    alert("This calculation wasn't saved to your history, so it can't be changed. Please run it again.");
+    return;
+  }
+
+  btn.textContent = "Recalculating...";
 
   try {
     const res = await fetch("/api/calc-agent/refine", {
@@ -3316,7 +3542,7 @@ async function submitRefinement() {
         calcId: currentCalcId,
         hitlNote: note,
         language: lang,
-        targetCurrency: targetCurrency,
+        targetCurrency: getActiveCurrency(),
         apiKey: apiKey,
         model: selectedModel,
         geminiConsent: consent,
@@ -3324,23 +3550,34 @@ async function submitRefinement() {
     });
 
     const payload = await res.json();
-    if (!res.ok || !payload.ok) throw new Error(payload.error || "Refinement failed");
+    if (!res.ok || !payload.ok) {
+      if (payload.requiresKey) {
+        closeRefineModal();
+        openKeyModal();
+        return;
+      }
+      throw new Error(payload.error || "Refinement failed");
+    }
 
     closeRefineModal();
+    document.getElementById("refine-note-input").value = "";
     canonicalCalculation = payload.data; // Update canonical for fast switching
     currentCalculation = payload.data;
     currentCalcId = payload.calcId;
-    document.getElementById("btn-report-issue").href = `/feedback/?from=calc-agent&calcId=${encodeURIComponent(payload.calcId)}`;
+    document.getElementById("btn-report-issue").href = `/feedback/?from=calc-agent&calcId=${encodeURIComponent(payload.calcId || "")}`;
     renderCalculationResult(payload.data, payload.calcId);
   } catch (err) {
-    alert("Error refining: " + err.message);
+    alert("We couldn't apply that change: " + err.message);
   } finally {
-    btn.textContent = "Recalculate with Correction";
+    btn.textContent = "Recalculate";
   }
 }
 
 async function sendFeedback(rating) {
-  if (!currentCalcId) return;
+  if (!currentCalcId) {
+    alert("This calculation wasn't saved to your history, so feedback can't be attached to it. Please run it again.");
+    return;
+  }
   try {
     await fetch("/api/calc-agent/feedback", {
       method: "POST",
@@ -3531,8 +3768,8 @@ function renderHistoryList(items) {
 
 function filterHistoryList() {
   const q = document.getElementById("history-search").value.toLowerCase();
-  const filtered = historyCache.filter(it => 
-    it.query.toLowerCase().includes(q) || 
+  const filtered = historyCache.filter(it =>
+    it.query.toLowerCase().includes(q) ||
     it.category.toLowerCase().includes(q) ||
     it.headline_result.toLowerCase().includes(q)
   );
@@ -3550,17 +3787,15 @@ async function loadHistoryToStudio(id) {
       canonicalCalculation = data.record.data; // Store as canonical for fast switching
       currentCalcId = data.record.id;
       currentSliderValues = {};
-      
-      // Restore language and currency selectors from stored data
+
+      // Restore language selector from stored data (currency is carried on
+      // the record itself and read via getActiveCurrency() — no selector to restore).
       const storedData = data.record.data;
       if (storedData.outputLanguage) {
         document.getElementById("lang-select").value = storedData.outputLanguage;
         applyLocalizedUI(storedData.outputLanguage);
       }
-      if (storedData.targetCurrency) {
-        document.getElementById("currency-select").value = storedData.targetCurrency;
-      }
-      
+
       document.getElementById("btn-report-issue").href = `/feedback/?from=calc-agent&calcId=${encodeURIComponent(data.record.id)}`;
       switchCalcTab("studio-tab");
       renderCalculationResult(data.record.data, data.record.id);
