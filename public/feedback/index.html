@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Feedback & Issue Reporting | LedgerMate</title>
+<meta name="description" content="Help us improve LedgerMate. Submit feedback, feature requests, or report issues regarding our Web App, AI Calculation Agent, or Free Tools.">
+<link rel="canonical" href="https://splitmate.online/feedback/">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: #e2e8f0;
+  --radius: 12px;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #0f172a;
+  text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 18px; align-items: center; }
+.nav-links a { color: #475569; text-decoration: none; font-size: 14px; font-weight: 600; }
+.nav-links a:hover { color: var(--accent); }
+
+.feedback-container {
+  max-width: 680px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
+}
+.feedback-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+.feedback-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.feedback-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+.feedback-subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 14.5px;
+  color: #0f172a;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+.sentiment-options {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+.sentiment-btn {
+  flex: 1;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 4px;
+  text-align: center;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sentiment-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+.sentiment-btn.selected {
+  background: #eff6ff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+.btn-submit {
+  width: 100%;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-submit:hover { background: var(--accent-hover); }
+.success-banner {
+  display: none;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #166534;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14.5px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/app/">Web App</a>
+      <a href="/tools/calc-agent/">AI Calc Agent</a>
+      <a href="/blog/">Guides</a>
+    </div>
+  </div>
+</nav>
+
+<div class="feedback-container">
+  <div class="feedback-card">
+    <div class="feedback-header">
+      <h1 class="feedback-title">Product Feedback & Issue Report</h1>
+      <p class="feedback-subtitle">
+        We value your thoughts. Let us know how we can improve or report any issues you encountered.
+      </p>
+    </div>
+
+    <div class="success-banner" id="success-banner">
+      ✓ Thank you! Your feedback has been received and logged.
+    </div>
+
+    <form id="feedback-form" onsubmit="handleFeedbackSubmit(event)">
+      <div class="form-group">
+        <label class="form-label">How would you rate your experience?</label>
+        <div class="sentiment-options">
+          <button type="button" class="sentiment-btn" onclick="setRating(1, this)" title="Very Disappointed">😡</button>
+          <button type="button" class="sentiment-btn" onclick="setRating(2, this)" title="Poor">🙁</button>
+          <button type="button" class="sentiment-btn" onclick="setRating(3, this)" title="Okay">😐</button>
+          <button type="button" class="sentiment-btn selected" onclick="setRating(4, this)" title="Good">🙂</button>
+          <button type="button" class="sentiment-btn" onclick="setRating(5, this)" title="Excellent">😍</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="category-select">What product area is this regarding?</label>
+        <select id="category-select" class="form-select">
+          <option value="AI Calculation Agent">⚡ AI Calculation Agent & Gemini Studio</option>
+          <option value="LedgerMate Web App">📱 LedgerMate Web App & Group Splits</option>
+          <option value="Free Calculator Tools">🧮 Free Calculator Tools (Rent, Split Bill, Taxes)</option>
+          <option value="Landing Page & Design">🎨 Landing Page & Documentation</option>
+          <option value="Account & Security">🔐 Google Sign-In & Security</option>
+          <option value="Feature Request">💡 New Feature Suggestion</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="feedback-text">Your Feedback / Issue Description:</label>
+        <textarea id="feedback-text" class="form-textarea" rows="4" placeholder="Tell us what went well, what felt broken, or what you'd like to see added..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email-input">Your Email (Optional, if you'd like a response):</label>
+        <input type="email" id="email-input" class="form-input" placeholder="you@example.com">
+      </div>
+
+      <input type="hidden" id="context-url" value="">
+
+      <button type="submit" class="btn-submit" id="submit-btn">Send Product Feedback</button>
+    </form>
+  </div>
+</div>
+
+<script>
+let currentRating = 4;
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get("from");
+  const calcId = params.get("calcId");
+  const categorySelect = document.getElementById("category-select");
+
+  if (from === "calc-agent") {
+    categorySelect.value = "AI Calculation Agent";
+  } else if (from === "landing") {
+    categorySelect.value = "Landing Page & Design";
+  } else if (from === "app") {
+    categorySelect.value = "LedgerMate Web App";
+  }
+
+  document.getElementById("context-url").value = window.location.href + (calcId ? ` [CalcId: ${calcId}]` : "");
+
+  // Prefill email if signed in
+  try {
+    const res = await fetch("/api/me");
+    const data = await res.json();
+    if (data?.user?.email) {
+      document.getElementById("email-input").value = data.user.email;
+    }
+  } catch(e) {}
+});
+
+function setRating(val, btn) {
+  currentRating = val;
+  document.querySelectorAll(".sentiment-btn").forEach(b => b.classList.remove("selected"));
+  btn.classList.add("selected");
+}
+
+async function handleFeedbackSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById("submit-btn");
+  const banner = document.getElementById("success-banner");
+  const category = document.getElementById("category-select").value;
+  const feedback = document.getElementById("feedback-text").value.trim();
+  const email = document.getElementById("email-input").value.trim();
+  const contextUrl = document.getElementById("context-url").value;
+
+  if (!feedback) return;
+
+  btn.disabled = true;
+  btn.textContent = "Submitting...";
+
+  try {
+    const res = await fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        category,
+        feedback,
+        rating: currentRating,
+        email,
+        contextUrl,
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      banner.style.display = "block";
+      document.getElementById("feedback-form").reset();
+      banner.scrollIntoView({ behavior: "smooth" });
+    } else {
+      alert("Submission error: " + (data.error || "Please try again."));
+    }
+  } catch (err) {
+    alert("Network error. Please try again.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Send Product Feedback";
+  }
+}
+</script>
+
+</body>
+</html>

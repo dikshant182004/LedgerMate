@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Calculation Agent User Guide | LedgerMate</title>
+<meta name="description" content="Complete documentation and guide for the LedgerMate Deterministic Calculation Agent powered by Google AI Studio Gemini models with Google Search Grounding.">
+<link rel="canonical" href="https://splitmate.online/guides/calc-agent/">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: #e2e8f0;
+  --radius: 12px;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --mono-font: 'JetBrains Mono', monospace;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+}
+* { box-sizing: border-box; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #0f172a;
+  text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 18px; align-items: center; }
+.nav-links a { color: #475569; text-decoration: none; font-size: 14px; font-weight: 600; }
+.nav-links a:hover { color: var(--accent); }
+
+.guide-container {
+  max-width: 860px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
+}
+.guide-header {
+  margin-bottom: 36px;
+}
+.badge {
+  display: inline-block;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.guide-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 34px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 12px;
+  line-height: 1.25;
+}
+.guide-subtitle {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin: 0;
+}
+.guide-content {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  box-shadow: var(--shadow-sm);
+}
+.guide-content h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 28px 0 12px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 8px;
+}
+.guide-content h2:first-child { margin-top: 0; }
+.guide-content p {
+  color: #334155;
+  font-size: 15px;
+  margin: 0 0 16px;
+}
+.code-block {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-family: var(--mono-font);
+  font-size: 13.5px;
+  margin: 12px 0 20px;
+  overflow-x: auto;
+}
+.feature-box {
+  background: #f8fafc;
+  border-left: 4px solid var(--accent);
+  padding: 14px 18px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+}
+.btn-cta {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 20px;
+}
+.btn-cta:hover { background: var(--accent-hover); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/tools/calc-agent/">Open Studio</a>
+      <a href="/security/calc-agent/">Security & FAQ</a>
+      <a href="/feedback/?from=guide">Feedback</a>
+    </div>
+  </div>
+</nav>
+
+<div class="guide-container">
+  <div class="guide-header">
+    <div class="badge">📖 Official Documentation</div>
+    <h1 class="guide-title">AI Calculation Agent Guide & Best Practices</h1>
+    <p class="guide-subtitle">
+      Learn how our deterministic calculation pipeline blends natural language reasoning with guaranteed arithmetic execution and live Google Search Grounding.
+    </p>
+  </div>
+
+  <div class="guide-content">
+    <h2>1. Overview of the Architecture</h2>
+    <p>
+      Traditional Large Language Models (LLMs) often suffer from arithmetic hallucinations when computing compound interest, rent proration, or metrology conversions. LedgerMate uses a <strong>NeuroSymbolic pipeline</strong>:
+    </p>
+    <ul>
+      <li><strong>Gemini Reasoning Engine:</strong> Extracts entities, formulas, and constraints from plain English/multilingual queries.</li>
+      <li><strong>Google Search Grounding:</strong> Pulls real-time tax rates, currency rates, or metrological constants dynamically.</li>
+      <li><strong>Deterministic V8 Math Engine:</strong> Executes exact recursive-descent math parser without risk of LLM arithmetic slips.</li>
+    </ul>
+
+    <h2>2. Getting Started in 3 Steps</h2>
+    <div class="feature-box">
+      <strong>Step 1: Sign in with Google</strong><br>
+      Tie your calculation records to your Google account for continuous history tracking.
+    </div>
+    <div class="feature-box">
+      <strong>Step 2: Connect Your Google AI Studio Free Key</strong><br>
+      Get a 100% free API key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: var(--accent); font-weight: 700;">Google AI Studio</a>. Paste it in Key Settings.
+    </div>
+    <div class="feature-box">
+      <strong>Step 3: Ask in Any Language</strong><br>
+      Ask in English, Hindi, Arabic, Spanish, French, German, Japanese, etc. The agent interprets the query and outputs complete proofs in your selected language!
+    </div>
+
+    <h2>3. Example Queries You Can Try</h2>
+    <div class="code-block">
+# Unequal Roommate Rent Split
+"Split $3,800 rent between 3 people where Room A is master (+15%), Room B is standard, Room C is small (-10%)"
+
+# Metrology & Tax Computation
+"Convert 150 Gaj to Square Feet and calculate 18% GST at $2,400/sqft"
+
+# Loan Amortization
+"Calculate monthly EMI on a $450,000 mortgage at 6.5% interest for 30 years"
+    </div>
+
+    <h2>4. Interactive Sliders & Sensitivity Analysis</h2>
+    <p>
+      After every query, the agent generates interactive variable sliders. Adjusting any slider dynamically recalculates the headline result and the 5-point sensitivity matrix (-20% to +20%) in real time!
+    </p>
+
+    <a href="/tools/calc-agent/" class="btn-cta">⚡ Launch Calculation Studio</a>
+  </div>
+</div>
+
+</body>
+</html>

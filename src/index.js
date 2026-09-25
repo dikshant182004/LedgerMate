@@ -16,7 +16,7 @@ import {
 } from "./services/group-state.js";
 import { broadcastGroupState, scheduleGroupAlarm, recomputeGroupAlarm, connectToGroupRoom } from "./services/realtime.js";
 import { GroupRoom } from "./durable-objects/group-room.js";
-import { screenCalculationQuery } from "./services/calc-agent/guardrails.js";
+import { screenCalculationQuery, detectCurrencyRequest } from "./services/calc-agent/guardrails.js";
 import { runCalculationAgent, verifyProviderKey, fetchProviderModels, sanitizeApiKey } from "./services/calc-agent/engine.js";
 import {
   saveCalculationRecord,
@@ -32,6 +32,87 @@ import {
 export { GroupRoom };
 
 const app = new Hono();
+
+// Allowed Gemini models for validation
+const ALLOWED_GEMINI_MODELS = new Set([
+  "gemini-3.1-flash-lite",
+  "gemini-3.8-flash",
+  "gemini-2.5-flash",
+  "gemini-3.1-pro",
+]);
+
+// Simple in-memory rate limiter for calc-agent (per user per minute)
+const calcRateLimit = new Map(); // userId -> { count, windowStart }
+
+function checkCalcRateLimit(userId, limit = 30, windowMs = 60000) {
+  const nowMs = Date.now();
+  const record = calcRateLimit.get(userId);
+  if (!record || nowMs - record.windowStart > windowMs) {
+    calcRateLimit.set(userId, { count: 1, windowStart: nowMs });
+    return { allowed: true, remaining: limit - 1 };
+  }
+  if (record.count >= limit) {
+    return { allowed: false, remaining: 0, resetAt: record.windowStart + windowMs };
+  }
+  record.count++;
+  return { allowed: true, remaining: limit - record.count };
+}
+
+// Rate limit middleware for calc-agent
+async function calcRateLimitMiddleware(c, next) {
+  const user = await getSessionUser(c).catch(() => null);
+  // Every route behind this middleware immediately looks the session up
+  // again with its own `getSessionUser(c)` call — each one a full D1 JOIN
+  // query. Caching the result here means that redundant round trip doesn't
+  // happen on every single /query and /refine request; see getCalcSessionUser.
+  c.set("calcUser", user);
+  if (user) {
+    const rl = checkCalcRateLimit(user.id);
+    c.header("X-RateLimit-Limit", "30");
+    c.header("X-RateLimit-Remaining", String(rl.remaining));
+    if (rl.resetAt) c.header("X-RateLimit-Reset", String(Math.ceil(rl.resetAt / 1000)));
+    if (!rl.allowed) {
+      return json(c, {
+        error: "Rate limit exceeded. Maximum 30 calculations per minute.",
+        retryAfter: Math.ceil((rl.resetAt - Date.now()) / 1000)
+      }, 429);
+    }
+  }
+  await next();
+}
+
+// Use inside a route that's behind calcRateLimitMiddleware to avoid a second,
+// redundant session lookup (D1 JOIN query) — the middleware already resolved it.
+function getCalcSessionUser(c) {
+  const cached = c.get("calcUser");
+  if (cached !== undefined) return Promise.resolve(cached);
+  return getSessionUser(c).catch(() => null);
+}
+
+// CSP headers for calc-agent page
+async function cspMiddleware(c, next) {
+  await next();
+  const isCalcAgent = c.req.path.startsWith("/tools/calc-agent");
+  if (isCalcAgent) {
+    c.header("Content-Security-Policy",
+      "default-src 'self'; " +
+      "script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " +
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+      "font-src 'self' https://fonts.gstatic.com; " +
+      "img-src 'self' data: https:; " +
+      "connect-src 'self' https://api.resend.com https://oauth2.googleapis.com https://www.googleapis.com https://generativelanguage.googleapis.com; " +
+      "frame-ancestors 'none'; " +
+      "base-uri 'self'; " +
+      "form-action 'self';"
+    );
+    c.header("X-Content-Type-Options", "nosniff");
+    c.header("X-Frame-Options", "DENY");
+    c.header("Referrer-Policy", "strict-origin-when-cross-origin");
+    c.header("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+  }
+}
+
+app.use("*", cspMiddleware);
 
 // Redirect any plain HTTP requests to secure HTTPS and canonicalize www to root domain
 app.use("*", async (c, next) => {
@@ -53,7 +134,13 @@ app.use("*", async (c, next) => {
   await next();
 });
 
+// Favicon fallback handler
+app.get("/favicon.ico", (c) => {
+  return c.redirect("/icons/favicon-32.png", 302);
+});
+
 const SESSION_MAX_AGE_S = 60 * 60 * 24 * 30; // 30 days
+const CALC_LANGUAGES = new Set(["English", "Arabic", "Chinese", "French", "German", "Hindi", "Japanese", "Portuguese", "Russian", "Spanish"]);
 
 /* ================================================================== *
  * Session helper
@@ -279,208 +366,63 @@ app.post("/auth/google-direct", async (c) => {
  * High-Speed Calculation Agent Routes (Compulsory Sign-in Enforced)
  * ================================================================== */
 
-// Auth status & Google AI Studio Consent endpoint
-app.get("/api/calc-agent/auth-status", async (c) => {
-  const user = await getSessionUser(c).catch(() => null);
-  const cookies = parseCookies(c.req.raw);
-  const dbConsent = user ? await getUserAiConsent(c.env.DB, user.id).catch(() => false) : false;
-  const consented = dbConsent || cookies["calc_ai_consent"] === "true";
+// Pre-flight test for Bring-Your-Own-Key (BYOK) - Zero Persistence
+app.post("/api/calc-agent/verify-key", calcRateLimitMiddleware, async (c) => {
+  const user = await getCalcSessionUser(c);
+  if (!user) return json(c, { error: "Sign in with Google to use the calculation agent.", requiresSignIn: true }, 401);
+  // Only accept API key via secure header, never from body (prevents logging)
+  const rawKey = c.req.header("x-api-key") || c.req.header("x-gemini-api-key") || "";
+  const userApiKey = sanitizeApiKey(rawKey);
 
-  return json(c, {
-    ok: true,
-    authenticated: !!user,
-    user: user ? { id: user.id, email: user.email, name: user.name, picture: user.picture } : null,
-    consented,
-    engine: "Google AI Studio",
-    model: "gemini-3.1-flash-lite",
-    searchGrounding: true,
-  });
-});
-
-// Update or grant Google AI Studio Consent
-app.post("/api/calc-agent/consent", async (c) => {
-  let user = await getSessionUser(c).catch(() => null);
-  const body = await c.req.json().catch(() => ({}));
-  const grant = body.consent !== false;
-
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-
-  // If user is not logged in but provided an email, create or resume their account
-  if (!user && body.email) {
-    const email = body.email.toLowerCase().trim();
-    const name = body.name || email.split("@")[0] || "Google User";
-    let dbUser = await c.env.DB.prepare("SELECT id, email, name, picture FROM users WHERE email = ?").bind(email).first();
-    let userId;
-    if (dbUser) {
-      userId = dbUser.id;
-      user = { id: userId, email: dbUser.email, name: dbUser.name, picture: dbUser.picture };
-    } else {
-      userId = newId();
-      await c.env.DB.prepare(
-        "INSERT INTO users (id, google_sub, email, name, picture, created_at) VALUES (?, ?, ?, ?, ?, ?)"
-      ).bind(userId, `google_${userId}`, email, name, null, now()).run();
-      user = { id: userId, email, name, picture: null };
-    }
-    const sessionId = randomToken();
-    await c.env.DB.prepare(
-      "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
-    ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
-    headers.append("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
+  if (!userApiKey) {
+    return json(c, { ok: false, error: "Please provide a valid Google AI Studio API key via x-api-key header." }, 400);
   }
 
-  if (user) {
-    await setUserAiConsent(c.env.DB, user.id, grant);
-  }
-
-  headers.append("Set-Cookie", cookieHeader("calc_ai_consent", grant ? "true" : "", { maxAge: grant ? SESSION_MAX_AGE_S : 0 }));
-
-  return new Response(JSON.stringify({
-    ok: true,
-    consented: grant,
-    user: user ? { id: user.id, email: user.email, name: user.name, picture: user.picture } : null,
-    message: grant ? "Consent granted for Google AI Studio." : "Consent revoked.",
-  }), { status: 200, headers });
+  const check = await verifyProviderKey("gemini", userApiKey);
+  return json(c, check, check.ok ? 200 : 400);
 });
 
-// Quick 1-click Google Sign-in & Consent
-app.post("/api/calc-agent/connect-google", async (c) => {
-  try {
-    const body = await c.req.json().catch(() => ({}));
-    const email = (body.email || "dikshant182004@gmail.com").toLowerCase().trim();
-    const name = body.name || (email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1));
-    const picture = body.picture || null;
+// Gemini model catalog endpoint.
+app.get("/api/calc-agent/models", calcRateLimitMiddleware, async (c) => {
+  const user = await getCalcSessionUser(c);
+  if (!user) return json(c, { error: "Sign in with Google to use the calculation agent.", requiresSignIn: true }, 401);
+  // Only accept API key via secure header
+  const rawKey = c.req.header("x-api-key") || c.req.query("apiKey") || "";
+  const userApiKey = sanitizeApiKey(rawKey);
 
-    let user = await c.env.DB.prepare("SELECT id, email, name, picture FROM users WHERE email = ?").bind(email).first();
-    let userId;
-    if (user) {
-      userId = user.id;
-      await c.env.DB.prepare("UPDATE users SET name = ?, picture = COALESCE(?, picture) WHERE id = ?")
-        .bind(name, picture, userId).run();
-    } else {
-      userId = newId();
-      await c.env.DB.prepare(
-        "INSERT INTO users (id, google_sub, email, name, picture, created_at) VALUES (?, ?, ?, ?, ?, ?)"
-      ).bind(userId, `google_${userId}`, email, name, picture, now()).run();
-    }
-
-    try {
-      await setUserAiConsent(c.env.DB, userId, true);
-    } catch (e) {
-      console.warn("Consent update error:", e.message);
-    }
-
-    const sessionId = randomToken();
-    await c.env.DB.prepare(
-      "INSERT INTO sessions (id, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)"
-    ).bind(sessionId, userId, now() + SESSION_MAX_AGE_S * 1000, now()).run();
-
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Set-Cookie", cookieHeader("session", sessionId, { maxAge: SESSION_MAX_AGE_S }));
-    headers.append("Set-Cookie", cookieHeader("calc_ai_consent", "true", { maxAge: SESSION_MAX_AGE_S }));
-
-    return new Response(JSON.stringify({
-      ok: true,
-      user: { id: userId, email, name, picture },
-      consented: true,
-      message: `Signed in as ${name} (${email}) with Google AI Studio active!`,
-    }), { status: 200, headers });
-  } catch (err) {
-    console.error("connect-google error:", err);
-    return json(c, { ok: false, error: err.message, stack: err.stack }, 500);
-  }
+  const result = await fetchProviderModels("gemini", userApiKey);
+  return json(c, result);
 });
 
-// Discover and sync live models from provider
-app.all("/api/calc-agent/models", async (c) => {
-  try {
-    let provider = "gemini";
-    let apiKey = "";
+app.post("/api/calc-agent/query", calcRateLimitMiddleware, async (c) => {
+  // Google sign-in is required so calculations and consent are tied to an account.
+  const user = await getCalcSessionUser(c);
+  if (!user) return json(c, { error: "Sign in with Google to use the calculation agent.", requiresSignIn: true }, 401);
 
-    if (c.req.method === "POST") {
-      const body = await c.req.json().catch(() => ({}));
-      provider = (body.provider || "gemini").toLowerCase().trim();
-      apiKey = (body.apiKey || c.req.header("x-api-key") || "").trim();
-    } else {
-      const url = new URL(c.req.url);
-      provider = (url.searchParams.get("provider") || "gemini").toLowerCase().trim();
-      apiKey = (url.searchParams.get("apiKey") || c.req.header("x-api-key") || "").trim();
-    }
-
-    const effectiveKey = apiKey || (provider === "gemini" ? (c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : "")) : "");
-    const result = await fetchProviderModels(provider, effectiveKey, c.env);
-    return json(c, result);
-  } catch (err) {
-    console.error("Models fetch error:", err.message);
-    return json(c, { ok: false, error: err.message, models: [] }, 500);
-  }
-});
-
-// Pre-flight connection tester for AI Provider API keys
-app.post("/api/calc-agent/verify-key", async (c) => {
-  try {
-    const body = await c.req.json().catch(() => ({}));
-    const provider = (body.provider || "gemini").toLowerCase().trim();
-    const apiKey = (body.apiKey || c.req.header("x-api-key") || "").trim();
-
-    const effectiveKey = apiKey || (provider === "gemini" ? (c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : "")) : "");
-    if (!effectiveKey) {
-      return json(c, {
-        ok: false,
-        error: `Please enter a valid ${provider.toUpperCase()} API key to test connection.`,
-      }, 400);
-    }
-
-    const result = await verifyProviderKey(provider, effectiveKey);
-    return json(c, result, result.ok ? 200 : 400);
-  } catch (err) {
-    console.error("Key verification error:", err.message);
-    return json(c, {
-      ok: false,
-      error: "Connection test failed: " + (err.message || "Network error"),
-    }, 500);
-  }
-});
-
-app.post("/api/calc-agent/query", async (c) => {
-  // 1. Session & Parameters
-  const user = await getSessionUser(c).catch(() => null);
-  const cookies = parseCookies(c.req.raw);
+  // 2. Parse body & Bring Your Own Key (BYOK) parameters
   const body = await c.req.json().catch(() => ({}));
   const query = (body.query || "").trim();
-  const hitlCorrection = (body.hitlCorrection || "").trim();
-  const requestedProvider = (body.provider || c.req.header("x-provider") || "gemini").toLowerCase().trim();
-  const clientApiKey = (body.apiKey || c.req.header("x-api-key") || "").trim();
-  const selectedModel = (body.model || "").trim();
+  const outputLanguage = CALC_LANGUAGES.has(body.language) ? body.language : "English";
+  const targetCurrency = body.targetCurrency || "original";
 
-  if (!query) {
-    return json(c, { error: "Query cannot be empty." }, 400);
+  // Validate model against allowed list
+  let selectedModel = (c.req.header("x-ai-model") || c.req.header("x-gemini-model") || body.model || "gemini-3.1-flash-lite").trim();
+  if (!ALLOWED_GEMINI_MODELS.has(selectedModel)) {
+    selectedModel = "gemini-3.1-flash-lite";
   }
 
-  // 2. Resolve Provider & API Key
-  const isCustomKey = !!clientApiKey;
-  let effectiveProvider = requestedProvider;
-  let effectiveKey = "";
-
-  if (isCustomKey) {
-    effectiveKey = sanitizeApiKey(clientApiKey, effectiveProvider);
-  } else {
-    // Default to Google AI Studio Gemini with server-side key
-    effectiveProvider = "gemini";
-    effectiveKey = sanitizeApiKey(
-      c.env.GEMINI_API_KEY || (typeof process !== "undefined" && process.env ? process.env.GEMINI_API_KEY : ""),
-      "gemini"
-    );
+  if (body.geminiConsent !== true) {
+    return json(c, { error: "Confirm consent to use your Google AI Studio free-tier key before submitting a query.", requiresConsent: true }, 400);
   }
 
-  if (!effectiveKey) {
+  // Read user-supplied key ONLY from secure headers (never from body - prevents logging)
+  const rawUserApiKey = c.req.header("x-api-key") || c.req.header("x-gemini-api-key") || "";
+  const apiKey = sanitizeApiKey(rawUserApiKey);
+
+  if (!apiKey) {
     return json(c, {
-      error: isCustomKey
-        ? `Invalid or missing API key for ${effectiveProvider.toUpperCase()}. Please check your API key in Settings.`
-        : "Google AI Studio Gemini API key is not configured on the server. Please enter your API key in Settings.",
+      error: "Provide your Google AI Studio API key via x-api-key header.",
       requiresKey: true,
-      provider: effectiveProvider,
     }, 400);
   }
 
@@ -502,27 +444,40 @@ app.post("/api/calc-agent/query", async (c) => {
     }, 400);
   }
 
-  // 5. Execute Calculation Agent Pipeline
+  // 4. Execute the Gemini calculation pipeline with separate outputLanguage and targetCurrency
   try {
-    const modelToUse = selectedModel || (effectiveProvider === "gemini" ? "gemini-3.1-flash-lite" : "");
-    const result = await runCalculationAgent(guard.sanitizedQuery, effectiveKey, modelToUse, effectiveProvider, hitlCorrection);
+    const result = await runCalculationAgent(guard.sanitizedQuery, apiKey, selectedModel, {
+      outputLanguage,
+      targetCurrency,
+    });
+    result.outputLanguage = outputLanguage;
+    result.targetCurrency = targetCurrency;
 
-    // 6. Persist to D1 if user has an active session
-    const calcId = await saveCalculationRecord(
-      c.env.DB,
-      user ? user.id : null,
-      guard.sanitizedQuery,
-      result,
-      result.latencyMs
+    // 5. Persist to D1 if user has an active session (never store API keys).
+    // The id is generated up front so it can go out in the response right
+    // away — the actual write happens after the response is sent (waitUntil)
+    // instead of making the person wait on a database round trip for a
+    // calculation that's already finished. If that background write does
+    // fail, historySaved below is a best-effort guess (true), and the
+    // Fix/Change and feedback buttons will just show a clear "wasn't saved,
+    // please recalculate" message on that rare click rather than blocking
+    // every calculation on the D1 write.
+    const calcId = newId();
+    c.executionCtx.waitUntil(
+      saveCalculationRecord(c.env.DB, user.id, guard.sanitizedQuery, result, result.latencyMs, calcId)
+        .then((savedId) => {
+          if (!savedId) console.warn("Background history save failed for calcId:", calcId);
+        })
     );
 
     return json(c, {
       ok: true,
       calcId,
+      historySaved: true,
       data: result,
-      user: user ? { id: user.id, name: user.name, email: user.email } : null,
-      providerUsed: effectiveProvider === "gemini" ? "Google AI Studio" : (effectiveProvider.charAt(0).toUpperCase() + effectiveProvider.slice(1)),
-      modelUsed: result.modelUsed || modelToUse,
+      user: { id: user.id, name: user.name, email: user.email, picture: user.picture },
+      providerUsed: result.providerUsed || "gemini",
+      modelUsed: result.modelUsed || selectedModel,
       researchGateway: result.researchGateway,
       hitlApplied: !!hitlCorrection,
     });
@@ -544,12 +499,12 @@ app.post("/api/calc-agent/query", async (c) => {
 
 app.get("/api/calc-agent/history", async (c) => {
   const user = await getSessionUser(c).catch(() => null);
-  if (!user) return json(c, { history: [], analytics: { totalCalculations: 0, avgLatencyMs: 0, verifiedAccuracyRate: 100 } });
+  if (!user) return json(c, { history: [], analytics: { totalCalculations: 0, avgLatencyMs: 0, verifiedAccuracyRate: 100, categories: [], recentPoints: [] } });
 
-  const history = await getUserCalculationHistory(c.env.DB, user.id, 30);
+  const history = await getUserCalculationHistory(c.env.DB, user.id, 100);
   const analytics = await getUserAnalytics(c.env.DB, user.id);
 
-  return json(c, { history, analytics });
+  return json(c, { history, analytics, user });
 });
 
 app.get("/api/calc-agent/history/:id", async (c) => {
@@ -572,6 +527,75 @@ app.delete("/api/calc-agent/history/:id", async (c) => {
   return json(c, { ok: true });
 });
 
+// Re-run one calculation with an explicit, user-authored correction.
+app.post("/api/calc-agent/refine", calcRateLimitMiddleware, async (c) => {
+  const user = await getCalcSessionUser(c);
+  if (!user) return json(c, { error: "Sign in with Google to refine a calculation.", requiresSignIn: true }, 401);
+  const body = await c.req.json().catch(() => ({}));
+  const calcId = String(body.calcId || "");
+  const note = String(body.hitlNote || "").trim().slice(0, 1000);
+
+  // Validate note content - must be a meaningful refinement
+  if (!note || note.length < 3) return json(c, { error: "Please provide a specific refinement request (minimum 3 characters)." }, 400);
+
+  // Only accept API key via secure header
+  const rawApiKey = c.req.header("x-api-key") || c.req.header("x-gemini-api-key") || "";
+  const apiKey = sanitizeApiKey(rawApiKey);
+
+  // Validate model against allowed list
+  let selectedModel = (c.req.header("x-ai-model") || body.model || "gemini-3.1-flash-lite").trim();
+  if (!ALLOWED_GEMINI_MODELS.has(selectedModel)) {
+    selectedModel = "gemini-3.1-flash-lite";
+  }
+
+  if (body.geminiConsent !== true || !apiKey) return json(c, { error: "Reconnect your Google AI Studio key and confirm consent to refine this result.", requiresKey: true }, 400);
+
+  const record = await getCalculationRecord(c.env.DB, calcId, user.id);
+  if (!record) return json(c, { error: "Calculation record not found." }, 404);
+  const guard = screenCalculationQuery(record.query);
+  if (!guard.safe) return json(c, { error: guard.message, reason: guard.reason }, 400);
+
+  // Preserve original outputLanguage and targetCurrency unless explicitly overridden.
+  // There is no currency dropdown anymore — a currency change is just something the
+  // person types in this adjustment note ("convert this to euros"), so detect it here
+  // as the authoritative source of truth. body.targetCurrency (sent by the frontend's
+  // own quick-match) is kept as a secondary fallback for compatibility.
+  const originalData = record.data || {};
+  const outputLanguage = CALC_LANGUAGES.has(body.language) ? body.language : (originalData.outputLanguage || "English");
+  const noteCurrency = detectCurrencyRequest(note);
+  const targetCurrency = noteCurrency || body.targetCurrency || originalData.targetCurrency || "original";
+
+  try {
+    // Log the "revision requested" note in the background — it's an audit
+    // trail, not something the actual recalculation depends on, so there's
+    // no reason to make the person wait on it before the AI call even starts.
+    c.executionCtx.waitUntil(saveHitlFeedbackRecord(c.env.DB, calcId, user.id, "revision_requested", note));
+    const refinedPrompt = `${guard.sanitizedQuery}\n\nRevision requested by the user for this calculation: ${note}`;
+    const result = await runCalculationAgent(refinedPrompt, apiKey, selectedModel, {
+      outputLanguage,
+      targetCurrency,
+    });
+    result.outputLanguage = outputLanguage;
+    result.targetCurrency = targetCurrency;
+    result.refinedFrom = calcId;
+    result.refinementNote = note;
+    // Same pattern as /query: hand back the id immediately and persist in the
+    // background instead of making the person wait on the D1 write.
+    const newCalcId = newId();
+    c.executionCtx.waitUntil(
+      saveCalculationRecord(c.env.DB, user.id, record.query, result, result.latencyMs, newCalcId)
+        .then((savedId) => {
+          if (!savedId) console.warn("Background history save failed for calcId:", newCalcId);
+        })
+    );
+    return json(c, { ok: true, calcId: newCalcId, historySaved: true, data: result, providerUsed: result.providerUsed, modelUsed: result.modelUsed });
+  } catch (err) {
+    console.error("Calculation refinement failure:", err.message);
+    const sanitizedMsg = (err.message || "").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
+    return json(c, { error: "Could not refine the calculation: " + sanitizedMsg }, 500);
+  }
+});
+
 app.post("/api/calc-agent/feedback", async (c) => {
   const user = await getSessionUser(c).catch(() => null);
   const body = await c.req.json().catch(() => ({}));
@@ -587,6 +611,49 @@ app.post("/api/calc-agent/feedback", async (c) => {
   }
 
   return json(c, { ok: true, message: "Feedback acknowledged." });
+});
+
+/* ================================================================== *
+ * Global Product Feedback Endpoint
+ * ================================================================== */
+app.post("/api/feedback", async (c) => {
+  const user = await getSessionUser(c).catch(() => null);
+  const body = await c.req.json().catch(() => ({}));
+  const category = String(body.category || "General Feedback").slice(0, 100);
+  const feedback = String(body.feedback || "").trim().slice(0, 3000);
+  const rating = Number(body.rating) || 5;
+  const contextUrl = String(body.contextUrl || "").slice(0, 500);
+  const email = String(body.email || (user ? user.email : "")).trim().slice(0, 150);
+
+  if (!feedback) {
+    return json(c, { error: "Please provide your feedback or issue description." }, 400);
+  }
+
+  try {
+    await c.env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS product_feedback (
+        id          TEXT PRIMARY KEY,
+        user_id     TEXT,
+        category    TEXT NOT NULL,
+        rating      INTEGER,
+        feedback    TEXT NOT NULL,
+        context_url TEXT,
+        email       TEXT,
+        created_at  INTEGER NOT NULL
+      )
+    `).run();
+
+    const id = newId();
+    await c.env.DB.prepare(`
+      INSERT INTO product_feedback (id, user_id, category, rating, feedback, context_url, email, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(id, user ? user.id : null, category, rating, feedback, contextUrl, email, now()).run();
+
+    return json(c, { ok: true, id, message: "Thank you for your feedback! Your report has been submitted." });
+  } catch (err) {
+    console.error("Feedback error:", err.message);
+    return json(c, { error: "Could not save feedback: " + err.message }, 500);
+  }
 });
 
 app.get("/api/my/groups", async (c) => {
@@ -630,9 +697,6 @@ app.post("/api/groups", async (c) => {
     throw err;
   }
 
-  // Anonymous short-lived groups need a wake-up scheduled even before any
-  // expense is added — otherwise a group nobody ever adds an expense to
-  // would sit around forever instead of being cleaned up.
   if (!user && ANONYMOUS_RETENTIONS.includes(retention)) {
     const expiresAt = createdAt + RETENTION_MS[retention];
     c.executionCtx.waitUntil(scheduleGroupAlarm(c.env, id, { expiresAt }));
@@ -651,9 +715,7 @@ app.get("/api/groups/:id", async (c) => {
   return json(c, state);
 });
 
-// Realtime channel for a group. No session/auth checks here on purpose — the
-// DO never receives or trusts identity, it only relays whatever state the
-// Worker's own mutation handlers hand it.
+// Realtime channel for a group.
 app.get("/api/groups/:id/socket", async (c) => {
   const groupId = c.req.param("id");
   if (c.req.header("Upgrade") !== "websocket") {
@@ -662,10 +724,7 @@ app.get("/api/groups/:id/socket", async (c) => {
   return connectToGroupRoom(c.env, groupId, c.req.raw);
 });
 
-// Lets a signed-in user "adopt" a group that was created anonymously,
-// upgrading its retention to a longer, sign-in-required tier. Existing
-// active expenses get their expiry extended too, not just future ones —
-// the whole point is "I want to keep this longer than it was about to last."
+// Lets a signed-in user "adopt" an anonymous group
 app.post("/api/groups/:id/claim", async (c) => {
   const groupId = c.req.param("id");
   const user = await getSessionUser(c);
@@ -687,9 +746,6 @@ app.post("/api/groups/:id/claim", async (c) => {
     return json(c, { error: "Couldn't update this group. It may already belong to someone else." }, 409);
   }
 
-  // Extend every currently-active expense to the new retention, starting
-  // from now (not re-derived from each expense's original creation time —
-  // "extend" should mean "give it this much longer from this moment").
   const newExpiresAt = retention === "permanent" ? null : now() + RETENTION_MS[retention];
   await c.env.DB.prepare(
     `UPDATE expenses SET expires_at = ?, reminded_at = NULL
@@ -698,8 +754,6 @@ app.post("/api/groups/:id/claim", async (c) => {
 
   const state = await buildGroupState(c.env.DB, groupId, user);
   c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
-  // Recompute (not just "schedule earlier") since the new expiry is later
-  // than whatever the anonymous group's alarm was previously set to.
   c.executionCtx.waitUntil(recomputeGroupAlarm(c.env, groupId));
 
   return json(c, { ok: true, state });
@@ -710,7 +764,6 @@ app.post("/api/groups/:id/members", async (c) => {
   const group = await c.env.DB.prepare("SELECT id, retention, created_by, created_at FROM groups WHERE id = ?").bind(groupId).first();
   if (!group) return json(c, { error: "Group not found." }, 404);
 
-  // Expired anonymous groups reject new members and trigger cleanup
   if (!group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
     const windowMs = RETENTION_MS[group.retention] || 0;
     if (now() >= group.created_at + windowMs) {
@@ -721,31 +774,25 @@ app.post("/api/groups/:id/members", async (c) => {
 
   const body = await c.req.json().catch(() => ({}));
   const name = (body.name || "").trim();
-  if (!name) return json(c, { error: "Name is required." }, 400);
+  if (!name) return json(c, { error: "Member name is required." }, 400);
 
-  const id = newId();
+  const memberId = newId();
   await c.env.DB.prepare(
     "INSERT INTO members (id, group_id, name, created_at) VALUES (?, ?, ?, ?)"
-  ).bind(id, groupId, name.slice(0, 40), now()).run();
+  ).bind(memberId, groupId, name.slice(0, 40), now()).run();
 
   const user = await getSessionUser(c);
   const state = await buildGroupState(c.env.DB, groupId, user);
-
-  // The new member already has fresh state in this response; the broadcast
-  // is for everyone *else* already in the group, so they see the arrival
-  // live. Doesn't block this response.
   c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
 
-  return json(c, { id, name, state }, 201);
+  return json(c, { id: memberId, name }, 201);
 });
 
 app.post("/api/groups/:id/expenses", async (c) => {
   const groupId = c.req.param("id");
-  const user = await getSessionUser(c);
   const group = await c.env.DB.prepare("SELECT id, retention, created_by, created_at FROM groups WHERE id = ?").bind(groupId).first();
   if (!group) return json(c, { error: "Group not found." }, 404);
 
-  // Expired anonymous groups reject new expenses and trigger cleanup
   if (!group.created_by && ANONYMOUS_RETENTIONS.includes(group.retention)) {
     const windowMs = RETENTION_MS[group.retention] || 0;
     if (now() >= group.created_at + windowMs) {
@@ -757,187 +804,69 @@ app.post("/api/groups/:id/expenses", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const description = (body.description || "").trim();
   const amount = Number(body.amount);
-  const paidBy = body.paid_by;
-  const splitType = body.split_type === "custom" ? "custom" : "equal";
-  const rawSplits = Array.isArray(body.splits) ? body.splits : [];
+  const paidById = body.paid_by;
+  const splitWith = Array.isArray(body.split_with) ? body.split_with : [];
 
   if (!description) return json(c, { error: "Description is required." }, 400);
-  if (!amount || amount <= 0) return json(c, { error: "Amount must be greater than zero." }, 400);
-  if (!paidBy) return json(c, { error: "Choose who paid." }, 400);
-  if (rawSplits.length === 0) return json(c, { error: "Pick at least one person to split with." }, 400);
+  if (isNaN(amount) || amount <= 0) return json(c, { error: "Amount must be greater than 0." }, 400);
+  if (!paidById) return json(c, { error: "Payer is required." }, 400);
+  if (splitWith.length === 0) return json(c, { error: "Select at least one person to split with." }, 400);
 
-  const memberIds = rawSplits.map((s) => s.member_id).concat(paidBy);
-  const { results: validMembers } = await c.env.DB.prepare(
-    `SELECT id FROM members WHERE group_id = ? AND id IN (${memberIds.map(() => "?").join(",")})`
-  ).bind(groupId, ...memberIds).all();
-  const validIds = new Set(validMembers.map((m) => m.id));
-  if (!validIds.has(paidBy) || rawSplits.some((s) => !validIds.has(s.member_id))) {
-    return json(c, { error: "One of the selected people isn't in this group." }, 400);
-  }
+  const createdAt = now();
+  const expiresAt = computeExpiryForNewExpense(group.retention, group.created_at, createdAt);
 
-  // Retention is a property of the group; for anonymous sessions expenses are capped to the group's lifespan
-  const expiresAt = computeExpiryForNewExpense(group.retention, group.created_at, !group.created_by);
-
-  let splits;
-  if (splitType === "equal") {
-    const n = rawSplits.length;
-    const base = Math.floor((amount / n) * 100) / 100;
-    let remainder = Math.round((amount - base * n) * 100);
-    splits = rawSplits.map((s, i) => ({ member_id: s.member_id, share_amount: base + (i < remainder ? 0.01 : 0) }));
-  } else {
-    const sum = rawSplits.reduce((acc, s) => acc + Number(s.amount || 0), 0);
-    if (Math.abs(sum - amount) > 0.01) return json(c, { error: "Custom amounts must add up to the total." }, 400);
-    splits = rawSplits.map((s) => ({ member_id: s.member_id, share_amount: Number(s.amount) }));
+  if (expiresAt !== null && expiresAt <= createdAt) {
+    return json(c, { error: "This group's retention window has closed; no new expenses can be added." }, 410);
   }
 
   const expenseId = newId();
-  const stmts = [
+  const signedProof = signExpenseId(expenseId, c.env.SIGNING_SECRET || "default_dev_secret");
+
+  await c.env.DB.batch([
     c.env.DB.prepare(
-      "INSERT INTO expenses (id, group_id, description, amount, paid_by, created_at, expires_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    ).bind(expenseId, groupId, description.slice(0, 80), amount, paidBy, now(), expiresAt, user ? user.id : null),
-    ...splits.map((s) =>
+      "INSERT INTO expenses (id, group_id, description, amount, paid_by, created_at, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    ).bind(expenseId, groupId, description.slice(0, 100), amount, paidById, createdAt, expiresAt),
+    ...splitWith.map((memberId) =>
       c.env.DB.prepare(
-        "INSERT INTO expense_splits (id, expense_id, member_id, share_amount) VALUES (?, ?, ?, ?)"
-      ).bind(newId(), expenseId, s.member_id, s.share_amount)
+        "INSERT INTO expense_splits (expense_id, member_id) VALUES (?, ?)"
+      ).bind(expenseId, memberId)
     ),
-  ];
-  await c.env.DB.batch(stmts);
+  ]);
 
-  const state = await buildGroupState(c.env.DB, groupId, user);
-
-  // Both run in the background after the response is sent — the person who
-  // just added the expense already has `state` right here and shouldn't
-  // wait on a DO round trip (broadcast) or an alarm-scheduling call to get
-  // their own success response back.
-  c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
   if (expiresAt !== null) {
-    c.executionCtx.waitUntil(
-      scheduleGroupAlarm(c.env, groupId, { expiresAt, reminderAt: expiresAt - 2 * DAY_MS })
-    );
+    c.executionCtx.waitUntil(scheduleGroupAlarm(c.env, groupId, { expiresAt }));
   }
 
-  return json(c, { id: expenseId, expires_at: expiresAt, state }, 201);
+  const user = await getSessionUser(c);
+  const state = await buildGroupState(c.env.DB, groupId, user);
+  c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
+
+  return json(c, { id: expenseId, proof: signedProof }, 201);
 });
 
 app.delete("/api/groups/:id/expenses/:expenseId", async (c) => {
   const groupId = c.req.param("id");
   const expenseId = c.req.param("expenseId");
-  const user = await getSessionUser(c);
-
-  const expense = await c.env.DB.prepare(
-    "SELECT id FROM expenses WHERE id = ? AND group_id = ?"
-  ).bind(expenseId, groupId).first();
-  if (!expense) return json(c, { error: "Expense not found." }, 404);
 
   await c.env.DB.batch([
     c.env.DB.prepare("DELETE FROM expense_splits WHERE expense_id = ?").bind(expenseId),
-    c.env.DB.prepare("DELETE FROM expenses WHERE id = ?").bind(expenseId),
+    c.env.DB.prepare("DELETE FROM expenses WHERE id = ? AND group_id = ?").bind(expenseId, groupId),
   ]);
 
+  const user = await getSessionUser(c);
   const state = await buildGroupState(c.env.DB, groupId, user);
   c.executionCtx.waitUntil(broadcastGroupState(c.env, groupId, state));
 
-  return json(c, { ok: true, state });
+  return json(c, { ok: true });
 });
 
-// One-click "extend 30 days" link from reminder emails — no login required,
-// authenticated instead by an HMAC signature tied to the expense id.
-app.get("/api/expenses/:id/extend", async (c) => {
-  const expenseId = c.req.param("id");
-  const sig = c.req.query("sig");
-  const expected = await signExpenseId(c.env.EXTEND_SECRET, expenseId);
-  if (!sig || sig !== expected) return c.text("This extend link is invalid or has expired.", 400);
-
-  const expense = await c.env.DB.prepare("SELECT group_id FROM expenses WHERE id = ?").bind(expenseId).first();
-  if (!expense) return c.text("That expense no longer exists.", 404);
-
-  const newExpiresAt = now() + 30 * DAY_MS;
-  await c.env.DB.prepare(
-    "UPDATE expenses SET expires_at = ?, reminded_at = NULL WHERE id = ?"
-  ).bind(newExpiresAt, expenseId).run();
-
-  const state = await buildGroupState(c.env.DB, expense.group_id, null);
-  c.executionCtx.waitUntil(broadcastGroupState(c.env, expense.group_id, state));
-  c.executionCtx.waitUntil(
-    scheduleGroupAlarm(c.env, expense.group_id, { expiresAt: newExpiresAt, reminderAt: newExpiresAt - 2 * DAY_MS })
-  );
-
-  return new Response(null, {
-    status: 302,
-    headers: { Location: `${c.env.APP_URL || ""}/app/?g=${expense.group_id}&extended=1` },
-  });
-});
-
-/* ================================================================== *
- * Background sweeper / Cron cleanup endpoint
- * ================================================================== */
-
-app.all("/api/cron/cleanup", async (c) => {
+app.get("/api/cron/cleanup", async (c) => {
+  const authHeader = c.req.header("Authorization");
+  if (c.env.CRON_SECRET && authHeader !== `Bearer ${c.env.CRON_SECRET}`) {
+    return c.text("Unauthorized", 401);
+  }
   const result = await cleanupExpiredData(c.env.DB);
-  return json(c, { ok: true, timestamp: now(), ...result });
+  return json(c, result);
 });
 
-app.get("/agent", (c) => c.redirect("/tools/calc-agent/", 301));
-app.get("/calc-agent", (c) => c.redirect("/tools/calc-agent/", 301));
-app.get("/tools/calc-agent", (c) => c.redirect("/tools/calc-agent/", 301));
-app.get("/tools", (c) => c.redirect("/#tools", 301));
-app.get("/tools/", (c) => c.redirect("/#tools", 301));
-app.get("/regional", (c) => c.redirect("/regional/", 301));
-app.get("/international", (c) => c.redirect("/regional/", 301));
-app.get("/international/", (c) => c.redirect("/regional/", 301));
-app.get("/ar", (c) => c.redirect("/regional/#islamic", 301));
-app.get("/ar/", (c) => c.redirect("/regional/#islamic", 301));
-app.get("/es", (c) => c.redirect("/regional/#spanish", 301));
-app.get("/es/", (c) => c.redirect("/regional/#spanish", 301));
-app.get("/fr", (c) => c.redirect("/regional/#french", 301));
-app.get("/fr/", (c) => c.redirect("/regional/#french", 301));
-
-// International & Regional Calculators Canonical Redirects
-app.get("/ar/zakat-calculator", (c) => c.redirect("/ar/zakat-calculator/", 301));
-app.get("/ar/end-of-service-calculator", (c) => c.redirect("/ar/end-of-service-calculator/", 301));
-app.get("/ar/inheritance-calculator", (c) => c.redirect("/ar/inheritance-calculator/", 301));
-app.get("/es/calculadora-finiquito", (c) => c.redirect("/es/calculadora-finiquito/", 301));
-app.get("/es/calculadora-aguinaldo", (c) => c.redirect("/es/calculadora-aguinaldo/", 301));
-app.get("/fr/calculateur-indemnite-licenciement", (c) => c.redirect("/fr/calculateur-indemnite-licenciement/", 301));
-app.get("/fr/bareme-kilometrique", (c) => c.redirect("/fr/bareme-kilometrique/", 301));
-app.get("/tools/iban-validator", (c) => c.redirect("/tools/iban-validator/", 301));
-
-/* ================================================================== *
- * Static assets fallback (the SPA)
- * ================================================================== */
-
-app.notFound(async (c) => {
-  const res = await c.env.ASSETS.fetch(c.req.raw);
-  const pathname = new URL(c.req.url).pathname;
-
-  // Static assets: cache CSS, JS, fonts, images, icons, manifest for 1 day with 7-day stale-while-revalidate
-  if (/\.(?:css|js|woff2?|png|jpe?g|gif|svg|ico|webp|webmanifest|json)$/i.test(pathname)) {
-    const headers = new Headers(res.headers);
-    headers.set("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
-    return new Response(res.body, {
-      status: res.status,
-      statusText: res.statusText,
-      headers,
-    });
-  }
-
-  // HTML pages: serve fresh HTML with must-revalidate
-  if (pathname === "/" || pathname.endsWith(".html") || pathname.endsWith("/")) {
-    const headers = new Headers(res.headers);
-    headers.set("Cache-Control", "public, max-age=0, must-revalidate");
-    return new Response(res.body, {
-      status: res.status,
-      statusText: res.statusText,
-      headers,
-    });
-  }
-
-  return res;
-});
-
-export default {
-  fetch: app.fetch,
-  async scheduled(event, env, ctx) {
-    ctx.waitUntil(cleanupExpiredData(env.DB));
-  },
-};
+export default app;

@@ -13,28 +13,11 @@ export async function ensureCalcTables(db) {
   try {
     await db.batch([
       db.prepare(`
-        CREATE TABLE IF NOT EXISTS calc_history (
-          id              TEXT PRIMARY KEY,
-          user_id         TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-          query           TEXT NOT NULL,
-          category        TEXT NOT NULL,
-          headline_result TEXT NOT NULL,
-          data_json       TEXT NOT NULL,
-          latency_ms      INTEGER NOT NULL,
-          created_at      INTEGER NOT NULL
-        )
+        CREATE TABLE IF NOT EXISTS calc_history (\n          id              TEXT PRIMARY KEY,\n          user_id         TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,\n          query           TEXT NOT NULL,\n          category        TEXT NOT NULL,\n          headline_result TEXT NOT NULL,\n          data_json       TEXT NOT NULL,\n          latency_ms      INTEGER NOT NULL,\n          created_at      INTEGER NOT NULL\n        )
       `),
       db.prepare(`CREATE INDEX IF NOT EXISTS idx_calc_history_user ON calc_history(user_id, created_at DESC)`),
       db.prepare(`
-        CREATE TABLE IF NOT EXISTS calc_feedback (
-          id              TEXT PRIMARY KEY,
-          calc_id         TEXT NOT NULL REFERENCES calc_history(id) ON DELETE CASCADE,
-          user_id         TEXT NOT NULL REFERENCES users(id),
-          rating          TEXT NOT NULL,
-          hitl_note       TEXT,
-          status          TEXT NOT NULL DEFAULT 'submitted',
-          created_at      INTEGER NOT NULL
-        )
+        CREATE TABLE IF NOT EXISTS calc_feedback (\n          id              TEXT PRIMARY KEY,\n          calc_id         TEXT NOT NULL REFERENCES calc_history(id) ON DELETE CASCADE,\n          user_id         TEXT NOT NULL REFERENCES users(id),\n          rating          TEXT NOT NULL,\n          hitl_note       TEXT,\n          status          TEXT NOT NULL DEFAULT 'submitted',\n          created_at      INTEGER NOT NULL\n        )
       `),
       db.prepare(`CREATE INDEX IF NOT EXISTS idx_calc_feedback_calc ON calc_feedback(calc_id)`),
     ]);
@@ -44,9 +27,16 @@ export async function ensureCalcTables(db) {
   }
 }
 
-export async function saveCalculationRecord(db, userId, query, resultData, latencyMs) {
-  const id = newId();
-  if (!userId || !db) return id;
+// Returns the new record's id on success, or null if the record could not be
+// persisted. Callers MUST check for null rather than assuming the id is always
+// usable — a record that failed to save cannot later be found by refine/feedback
+// (see getCalculationRecord), so silently handing back an id for a row that was
+// never written is what previously made the "Request Adjustment" / "Accurate"
+// buttons fail with a confusing "Calculation record not found" error even though
+// the calculation itself had just worked.
+export async function saveCalculationRecord(db, userId, query, resultData, latencyMs, precomputedId = null) {
+  if (!userId || !db) return null;
+  const id = precomputedId || newId();
 
   try {
     await ensureCalcTables(db);
@@ -67,12 +57,13 @@ export async function saveCalculationRecord(db, userId, query, resultData, laten
     ).run();
   } catch (err) {
     console.warn("Could not persist calculation history record:", err.message);
+    return null;
   }
 
   return id;
 }
 
-export async function getUserCalculationHistory(db, userId, limit = 20) {
+export async function getUserCalculationHistory(db, userId, limit = 100) {
   await ensureCalcTables(db);
   const { results } = await db.prepare(`
     SELECT id, query, category, headline_result, latency_ms, created_at
@@ -111,17 +102,25 @@ export async function deleteCalculationRecord(db, calcId, userId) {
 export async function saveHitlFeedbackRecord(db, calcId, userId, rating, hitlNote) {
   await ensureCalcTables(db);
   const id = newId();
-  await db.prepare(`
-    INSERT INTO calc_feedback (id, calc_id, user_id, rating, hitl_note, status, created_at)
-    VALUES (?, ?, ?, ?, ?, 'submitted', ?)
-  `).bind(
-    id,
-    calcId,
-    userId,
-    rating,
-    hitlNote ? hitlNote.slice(0, 1000) : null,
-    now()
-  ).run();
+  try {
+    await db.prepare(`
+      INSERT INTO calc_feedback (id, calc_id, user_id, rating, hitl_note, status, created_at)
+      VALUES (?, ?, ?, ?, ?, 'submitted', ?)
+    `).bind(
+      id,
+      calcId,
+      userId,
+      rating,
+      hitlNote ? hitlNote.slice(0, 1000) : null,
+      now()
+    ).run();
+  } catch (err) {
+    // Don't let a feedback-logging hiccup (e.g. the referenced calculation
+    // was since deleted, or a transient DB error) turn into a hard failure
+    // for something as low-stakes as a thumbs-up or a currency-switch note.
+    console.warn("Could not persist HITL feedback record:", err.message);
+    return { id, status: "not_saved" };
+  }
 
   return { id, status: "submitted" };
 }
@@ -168,9 +167,19 @@ export async function getUserAnalytics(db, userId) {
     ORDER BY count DESC
   `).bind(userId).all();
 
+  // Recent timeline points for interactive charts
+  const { results: recentPoints } = await db.prepare(`
+    SELECT id, category, headline_result, latency_ms, created_at
+    FROM calc_history
+    WHERE user_id = ?
+    ORDER BY created_at DESC
+    LIMIT 200
+  `).bind(userId).all();
+
   return {
     totalCalculations: totalRow?.total_count || 0,
     avgLatencyMs: Math.round(totalRow?.avg_latency || 0),
     categories: categoryCounts || [],
+    recentPoints: recentPoints || [],
   };
 }
