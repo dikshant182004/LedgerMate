@@ -34,9 +34,9 @@ export async function ensureCalcTables(db) {
 // never written is what previously made the "Request Adjustment" / "Accurate"
 // buttons fail with a confusing "Calculation record not found" error even though
 // the calculation itself had just worked.
-export async function saveCalculationRecord(db, userId, query, resultData, latencyMs) {
+export async function saveCalculationRecord(db, userId, query, resultData, latencyMs, precomputedId = null) {
   if (!userId || !db) return null;
-  const id = newId();
+  const id = precomputedId || newId();
 
   try {
     await ensureCalcTables(db);

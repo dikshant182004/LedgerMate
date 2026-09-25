@@ -3,12 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Deterministic Calculation Agent | LedgerMate</title>
-<meta name="description" content="Enter real-world finance, taxes, metrology, or formulas in natural language. Powered by Gemini with live Google Search Grounding and guaranteed mathematical execution.">
-<link rel="canonical" href="https://splitmate.online/tools/calc-agent/">
+<title>AI Calculator — Ask Any Math, Finance or Unit Question | LedgerMate</title>
+<meta name="description" content="Type any real-world calculation in plain English — rent splits, loan EMIs, taxes, tips, unit conversions, and more. Get an instant, verified, step-by-step answer powered by Google Gemini. Free, no download required.">
+<link rel="canonical" href="https://tryledgermate.in/tools/calc-agent/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LedgerMate">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ar_AR">
+<meta property="og:locale:alternate" content="hi_IN">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="pt_PT">
+<meta property="og:title" content="AI Calculator — Ask Any Math, Finance or Unit Question | LedgerMate">
+<meta property="og:description" content="Type any real-world calculation in plain English and get an instant, verified answer with step-by-step work — rent splits, loan EMIs, taxes, unit conversions, and more.">
+<meta property="og:url" content="https://tryledgermate.in/tools/calc-agent/">
+<meta property="og:image" content="https://tryledgermate.in/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AI Calculator — Ask Any Math, Finance or Unit Question | LedgerMate">
+<meta name="twitter:description" content="Type any real-world calculation in plain English and get an instant, verified answer with step-by-step work. Free, no download required.">
+<meta name="twitter:image" content="https://tryledgermate.in/icons/icon-512.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate AI Calculator",
+  "alternateName": "LedgerMate Calculation Agent",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "url": "https://tryledgermate.in/tools/calc-agent/",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Type any real-world calculation in plain English and get an instant, verified answer with step-by-step work. Covers rent splits, loan EMIs, taxes, tips, unit conversions, and general math. Powered by Google Gemini with live Google Search grounding for facts like current tax rates and exchange rates.",
+  "featureList": [
+    "Natural-language input for finance, tax, and everyday math questions",
+    "Step-by-step, deterministic (verified, not just AI-guessed) answers",
+    "Live Google Search grounding for up-to-date tax rates and constants",
+    "Adjustable interactive sliders to see how the answer changes",
+    "Plain-English 'Fix / Change Something' correction, including currency conversion",
+    "Available in 10 languages: English, Arabic, Hindi, Spanish, French, German, Chinese, Japanese, Russian, and Portuguese"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to use the LedgerMate AI Calculator",
+  "description": "Get a verified, step-by-step answer to any real-world calculation in plain English.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Type your question in plain English",
+      "text": "Type a real-world question the way you'd ask a person — e.g. 'split $340 rent between 3 roommates with one paying 40%' or 'EMI on a $30,000 car loan at 7% for 5 years'."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Get an instant, verified answer",
+      "text": "The agent returns the answer along with the step-by-step math behind it, so you can see exactly how the number was reached."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Adjust the numbers with sliders",
+      "text": "Drag the interactive sliders on any input (rate, number of people, amount) to instantly see how the answer changes, with no need to retype your question."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Ask for a change in plain English",
+      "text": "If something needs to change — a tax rate, an assumption, or even the currency — use 'Fix / Change Something' and describe it in your own words, e.g. 'convert this to Euros' or 'use a 25% tax bracket instead'."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the LedgerMate AI Calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It's a free tool that turns a plain-English question — like a rent split, a loan EMI, a tax estimate, or a unit conversion — into a verified, step-by-step numeric answer. It's powered by Google Gemini, and the final math is double-checked with a deterministic formula evaluator rather than just trusting the AI's arithmetic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the AI Calculator free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You connect your own free Google AI Studio API key (Google's free tier), and LedgerMate never charges for the calculator itself or stores your key on its servers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is the AI Calculator's math?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The final numeric result is verified with a deterministic formula evaluator rather than relying on the AI's own arithmetic, and for questions involving current facts (like this year's tax rates or exchange rates) it uses live Google Search grounding instead of guessing from memory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I change the currency of an answer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Use the 'Fix / Change Something' box under any result and type a request like 'convert this to Euros' or 'show this in Indian Rupees' — the amount is converted instantly without needing to redo the calculation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What languages does the AI Calculator support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The calculator can respond in English, Arabic, Hindi, Spanish, French, German, Chinese, Japanese, Russian, and Portuguese, selectable from the language menu above the input box."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What kinds of questions can I ask the AI Calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anything with real numbers: splitting a bill or rent, loan and mortgage EMIs, income tax and take-home pay, tips and discounts, unit and currency conversions, compound interest, and most everyday finance or math questions phrased in plain English."
+      }
+    }
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <script src="/vendor/chart.umd.min.js"></script>
 <style>
@@ -1124,9 +1252,9 @@ body {
   <div class="hero-doodle-container">
     <div class="hero-doodle-left">
       <div class="badge-sla"><span class="dot"></span> <span id="ui-hero-badge">Google AI Studio Verified Agent</span></div>
-      <h1 class="agent-title" id="ui-hero-title">Deterministic Calculation Agent</h1>
+      <h1 class="agent-title" id="ui-hero-title">AI Calculator — Ask Anything, Get a Verified Answer</h1>
       <p class="agent-subtitle" id="ui-hero-sub">
-        Enter real-world finance, taxes, metrology, or formulas in natural language. Powered by Gemini with live Google Search Grounding and guaranteed mathematical execution.
+        Type any real-world question in plain English — rent splits, loan EMIs, taxes, unit conversions, and more. Powered by Gemini with live Google Search grounding and math that's double-checked, not just guessed.
       </p>
 
       <div class="hero-account-bar">
@@ -1507,8 +1635,8 @@ body {
 const UI_TRANSLATIONS = {
   English: {
     heroBadge: "Google AI Studio Verified Agent",
-    heroTitle: "Deterministic Calculation Agent",
-    heroSub: "Enter real-world finance, taxes, metrology, or formulas in natural language. Powered by Gemini with live Google Search Grounding and guaranteed mathematical execution.",
+    heroTitle: "AI Calculator — Ask Anything, Get a Verified Answer",
+    heroSub: "Type any real-world question in plain English — rent splits, loan EMIs, taxes, unit conversions, and more. Powered by Gemini with live Google Search grounding and math that's double-checked, not just guessed.",
     tabStudio: "Calculation Studio",
     tabHistory: "History & Analytics",
     engineLbl: "AI Engine:",
@@ -1598,8 +1726,8 @@ const UI_TRANSLATIONS = {
   },
   Arabic: {
     heroBadge: "وكيل معتمد من Google AI Studio",
-    heroTitle: "وكيل الحسابات الحتمية والرياضية",
-    heroSub: "أدخل مسائل التمويل والضرائب والتحويلات بلغة طبيعية. مدعوم بنماذج Gemini والبحث المباشر مع تنفيذ حسابي دقيق.",
+    heroTitle: "حاسبة الذكاء الاصطناعي — اسأل أي سؤال واحصل على إجابة موثوقة",
+    heroSub: "اكتب أي سؤال حسابي بكلماتك الخاصة — تقسيم الإيجار، أقساط القروض، الضرائب، تحويل الوحدات، وغيرها. مدعوم بنموذج Gemini مع بحث Google المباشر وحسابات يتم التحقق منها، لا مجرد تخمين.",
     tabStudio: "استوديو الحسابات",
     tabHistory: "السجل والتحليلات",
     engineLbl: "محرك الذكاء الاصطناعي:",
@@ -1689,8 +1817,8 @@ const UI_TRANSLATIONS = {
   },
   Hindi: {
     heroBadge: "Google AI Studio सत्यापित एजेंट",
-    heroTitle: "सटीक गणना और गणितीय एजेंट",
-    heroSub: "प्राकृतिक भाषा में वित्त, कर, माप और सूत्र दर्ज करें। लाइव गूगल सर्च ग्राउंडिंग और गारंटीकृत गणितीय निष्पादन द्वारा संचालित।",
+    heroTitle: "AI कैलकुलेटर — कुछ भी पूछें, सत्यापित उत्तर पाएं",
+    heroSub: "कोई भी वास्तविक सवाल अपने शब्दों में लिखें — किराया बांटना, लोन EMI, टैक्स, यूनिट कन्वर्जन और भी बहुत कुछ। Gemini द्वारा संचालित, लाइव गूगल सर्च और सत्यापित गणित के साथ, केवल अनुमान नहीं।",
     tabStudio: "गणना स्टूडियो",
     tabHistory: "इतिहास और एनालिटिक्स",
     engineLbl: "एआई इंजन:",
@@ -2669,16 +2797,35 @@ const CURRENCY_WORD_ALIASES = {
 function detectCurrencyRequest(text) {
   if (!text) return null;
   const lower = text.toLowerCase();
+  const found = [];
   const symbolMap = { "$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY", "₹": "INR" };
-  for (const sym of Object.keys(symbolMap)) {
-    if (text.includes(sym)) return symbolMap[sym];
+  for (const [sym, code] of Object.entries(symbolMap)) {
+    let idx = lower.indexOf(sym);
+    while (idx !== -1) {
+      found.push({ code, index: idx });
+      idx = lower.indexOf(sym, idx + 1);
+    }
   }
   for (const [code, aliases] of Object.entries(CURRENCY_WORD_ALIASES)) {
     for (const alias of aliases) {
-      if (new RegExp(`\\b${alias}\\b`, "i").test(lower)) return code;
+      const re = new RegExp(`\\b${alias}\\b`, "gi");
+      let m;
+      while ((m = re.exec(lower)) !== null) {
+        found.push({ code, index: m.index });
+      }
     }
   }
-  return null;
+  if (found.length === 0) return null;
+  found.sort((a, b) => a.index - b.index);
+  // "convert USD to EUR" mentions both currencies — prefer whichever comes
+  // right after a connector word ("to"/"into"/"as"), since that's the
+  // destination currency. Falls back to the last currency mentioned.
+  const connectorMatch = lower.match(/\b(to|into|as|in)\b/);
+  if (connectorMatch) {
+    const after = found.filter((f) => f.index > connectorMatch.index);
+    if (after.length > 0) return after[0].code;
+  }
+  return found[found.length - 1].code;
 }
 // A short note that's basically just "convert/show this in <currency>" with
 // nothing else going on can be handled instantly on the client. Anything
@@ -2744,7 +2891,11 @@ function transformCalculationLocal(data, targetLang, targetCurrency) {
     // Convert interactiveControls values
     if (Array.isArray(transformed.interactiveControls)) {
       transformed.interactiveControls.forEach(ctrl => {
-        if (ctrl.value !== undefined && (ctrl.unit === '$' || ctrl.unit === '€' || ctrl.unit === '£' || ctrl.unit === '¥' || ctrl.unit === '₹' || ctrl.unit.includes('USD') || ctrl.unit.includes('EUR') || ctrl.unit.includes('GBP') || ctrl.unit.includes('CNY') || ctrl.unit.includes('JPY') || ctrl.unit.includes('INR') || ctrl.unit.includes('AUD') || ctrl.unit.includes('CAD') || ctrl.unit.includes('AED'))) {
+        const unit = ctrl.unit || "";
+        const isCurrencyUnit = unit === '$' || unit === '€' || unit === '£' || unit === '¥' || unit === '₹' ||
+          unit.includes('USD') || unit.includes('EUR') || unit.includes('GBP') || unit.includes('CNY') ||
+          unit.includes('JPY') || unit.includes('INR') || unit.includes('AUD') || unit.includes('CAD') || unit.includes('AED');
+        if (ctrl.value !== undefined && isCurrencyUnit) {
           ctrl.value = Math.round(convert(ctrl.value) * 100) / 100;
           // Update unit to target currency symbol
           ctrl.unit = targetSymbol;
@@ -2754,7 +2905,12 @@ function transformCalculationLocal(data, targetLang, targetCurrency) {
     // Convert sensitivity matrix
     if (Array.isArray(transformed.sensitivityMatrix)) {
       transformed.sensitivityMatrix.forEach(row => {
-        if (row.variableValue !== undefined && row.unit && (row.unit.includes('$') || row.unit.includes('€') || row.unit.includes('£') || row.unit.includes('¥') || row.unit.includes('₹') || row.unit.includes('USD') || row.unit.includes('EUR') || row.unit.includes('GBP') || row.unit.includes('CNY') || row.unit.includes('JPY') || row.unit.includes('INR') || row.unit.includes('AUD') || row.unit.includes('CAD') || row.unit.includes('AED'))) {
+        const unit = row.unit || "";
+        const isCurrencyUnit = unit.includes('$') || unit.includes('€') || unit.includes('£') || unit.includes('¥') ||
+          unit.includes('₹') || unit.includes('USD') || unit.includes('EUR') || unit.includes('GBP') ||
+          unit.includes('CNY') || unit.includes('JPY') || unit.includes('INR') || unit.includes('AUD') ||
+          unit.includes('CAD') || unit.includes('AED');
+        if (row.variableValue !== undefined && isCurrencyUnit) {
           row.variableValue = Math.round(convert(row.variableValue) * 100) / 100;
           row.resultValue = Math.round(convert(row.resultValue) * 100) / 100;
           row.unit = targetSymbol;

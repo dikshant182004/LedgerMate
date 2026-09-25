@@ -399,6 +399,20 @@ function recoverFromSteps(parsed) {
  * Executes inference via Google Gemini SDK.
  * Enables live Google Search Grounding when researchDecision.needsResearch is true.
  */
+// Google's own 503 message says demand spikes are "usually temporary" — most
+// clear up within a second or two, so it's worth one quick retry on the same
+// (usually fastest/preferred) model before falling back to a different,
+// often slower model and compounding the wait.
+function isTransientGeminiError(err) {
+  const msg = String(err?.message || "");
+  return msg.includes("503") || msg.includes("UNAVAILABLE") || msg.includes("high demand") ||
+    msg.includes("ECONNRESET") || msg.includes("aborted") || msg.includes("timeout");
+}
+function isFatalGeminiError(err) {
+  const msg = String(err?.message || "");
+  return msg.includes("401") || msg.includes("403") || msg.includes("API_KEY_INVALID") || msg.includes("PERMISSION_DENIED");
+}
+
 async function callGemini(query, apiKey, selectedModel, researchDecision, langCurrencyInstruction = "") {
   if (!apiKey) {
     throw new Error("Google AI Studio API key is required. Get your free key at Google AI Studio (15 RPM free tier).");
@@ -424,92 +438,115 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
   let sources = [];
   let lastErr = null;
 
-  // 30 second timeout for Gemini calls
-  const GEMINI_TIMEOUT_MS = 30000;
+  for (let modelIndex = 0; modelIndex < modelsToTry.length; modelIndex++) {
+    const model = modelsToTry[modelIndex];
+    // Only the first (preferred/selected) model gets the full 30s allowance —
+    // it's the one the person actually picked. Fallback attempts get a
+    // shorter budget so a second slow/hanging model doesn't multiply the wait.
+    const timeoutMs = modelIndex === 0 ? 30000 : 15000;
+    const maxAttemptsForModel = 2; // one retry for a transient hiccup on this model
 
-  for (const model of modelsToTry) {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+    let succeededOnThisModel = false;
 
-      const config = {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        responseMimeType: "application/json",
-        temperature: 0.1,
-      };
+    for (let attempt = 1; attempt <= maxAttemptsForModel; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-      // If Research Gateway triggered research, and model supports search tools
-      if (researchDecision.needsResearch) {
-        config.tools = [{ googleSearch: {} }];
-      }
+        const config = {
+          systemInstruction: SYSTEM_INSTRUCTION,
+          responseMimeType: "application/json",
+          temperature: 0.1,
+        };
 
-      const promptContent = researchDecision.needsResearch && researchDecision.queries.length > 0
-        ? `${query}\n\n[Research Directives: Please ground using latest real-world criteria for: ${researchDecision.queries.join(", ")}]${langCurrencyInstruction}`
-        : `${query}${langCurrencyInstruction}`;
-
-      const response = await ai.models.generateContent({
-        model: model,
-        contents: promptContent,
-        config: config,
-      }, { signal: controller.signal });
-
-      clearTimeout(timeoutId);
-
-      rawJsonText = response.text || "";
-
-      // Extract Google Search Grounding citations if available
-      const grounding = response.candidates?.[0]?.groundingMetadata;
-      if (grounding) {
-        if (Array.isArray(grounding.groundingChunks)) {
-          sources = grounding.groundingChunks
-            .map(c => ({
-              title: c.web?.title || "Web Reference",
-              url: c.web?.uri || "",
-            }))
-            .filter(s => s.url);
-        } else if (Array.isArray(grounding.webSearchQueries)) {
-          sources = grounding.webSearchQueries.map(q => ({
-            title: `Search: "${q}"`,
-            url: `https://www.google.com/search?q=${encodeURIComponent(q)}`,
-          }));
+        // If Research Gateway triggered research, and model supports search tools
+        if (researchDecision.needsResearch) {
+          config.tools = [{ googleSearch: {} }];
         }
-      }
 
-      if (rawJsonText) {
-        modelUsed = model;
-        break;
-      }
-    } catch (err) {
-      lastErr = err;
-      const errMsg = String(err.message || "");
+        const promptContent = researchDecision.needsResearch && researchDecision.queries.length > 0
+          ? `${query}\n\n[Research Directives: Please ground using latest real-world criteria for: ${researchDecision.queries.join(", ")}]${langCurrencyInstruction}`
+          : `${query}${langCurrencyInstruction}`;
 
-      // Handle rate limits (429 / RESOURCE_EXHAUSTED)
-      if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED") || errMsg.includes("quota")) {
-        throw new Error("Google AI Studio free-tier rate limit reached (15 RPM). Please wait 5-10 seconds and try again.");
-      }
+        const response = await ai.models.generateContent({
+          model: model,
+          contents: promptContent,
+          config: config,
+        }, { signal: controller.signal });
 
-      // If error was due to tools on model, retry without tools
-      if (researchDecision.needsResearch) {
-        try {
-          const fallbackResp = await ai.models.generateContent({
-            model: model,
-            contents: query,
-            config: {
-              systemInstruction: SYSTEM_INSTRUCTION,
-              responseMimeType: "application/json",
-              temperature: 0.1,
-            },
-          });
-          if (fallbackResp.text) {
-            rawJsonText = fallbackResp.text;
-            modelUsed = model;
-            break;
+        clearTimeout(timeoutId);
+
+        rawJsonText = response.text || "";
+
+        // Extract Google Search Grounding citations if available
+        const grounding = response.candidates?.[0]?.groundingMetadata;
+        if (grounding) {
+          if (Array.isArray(grounding.groundingChunks)) {
+            sources = grounding.groundingChunks
+              .map(c => ({
+                title: c.web?.title || "Web Reference",
+                url: c.web?.uri || "",
+              }))
+              .filter(s => s.url);
+          } else if (Array.isArray(grounding.webSearchQueries)) {
+            sources = grounding.webSearchQueries.map(q => ({
+              title: `Search: "${q}"`,
+              url: `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+            }));
           }
-        } catch (fbErr) {
-          lastErr = fbErr;
         }
+
+        if (rawJsonText) {
+          modelUsed = model;
+          succeededOnThisModel = true;
+        }
+        break; // got a response (even if empty text) — don't retry this model further
+      } catch (err) {
+        lastErr = err;
+
+        // Rate limits apply account-wide — trying another model won't help, so fail fast.
+        const errMsg = String(err.message || "");
+        if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED") || errMsg.includes("quota")) {
+          throw new Error("Google AI Studio free-tier rate limit reached (15 RPM). Please wait 5-10 seconds and try again.");
+        }
+        // A bad/expired key fails the same way on every model — don't burn time looping through all of them.
+        if (isFatalGeminiError(err)) {
+          throw err;
+        }
+
+        if (isTransientGeminiError(err) && attempt < maxAttemptsForModel) {
+          await new Promise((resolve) => setTimeout(resolve, 600));
+          continue; // quick retry, same model
+        }
+
+        // Not transient (or out of retries for this model): if research/tools
+        // might be the cause, try this same model once more without tools
+        // before moving on to a different model entirely.
+        if (researchDecision.needsResearch && !isTransientGeminiError(err)) {
+          try {
+            const fallbackResp = await ai.models.generateContent({
+              model: model,
+              contents: query,
+              config: {
+                systemInstruction: SYSTEM_INSTRUCTION,
+                responseMimeType: "application/json",
+                temperature: 0.1,
+              },
+            });
+            if (fallbackResp.text) {
+              rawJsonText = fallbackResp.text;
+              modelUsed = model;
+              succeededOnThisModel = true;
+            }
+          } catch (fbErr) {
+            lastErr = fbErr;
+          }
+        }
+        break; // stop retrying this model, move to the next one in modelsToTry
       }
     }
+
+    if (succeededOnThisModel) break;
   }
 
   if (!rawJsonText) {

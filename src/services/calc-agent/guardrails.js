@@ -93,7 +93,7 @@ export function detectCurrencyRequest(text) {
   if (found.length === 0) return null;
   found.sort((a, b) => a.index - b.index);
 
-  const connectorMatch = lower.match(/\b(to|into|as)\b/);
+  const connectorMatch = lower.match(/\b(to|into|as|in)\b/);
   if (connectorMatch) {
     const after = found.filter((f) => f.index > connectorMatch.index);
     if (after.length > 0) return after[0].code;

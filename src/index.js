@@ -59,6 +59,11 @@ function checkCalcRateLimit(userId, limit = 30, windowMs = 60000) {
 // Rate limit middleware for calc-agent
 async function calcRateLimitMiddleware(c, next) {
   const user = await getSessionUser(c).catch(() => null);
+  // Every route behind this middleware immediately looks the session up
+  // again with its own `getSessionUser(c)` call — each one a full D1 JOIN
+  // query. Caching the result here means that redundant round trip doesn't
+  // happen on every single /query and /refine request; see getCalcSessionUser.
+  c.set("calcUser", user);
   if (user) {
     const rl = checkCalcRateLimit(user.id);
     c.header("X-RateLimit-Limit", "30");
@@ -72,6 +77,14 @@ async function calcRateLimitMiddleware(c, next) {
     }
   }
   await next();
+}
+
+// Use inside a route that's behind calcRateLimitMiddleware to avoid a second,
+// redundant session lookup (D1 JOIN query) — the middleware already resolved it.
+function getCalcSessionUser(c) {
+  const cached = c.get("calcUser");
+  if (cached !== undefined) return Promise.resolve(cached);
+  return getSessionUser(c).catch(() => null);
 }
 
 // CSP headers for calc-agent page
@@ -353,7 +366,7 @@ app.post("/auth/google-direct", async (c) => {
 
 // Pre-flight test for Bring-Your-Own-Key (BYOK) - Zero Persistence
 app.post("/api/calc-agent/verify-key", calcRateLimitMiddleware, async (c) => {
-  const user = await getSessionUser(c).catch(() => null);
+  const user = await getCalcSessionUser(c);
   if (!user) return json(c, { error: "Sign in with Google to use the calculation agent.", requiresSignIn: true }, 401);
   // Only accept API key via secure header, never from body (prevents logging)
   const rawKey = c.req.header("x-api-key") || c.req.header("x-gemini-api-key") || "";
@@ -369,7 +382,7 @@ app.post("/api/calc-agent/verify-key", calcRateLimitMiddleware, async (c) => {
 
 // Gemini model catalog endpoint.
 app.get("/api/calc-agent/models", calcRateLimitMiddleware, async (c) => {
-  const user = await getSessionUser(c).catch(() => null);
+  const user = await getCalcSessionUser(c);
   if (!user) return json(c, { error: "Sign in with Google to use the calculation agent.", requiresSignIn: true }, 401);
   // Only accept API key via secure header
   const rawKey = c.req.header("x-api-key") || c.req.query("apiKey") || "";
@@ -381,7 +394,7 @@ app.get("/api/calc-agent/models", calcRateLimitMiddleware, async (c) => {
 
 app.post("/api/calc-agent/query", calcRateLimitMiddleware, async (c) => {
   // Google sign-in is required so calculations and consent are tied to an account.
-  const user = await getSessionUser(c).catch(() => null);
+  const user = await getCalcSessionUser(c);
   if (!user) return json(c, { error: "Sign in with Google to use the calculation agent.", requiresSignIn: true }, 401);
 
   // 2. Parse body & Bring Your Own Key (BYOK) parameters
@@ -430,25 +443,27 @@ app.post("/api/calc-agent/query", calcRateLimitMiddleware, async (c) => {
     result.outputLanguage = outputLanguage;
     result.targetCurrency = targetCurrency;
 
-    // 5. Persist to D1 if user has an active session (never store API keys)
-    const calcId = await saveCalculationRecord(
-      c.env.DB,
-      user.id,
-      guard.sanitizedQuery,
-      result,
-      result.latencyMs
+    // 5. Persist to D1 if user has an active session (never store API keys).
+    // The id is generated up front so it can go out in the response right
+    // away — the actual write happens after the response is sent (waitUntil)
+    // instead of making the person wait on a database round trip for a
+    // calculation that's already finished. If that background write does
+    // fail, historySaved below is a best-effort guess (true), and the
+    // Fix/Change and feedback buttons will just show a clear "wasn't saved,
+    // please recalculate" message on that rare click rather than blocking
+    // every calculation on the D1 write.
+    const calcId = newId();
+    c.executionCtx.waitUntil(
+      saveCalculationRecord(c.env.DB, user.id, guard.sanitizedQuery, result, result.latencyMs, calcId)
+        .then((savedId) => {
+          if (!savedId) console.warn("Background history save failed for calcId:", calcId);
+        })
     );
-    // calcId is null if the history write failed (e.g. transient D1 error). We
-    // still return the calculation itself — it succeeded — but flag that
-    // follow-up features (Request Adjustment / Accurate / Report Issue) won't
-    // have a record to attach to, so the frontend can disable them instead of
-    // letting the user click into a dead-end "record not found" error.
-    const historySaved = calcId !== null;
 
     return json(c, {
       ok: true,
       calcId,
-      historySaved,
+      historySaved: true,
       data: result,
       user: { id: user.id, name: user.name, email: user.email, picture: user.picture },
       providerUsed: result.providerUsed || "gemini",
@@ -497,7 +512,7 @@ app.delete("/api/calc-agent/history/:id", async (c) => {
 
 // Re-run one calculation with an explicit, user-authored correction.
 app.post("/api/calc-agent/refine", calcRateLimitMiddleware, async (c) => {
-  const user = await getSessionUser(c).catch(() => null);
+  const user = await getCalcSessionUser(c);
   if (!user) return json(c, { error: "Sign in with Google to refine a calculation.", requiresSignIn: true }, 401);
   const body = await c.req.json().catch(() => ({}));
   const calcId = String(body.calcId || "");
@@ -534,7 +549,10 @@ app.post("/api/calc-agent/refine", calcRateLimitMiddleware, async (c) => {
   const targetCurrency = noteCurrency || body.targetCurrency || originalData.targetCurrency || "original";
 
   try {
-    await saveHitlFeedbackRecord(c.env.DB, calcId, user.id, "revision_requested", note);
+    // Log the "revision requested" note in the background — it's an audit
+    // trail, not something the actual recalculation depends on, so there's
+    // no reason to make the person wait on it before the AI call even starts.
+    c.executionCtx.waitUntil(saveHitlFeedbackRecord(c.env.DB, calcId, user.id, "revision_requested", note));
     const refinedPrompt = `${guard.sanitizedQuery}\n\nRevision requested by the user for this calculation: ${note}`;
     const result = await runCalculationAgent(refinedPrompt, apiKey, selectedModel, {
       outputLanguage,
@@ -544,8 +562,16 @@ app.post("/api/calc-agent/refine", calcRateLimitMiddleware, async (c) => {
     result.targetCurrency = targetCurrency;
     result.refinedFrom = calcId;
     result.refinementNote = note;
-    const newCalcId = await saveCalculationRecord(c.env.DB, user.id, record.query, result, result.latencyMs);
-    return json(c, { ok: true, calcId: newCalcId, historySaved: newCalcId !== null, data: result, providerUsed: result.providerUsed, modelUsed: result.modelUsed });
+    // Same pattern as /query: hand back the id immediately and persist in the
+    // background instead of making the person wait on the D1 write.
+    const newCalcId = newId();
+    c.executionCtx.waitUntil(
+      saveCalculationRecord(c.env.DB, user.id, record.query, result, result.latencyMs, newCalcId)
+        .then((savedId) => {
+          if (!savedId) console.warn("Background history save failed for calcId:", newCalcId);
+        })
+    );
+    return json(c, { ok: true, calcId: newCalcId, historySaved: true, data: result, providerUsed: result.providerUsed, modelUsed: result.modelUsed });
   } catch (err) {
     console.error("Calculation refinement failure:", err.message);
     const sanitizedMsg = (err.message || "").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
