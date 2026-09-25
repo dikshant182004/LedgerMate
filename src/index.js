@@ -479,7 +479,7 @@ app.post("/api/calc-agent/query", calcRateLimitMiddleware, async (c) => {
       providerUsed: result.providerUsed || "gemini",
       modelUsed: result.modelUsed || selectedModel,
       researchGateway: result.researchGateway,
-      hitlApplied: !!hitlCorrection,
+      hitlApplied: false,
     });
   } catch (err) {
     console.error("Calculation agent failure:", err.message);
