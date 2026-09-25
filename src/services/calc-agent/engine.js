@@ -141,7 +141,7 @@ function tryFastTemplate(query) {
  * Coordinates Research Gateway -> Gemini Inference -> Deterministic Math Verification.
  */
 export async function runCalculationAgent(query, apiKey, selectedModel = "gemini-3.1-flash-lite", options = {}) {
-  const { outputLanguage = "English", targetCurrency = "original" } = options;
+  const { outputLanguage = "English", targetCurrency = "original", hitlCorrection = "" } = options;
   const startTime = Date.now();
 
   // If user provided a Human-In-The-Loop correction, augment the calculation query
@@ -149,6 +149,23 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
   if (hitlCorrection && typeof hitlCorrection === "string" && hitlCorrection.trim()) {
     effectiveQuery = `${query}\n\n[HUMAN-IN-THE-LOOP ADJUSTMENT: The user has requested the following statutory/parameter adjustment: "${hitlCorrection.trim()}". Please incorporate this user-specified correction into the formula, assumptions, and calculations.]`;
   }
+
+  // 1. Try fast deterministic template match
+  const fastResult = tryFastTemplate(effectiveQuery);
+  if (fastResult) {
+    const fastVariableMap = {};
+    (fastResult.interactiveControls || []).forEach((ctrl) => {
+      const varKey = ctrl.formulaVar || ctrl.id;
+      fastVariableMap[varKey] = Number(ctrl.value) || 0;
+    });
+    const sensitivity = fastResult.formulaExpression
+      ? generateSensitivityMatrix(
+          fastResult.formulaExpression,
+          fastVariableMap,
+          fastResult.primaryVariableKey,
+          fastResult.primaryUnit || ""
+        )
+      : [];
 
     return {
       ...fastResult,
