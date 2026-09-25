@@ -1198,6 +1198,24 @@ body {
   .hero-doodle-container { flex-direction: column-reverse; align-items: stretch; }
   .doodle-stage { align-self: center; margin-bottom: 10px; }
 }
+@media (max-width: 768px) {
+  .nav-inner {
+    padding: 8px 16px;
+    min-height: 52px;
+    height: 52px;
+  }
+  .nav-links {
+    gap: 8px;
+  }
+  .nav-links a:not(.btn-primary-sm) {
+    display: none !important;
+  }
+  .btn-primary-sm {
+    padding: 6px 13px;
+    font-size: 12.5px !important;
+    border-radius: 8px;
+  }
+}
 @media (max-width: 640px) {
   .agent-container { padding: 14px 12px 50px; }
   .nav-inner { padding: 10px 12px; }

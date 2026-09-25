@@ -144,15 +144,11 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
   const { outputLanguage = "English", targetCurrency = "original" } = options;
   const startTime = Date.now();
 
-  // 1. Check fast deterministic templates (< 5ms)
-  const fastResult = tryFastTemplate(query);
-  if (fastResult) {
-    const sensitivity = generateSensitivityMatrix(
-      fastResult.formulaExpression,
-      { [fastResult.primaryVariableKey]: fastResult.primaryValue },
-      fastResult.primaryVariableKey,
-      fastResult.primaryUnit
-    );
+  // If user provided a Human-In-The-Loop correction, augment the calculation query
+  let effectiveQuery = query;
+  if (hitlCorrection && typeof hitlCorrection === "string" && hitlCorrection.trim()) {
+    effectiveQuery = `${query}\n\n[HUMAN-IN-THE-LOOP ADJUSTMENT: The user has requested the following statutory/parameter adjustment: "${hitlCorrection.trim()}". Please incorporate this user-specified correction into the formula, assumptions, and calculations.]`;
+  }
 
     return {
       ...fastResult,
@@ -174,7 +170,7 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
   }
 
   // 2. Intelligent Research Gateway Assessment
-  const researchDecision = assessResearchNeed(query);
+  const researchDecision = assessResearchNeed(effectiveQuery);
 
   // 3. Build language/currency instruction for Gemini
   const langCurrencyInstruction = buildLanguageCurrencyInstruction(outputLanguage, targetCurrency);
@@ -425,16 +421,19 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
     },
   });
 
+  // Prioritize stable, high-throughput models (gemini-2.5-flash, gemini-3.1-flash-lite)
+  // Keep gemini-3.8-flash at the tail end because preview models have low token limits and frequent overloads
+  const preferredModel = selectedModel || "gemini-2.5-flash";
   const modelsToTry = [
-    selectedModel,
-    "gemini-3.1-flash-lite",
-    "gemini-3.8-flash",
+    preferredModel,
     "gemini-2.5-flash",
+    "gemini-3.1-flash-lite",
     "gemini-3.1-pro",
+    "gemini-3.8-flash",
   ].filter((m, i, arr) => m && arr.indexOf(m) === i);
 
   let rawJsonText = "";
-  let modelUsed = selectedModel;
+  let modelUsed = preferredModel;
   let sources = [];
   let lastErr = null;
 
@@ -562,7 +561,7 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
  * Sanitizes API keys: removes newlines, carriage returns, and non-ASCII characters.
  * Also validates key format for known providers.
  */
-export function sanitizeApiKey(key) {
+export function sanitizeApiKey(key, provider = "") {
   if (!key || typeof key !== "string") return "";
   const cleaned = key.trim().replace(/[^\x20-\x7E]/g, "");
 
@@ -608,6 +607,7 @@ export async function fetchProviderModels(provider = "gemini", apiKey) {
 /**
  * Pre-flight connection tester for Google AI Studio API Key.
  * Zero persistence: Never stores or logs the key.
+ * Returns verified models alongside success message so UI can sync in one step.
  */
 export async function verifyProviderKey(provider = "gemini", apiKey) {
   const cleanKey = sanitizeApiKey(apiKey);

@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>حاسبة المواريث والتركات الشرعية | Islamic Inheritance &amp; Estate Calculator | LedgerMate</title>
+<meta name="description" content="حاسبة إلكترونية دقيقة لقسمة التركات وتوزيع الأنصبة الفقهية والتعصيب والعول والرد. Islamic Estate &amp; Inheritance Distribution Calculator under Sharia law." />
+<link rel="canonical" href="https://tryledgermate.in/ar/inheritance-calculator/" />
+<link rel="alternate" hreflang="ar" href="https://tryledgermate.in/ar/inheritance-calculator/" />
+<link rel="alternate" hreflang="en" href="https://tryledgermate.in/regional/#islamic" />
+<link rel="alternate" hreflang="x-default" href="https://tryledgermate.in/ar/inheritance-calculator/" />
+<meta name="robots" content="index, follow" />
+
+<!-- OpenGraph & Twitter Social Cards -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="حاسبة المواريث والتركات الشرعية | Islamic Inheritance Calculator" />
+<meta property="og:description" content="حساب تقسيم التركات الفقهي الشرعي بالريال والنسبة المئوية مع ضوابط الحجب والرد والعول." />
+<meta property="og:url" content="https://tryledgermate.in/ar/inheritance-calculator/" />
+<meta property="og:site_name" content="LedgerMate Regional Hub" />
+<meta property="og:locale" content="ar_SA" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="حاسبة المواريث الشرعية | Islamic Estate Distribution" />
+<meta name="twitter:description" content="توزيع الأنصبة الفقهية وقسمة التركات الشرعية بدقة علمية وفق المذاهب الأربعة وأحكام الشريعة." />
+
+<!-- AEO / GEO Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "حاسبة المواريث والتركات الشرعية (Islamic Inheritance Calculator)",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "url": "https://tryledgermate.in/ar/inheritance-calculator/",
+      "description": "أداة إلكترونية فقهية دقيقة لحساب وتوزيع التركات الشرعية وقسمة الفروض المقدرة وفق المذاهب الإسلامية.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "SAR" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "LedgerMate", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "Regional Hub", "item": "https://tryledgermate.in/regional/" },
+        { "@type": "ListItem", "position": 3, "name": "حاسبة المواريث", "item": "https://tryledgermate.in/ar/inheritance-calculator/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ما هي الترتيبات الشرعية الواجب إخراجها من التركة قبل تقسيمها؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الترتيب الشرعي المتفق عليه هو: أولاً مؤن تجهيز الميت ودفنه بالمعروف، ثانياً قضاء الديون العينية والمرسلة (حقوق الله وحقوق العباد)، ثالثاً إنفاذ وصايا الميت المشروعة في حدود ثلث ما تبقى من التركة، ورابعاً تقسيم الباقي على الورثة الشرعيين."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما هو حجب الحرمان وحجب النقصان في علم الفرائض؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "حجب الحرمان يعني إسقاط شخص من الميراث بالكلية لوجود وارث أقرب (مثل حجب الإخوة بوجود الابن أو الأب). أما حجب النقصان فهو نقل الوارث من فرض أعلى إلى فرض أقل (مثل نقل الزوج من النصف إلى الربع بوجود الفرع الوارث)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما معنى العول والرد في قسمة التركات؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "العول هو زيادة مجموع سهام أصحاب الفروض عن أصل المسألة (مثل أن تزيد عن 100%)، فيدخل النقص على جميع الورثة بنسبة سهامهم. أما الرد فهو عكس العول؛ إذا فضل من التركة شيء بعد أصحاب الفروض ولم يوجد عاصب، يُرد الباقي على ذوي الفروض النسبية بنسبة فروضهم."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف يُحسب نصاب الزوجة أو الزوجات في الميراث؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ترث الزوجة (أو يشتركن معاً إذا تعددن بالتساوي) الربع عند عدم وجود فرع وارث للمتوفى، وترث الثمن (1/8) إذا كان للمتوفى فرع وارث (ابن، بنت، ابن ابن وإن نزل) استناداً إلى صريح آية المواريث في سورة النساء."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --font-arabic: 'Cairo', system-ui, -apple-system, sans-serif;
+  --primary: #047857;
+  --primary-light: #ecfdf5;
+  --primary-hover: #065f46;
+  --accent: #b45309;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --border-focus: #10b981;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+button, input, select, a {
+  touch-action: manipulation;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-arabic);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  padding: 0;
+  direction: rtl;
+}
+
+.header-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+}
+.brand-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #a7f3d0;
+}
+.nav-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--primary); }
+.btn-cta {
+  background: var(--primary);
+  color: #fff !important;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 18px 80px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+h1 {
+  font-size: clamp(22px, 3.8vw, 34px);
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-size: 15.5px;
+  color: var(--text-muted);
+  max-width: 820px;
+  margin-bottom: 24px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+@media (max-width: 860px) {
+  .calc-grid { grid-template-columns: 1fr; }
+  .calc-sidebar { position: static !important; }
+  .result-card { position: static !important; }
+  .nav-links a:not(.btn-cta):not(.hub-back-btn) { display: none !important; }
+}
+@media (max-width: 640px) {
+  .header-container { padding: 8px 16px; min-height: 52px; }
+  .brand-badge { display: none !important; }
+  .btn-cta { padding: 6px 12px; font-size: 12.5px; }
+  .page-wrapper { padding: 16px 14px 40px !important; }
+  .calc-card { padding: 18px 14px !important; }
+  .guide-container { padding: 20px 16px !important; }
+  input, select { font-size: 16px !important; min-height: 44px; }
+  .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+.calc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+.card-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.form-section { margin-bottom: 20px; }
+.section-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+@media (max-width: 600px) {
+  .input-row { grid-template-columns: 1fr; }
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.field-hint {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap input, .input-wrap select {
+  width: 100%;
+  padding: 11px 14px 11px 70px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 16px; /* Prevents auto zoom */
+  font-family: inherit;
+  background: #ffffff;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: right;
+  transition: all 0.15s;
+  min-height: 48px;
+}
+.input-wrap input:focus, .input-wrap select:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+.currency-tag {
+  position: absolute;
+  left: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+.preset-chips-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.preset-chip {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.preset-chip:hover {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+/* Mobile Sticky Summary Bar */
+.mobile-sticky-dock {
+  display: none;
+}
+@media (max-width: 860px) {
+  .mobile-sticky-dock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #064e3b;
+    color: #ffffff;
+    padding: 12px 18px;
+    z-index: 99;
+    border-top: 2px solid #10b981;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.25);
+  }
+  .dock-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .dock-label {
+    font-size: 11.5px;
+    color: #a7f3d0;
+    font-weight: 700;
+  }
+  .dock-val {
+    font-size: 19px;
+    font-weight: 900;
+    color: #ffffff;
+  }
+  .dock-btn {
+    background: #10b981;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+  .page-wrapper {
+    padding-bottom: 120px !important;
+  }
+  .calc-sidebar {
+    position: static !important;
+  }
+  .result-card {
+    position: static !important;
+  }
+  .nav-links a:not(.btn-cta):not(.hub-back-btn) {
+    display: none;
+  }
+}
+
+/* Sidebar & Sticky Container */
+.calc-sidebar {
+  position: sticky;
+  top: 86px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Result Card */
+.result-card {
+  background: linear-gradient(145deg, #064e3b, #047857);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.35);
+  position: static;
+}
+.stat-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  background: #d1fae5;
+  color: #065f46;
+}
+.result-stat-group {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.result-label {
+  font-size: 13px;
+  color: #a7f3d0;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.result-big-number {
+  font-size: 32px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+.result-currency {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fde68a;
+  margin-right: 6px;
+}
+
+.shares-list {
+  margin: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.share-item {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.share-heir { font-weight: 800; color: #ffffff; }
+.share-ratio { color: #fde68a; font-size: 11.5px; margin-right: 4px; }
+.share-val { font-weight: 800; color: #ffffff; }
+
+.share-action-box {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+.btn-share {
+  flex: 1;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-reset {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-reset:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Educational Content */
+.guide-container {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 30px;
+  margin-top: 40px;
+  box-shadow: var(--shadow);
+}
+.guide-container h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 28px 0 14px;
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ecfdf5;
+}
+.guide-container h2:first-child { margin-top: 0; }
+.guide-container h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 20px 0 10px;
+}
+.guide-container p {
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.guide-container ul, .guide-container ol {
+  margin: 12px 24px 18px 0;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.guide-container li { margin-bottom: 6px; }
+
+.callout-box {
+  background: #f0fdf4;
+  border-right: 4px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 18px;
+  margin: 20px 0;
+  font-size: 14.5px;
+  color: #166534;
+}
+
+.data-table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: right;
+}
+.data-table th {
+  background: #f1f5f9;
+  padding: 10px 14px;
+  font-weight: 800;
+  color: #1e293b;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: #334155;
+}
+.data-table tr:hover td { background: #f8fafc; }
+
+/* FAQs */
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open {
+  border-color: #10b981;
+}
+.faq-question {
+  padding: 14px 18px;
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  user-select: none;
+}
+.faq-question:hover {
+  background: #f1f5f9;
+}
+.faq-icon {
+  display: inline-block;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+  color: #64748b;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+  color: #059669;
+}
+.faq-answer {
+  display: none;
+  padding: 16px 18px;
+  font-size: 14.5px;
+  color: #334155;
+  line-height: 1.75;
+  border-top: 1px solid var(--border);
+  background: #ffffff;
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+
+/* Breadcrumb & Navigation Styles */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.breadcrumb-nav a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb-nav a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-sep {
+  color: #94a3b8;
+  font-weight: 400;
+}
+.breadcrumb-current {
+  color: #64748b;
+  font-weight: 600;
+}
+.hub-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.hub-back-btn:hover {
+  background: #d1fae5;
+  color: #047857;
+}
+</style>
+
+<!-- JSON-LD Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "حاسبة المواريث والتركات الشرعية",
+      "operatingSystem": "All",
+      "applicationCategory": "FinanceApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "SAR" },
+      "description": "أداة إلكترونية شرعية دقيقة لقسمة التركات وحساب أنصبة الورثة وفق أحكام الفقه الإسلامي وسورة النساء مع معالجة أحكام الحجب والعول والرد."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ما هي الخطوات الأربع الواجب تنفيذها على التركة قبل توزيع الميراث؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الحقوق المتعلقة بالتركة مرتبة شرعاً كالآتي: أولاً: مؤن تجهيز الميت وتكفينه ودفنه بالمعروف. ثانياً: قضاء الديون العينية والديون المرسلة للعباد ولله تعالى. ثالثاً: إنفاذ وصايا الميت المشروعة لغير وارث في حدود ثلث التركة فقط. رابعاً: قسمة الباقي على الورثة الشرعيين."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "متى يحجب الأبناء الإخوة والأخوات من الميراث؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يُحجب جميع الإخوة والأخوات (أشقاء أو لأب أو لأم) حجب حرمان تام بوجود الفرع الوارث المذكر (الابن أو ابن الابن وإن نزل)، وكذلك بوجود الأب بإجماع علماء المسلمين."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما هو العول وما هو الرد في علم الفرائض؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "العول هو زيادة مجموع سهام أصحاب الفروض عن أصل المسألة، فيدخل النقص بالتساوي على جميع أصحاب الفروض بنسبة حصصهم. أما الرد فهو عكس العول؛ إذا فضل من التركة شيء بعد أصحاب الفروض ولم يوجد عاصب، يُرد الباقي على أصحاب الفروض بنسبة فروضهم عدا الزوجين عند جمهور الفقهاء."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<header class="header-nav">
+  <div class="header-container">
+    <a href="/" class="brand-logo" title="الصفحة الرئيسية - LedgerMate">
+      <span>📐 LedgerMate</span>
+      <span class="brand-badge">علم الفرائض والمواريث</span>
+    </a>
+    <div class="nav-links">
+      <a href="/regional/" class="hub-back-btn">🌐 المركز الإقليمي (Regional Hub)</a>
+      <a href="/ar/zakat-calculator/">حاسبة الزكاة</a>
+      <a href="/ar/end-of-service-calculator/">مكافأة نهاية الخدمة</a>
+      <a href="/app/" class="btn-cta">تطبيق تقاسم المصاريف</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-wrapper">
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumb-nav" aria-label="مسار التنقل">
+    <a href="/">الرئيسية (LedgerMate)</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/regional/">🌐 المركز الإقليمي (Regional Hub)</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">حاسبة المواريث والتركات</span>
+  </nav>
+
+  <div>
+    <div class="hero-badge">📖 قسمة شرعية مستنبطة من القرآن الكريم والسنة النبوية</div>
+    <h1>حاسبة المواريث والتركات الشرعية (توزيع الأنصبة)</h1>
+    <p class="hero-subtitle">
+      أداة دقيقة لحساب قسمة التركة وتحديد نصيب كل وارث بالريال والنسبة المئوية وفق قواعد علم الفرائض، بعد خصم ديون الميت وتجهيزه وإنفاذ وصيته بالثلث الشرعي.
+    </p>
+  </div>
+
+  <div class="calc-grid">
+    <!-- Form Inputs Card -->
+    <div class="calc-card">
+      <div class="card-header-title">
+        <span>📋 قيمة التركة وبيانات المتوفى</span>
+      </div>
+
+      <!-- Estate Amount & Currency -->
+      <div class="input-row">
+        <div class="field-group">
+          <label class="field-label">إجمالي قيمة التركة (أموال، عقارات، ذهب)</label>
+          <div class="input-wrap">
+            <input type="number" id="estate-gross" value="1000000" min="1000" oninput="recalculate()">
+            <span class="currency-tag curr-symbol">SAR</span>
+          </div>
+          <div class="preset-chips-row">
+            <span class="preset-chip" onclick="setGrossEstate(100000)">100 ألف</span>
+            <span class="preset-chip" onclick="setGrossEstate(500000)">500 ألف</span>
+            <span class="preset-chip" onclick="setGrossEstate(1000000)">1 مليون</span>
+            <span class="preset-chip" onclick="setGrossEstate(2500000)">2.5 مليون</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">جنس المتوفى</label>
+          <div class="input-wrap">
+            <select id="deceased-gender" onchange="onDeceasedChange()">
+              <option value="male" selected>ذكر (متوفى - لديه زوجة/زوجات)</option>
+              <option value="female">أنثى (متوفاة - لديها زوج)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debts and Bequest Deductions -->
+      <div class="form-section">
+        <div class="section-label" style="color:#b91c1c;">📉 ديون ومؤن ووصايا قبل القسمة</div>
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">
+              <span>الديون ومؤن التجهيز والوفاة</span>
+              <span class="field-hint">تُقضى قبل قسمة أي ميراث</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="estate-debts" value="50000" min="0" oninput="recalculate()">
+              <span class="currency-tag curr-symbol">SAR</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <span>الوصية الشرعية (لغير وارث)</span>
+              <span class="field-hint">بحد أقصى ثلث صافي التركة</span>
+            </label>
+            <div class="input-wrap">
+              <input type="number" id="estate-bequest" value="0" min="0" oninput="recalculate()">
+              <span class="currency-tag curr-symbol">SAR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heirs Selection -->
+      <div class="form-section">
+        <div class="section-label">👥 الورثة الأحياء على قيد الحياة</div>
+
+        <!-- Spouses -->
+        <div class="input-row" id="spouse-row">
+          <div class="field-group" id="group-wives">
+            <label class="field-label">عدد الزوجات على قيد الحياة</label>
+            <div class="input-wrap">
+              <input type="number" id="count-wives" value="1" min="0" max="4" oninput="recalculate()">
+              <span class="currency-tag">زوجة</span>
+            </div>
+          </div>
+          <div class="field-group" id="group-husband" style="display:none;">
+            <label class="field-label">الزوج على قيد الحياة؟</label>
+            <div class="input-wrap">
+              <select id="has-husband" onchange="recalculate()">
+                <option value="yes" selected>نعم</option>
+                <option value="no">لا (متوفى أو مطلق)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Children -->
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">عدد الأبناء الذكور</label>
+            <div class="input-wrap">
+              <input type="number" id="count-sons" value="2" min="0" max="20" oninput="recalculate()">
+              <span class="currency-tag">ابن</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">عدد البنات</label>
+            <div class="input-wrap">
+              <input type="number" id="count-daughters" value="3" min="0" max="20" oninput="recalculate()">
+              <span class="currency-tag">بنت</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parents -->
+        <div class="input-row">
+          <div class="field-group">
+            <label class="field-label">الأب على قيد الحياة؟</label>
+            <div class="input-wrap">
+              <select id="has-father" onchange="recalculate()">
+                <option value="yes">نعم</option>
+                <option value="no" selected>لا (متوفى قبله)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">الأم على قيد الحياة؟</label>
+            <div class="input-wrap">
+              <select id="has-mother" onchange="recalculate()">
+                <option value="yes" selected>نعم</option>
+                <option value="no">لا (متوفاة قبلها)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Card -->
+    <div class="calc-sidebar">
+      <div class="result-card" id="result-card-anchor">
+        <div class="stat-pill">
+          صافي التركة القابلة للقسمة: <span id="res-net-estate">950,000</span> <span class="curr-symbol">SAR</span>
+        </div>
+
+        <div class="result-stat-group">
+          <div class="result-label">توزيع الحصص الشرعية بين الورثة:</div>
+          <div class="shares-list" id="shares-container">
+            <!-- Dynamic Heirs Shares Output -->
+          </div>
+        </div>
+
+        <div style="font-size:12px; color:#d1fae5; line-height:1.6; margin-top:12px;">
+          * تم احتساب الفروض المقدرة وفق الميراث النبوي وقاعدة للذكر مثل حظ الأنثيين عند وجود العصبة.
+        </div>
+
+        <div class="share-action-box">
+          <a id="whatsapp-share-btn" href="#" target="_blank" rel="noopener" class="btn-share">
+            <span>📲 مشاركة بيان الميراث</span>
+          </a>
+          <button class="btn-reset" onclick="resetForm()">إعادة تعيين</button>
+        </div>
+      </div>
+
+      <!-- Family Financial Harmony Box -->
+      <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+        <h4 style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:6px;">🏡 أملاك مشتركة وإيجارات عقارية بين الورثة؟</h4>
+        <p style="font-size:12.5px; color:#475569; line-height:1.6; margin-bottom:10px;">
+          كثيراً ما تبقى العمارات أو الشركات مشتركة بين الإخوة والأخوات بعد الوفاة. LedgerMate يتيح لكم تسجيل وتوزيع إيرادات الإيجارات وتكاليف الصيانة المشتركة بشفافية وحيادية تامة.
+        </p>
+        <a href="/app/" style="font-size:12.5px; font-weight:700; color:var(--primary); text-decoration:none;">استخدم LedgerMate لتقاسم أملاك التركة ←</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educational Guide (1200+ words) -->
+  <article class="guide-container">
+    <h2>الدليل الشرعي الشامل في علم الفرائض وقسمة التركات</h2>
+    <p>
+      علم الفرائض هو العلم الذي يُعرف به من يرث ومن لا يرث ومقدار ما لكل وارث من التركة. وقد حظي هذا العلم بمكانة رفيعة في الشريعة الإسلامية؛ إذ تولى الله عز وجل تقدير أنصبة الورثة بنفسه في محكم التنزيل في سورة النساء، ولم يكل تقسيمها إلى ملك مقرب ولا نبي مرسل، فقال سبحانه: <em>﴿فَرِيضَةً مِّنَ اللَّهِ إِنَّ اللَّهَ كَانَ عَلِيمًا حَكِيمًا﴾</em>.
+    </p>
+
+    <div class="callout-box">
+      <strong>الترتيب الشرعي لإخراج الحقوق المتعلقة بالتركة:</strong>
+      <ol>
+        <li>مؤن تجهيز الميت وتكفينه من غير إسراف ولا تقتير.</li>
+        <li>سداد ديون الميت كلها (ديون الله كالزكاة والكفارات، وديون العباد كالقروض وفواتير المستشفيات).</li>
+        <li>إنفاذ وصية الميت في حدود الثلث فقط ولغير وارث، لقول النبي ﷺ لسعد بن أبي وقاص: «الثلث، والثلث كثير».</li>
+        <li>تقسيم ما بقي على الورثة الشرعيين الأحياء وقت وفاة المورّث.</li>
+      </ol>
+    </div>
+
+    <h2>أصحاب الفروض الستة المقدرة في كتاب الله</h2>
+    <p>
+      الفروض المقدرة في القرآن الكريم ستة فروض: النصف، والربع، والثمن، والثلثان، والثلث، والسدس.
+    </p>
+
+    <div class="data-table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>الفرض المقدر</th>
+            <th>المستحقون له شرعاً</th>
+            <th>الشرط الفقهي للاستحقاق</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>النصف (1/2)</strong></td>
+            <td>الزوج، البنت الواحدة، بنت الابن، الأخت الشقيقة</td>
+            <td>الزوج عند عدم وجود فرع وارث للمتوفاة، والبنت عند انفرادها وعدم وجود معصب</td>
+          </tr>
+          <tr>
+            <td><strong>الربع (1/4)</strong></td>
+            <td>الزوج، الزوجة أو الزوجات</td>
+            <td>الزوج عند وجود الفرع الوارث، والزوجة عند عدم وجود الفرع الوارث للمتوفى</td>
+          </tr>
+          <tr>
+            <td><strong>الثمن (1/8)</strong></td>
+            <td>الزوجة أو الزوجات جميعاً</td>
+            <td>عند وجود الفرع الوارث للمتوفى (يشتركن فيه بالتساوي إن كن أكثر من واحدة)</td>
+          </tr>
+          <tr>
+            <td><strong>الثلثان (2/3)</strong></td>
+            <td>البنات (اثنتان فأكثر)، بنات الابن، الأخوات</td>
+            <td>عدم وجود معصب لهن (كالابن المذكر في حالة البنات)</td>
+          </tr>
+          <tr>
+            <td><strong>الثلث (1/3)</strong></td>
+            <td>الأم، الإخوة لأم (اثنان فأكثر)</td>
+            <td>الأم عند عدم وجود فرع وارث وعدم وجود جمع من الإخوة</td>
+          </tr>
+          <tr>
+            <td><strong>السدس (1/6)</strong></td>
+            <td>الأب، الأم، الجد، الجدة، الأخ لأم الواحد</td>
+            <td>الأب والأم عند وجود الفرع الوارث (الابن أو البنت)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>الإرث بالتعصيب (العصبة)</h2>
+    <p>
+      العاصب هو كل وارث ليس له فرض مقدر بذاته في القرآن، وإنما يأخذ كل التركة إذا انفرد، أو يأخذ ما بقي من التركة بعد أن يأخذ أصحاب الفروض فروضهم، لقوله ﷺ: «ألحقوا الفرائض بأهلها، فما بقي فهو لأولى رجل ذكر».
+    </p>
+    <p>
+      ومن أشهر صور التعصيب: <strong>العصبة بالغير</strong>، وهي أن يعصب الذكر أخته، كالأبناء مع البنات، أو الإخوة الأشقاء مع الأخوات الشقيقات، فيكون التقسيم بينهم على القاعدة القرآنية: <em>﴿لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ﴾</em>.
+    </p>
+
+    <h2>أحكام الحجب: حجب الحرمان وحجب النقصان</h2>
+    <p>
+      الحجب من أهم أبواب المواريث، وينقسم إلى:
+    </p>
+    <ul>
+      <li><strong>حجب النقصان:</strong> حجب الوارث من نصيب أكبر إلى نصيب أصغر، كنقصان نصيب الزوجة من الربع إلى الثمن بوجود الولد، أو نقصان الأم من الثلث إلى السدس.</li>
+      <li><strong>حجب الحرمان:</strong> إسقاط الوارث تماماً من الميراث بوجود من هو أقرب منه للميت. فالابن يحجب أبناء الابن، ويحجب جميع الإخوة والأخوات والأعمام. والأب يحجب الأجداد والإخوة جميعاً. والأم تحجب الجدات من جهتها ومن جهة الأب.</li>
+    </ul>
+
+    <!-- FAQs Section -->
+    <h2 style="margin-top: 36px;">الأسئلة الشائعة حول تقسيم الميراث</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>هل يجوز للمورث كتابة وصية بحرمان أحد أبنائه أو تفضيل أحدهم في التركة؟</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        لا يجوز شرعاً وهو باطل ومحرم شرعاً؛ لقول النبي ﷺ الصريح في حجة الوداع: «إن الله قد أعطى كل ذي حق حقه، فلا وصية لوارث». وأي وصية يقصد بها الإضرار بالورثة أو حرمانهم تعتبر لاغية شرعاً وقانوناً.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>كيف يُقسم الثمن بين الزوجات إذا كان للمتوفى أكثر من زوجة؟</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        إذا كان للمتوفى زوجتان أو ثلاث أو أربع ومعهن أولاد، فإن نصيب الزوجات جميعاً هو <strong>الثمن (1/8)</strong> يقسم بينهن بالتساوي، ولا تأخذ كل زوجة ثمناً مستقلاً بذاتها، بل يشتركن في هذا الثمن المقدر شرعاً.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>ما مصير ديون المتوفى إذا استغرقت كامل التركة؟</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        إذا كانت ديون المتوفى المثبتة تعادل التركة أو تزيد عنها، تُسدد الديون بالكامل ولا يوزع أي ميراث على الورثة؛ لأن التركة لا تثبت ملكيتها للورثة إلا بعد سداد ديون الميت، مصداقاً لقوله تعالى: <em>﴿مِن بَعْدِ وَصِيَّةٍ يُوصِي بِهَا أَوْ دَيْنٍ﴾</em>.
+      </div>
+    </div>
+  </article>
+</main>
+
+<script>
+function formatNum(n) {
+  return Math.round(n).toLocaleString('en-US');
+}
+
+function onDeceasedChange() {
+  const gender = document.getElementById('deceased-gender').value;
+  if (gender === 'male') {
+    document.getElementById('group-wives').style.display = 'block';
+    document.getElementById('group-husband').style.display = 'none';
+  } else {
+    document.getElementById('group-wives').style.display = 'none';
+    document.getElementById('group-husband').style.display = 'block';
+  }
+  recalculate();
+}
+
+let _inheritRaf = null;
+function recalculate() {
+  if (_inheritRaf) cancelAnimationFrame(_inheritRaf);
+  _inheritRaf = requestAnimationFrame(() => {
+    runActualInheritanceCalc();
+    _inheritRaf = null;
+  });
+}
+
+function runActualInheritanceCalc() {
+  const gross = parseFloat(document.getElementById('estate-gross').value) || 0;
+  const debts = parseFloat(document.getElementById('estate-debts').value) || 0;
+  const bequestInput = parseFloat(document.getElementById('estate-bequest').value) || 0;
+
+  const afterDebts = Math.max(0, gross - debts);
+  // Bequest capped at 1/3 of afterDebts
+  const maxBequest = afterDebts / 3;
+  const bequest = Math.min(bequestInput, maxBequest);
+  const netEstate = Math.max(0, afterDebts - bequest);
+
+  document.getElementById('res-net-estate').textContent = formatNum(netEstate);
+
+  const gender = document.getElementById('deceased-gender').value;
+  const wives = (gender === 'male') ? (parseInt(document.getElementById('count-wives').value) || 0) : 0;
+  const hasHusband = (gender === 'female') && (document.getElementById('has-husband').value === 'yes');
+  const sons = parseInt(document.getElementById('count-sons').value) || 0;
+  const daughters = parseInt(document.getElementById('count-daughters').value) || 0;
+  const hasFather = document.getElementById('has-father').value === 'yes';
+  const hasMother = document.getElementById('has-mother').value === 'yes';
+
+  const hasChildren = (sons + daughters) > 0;
+
+  const shares = [];
+  let remainingRatio = 1.0;
+
+  // 1. Spouse Share
+  if (hasHusband) {
+    const ratio = hasChildren ? (1 / 4) : (1 / 2);
+    const amount = netEstate * ratio;
+    shares.push({ name: 'الزوج', note: hasChildren ? 'الربع (1/4 لوجود الولد)' : 'النصف (1/2 لعدم وجود الولد)', amount, ratio });
+    remainingRatio -= ratio;
+  } else if (wives > 0) {
+    const ratio = hasChildren ? (1 / 8) : (1 / 4);
+    const totalAmount = netEstate * ratio;
+    const perWife = totalAmount / wives;
+    const wifeText = (wives === 1) ? 'الزوجة' : `الزوجات (${wives}) بالتساوي`;
+    shares.push({ name: wifeText, note: hasChildren ? 'الثمن (1/8)' : 'الربع (1/4)', amount: totalAmount, ratio });
+    remainingRatio -= ratio;
+  }
+
+  // 2. Mother Share
+  if (hasMother) {
+    const ratio = hasChildren ? (1 / 6) : (1 / 3);
+    const amount = netEstate * ratio;
+    shares.push({ name: 'الأم', note: hasChildren ? 'السدس (1/6 لوجود الفرع الوارث)' : 'الثلث (1/3)', amount, ratio });
+    remainingRatio -= ratio;
+  }
+
+  // 3. Father Share
+  if (hasFather) {
+    if (sons > 0) {
+      // Father gets 1/6 strictly when sons exist
+      const ratio = 1 / 6;
+      const amount = netEstate * ratio;
+      shares.push({ name: 'الأب', note: 'السدس فرضاً (1/6 لوجود الابن المذكر)', amount, ratio });
+      remainingRatio -= ratio;
+    } else if (daughters > 0) {
+      // Father gets 1/6 + Asaba of what remains after daughters
+      const fixedRatio = 1 / 6;
+      const fixedAmount = netEstate * fixedRatio;
+      shares.push({ name: 'الأب', note: 'السدس فرضاً + الباقي تعصيباً', amount: fixedAmount, ratio: fixedRatio, isFatherWithDaughters: true });
+      remainingRatio -= fixedRatio;
+    } else {
+      // No children: father takes Asaba of what remains
+      // Handled in asaba step below
+    }
+  }
+
+  // 4. Children (Sons & Daughters)
+  if (sons > 0 && daughters > 0) {
+    // Asaba bi ghayriha: 2 parts for male, 1 for female
+    const asabaPool = Math.max(0, netEstate * remainingRatio);
+    const totalUnits = (sons * 2) + daughters;
+    const unitValue = asabaPool / totalUnits;
+    const sonAmount = unitValue * 2;
+    const daughterAmount = unitValue;
+
+    shares.push({ name: `الأبناء الذكور (${sons})`, note: `عصبة (${formatNum(sonAmount)} لكل ابن)`, amount: sonAmount * sons, ratio: (sonAmount * sons) / netEstate });
+    shares.push({ name: `البنات (${daughters})`, note: `عصبة مع الذكر (${formatNum(daughterAmount)} لكل بنت)`, amount: daughterAmount * daughters, ratio: (daughterAmount * daughters) / netEstate });
+    remainingRatio = 0;
+  } else if (sons > 0 && daughters === 0) {
+    const asabaPool = Math.max(0, netEstate * remainingRatio);
+    const perSon = asabaPool / sons;
+    shares.push({ name: `الأبناء الذكور (${sons})`, note: `عصبة بالنفس بالتساوي (${formatNum(perSon)} لكل ابن)`, amount: asabaPool, ratio: remainingRatio });
+    remainingRatio = 0;
+  } else if (daughters > 0 && sons === 0) {
+    // Daughters get fixed shares: 1 daughter = 1/2, 2+ daughters = 2/3
+    const daughterRatio = (daughters === 1) ? (1 / 2) : (2 / 3);
+    const daughterAmount = netEstate * daughterRatio;
+    const perDaughter = daughterAmount / daughters;
+    shares.push({ name: (daughters === 1) ? 'البنت الواحدة' : `البنات (${daughters}) بالتساوي`, note: (daughters === 1) ? 'النصف (1/2 فرضاً)' : 'الثلثان (2/3 فرضاً)', amount: daughterAmount, ratio: daughterRatio });
+    remainingRatio -= daughterRatio;
+  }
+
+  // Father residue if no sons
+  if (hasFather && sons === 0) {
+    const residue = Math.max(0, netEstate * remainingRatio);
+    const fatherEntry = shares.find(s => s.name === 'الأب');
+    if (fatherEntry) {
+      fatherEntry.amount += residue;
+      fatherEntry.ratio += remainingRatio;
+    } else {
+      shares.push({ name: 'الأب', note: 'عصبة بالنفس (الباقي كاملاً)', amount: residue, ratio: remainingRatio });
+    }
+    remainingRatio = 0;
+  }
+
+  // Render to DOM
+  const container = document.getElementById('shares-container');
+  container.innerHTML = '';
+
+  const dockVal = document.getElementById('dock-estate-val');
+  if (dockVal) dockVal.textContent = formatNum(netEstate);
+
+  shares.forEach(item => {
+    const pct = (item.ratio * 100).toFixed(1);
+    const div = document.createElement('div');
+    div.className = 'share-item';
+    div.innerHTML = `
+      <div>
+        <span class="share-heir">${item.name}</span>
+        <span class="share-ratio">(${item.note} - ${pct}%)</span>
+      </div>
+      <div class="share-val">${formatNum(item.amount)} SAR</div>
+    `;
+    container.appendChild(div);
+  });
+
+  // WhatsApp share
+  const text = encodeURIComponent(`بيان تقسيم التركة الشرعية عبر LedgerMate:
+- صافي التركة القابلة للقسمة: ${formatNum(netEstate)} SAR
+- عدد الورثة المستحقين: ${shares.length} أصناف
+احسب تقسيم التركة الشرعية مجاناً: https://tryledgermate.in/ar/inheritance-calculator/`);
+  document.getElementById('whatsapp-share-btn').href = `https://api.whatsapp.com/send?text=${text}`;
+}
+
+function setGrossEstate(amount) {
+  document.getElementById('estate-gross').value = amount;
+  recalculate();
+}
+
+function resetForm() {
+  document.getElementById('estate-gross').value = '1000000';
+  document.getElementById('estate-debts').value = '0';
+  document.getElementById('estate-bequest').value = '0';
+  document.getElementById('count-sons').value = '2';
+  document.getElementById('count-daughters').value = '2';
+  document.getElementById('count-wives').value = '1';
+  recalculate();
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  if (!item) return;
+  const ans = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+  if (isOpen) {
+    item.classList.remove('open');
+    if (ans) ans.style.display = 'none';
+  } else {
+    item.classList.add('open');
+    if (ans) ans.style.display = 'block';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', onDeceasedChange);
+</script>
+
+<!-- Mobile Floating Summary Dock -->
+<div class="mobile-sticky-dock">
+  <div class="dock-info">
+    <div class="dock-label">صافي التركة المقسمة شرعاً:</div>
+    <div class="dock-val"><span id="dock-estate-val">950,000</span> <span class="curr-symbol">SAR</span></div>
+  </div>
+  <a href="#result-card-anchor" class="dock-btn">جدول الأنصبة ↓</a>
+</div>
+
+</body>
+</html>

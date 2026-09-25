@@ -28,7 +28,7 @@
 <noscript>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
 </noscript>
-<link rel="stylesheet" href="/landing.css?v=5" />
+<link rel="stylesheet" href="/landing.css?v=6" />
 
 <script type="application/ld+json">
 {
@@ -89,9 +89,9 @@
 <body>
 
 <div class="top-announcement">
-  <span class="desktop-text">⚡ Ready to split bills, calculate dinner tabs, or migrate from Splitwise?</span>
-  <span class="mobile-text">⚡ Free live bill splitting — no sign-up</span>
-  <a href="/app/">Launch App →</a>
+  <span class="desktop-text">🌍 New: Dedicated Regional Hub with 16 Global Statutory &amp; Multilingual Calculators</span>
+  <span class="mobile-text">🌍 16 Regional &amp; Multilingual Calculators</span>
+  <a href="/regional/">Explore Regional Hub →</a>
 </div>
 
 <nav class="nav">
@@ -99,9 +99,9 @@
     <a href="/" class="logo">Ledger<span>Mate</span></a>
     <div class="nav-links">
       <a href="/tools/calc-agent/" style="color:var(--accent);font-weight:700;">⚡ AI Calc Agent</a>
-      <a href="#features">Features</a>
+      <a href="/regional/" style="color:var(--accent-2);font-weight:700;display:inline-flex;align-items:center;gap:4px;">🌐 Regional Hub <span style="background:#4f46e5;color:#fff;font-size:10px;padding:1px 6px;border-radius:999px;">16</span></a>
+      <a href="#tools">All Tools (55+)</a>
       <a href="/compare/splitwise-alternative/">Vs Splitwise</a>
-      <a href="#tools">Free Tools</a>
       <a href="#guides">Guides</a>
       <a href="#faq">FAQ</a>
       <a href="/app/" class="btn btn-primary">Try LedgerMate</a>
@@ -115,9 +115,19 @@
   <p class="sub">No sign-up to start. No daily expense limits. Add a bill and everyone's balance updates instantly — and quick trip splits clean themselves up automatically instead of sitting in a database forever.</p>
   <div class="hero-ctas">
     <a href="/app/" class="btn btn-primary">Try LedgerMate free →</a>
-    <a href="#how-it-works" class="btn btn-ghost">See how it works</a>
+    <a href="/regional/" class="btn btn-ghost" style="border-color:var(--accent);color:var(--accent);font-weight:700;">🌐 Regional &amp; Country Calculators →</a>
   </div>
   <p class="hero-note">No credit card. No account required. Works in your browser right now.</p>
+  <div class="hero-regional-chips">
+    <span style="font-size:13px;font-weight:700;color:var(--text-muted);white-space:nowrap;">Regional Editions:</span>
+    <a href="/regional/#islamic" class="chip-btn" style="text-decoration:none;font-size:12.5px;padding:5px 11px;border-color:#10b981;color:#047857;background:#ecfdf5;">🕌 عربي • Islamic &amp; GCC</a>
+    <a href="/regional/#spanish" class="chip-btn" style="text-decoration:none;font-size:12.5px;padding:5px 11px;border-color:#f59e0b;color:#b45309;background:#fffbeb;">🇲🇽 Español • Finiquito &amp; LFT</a>
+    <a href="/regional/#french" class="chip-btn" style="text-decoration:none;font-size:12.5px;padding:5px 11px;border-color:#3b82f6;color:#1d4ed8;background:#eff6ff;">🇫🇷 Français • URSSAF &amp; Droit</a>
+    <a href="/regional/#eurasia" class="chip-btn" style="text-decoration:none;font-size:12.5px;padding:5px 11px;border-color:#14b8a6;color:#0f766e;background:#f0fdfa;">🇩🇪 Gehalt &amp; 🇷🇺 НДФЛ</a>
+    <a href="/regional/#asia" class="chip-btn" style="text-decoration:none;font-size:12.5px;padding:5px 11px;border-color:#f43f5e;color:#be123c;background:#fff1f2;">🇯🇵 手取り &amp; 🇰🇷 실수령 &amp; 🇮🇳 CTC</a>
+    <a href="/regional/#usa" class="chip-btn" style="text-decoration:none;font-size:12.5px;padding:5px 11px;border-color:#0ea5e9;color:#0369a1;background:#f0f9ff;">🇺🇸 US Paycheck &amp; Taxes</a>
+    <a href="/regional/" class="chip-btn" style="text-decoration:none;font-size:12.5px;padding:5px 12px;font-weight:700;background:#4f46e5;color:#ffffff;border-color:#4338ca;">Open Regional Hub →</a>
+  </div>
 </header>
 
 <section class="section" id="features">
@@ -202,21 +212,28 @@
 <section class="section" id="tools">
   <div class="wrap">
     <p class="section-eyebrow">Free calculators &amp; tools</p>
-    <h2>45+ Free Calculators for Shared Living, Taxes &amp; Life</h2>
+    <h2>55+ Free Calculators for Shared Living, Global Taxes &amp; Regional Laws</h2>
     <p class="lead">Fast, accurate, 100% free online calculators with no ads and no sign-up required. Built for real-world mathematical accuracy in 2026.</p>
 
     <!-- Category filter bar -->
-    <div class="chip-group" style="justify-content:center;margin:28px 0 32px;flex-wrap:wrap;">
+    <div class="chip-group" style="justify-content:center;margin:28px 0 32px;flex-wrap:wrap;align-items:center;">
       <button type="button" class="chip-btn active" onclick="filterTools('all')">All Calculators (49)</button>
       <button type="button" class="chip-btn" onclick="filterTools('rent')">Housing &amp; Rent</button>
-      <button type="button" class="chip-btn" onclick="filterTools('salary')">Salary &amp; Taxes (Global)</button>
+      <button type="button" class="chip-btn" onclick="filterTools('salary')">Salary &amp; Taxes</button>
       <button type="button" class="chip-btn" onclick="filterTools('finance')">Loans &amp; Finance</button>
       <button type="button" class="chip-btn" onclick="filterTools('health')">Health &amp; Fitness</button>
       <button type="button" class="chip-btn" onclick="filterTools('travel')">Travel &amp; Events</button>
-      <button type="button" class="chip-btn" onclick="filterTools('tech')">Tech, Academic &amp; Life</button>
+      <button type="button" class="chip-btn" onclick="filterTools('tech')">Tech &amp; Life</button>
+      <a href="/regional/" class="chip-btn chip-regional-cta" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:#eef2ff;color:#3730a3;border:1.5px solid #818cf8;font-weight:700;">
+        <span>🌐 Regional &amp; Multilingual Hub (16 Tools)</span>
+        <span style="background:#4f46e5;color:#ffffff;font-size:11px;padding:1px 6px;border-radius:999px;">Open →</span>
+      </a>
     </div>
 
-    <div class="grid-3" id="tools-grid">
+    <!-- Compressed Tools Viewport -->
+    <div class="tools-scroll-wrapper" id="toolsWrapper">
+      <div class="tools-scroll-viewport" id="toolsScrollViewport">
+        <div class="grid-3" id="tools-grid">
 
       <!-- AI CALCULATION AGENT -->
       <a href="/tools/calc-agent/" class="feature-card tool-item" data-cat="rent salary finance" style="text-decoration:none;color:inherit;display:block;border:2px solid #93c5fd;background:linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);">
@@ -225,6 +242,15 @@
         <h3>AI Fast Inference Calculation Agent</h3>
         <p>Ask complex rent splits, 2026 global payroll taxes, and mortgage amortizations in plain text. Instant step-by-step breakdown &amp; reactive sliders.</p>
         <span style="color:var(--accent);font-weight:700;font-size:13.5px;margin-top:8px;display:inline-block;">Launch Agent Studio →</span>
+      </a>
+
+      <!-- REGIONAL & MULTILINGUAL CALCULATION HUB -->
+      <a href="/regional/" class="feature-card tool-item" data-cat="salary finance" style="text-decoration:none;color:inherit;display:block;border:2px solid #a5b4fc;background:linear-gradient(180deg, #f5f3ff 0%, #ffffff 100%);position:relative;">
+        <div class="feature-icon" style="background:#4f46e5;color:#ffffff;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div style="display:inline-block;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;border:1px solid #c7d2fe;">🌍 16 Jurisdictions • Native Languages • 2026 Laws</div>
+        <h3>Regional &amp; Multilingual Calculation Hub</h3>
+        <p>Statutory labor, estate, and progressive tax engines for Saudi Arabia, UAE, Mexico, France, Germany, Japan, South Korea, India, Russia &amp; USA with dynamic country theming.</p>
+        <span style="color:#4f46e5;font-weight:700;font-size:13.5px;margin-top:8px;display:inline-block;">Explore All 16 Regional Tools →</span>
       </a>
 
       <!-- HOUSING & RENT -->
@@ -576,28 +602,59 @@
         <span style="color:var(--accent);font-weight:600;font-size:13.5px;margin-top:8px;display:inline-block;">Plan Meeting Time →</span>
       </a>
 
+        </div><!-- /tools-grid -->
+      </div><!-- /tools-scroll-viewport -->
+      <div class="tools-fade-overlay" id="toolsFadeOverlay"></div>
+    </div><!-- /tools-scroll-wrapper -->
+
+    <div class="tools-expand-action">
+      <button type="button" class="btn" id="toolsExpandBtn" onclick="toggleToolsExpand()">
+        <span id="toolsExpandText">Explore All 50+ Calculators</span>
+        <span id="toolsExpandIcon" style="margin-left:4px;display:inline-block;">↓</span>
+      </button>
     </div>
   </div>
 </section>
 
 <script>
-function filterTools(cat) {
-  // Update button classes
-  const btns = document.querySelectorAll('#tools .chip-btn');
-  btns.forEach(b => b.classList.remove('active'));
-  if (event && event.target) {
-    event.target.classList.add('active');
-  }
+let currentToolCategory = 'all';
 
-  // Filter items
+function filterTools(cat) {
+  currentToolCategory = cat;
+  const btns = document.querySelectorAll('#tools .chip-btn');
+  btns.forEach(b => {
+    b.classList.remove('active');
+    const onclickAttr = b.getAttribute('onclick') || '';
+    if (onclickAttr.includes("'" + cat + "'")) {
+      b.classList.add('active');
+    }
+  });
+
   const items = document.querySelectorAll('.tool-item');
   items.forEach(it => {
-    if (cat === 'all' || it.getAttribute('data-cat') === cat) {
+    const rawCats = (it.getAttribute('data-cat') || '').split(/\s+/);
+    if (cat === 'all' || rawCats.includes(cat)) {
       it.style.display = 'block';
     } else {
       it.style.display = 'none';
     }
   });
+
+  const vp = document.getElementById('toolsScrollViewport');
+  if (vp) {
+    vp.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function toggleToolsExpand() {
+  const wrapper = document.getElementById('toolsWrapper');
+  const text = document.getElementById('toolsExpandText');
+  const icon = document.getElementById('toolsExpandIcon');
+  if (!wrapper) return;
+
+  const isExpanded = wrapper.classList.toggle('is-expanded');
+  if (text) text.textContent = isExpanded ? 'Collapse Calculators View' : 'Explore All 50+ Calculators';
+  if (icon) icon.textContent = isExpanded ? '↑' : '↓';
 }
 </script>
 
@@ -708,7 +765,20 @@ function filterTools(cat) {
           <li><a href="/tools/scientific-calculator/">Scientific Calculator</a></li>
           <li><a href="/tools/bill-split-calculator/">Bill &amp; Tip Splitter</a></li>
           <li><a href="/tools/trip-expense-calculator/">Trip Calculator</a></li>
-          <li><a href="/tools/proportional-split-calculator/">Income Splitter</a></li>
+          <li><a href="/tools/us-paycheck-calculator/">US Paycheck (2026)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Regional &amp; Multilingual</h4>
+        <ul>
+          <li><a href="/ar/zakat-calculator/">🕌 حاسبة الزكاة الشرعية (AR)</a></li>
+          <li><a href="/ar/end-of-service-calculator/">💼 مكافأة نهاية الخدمة (GCC)</a></li>
+          <li><a href="/ar/inheritance-calculator/">📜 حاسبة المواريث (AR)</a></li>
+          <li><a href="/es/calculadora-finiquito/">⚖️ Finiquito y Liquidación (ES)</a></li>
+          <li><a href="/es/calculadora-aguinaldo/">🎁 Aguinaldo LFT (ES)</a></li>
+          <li><a href="/fr/calculateur-indemnite-licenciement/">📄 Licenciement (FR)</a></li>
+          <li><a href="/fr/bareme-kilometrique/">🚗 Barème URSSAF (FR)</a></li>
+          <li><a href="/tools/iban-validator/">🌐 Global IBAN Validator</a></li>
         </ul>
       </div>
       <div>
@@ -723,7 +793,7 @@ function filterTools(cat) {
         </ul>
       </div>
     </div>
-    <p class="footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a></p>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a> · <a href="/regional/">Regional Hub</a></p>
   </div>
 </footer>
 

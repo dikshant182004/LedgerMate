@@ -25,6 +25,8 @@ import {
   deleteCalculationRecord,
   saveHitlFeedbackRecord,
   getUserAnalytics,
+  setUserAiConsent,
+  getUserAiConsent,
 } from "./services/calc-agent/storage.js";
 
 export { GroupRoom };
@@ -424,7 +426,15 @@ app.post("/api/calc-agent/query", calcRateLimitMiddleware, async (c) => {
     }, 400);
   }
 
-  // 3. Guardrail & Content Safety Screening
+  // 3. Auto-record consent if user is logged in
+  if (user) {
+    const dbConsent = await getUserAiConsent(c.env.DB, user.id).catch(() => false);
+    if (!dbConsent) {
+      await setUserAiConsent(c.env.DB, user.id, true).catch(() => {});
+    }
+  }
+
+  // 4. Guardrail & Content Safety Screening
   const guard = screenCalculationQuery(query);
   if (!guard.safe) {
     return json(c, {
@@ -469,10 +479,17 @@ app.post("/api/calc-agent/query", calcRateLimitMiddleware, async (c) => {
       providerUsed: result.providerUsed || "gemini",
       modelUsed: result.modelUsed || selectedModel,
       researchGateway: result.researchGateway,
+      hitlApplied: !!hitlCorrection,
     });
   } catch (err) {
     console.error("Calculation agent failure:", err.message);
-    const sanitizedMsg = (err.message || "").replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]").replace(/sk-[A-Za-z0-9_\-]{20,}/g, "[REDACTED]");
+    const sanitizedMsg = (err.message || "")
+      .replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]")
+      .replace(/AQ\.[A-Za-z0-9_\-]{30,}/g, "[REDACTED]")
+      .replace(/gsk_[A-Za-z0-9_\-]{15,}/g, "[REDACTED]")
+      .replace(/sk-(?:proj-)?[A-Za-z0-9_\-]{20,}/g, "[REDACTED]")
+      .replace(/sk-ant-[A-Za-z0-9_\-]{20,}/g, "[REDACTED]");
+
     return json(c, {
       error: "The calculation agent encountered an error: " + sanitizedMsg,
       details: sanitizedMsg,
