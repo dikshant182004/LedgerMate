@@ -479,13 +479,16 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
 
         const config = {
           systemInstruction: SYSTEM_INSTRUCTION,
-          responseMimeType: "application/json",
           temperature: 0.1,
         };
-
+        
         // If Research Gateway triggered research, and model supports search tools
         if (researchDecision.needsResearch) {
           config.tools = [{ googleSearch: {} }];
+          // Gemini rejects responseMimeType + tools together — omit JSON mode here,
+          // the existing JSON.parse fallback (fence/brace stripping) handles prose wrapping.
+        } else {
+          config.responseMimeType = "application/json";
         }
 
         const promptContent = researchDecision.needsResearch && researchDecision.queries.length > 0
