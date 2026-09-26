@@ -423,7 +423,15 @@ function isTransientGeminiError(err) {
 }
 function isFatalGeminiError(err) {
   const msg = String(err?.message || "");
-  return msg.includes("401") || msg.includes("403") || msg.includes("API_KEY_INVALID") || msg.includes("PERMISSION_DENIED");
+  // Google's actual SDK error text for a bad key is "API key not valid..."
+  // with status INVALID_ARGUMENT / HTTP 400 — not 401/403 as you might
+  // expect. The narrower check below missed this, so an invalid key used to
+  // slip through as "not fatal" and get retried across every fallback model
+  // (up to 10 wasted calls) before finally failing slowly instead of
+  // immediately.
+  return msg.includes("401") || msg.includes("403") || msg.includes("PERMISSION_DENIED") ||
+    msg.includes("API_KEY_INVALID") || msg.includes("API key not valid") ||
+    (msg.includes("INVALID_ARGUMENT") && /api key/i.test(msg));
 }
 
 async function callGemini(query, apiKey, selectedModel, researchDecision, langCurrencyInstruction = "") {
@@ -677,7 +685,9 @@ export async function verifyProviderKey(provider = "gemini", apiKey) {
       transient: true,
     };
   }
-  if (errMsg.includes("401") || errMsg.includes("403") || errMsg.includes("API_KEY_INVALID") || errMsg.includes("PERMISSION_DENIED")) {
+  if (errMsg.includes("401") || errMsg.includes("403") || errMsg.includes("PERMISSION_DENIED") ||
+      errMsg.includes("API_KEY_INVALID") || errMsg.includes("API key not valid") ||
+      (errMsg.includes("INVALID_ARGUMENT") && /api key/i.test(errMsg))) {
     return { ok: false, error: "That API key looks invalid or doesn't have access. Double-check you copied it correctly from Google AI Studio." };
   }
   const sanitized = errMsg.replace(/AIzaSy[A-Za-z0-9_\-]{30,}/g, "[REDACTED]");
