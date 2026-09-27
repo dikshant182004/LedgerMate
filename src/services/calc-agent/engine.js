@@ -187,12 +187,17 @@ export async function runCalculationAgent(query, apiKey, selectedModel = "gemini
   }
 
   // 2. Intelligent Research Gateway Assessment
+  // NOTE: Live Google Search Grounding is currently disabled (see callGemini below).
+  // assessResearchNeed() still runs so the UI can show *why* a query might benefit
+  // from live data, and so its "queries" get folded into the prompt as a hint for
+  // Gemini to be careful/caveat time-sensitive facts — but no external search call
+  // is made, and researchGateway.sources will always come back empty.
   const researchDecision = assessResearchNeed(effectiveQuery);
 
   // 3. Build language/currency instruction for Gemini
   const langCurrencyInstruction = buildLanguageCurrencyInstruction(outputLanguage, targetCurrency);
 
-  // 4. Gemini execution with dynamic Search Grounding
+  // 4. Gemini execution (native knowledge only — no live Search Grounding)
   let rawJsonText = "";
   let liveSources = [];
   let modelUsed = selectedModel || "gemini-3.1-flash-lite";
@@ -410,12 +415,15 @@ function recoverFromSteps(parsed) {
 
 /**
  * Executes inference via Google Gemini SDK.
- * Enables live Google Search Grounding when researchDecision.needsResearch is true.
+ * NOTE: Live Google Search Grounding is intentionally disabled. Gemini answers
+ * using its own training data only — no `tools` are ever attached, so the
+ * grounding-specific quota/billing restriction that was causing 429s on
+ * research-needing queries no longer applies.
  */
-// Google's own 503 message says demand spikes are "usually temporary" — most
-// clear up within a second or two, so it's worth one quick retry on the same
-// (usually fastest/preferred) model before falling back to a different,
-// often slower model and compounding the wait.
+// Google's own 503 message says demand spikes are "usually temporary" —
+// most clear up within a second or two, so it's worth one quick retry on
+// the same (usually fastest/preferred) model before falling back to a
+// different, often slower model and compounding the wait.
 function isTransientGeminiError(err) {
   const msg = String(err?.message || "");
   return msg.includes("503") || msg.includes("UNAVAILABLE") || msg.includes("high demand") ||
@@ -479,17 +487,12 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
 
         const config = {
           systemInstruction: SYSTEM_INSTRUCTION,
+          responseMimeType: "application/json",
           temperature: 0.1,
         };
-        
-        // If Research Gateway triggered research, and model supports search tools
-        if (researchDecision.needsResearch) {
-          config.tools = [{ googleSearch: {} }];
-          // Gemini rejects responseMimeType + tools together — omit JSON mode here,
-          // the existing JSON.parse fallback (fence/brace stripping) handles prose wrapping.
-        } else {
-          config.responseMimeType = "application/json";
-        }
+        // Grounding/search tool intentionally disabled — Gemini answers from its
+        // own training data only. `researchDecision` is still used below just to
+        // add a "verify current rates" hint in the prompt.
 
         const promptContent = researchDecision.needsResearch && researchDecision.queries.length > 0
           ? `${query}\n\n[Research Directives: Please ground using latest real-world criteria for: ${researchDecision.queries.join(", ")}]${langCurrencyInstruction}`
@@ -506,6 +509,7 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
         rawJsonText = response.text || "";
 
         // Extract Google Search Grounding citations if available
+        // (kept defensively — will simply be undefined/empty now that `tools` is never set)
         const grounding = response.candidates?.[0]?.groundingMetadata;
         if (grounding) {
           if (Array.isArray(grounding.groundingChunks)) {
@@ -546,35 +550,12 @@ async function callGemini(query, apiKey, selectedModel, researchDecision, langCu
           continue; // quick retry, same model
         }
 
-        // Not transient (or out of retries for this model): if research/tools
-        // might be the cause, try this same model once more without tools
-        // before moving on to a different model entirely.
-        if (researchDecision.needsResearch && !isTransientGeminiError(err)) {
-          try {
-            const fallbackResp = await ai.models.generateContent({
-              model: model,
-              contents: query,
-              config: {
-                systemInstruction: SYSTEM_INSTRUCTION,
-                responseMimeType: "application/json",
-                temperature: 0.1,
-              },
-            });
-            if (fallbackResp.text) {
-              rawJsonText = fallbackResp.text;
-              modelUsed = model;
-              succeededOnThisModel = true;
-            }
-          } catch (fbErr) {
-            lastErr = fbErr;
-          }
-        }
-        break; // stop retrying this model, move to the next one in modelsToTry
+        break; // not transient (or out of retries for this model) — stop retrying, move to next model
       }
-    }
+    } // end for (attempt)
 
     if (succeededOnThisModel) break;
-  }
+  } // end for (modelIndex)
 
   if (!rawJsonText) {
     const cleanErr = (lastErr?.message || "Google Gemini inference unavailable. Please check your API key.")
@@ -618,10 +599,10 @@ export function validateApiKeyFormat(key, provider = "gemini") {
 
 export function getDefaultGeminiModels() {
   return [
-    { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash-Lite (Fastest <600ms • Recommended)", searchEnabled: true, isLive: false },
-    { id: "gemini-3.8-flash", label: "🚀 Gemini 3.8 Flash (Deep Search Grounding)", searchEnabled: true, isLive: false },
-    { id: "gemini-2.5-flash", label: "🏎️ Gemini 2.5 Flash (Balanced & Grounded)", searchEnabled: true, isLive: false },
-    { id: "gemini-3.1-pro", label: "🧠 Gemini 3.1 Pro (Complex Multi-Step Math)", searchEnabled: true, isLive: false },
+    { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash-Lite (Fastest <600ms • Recommended)", searchEnabled: false, isLive: false },
+    { id: "gemini-3.8-flash", label: "🚀 Gemini 3.8 Flash", searchEnabled: false, isLive: false },
+    { id: "gemini-2.5-flash", label: "🏎️ Gemini 2.5 Flash (Balanced)", searchEnabled: false, isLive: false },
+    { id: "gemini-3.1-pro", label: "🧠 Gemini 3.1 Pro (Complex Multi-Step Math)", searchEnabled: false, isLive: false },
   ];
 }
 
@@ -662,7 +643,7 @@ export async function verifyProviderKey(provider = "gemini", apiKey) {
         contents: "Respond with: {\"status\":\"ok\"}",
       });
       if (response) {
-        return { ok: true, message: "Valid Google AI Studio API key! Free tier connected (15 RPM / 1M TPM) with Search Grounding enabled." };
+        return { ok: true, message: "Valid Google AI Studio API key! Free tier connected (15 RPM / 1M TPM)." };
       }
       return { ok: true, message: "Google AI Studio API key connected successfully." };
     } catch (err) {
