@@ -3,4 +3,20 @@ Allow: /
 Disallow: /api/
 Disallow: /auth/
 
+# Explicit permissions for AI search engines & generative systems
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://tryledgermate.in/sitemap.xml

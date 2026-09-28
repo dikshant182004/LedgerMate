@@ -3,13 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Feedback & Issue Reporting | LedgerMate</title>
-<meta name="description" content="Help us improve LedgerMate. Submit feedback, feature requests, or report issues regarding our Web App, AI Calculation Agent, or Free Tools.">
-<link rel="canonical" href="https://splitmate.online/feedback/">
+<title>Product Feedback, Support & Bug Reporting | LedgerMate</title>
+<meta name="description" content="Official LedgerMate Support & Feedback Hub. Submit feature requests, report calculation issues, or contact our engineering and housing economics team. 24-hour response SLA.">
+<meta name="keywords" content="ledgermate product feedback and support, request a new calculator tool, report calculation formula bug, customer support ledgermate" />
+<link rel="canonical" href="https://tryledgermate.in/feedback/">
+<meta name="robots" content="index, follow">
+
+<!-- OpenGraph & Twitter Social Cards -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Product Feedback & Support Hub | LedgerMate">
+<meta property="og:description" content="Submit feature requests, report calculation defects, or contact our engineering and research team. 24-hour response SLA.">
+<meta property="og:url" content="https://tryledgermate.in/feedback/">
+<meta property="og:site_name" content="LedgerMate">
+<meta property="og:image" content="https://tryledgermate.in/og/og-default.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Product Feedback & Support | LedgerMate">
+<meta name="twitter:description" content="Report bugs, request new calculators, or reach out to our quantitative research team.">
+<meta name="twitter:image" content="https://tryledgermate.in/og/og-default.svg">
+
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "name": "LedgerMate Feedback & Support Hub",
+      "url": "https://tryledgermate.in/feedback/",
+      "description": "Contact channel and feedback submission for LedgerMate web application, AI calculation agent, and 55+ financial calculators.",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "LedgerMate",
+        "url": "https://tryledgermate.in/",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "url": "https://tryledgermate.in/feedback/",
+          "availableLanguage": ["English", "Arabic", "Spanish", "French", "German", "Hindi"]
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "Feedback & Support", "item": "https://tryledgermate.in/feedback/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How quickly does the LedgerMate team respond to bug reports?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Critical calculation or security issues are triaged within 24 hours. General feature suggestions and UI enhancements are reviewed during our weekly product sprint cycles."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I suggest a new regional tax or labor law calculator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Select 'Regional Hub & Statutory Calculators' in the category dropdown and specify the country, governing regulatory code, and desired formula. Our quantitative research board evaluates international additions quarterly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my email or feedback information shared with third parties?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Never. Contact details submitted through this form are used exclusively to follow up regarding your specific inquiry or report. See our Privacy Policy for full disclosures."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <style>
 :root {
   --bg: #f8fafc;
@@ -62,7 +141,7 @@ body {
 .nav-links a:hover { color: var(--accent); }
 
 .feedback-container {
-  max-width: 680px;
+  max-width: 780px;
   margin: 40px auto 80px;
   padding: 0 20px;
 }
@@ -70,7 +149,7 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 32px;
+  padding: 36px;
   box-shadow: var(--shadow-md);
 }
 .feedback-header {
@@ -79,7 +158,7 @@ body {
 }
 .feedback-title {
   font-family: 'Manrope', sans-serif;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 800;
   color: #0f172a;
   margin: 0 0 8px;
@@ -87,7 +166,20 @@ body {
 .feedback-subtitle {
   font-size: 15px;
   color: var(--text-muted);
-  margin: 0;
+  max-width: 580px;
+  margin: 0 auto;
+}
+.support-sla-banner {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #166534;
 }
 .form-group {
   margin-bottom: 20px;
@@ -162,6 +254,51 @@ body {
   font-weight: 600;
   margin-bottom: 20px;
 }
+.faq-box {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.faq-box h3 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 16px;
+}
+.faq-item {
+  margin-bottom: 14px;
+}
+.faq-q {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+.faq-a {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.footer {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 48px 20px 32px;
+  margin-top: 60px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto 32px;
+}
+.footer h4 { color: #ffffff; font-size: 14px; margin: 0 0 12px; font-weight: 700; }
+.footer ul { list-style: none; padding: 0; margin: 0; }
+.footer li { margin-bottom: 8px; }
+.footer a { color: #94a3b8; text-decoration: none; font-size: 13.5px; }
+.footer a:hover { color: #38bdf8; }
+.footer-bottom { border-top: 1px solid #1e293b; padding-top: 20px; text-align: center; color: #64748b; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -170,9 +307,10 @@ body {
   <div class="nav-inner">
     <a href="/" class="logo">Ledger<span>Mate</span></a>
     <div class="nav-links">
-      <a href="/app/">Web App</a>
-      <a href="/tools/calc-agent/">AI Calc Agent</a>
-      <a href="/blog/">Guides</a>
+      <a href="/#tools">Calculators</a>
+      <a href="/regional/">Regional Hub</a>
+      <a href="/about/">About Us</a>
+      <a href="/app/" class="btn-cta" style="background:var(--accent);color:#fff;padding:6px 14px;border-radius:6px;font-size:13.5px;font-weight:700;">Open App</a>
     </div>
   </div>
 </nav>
@@ -180,132 +318,191 @@ body {
 <div class="feedback-container">
   <div class="feedback-card">
     <div class="feedback-header">
-      <h1 class="feedback-title">Product Feedback & Issue Report</h1>
+      <h1 class="feedback-title">Feedback &amp; Support Hub</h1>
       <p class="feedback-subtitle">
-        We value your thoughts. Let us know how we can improve or report any issues you encountered.
+        Help us build the cleanest, most mathematically rigorous calculation suite on the web. Report bugs, suggest tools, or request calculation refinements.
       </p>
     </div>
 
+    <div class="support-sla-banner">
+      <span>⚡</span>
+      <span><strong>Engineering SLA:</strong> Critical calculation bugs and formula inquiries are evaluated within 24 hours by our quantitative research team.</span>
+    </div>
+
     <div class="success-banner" id="success-banner">
-      ✓ Thank you! Your feedback has been received and logged.
+      ✓ Thank you! Your feedback has been received and logged to our engineering triage queue.
     </div>
 
     <form id="feedback-form" onsubmit="handleFeedbackSubmit(event)">
       <div class="form-group">
-        <label class="form-label">How would you rate your experience?</label>
+        <label class="form-label">How was your experience today?</label>
         <div class="sentiment-options">
           <button type="button" class="sentiment-btn" onclick="setRating(1, this)" title="Very Disappointed">😡</button>
           <button type="button" class="sentiment-btn" onclick="setRating(2, this)" title="Poor">🙁</button>
-          <button type="button" class="sentiment-btn" onclick="setRating(3, this)" title="Okay">😐</button>
+          <button type="button" class="sentiment-btn" onclick="setRating(3, this)" title="Neutral">😐</button>
           <button type="button" class="sentiment-btn selected" onclick="setRating(4, this)" title="Good">🙂</button>
-          <button type="button" class="sentiment-btn" onclick="setRating(5, this)" title="Excellent">😍</button>
+          <button type="button" class="sentiment-btn" onclick="setRating(5, this)" title="Excellent">🤩</button>
         </div>
+        <input type="hidden" id="rating-val" value="4">
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="category-select">What product area is this regarding?</label>
-        <select id="category-select" class="form-select">
-          <option value="AI Calculation Agent">⚡ AI Calculation Agent & Gemini Studio</option>
-          <option value="LedgerMate Web App">📱 LedgerMate Web App & Group Splits</option>
-          <option value="Free Calculator Tools">🧮 Free Calculator Tools (Rent, Split Bill, Taxes)</option>
-          <option value="Landing Page & Design">🎨 Landing Page & Documentation</option>
-          <option value="Account & Security">🔐 Google Sign-In & Security</option>
-          <option value="Feature Request">💡 New Feature Suggestion</option>
+        <label for="feedback-category" class="form-label">Category</label>
+        <select id="feedback-category" class="form-select">
+          <option value="AI Calculation Agent">AI Calculation Agent (/tools/calc-agent/)</option>
+          <option value="Expense Splitting Web App">Expense Splitting Web App (/app/)</option>
+          <option value="Housing & Rent Calculators">Housing &amp; Rent Calculators (Rent Split, Prorated Rent)</option>
+          <option value="Payroll & Tax Calculators">Payroll &amp; Tax Calculators (US, India CTC, Germany)</option>
+          <option value="Regional Hub & Statutory Calculators">Regional Hub &amp; Statutory (GCC Gratuity, Zakat, Mexico, France)</option>
+          <option value="Loan & Mortgage Calculators">Loan &amp; Mortgage Calculators</option>
+          <option value="Bug Report / Formula Issue">Bug Report / Arithmetic Discrepancy</option>
+          <option value="Feature Request">New Tool or Feature Request</option>
+          <option value="General Feedback">General Feedback</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="feedback-text">Your Feedback / Issue Description:</label>
-        <textarea id="feedback-text" class="form-textarea" rows="4" placeholder="Tell us what went well, what felt broken, or what you'd like to see added..." required></textarea>
+        <label for="feedback-text" class="form-label">Details / Formula Description *</label>
+        <textarea id="feedback-text" class="form-textarea" rows="4" placeholder="Describe what happened, what formula was unexpected, or the tool you'd like us to build..." required></textarea>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="email-input">Your Email (Optional, if you'd like a response):</label>
-        <input type="email" id="email-input" class="form-input" placeholder="you@example.com">
+        <label for="feedback-email" class="form-label">Your Email (Optional — for follow-up notifications)</label>
+        <input type="email" id="feedback-email" class="form-input" placeholder="name@example.com">
       </div>
 
       <input type="hidden" id="context-url" value="">
 
-      <button type="submit" class="btn-submit" id="submit-btn">Send Product Feedback</button>
+      <button type="submit" class="btn-submit" id="submit-btn">Submit Feedback</button>
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 10px;">
+        🔒 Submissions are protected by our <a href="/privacy/" style="color: var(--accent);">Privacy Policy</a>. We never share or sell contact details.
+      </div>
     </form>
+
+    <div class="faq-box">
+      <h3>Frequently Asked Support Questions</h3>
+      <div class="faq-item">
+        <div class="faq-q">How does the engineering team handle formula issues?</div>
+        <div class="faq-a">Our quantitative research team audits every reported discrepancy against authoritative statutory publications (e.g. IRS Revenue Procedures, EPFO notifications, Mexican LFT circulars). Corrections are verified and pushed live within 24 hours.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Where do I report security vulnerabilities?</div>
+        <div class="faq-a">For responsible vulnerability disclosures, please review our <a href="/.well-known/security.txt" style="color: var(--accent);">security.txt</a> policy and <a href="/security/calc-agent/" style="color: var(--accent);">Security Architecture</a> page.</div>
+      </div>
+    </div>
   </div>
 </div>
 
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo" style="color:#ffffff;">Ledger<span>Mate</span></a>
+        <p style="color:#94a3b8;font-size:13.5px;margin-top:10px;">Free real-time expense splitting with zero ads, no mandatory sign-up, and 55+ verified calculators.</p>
+      </div>
+      <div>
+        <h4>Company &amp; Trust</h4>
+        <ul>
+          <li><a href="/about/">About LedgerMate</a></li>
+          <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+          <li><a href="/feedback/">Feedback &amp; Support</a></li>
+          <li><a href="/.well-known/security.txt">security.txt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Top Calculators</h4>
+        <ul>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+          <li><a href="/tools/prorated-rent-calculator/">Prorated Rent Calculator</a></li>
+          <li><a href="/tools/loan-emi-calculator/">Loan EMI Calculator</a></li>
+          <li><a href="/regional/">16-Country Regional Hub</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>AI Tools &amp; Guides</h4>
+        <ul>
+          <li><a href="/tools/calc-agent/">AI Calculation Agent</a></li>
+          <li><a href="/guides/calc-agent/">Calc Agent Guide</a></li>
+          <li><a href="/security/calc-agent/">Security Architecture</a></li>
+          <li><a href="/compare/splitwise-alternative/">Vs Splitwise</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 LedgerMate — Free Expense Splitting. <a href="/">Home</a> · <a href="/app/">Web App</a> · <a href="/about/">About</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
+    </div>
+  </div>
+</footer>
+
 <script>
-let currentRating = 4;
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const params = new URLSearchParams(window.location.search);
-  const from = params.get("from");
-  const calcId = params.get("calcId");
-  const categorySelect = document.getElementById("category-select");
-
-  if (from === "calc-agent") {
-    categorySelect.value = "AI Calculation Agent";
-  } else if (from === "landing") {
-    categorySelect.value = "Landing Page & Design";
-  } else if (from === "app") {
-    categorySelect.value = "LedgerMate Web App";
-  }
-
-  document.getElementById("context-url").value = window.location.href + (calcId ? ` [CalcId: ${calcId}]` : "");
-
-  // Prefill email if signed in
-  try {
-    const res = await fetch("/api/me");
-    const data = await res.json();
-    if (data?.user?.email) {
-      document.getElementById("email-input").value = data.user.email;
-    }
-  } catch(e) {}
-});
+let selectedRating = 4;
 
 function setRating(val, btn) {
-  currentRating = val;
+  selectedRating = val;
+  document.getElementById("rating-val").value = val;
   document.querySelectorAll(".sentiment-btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const from = urlParams.get("from");
+  const calcId = urlParams.get("calcId");
+  const category = urlParams.get("category");
+
+  if (category) {
+    const sel = document.getElementById("feedback-category");
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value.toLowerCase().includes(category.toLowerCase())) {
+        sel.selectedIndex = i;
+        break;
+      }
+    }
+  } else if (from === "calc-agent") {
+    document.getElementById("feedback-category").value = "AI Calculation Agent";
+  }
+
+  let context = window.location.href;
+  if (calcId) {
+    context += ` | CalcId: ${calcId}`;
+  }
+  document.getElementById("context-url").value = context;
+});
+
 async function handleFeedbackSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById("submit-btn");
-  const banner = document.getElementById("success-banner");
-  const category = document.getElementById("category-select").value;
-  const feedback = document.getElementById("feedback-text").value.trim();
-  const email = document.getElementById("email-input").value.trim();
-  const contextUrl = document.getElementById("context-url").value;
-
-  if (!feedback) return;
-
   btn.disabled = true;
   btn.textContent = "Submitting...";
+
+  const payload = {
+    rating: parseInt(document.getElementById("rating-val").value, 10),
+    category: document.getElementById("feedback-category").value,
+    feedback: document.getElementById("feedback-text").value,
+    email: document.getElementById("feedback-email").value,
+    contextUrl: document.getElementById("context-url").value
+  };
 
   try {
     const res = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        category,
-        feedback,
-        rating: currentRating,
-        email,
-        contextUrl,
-      }),
+      body: JSON.stringify(payload)
     });
-
-    const data = await res.json();
-    if (res.ok && data.ok) {
-      banner.style.display = "block";
-      document.getElementById("feedback-form").reset();
-      banner.scrollIntoView({ behavior: "smooth" });
+    if (res.ok) {
+      document.getElementById("feedback-form").style.display = "none";
+      document.getElementById("success-banner").style.display = "block";
     } else {
-      alert("Submission error: " + (data.error || "Please try again."));
+      const err = await res.json().catch(() => ({}));
+      alert(err.error || "Submission failed. Please try again.");
+      btn.disabled = false;
+      btn.textContent = "Submit Feedback";
     }
   } catch (err) {
-    alert("Network error. Please try again.");
-  } finally {
+    alert("Network error. Please try again later.");
     btn.disabled = false;
-    btn.textContent = "Send Product Feedback";
+    btn.textContent = "Submit Feedback";
   }
 }
 </script>

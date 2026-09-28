@@ -1,0 +1,8 @@
+# LedgerMate Security Policy
+Contact: https://tryledgermate.in/feedback/?category=Security+Vulnerability
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://tryledgermate.in/.well-known/security.txt
+Policy: https://tryledgermate.in/security/calc-agent/
+Acknowledgments: https://tryledgermate.in/about/
+Hiring: https://tryledgermate.in/about/

@@ -869,4 +869,28 @@ app.get("/api/cron/cleanup", async (c) => {
   return json(c, result);
 });
 
+// Custom 404 handler for API routes and missing static web pages
+app.notFound(async (c) => {
+  const path = c.req.path;
+  if (path.startsWith("/api/")) {
+    return json(c, { error: "Endpoint not found." }, 404);
+  }
+  if (c.env.ASSETS) {
+    try {
+      const url = new URL("/404.html", c.req.url);
+      const res = await c.env.ASSETS.fetch(new Request(url));
+      if (res.ok) {
+        return new Response(res.body, {
+          status: 404,
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "public, max-age=3600",
+          },
+        });
+      }
+    } catch (e) {}
+  }
+  return c.text("404 Not Found", 404);
+});
+
 export default app;

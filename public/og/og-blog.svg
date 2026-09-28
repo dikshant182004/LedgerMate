@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#f1f5f9" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#0f172a" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+
+  <!-- Subtle grid decoration -->
+  <g opacity="0.3" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 8">
+    <line x1="80" y1="0" x2="80" y2="630" />
+    <line x1="1120" y1="0" x2="1120" y2="630" />
+    <line x1="0" y1="80" x2="1200" y2="80" />
+    <line x1="0" y1="550" x2="1200" y2="550" />
+  </g>
+
+  <!-- Top bar / Brand -->
+  <g transform="translate(80, 75)">
+    <!-- Logo -->
+    <rect width="44" height="44" rx="12" fill="url(#accentGrad)" />
+    <path d="M14 28V16L22 22L30 16V28" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <text x="56" y="31" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="900" fill="#0f172a" letter-spacing="-0.03em">Ledger<tspan fill="#2563eb">Mate</tspan></text>
+
+    <!-- Tag Badge -->
+    <rect x="250" y="4" width="269.5" height="32" rx="16" fill="#eff6ff" stroke="#2563eb" stroke-opacity="0.3" stroke-width="1.5" />
+    <circle cx="266" cy="20" r="4" fill="#2563eb" />
+    <text x="278" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#2563eb" letter-spacing="0.02em">LEDGERMATE EDITORIAL BLOG</text>
+  </g>
+
+  <!-- Main Copy Area -->
+  <foreignObject x="80" y="150" width="620" height="360">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <h1 style="font-size: 46px; line-height: 1.15; font-weight: 800; color: #0f172a; margin: 0 0 16px; letter-spacing: -0.03em;">
+          Personal Finance, Rent Splitting & Expense Guides
+        </h1>
+        <p style="font-size: 20px; line-height: 1.45; color: #475569; margin: 0; font-weight: 500;">
+          Practical advice, mathematical breakdowns, and fair split strategies for roommates, traveling groups, and modern couples.
+        </p>
+      </div>
+
+      <!-- Feature Badges -->
+      <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px;">
+        <span style="font-size: 13px; font-weight: 700; color: #0f172a; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+          <span style="color: #10b981;">✓</span> 100% Free Forever
+        </span>
+        <span style="font-size: 13px; font-weight: 700; color: #0f172a; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+          <span style="color: #10b981;">✓</span> No Account Required
+        </span>
+        <span style="font-size: 13px; font-weight: 700; color: #0f172a; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+          <span style="color: #10b981;">✓</span> Zero Ads &amp; Privacy First
+        </span>
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Right Visual / Mockup Card -->
+  <foreignObject x="730" y="140" width="390" height="400">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 26px; box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.08); height: calc(100% - 52px); display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 18px;">
+          <div style="font-size: 14px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+            Verified Calculation Proof
+          </div>
+          <span style="font-size: 11px; font-weight: 700; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; padding: 3px 8px; border-radius: 6px;">V8 Deterministic</span>
+        </div>
+
+        
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;">
+          <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Fair Living Research</div>
+          <div style="font-size: 26px; font-weight: 900; color: #1d4ed8; margin: 4px 0 2px;">Practical Models</div>
+          <div style="font-size: 12px; color: #64748b;">Income-proportional & square-footage formulas</div>
+        </div>
+        
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px; min-width: 140px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+      <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">Free Models</div>
+      <div style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 4px;">6 Strategies</div>
+      
+    </div>
+  
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px; min-width: 140px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+      <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; letter-spacing: 0.05em;">Reader Rating</div>
+      <div style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 4px;">4.9 / 5.0</div>
+      
+    </div>
+  
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #f1f5f9; padding-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12px; color: #64748b; font-weight: 600;">⚡ Instant Live Result</span>
+        <span style="font-size: 12px; color: #2563eb; font-weight: 800;">tryledgermate.in →</span>
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Bottom URL / Trust Bar -->
+  <g transform="translate(80, 560)">
+    <text x="0" y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#94a3b8">https://tryledgermate.in</text>
+    <text x="1040" y="20" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#94a3b8">Free Real-Time Expense Splitting &amp; 55+ Financial Tools</text>
+  </g>
+</svg>

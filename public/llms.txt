@@ -1,0 +1,73 @@
+# LedgerMate
+
+> LedgerMate — free, real-time, no-signup expense splitter with 55+ specialized financial calculators and a neuro-symbolic AI calculation agent.
+
+## Core Identity & Brand
+- **Platform**: LedgerMate (https://tryledgermate.in)
+- **Primary Value Proposition**: Free, instant expense splitting without daily limits, cooldown countdown timers, or forced app downloads. Balances update in real time via WebSockets.
+- **Privacy Model**: Ephemeral retention (groups auto-delete in 10min, 1hour, 1day, or permanent on signed-in accounts). Zero server logging of Bring-Your-Own-Key (BYOK) AI keys.
+- **Technology**: Cloudflare Workers, Durable Objects, D1 SQL, Google Gemini API, live Google Search Grounding, and deterministic V8 algebraic proof verification.
+
+## Primary Sections & URLs
+
+### Core Web Application
+- [Web App & Real-Time Expense Splitter](https://tryledgermate.in/app/): Free instant group expense tracker. Real-time WebSocket sync, greedy debt simplification, zero ads.
+- [Splitwise vs LedgerMate Feature Comparison](https://tryledgermate.in/compare/splitwise-alternative/): Detailed analysis of Splitwise free tier restrictions (3-expense limits, 10-second timers) vs LedgerMate.
+- [About LedgerMate & Research Board](https://tryledgermate.in/about/): Team background, quantitative methodology, and architectural principles.
+- [Privacy Policy](https://tryledgermate.in/privacy/): Comprehensive disclosures on ephemeral retention, GDPR/CCPA rights, and zero-storage BYOK model.
+- [Terms of Service](https://tryledgermate.in/terms/): Usage terms and financial calculation disclaimer.
+- [Feedback & Support Hub](https://tryledgermate.in/feedback/): Issue triage and feature suggestions with 24-hour SLA.
+
+### AI Calculation Studio
+- [AI Calculation Agent](https://tryledgermate.in/tools/calc-agent/): Ask complex math, housing rent splits, loan amortizations, and payroll withholdings in plain English. Sub-2s SLA with deterministic verification.
+- [AI Calc Agent Documentation & Guide](https://tryledgermate.in/guides/calc-agent/): Step-by-step user guide and neuro-symbolic architecture explanation.
+- [Security Architecture & BYOK Disclosures](https://tryledgermate.in/security/calc-agent/): Technical audit on key sanitization, CSP, and in-flight memory handling.
+
+### Regional & Multilingual Hub (16 Jurisdictions)
+- [Regional Hub Directory](https://tryledgermate.in/regional/): Central directory for global statutory calculators.
+- [Saudi & UAE End of Service Gratuity](https://tryledgermate.in/ar/end-of-service-calculator/): Official GCC labor law calculations (Articles 84 & 85) in SAR, AED, QAR.
+- [Islamic Zakat Calculator 2026](https://tryledgermate.in/ar/zakat-calculator/): Gold, silver, stocks, cash with Nisab thresholds.
+- [Islamic Estate & Inheritance Calculator](https://tryledgermate.in/ar/inheritance-calculator/): Sharia estate distribution with Awl, Radd, and blocking rules.
+- [Mexico Finiquito y Liquidación (LFT)](https://tryledgermate.in/es/calculadora-finiquito/): Mexican severance pay and vacation bonus under Art. 48 & 50 LFT.
+- [Mexico Aguinaldo Calculator](https://tryledgermate.in/es/calculadora-aguinaldo/): Christmas bonus and 30 UMA tax exemption calculation.
+- [French Statutory Severance Calculator](https://tryledgermate.in/fr/calculateur-indemnite-licenciement/): Articles L1234-9 and R1234-2 of the Code du Travail.
+- [French Mileage Expense Calculator (Barème Kilométrique)](https://tryledgermate.in/fr/bareme-kilometrique/): Official URSSAF / DGFiP 2026 mileage deduction with 20% electric vehicle bonus.
+- [Global IBAN Validator](https://tryledgermate.in/tools/iban-validator/): ISO 13616 and MOD-97 algorithm validation for 80+ countries.
+
+### Housing & Rent Calculators
+- [Rent Split Calculator by Square Footage](https://tryledgermate.in/tools/rent-split-calculator/): Divide apartment rent based on bedroom square footage, common area sharing, and private bathrooms.
+- [Prorated Rent Calculator](https://tryledgermate.in/tools/prorated-rent-calculator/): Calculate move-in rent based on exact calendar days, the 30-day rule, or annualized 365-day methods.
+- [Couple vs Single Roommate Rent Splitter](https://tryledgermate.in/tools/couple-roommate-rent-calculator/): Fair mathematical rent division when couples share a bedroom with single roommates.
+- [Rent Affordability Calculator](https://tryledgermate.in/tools/rent-affordability-calculator/): 30% gross income rule, landlord 40x annual income requirement, and 28/36 DTI ratio.
+- [Rent vs Buy Calculator](https://tryledgermate.in/tools/rent-vs-buy-calculator/): Net present value, opportunity cost of down payment, and breakeven horizon analysis.
+- [Airbnb Vacation Rental Splitter](https://tryledgermate.in/tools/airbnb-room-split-calculator/): Divide vacation home costs by room quality and guest count.
+
+### Global Payroll & Tax Calculators
+- [US Paycheck Calculator 2026](https://tryledgermate.in/tools/us-paycheck-calculator/): Federal income tax brackets, FICA (Social Security & Medicare), and state tax withholdings.
+- [India CTC to In-Hand Salary Calculator](https://tryledgermate.in/tools/india-ctc-salary-calculator/): Basic pay (40% vs 50%), Employer/Employee EPF (12%), Gratuity (4.81%), and Old vs New tax regimes.
+- [India Income Tax Calculator](https://tryledgermate.in/tools/india-income-tax-calculator/): New Tax Regime Section 115BAC vs Old Regime with 80C, 80D, and HRA deductions.
+- [Germany Salary Calculator (Brutto-Netto)](https://tryledgermate.in/tools/germany-salary-calculator/): Steuerklassen 1 to 6, health insurance Zusatzbeitrag, pension, and church tax.
+- [Russia Salary Calculator (НДФЛ)](https://tryledgermate.in/tools/russia-salary-calculator/): 13% vs 15% progressive NDFL rates and employer social contributions.
+- [Japan Salary Calculator (手取り)](https://tryledgermate.in/tools/japan-salary-calculator/): Japanese income tax, inhabitant tax (住民税), and social insurance deductions.
+- [Korea Salary Calculator (실수령액)](https://tryledgermate.in/tools/korea-salary-calculator/): Korean national pension, health insurance, and local income tax.
+- [VAT / Sales Tax Calculator](https://tryledgermate.in/tools/vat-calculator/): Inclusive and exclusive VAT rates for UK (20%), EU, UAE (5%), and global rates.
+
+### Loans & Amortization
+- [Loan EMI Calculator](https://tryledgermate.in/tools/loan-emi-calculator/): Equated Monthly Installment calculation with full annual/monthly amortization table.
+- [Mortgage Calculator](https://tryledgermate.in/tools/mortgage-calculator/): PITI (Principal, Interest, Property Taxes, and Homeowner Insurance) breakdown.
+- [Car Loan Calculator](https://tryledgermate.in/tools/car-loan-calculator/): Vehicle financing, trade-in equity, and sales tax.
+- [Student Loan Payoff Calculator](https://tryledgermate.in/tools/student-loan-calculator/): Standard vs accelerated payoff timelines with extra principal contributions.
+- [Compound Interest Calculator](https://tryledgermate.in/tools/compound-interest-calculator/): Daily, monthly, or annual compounding with recurring monthly contributions.
+- [Retirement Savings Calculator](https://tryledgermate.in/tools/retirement-calculator/): Fire movement calculations, safe withdrawal rate (4%), and inflation-adjusted corpus.
+
+### Educational Guides
+- [The 30% Rent Rule & Landlord 40x Rule](https://tryledgermate.in/guides/30-percent-rent-rule/): Detailed guide on housing underwriting math and DTI ratios.
+- [How to Calculate Prorated Rent](https://tryledgermate.in/blog/how-to-calculate-prorated-rent/): Move-in day rules, calendar days vs 30-day banker's method.
+- [CTC vs In-Hand Salary Structure Explained](https://tryledgermate.in/guides/ctc-vs-in-hand-salary-structure/): Why your take-home pay is lower than your offer letter.
+- [German Tax Classes (Steuerklassen 1-6) Explained](https://tryledgermate.in/guides/german-salary-tax-classes-guide/): Guide to German payroll deductions in English.
+- [How to Split Rent Fairly with Unequal Rooms](https://tryledgermate.in/blog/fair-rent-split-unequal-rooms/): 50/50 common area rule and square footage weighting.
+- [How Couples Can Split Expenses](https://tryledgermate.in/blog/how-couples-split-expenses/): 50/50 vs proportional to income models.
+- [5 Best Free Splitwise Alternatives in 2026](https://tryledgermate.in/blog/best-splitwise-alternatives/): Unbiased review of free expense sharing tools.
+- [Why Splitwise Added 10-Second Timers](https://tryledgermate.in/blog/splitwise-free-limit-alternatives/): Economics of free mobile apps and free solutions.
+- [What is a 401(k) & How it Works](https://tryledgermate.in/guides/what-is-a-401k-how-it-works/): Tax-advantaged retirement plans and employer matching.
+- [Mortgage Interest and Amortization Guide](https://tryledgermate.in/guides/mortgage-interest-and-amortization/): Reducing-balance arithmetic and early payoff mechanics.

@@ -5,7 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Key Security & Privacy Architecture | LedgerMate</title>
 <meta name="description" content="Learn how LedgerMate protects your Google AI Studio API key with ephemeral client-side AES-GCM encryption and zero-server storage.">
-<link rel="canonical" href="https://splitmate.online/security/calc-agent/">
+<link rel="canonical" href="https://tryledgermate.in/security/calc-agent/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="API Key Security & Privacy Architecture | LedgerMate">
+<meta property="og:description" content="Learn how LedgerMate protects your Google AI Studio API key with ephemeral client-side AES-GCM encryption and zero-server storage.">
+<meta property="og:url" content="https://tryledgermate.in/security/calc-agent/">
+<meta property="og:site_name" content="LedgerMate">
+<meta property="og:image" content="https://tryledgermate.in/og/og-calc-agent.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API Key Security & Privacy Architecture | LedgerMate">
+<meta name="twitter:description" content="Learn how LedgerMate protects your Google AI Studio API key with ephemeral client-side AES-GCM encryption.">
+<meta name="twitter:image" content="https://tryledgermate.in/og/og-calc-agent.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "API Key Security & Privacy Architecture",
+      "description": "Learn how LedgerMate protects your Google AI Studio API key with ephemeral client-side AES-GCM encryption and zero-server storage.",
+      "author": {
+        "@type": "Person",
+        "name": "Dikshant",
+        "jobTitle": "Founder & Lead Systems Engineer",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "LedgerMate",
+          "url": "https://tryledgermate.in/about/"
+        }
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "LedgerMate",
+        "url": "https://tryledgermate.in/"
+      },
+      "datePublished": "2026-09-15",
+      "dateModified": "2026-09-28"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tryledgermate.in/" },
+        { "@type": "ListItem", "position": 2, "name": "AI Calc Agent", "item": "https://tryledgermate.in/tools/calc-agent/" },
+        { "@type": "ListItem", "position": 3, "name": "Security Architecture", "item": "https://tryledgermate.in/security/calc-agent/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Will LedgerMate charge my credit card for calculations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No! Google AI Studio provides 15 Requests Per Minute (RPM) and 1 Million Tokens Per Minute 100% free of charge without requiring a credit card."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens when I sign out or close my tab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Closing your browser tab or clicking Sign Out immediately wipes the in-memory AES key and purges session storage from your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can other users or admins view my API key?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Never. Your key is not persisted to any database or accessible to administrators."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -143,6 +221,12 @@ body {
   margin-top: 14px;
 }
 </style>
+
+<meta property="og:image" content="https://tryledgermate.in/og/og-calc-agent.svg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://tryledgermate.in/og/og-calc-agent.svg" />
 </head>
 <body>
 
