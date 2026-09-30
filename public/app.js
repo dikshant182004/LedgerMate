@@ -279,7 +279,7 @@ function renderAuthArea(container) {
   const chip = document.createElement("button");
   chip.className = "user-chip";
   chip.innerHTML = currentUser.picture
-    ? `<img src="${currentUser.picture}" alt="" width="32" height="32" />`
+    ? `<img src="${currentUser.picture}" alt="${escapeHtml(currentUser.name || 'User profile')}" width="32" height="32" />`
     : `<span class="avatar" style="background:${avatarColor(currentUser.name)}">${initials(currentUser.name)}</span>`;
   chip.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -294,7 +294,7 @@ function renderAccountSheet() {
   const profile = el("account-profile");
   profile.innerHTML = `
     ${currentUser.picture
-      ? `<img src="${currentUser.picture}" alt="" width="44" height="44" />`
+      ? `<img src="${currentUser.picture}" alt="${escapeHtml(currentUser.name || 'User profile')}" width="44" height="44" />`
       : `<span class="avatar" style="background:${avatarColor(currentUser.name)}">${initials(currentUser.name)}</span>`}
     <div>
       <div class="account-profile-name">${escapeHtml(currentUser.name)}</div>

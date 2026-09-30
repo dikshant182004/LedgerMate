@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tip Calculator — Free Bill &amp; Gratuity Splitter | LedgerMate</title>
+<meta name="description" content="Free online Tip Calculator. Calculate exact tip percentages (15%, 18%, 20%, 25% or custom), split bills evenly among friends, and see total per-person shares instantly." />
+<meta name="keywords" content="tip calculator, gratuity calculator, restaurant tip split, bill split with tip, 18 percent tip calculator, 20 percent tip calculator, tip per person calculator" />
+<link rel="canonical" href="https://tryledgermate.in/tools/tip-calculator/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Free Tip Calculator &amp; Gratuity Splitter | LedgerMate" />
+<meta property="og:description" content="Calculate tips and split restaurant checks instantly with custom tip percentages and per-person breakdown." />
+<meta property="og:url" content="https://tryledgermate.in/tools/tip-calculator/" />
+<link rel="icon" href="/icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
+<link rel="stylesheet" href="/landing.css?v=5" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LedgerMate Tip Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web, iOS, Android",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Calculate tips and split restaurant bills evenly among friends with custom tip percentages."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the standard tipping percentage in restaurants?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In the United States and Canada, 15% to 20% is standard for dine-in table service. 15% represents acceptable service, 18% is typical, and 20% or higher is customary for great service."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should tip be calculated before or after sales tax?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Etiquette experts recommend tipping on the pre-tax food and beverage subtotal. Sales tax is a government levy, so service staff should be compensated based on menu items ordered."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you split a tip between multiple people?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Add the total tip to the total bill and divide the grand sum by the number of people. Each person pays an equal portion of the food, tax, and gratuity."
+      }
+    }
+  ]
+}
+</script>
+<style>
+.tip-preset-btn { background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; transition: all 0.15s ease; flex: 1; min-width: 60px; text-align: center; }
+.tip-preset-btn:hover { border-color: var(--primary); }
+.tip-preset-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Ledger<span>Mate</span></a>
+    <div class="nav-links">
+      <a href="/tools/">All Tools</a>
+      <a href="/tools/bill-split-calculator/">Bill Splitter</a>
+      <a href="/app/" class="btn btn-primary">Free App</a>
+    </div>
+  </div>
+</nav>
+
+<header class="tool-hero wrap">
+  <div class="breadcrumb" style="justify-content:center;">
+    <a href="/">Home</a> <span>/</span> <a href="/tools/">Calculators</a> <span>/</span> Tip Calculator
+  </div>
+  <h1>Free Tip Calculator &amp; Gratuity Splitter</h1>
+  <p class="sub">Calculate restaurant tips, sales tax adjustments, and split the final check evenly among friends in seconds.</p>
+</header>
+
+<div class="narrow" style="padding-bottom:64px;">
+  <div class="calc-card">
+
+    <div class="calc-row">
+      <div style="flex:1.4;">
+        <label for="bill-amount">Bill Amount ($)</label>
+        <input id="bill-amount" type="number" step="0.01" min="0" value="75.00" placeholder="0.00" />
+      </div>
+      <div style="flex:1;">
+        <label for="num-people">Split Between</label>
+        <input id="num-people" type="number" step="1" min="1" max="100" value="3" />
+      </div>
+    </div>
+
+    <label style="margin-top:16px;display:block;">Select Tip Percentage</label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <button type="button" class="tip-preset-btn" data-pct="10">10%</button>
+      <button type="button" class="tip-preset-btn" data-pct="15">15%</button>
+      <button type="button" class="tip-preset-btn active" data-pct="18">18%</button>
+      <button type="button" class="tip-preset-btn" data-pct="20">20%</button>
+      <button type="button" class="tip-preset-btn" data-pct="25">25%</button>
+      <button type="button" class="tip-preset-btn" id="btn-custom-tip">Custom</button>
+    </div>
+
+    <div id="custom-tip-container" class="calc-row" style="display:none;margin-top:10px;">
+      <div style="flex:1;">
+        <label for="custom-tip-input">Custom Tip (%)</label>
+        <input id="custom-tip-input" type="number" step="0.5" min="0" max="100" value="18" />
+      </div>
+    </div>
+
+    <div class="calc-result" style="margin-top:24px;">
+      <div class="calc-result-title">Per-Person Share</div>
+      <div id="res-per-person" class="calc-result-val" style="font-size:38px;color:var(--primary);">$29.50</div>
+      <p id="res-per-person-sub" style="font-size:14px;color:var(--text-muted);margin:4px 0 16px;">Each person pays $25.00 bill + $4.50 tip</p>
+
+      <div style="border-top:1px solid var(--border);padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;">
+        <div style="background:var(--card);padding:12px;border-radius:8px;border:1px solid var(--border);">
+          <div style="font-size:12px;color:var(--text-muted);">Total Tip</div>
+          <div id="res-total-tip" style="font-size:20px;font-weight:700;color:var(--text);margin-top:2px;">$13.50</div>
+        </div>
+        <div style="background:var(--card);padding:12px;border-radius:8px;border:1px solid var(--border);">
+          <div style="font-size:12px;color:var(--text-muted);">Total Bill + Tip</div>
+          <div id="res-total-bill" style="font-size:20px;font-weight:700;color:var(--text);margin-top:2px;">$88.50</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="calc-faq" style="margin-top:48px;">
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div class="faq-grid" style="display:grid;gap:14px;">
+      <details class="faq-item">
+        <summary>What is the standard tipping percentage in restaurants?</summary>
+        <p>In the United States and Canada, 15% to 20% is standard for dine-in table service. 15% represents acceptable service, 18% is typical, and 20% or higher is customary for great service.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Should tip be calculated before or after sales tax?</summary>
+        <p>Etiquette experts recommend tipping on the pre-tax food and beverage subtotal. Sales tax is a government levy, so service staff should be compensated based on menu items ordered.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do you split a tip between multiple people?</summary>
+        <p>Add the total tip to the total bill and divide the grand sum by the number of people. Each person pays an equal portion of the food, tax, and gratuity.</p>
+      </details>
+    </div>
+  </section>
+
+  <div class="calc-cta" style="margin-top:40px;">
+    <div>
+      <p style="margin:0 0 4px;font-weight:700;">Need to split drinks or unequal restaurant orders?</p>
+      <span style="font-size:13px;color:var(--text-muted);">Use LedgerMate to split itemized restaurant receipts without sign-ups.</span>
+    </div>
+    <a href="/app/" class="btn btn-primary">Try Free App</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">Ledger<span>Mate</span></a>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:10px;max-width:280px;">Fast everyday mathematical &amp; expense splitting tools.</p>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="/tools/bill-split-calculator/">Bill Splitter</a></li>
+          <li><a href="/tools/trip-budget-calculator/">Trip Budget</a></li>
+          <li><a href="/tools/gas-split-calculator/">Gas Splitter</a></li>
+          <li><a href="/tools/rent-split-calculator/">Rent Splitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/tools/">All Tools</a></li>
+          <li><a href="/blog/">Blog &amp; Guides</a></li>
+          <li><a href="/compare/splitwise-alternative/">Splitwise Alternative</a></li>
+          <li><a href="/feedback/">Feedback &amp; Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>LedgerMate App</h4>
+        <p style="font-size:13px;color:var(--text-muted);margin:0 0 12px;">Split group meals and weekend trips with friends.</p>
+        <a href="/app/" class="btn btn-primary" style="display:inline-block;">Open Free App</a>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 LedgerMate — Free Tip &amp; Gratuity Calculator.</p>
+  </div>
+</footer>
+
+<script>
+let currentTipPct = 18;
+
+function updateTip() {
+  const bill = parseFloat(document.getElementById('bill-amount').value) || 0;
+  const people = Math.max(1, parseInt(document.getElementById('num-people').value) || 1);
+
+  const totalTip = (bill * currentTipPct) / 100;
+  const totalBill = bill + totalTip;
+  const perPersonTotal = totalBill / people;
+  const perPersonTip = totalTip / people;
+  const perPersonBase = bill / people;
+
+  document.getElementById('res-per-person').textContent = `$${perPersonTotal.toFixed(2)}`;
+  document.getElementById('res-per-person-sub').textContent = people > 1 
+    ? `Each of ${people} pays $${perPersonBase.toFixed(2)} bill + $${perPersonTip.toFixed(2)} tip`
+    : `Total bill includes $${bill.toFixed(2)} base + $${totalTip.toFixed(2)} tip`;
+
+  document.getElementById('res-total-tip').textContent = `$${totalTip.toFixed(2)}`;
+  document.getElementById('res-total-bill').textContent = `$${totalBill.toFixed(2)}`;
+}
+
+document.querySelectorAll('.tip-preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tip-preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const customContainer = document.getElementById('custom-tip-container');
+    
+    if (btn.id === 'btn-custom-tip') {
+      customContainer.style.display = 'flex';
+      currentTipPct = parseFloat(document.getElementById('custom-tip-input').value) || 0;
+    } else {
+      customContainer.style.display = 'none';
+      currentTipPct = parseFloat(btn.dataset.pct);
+    }
+    updateTip();
+  });
+});
+
+document.getElementById('custom-tip-input').addEventListener('input', (e) => {
+  currentTipPct = parseFloat(e.target.value) || 0;
+  updateTip();
+});
+
+['bill-amount', 'num-people'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateTip);
+});
+
+updateTip();
+</script>
+
+</body>
+</html>
