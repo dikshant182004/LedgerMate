@@ -134,11 +134,6 @@ app.use("*", async (c, next) => {
   await next();
 });
 
-// Favicon fallback handler
-app.get("/favicon.ico", (c) => {
-  return c.redirect("/icons/favicon-32.png", 302);
-});
-
 const SESSION_MAX_AGE_S = 60 * 60 * 24 * 30; // 30 days
 const CALC_LANGUAGES = new Set(["English", "Arabic", "Chinese", "French", "German", "Hindi", "Japanese", "Portuguese", "Russian", "Spanish"]);
 
@@ -172,7 +167,13 @@ function getOAuthRedirectUri(c) {
   return c.env.GOOGLE_REDIRECT_URI || "https://tryledgermate.in/auth/google/callback";
 }
 
+app.use("/auth/*", async (c, next) => {
+  c.header("X-Robots-Tag", "noindex, nofollow, noarchive");
+  await next();
+});
+
 app.get("/auth/google/login", async (c) => {
+  c.header("X-Robots-Tag", "noindex, nofollow, noarchive");
   const returnTo = c.req.query("return_to");
   const safeReturnTo = returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//") ? returnTo : "/app/";
 
@@ -194,6 +195,7 @@ app.get("/auth/google/login", async (c) => {
   url.searchParams.set("prompt", "select_account");
 
   const headers = new Headers();
+  headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   headers.append("Set-Cookie", cookieHeader("oauth_state", state, { maxAge: 600 }));
   headers.append("Set-Cookie", cookieHeader("oauth_return_to", safeReturnTo, { maxAge: 600 }));
   headers.append("Set-Cookie", cookieHeader("oauth_redirect_uri", redirectUri, { maxAge: 600 }));

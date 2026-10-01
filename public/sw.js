@@ -1,4 +1,4 @@
-const CACHE = "ledgermate-shell-v6";
+const CACHE = "ledgermate-shell-v7";
 const SHELL_FILES = [
   "/",
   "/landing.css?v=3",
@@ -9,7 +9,9 @@ const SHELL_FILES = [
   "/vendor/chart.umd.min.js",
   "/vendor/qrcode.min.js",
   "/icons/icon-192.png",
-  "/icons/favicon-32.png"
+  "/favicon.png",
+  "/favicon-48.png",
+  "/favicon.ico"
 ];
 
 self.addEventListener("install", (event) => {
